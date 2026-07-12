@@ -23,6 +23,37 @@ The promoted policy used 30.9% fewer total tokens than Standard + RTK and 58.4% 
 
 See [`experiments/RESULTS.md`](experiments/RESULTS.md) for the policy iteration and [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md) for the full calculator benchmark.
 
+The original calculator benchmark used `gpt-5.6-sol` with high reasoning. Follow-ups used `gpt-5.6-luna` with high and max reasoning; all model settings and results are recorded in the calculator report.
+
+## Three-model calculator comparison
+
+Every model setting passed the same 960-case suite: 4 arms × 6 languages × 40 cases.
+
+| Model / reasoning | Arm | Correctness | Total tokens | Uncached input | Output | Tool calls | Wall time |
+|---|---|---:|---:|---:|---:|---:|---:|
+| SOL / high | Standard + RTK | 240/240 | 425,765 | 29,702 | 14,367 | 12 | 344s |
+| SOL / high | Smart Compact + RTK | 240/240 | 294,388 | 20,762 | 12,250 | 10 | 310s |
+| SOL / high | Standard direct | 240/240 | 535,342 | 30,315 | 15,811 | 16 | 378s |
+| SOL / high | Smart Compact direct | 240/240 | 624,298 | 30,849 | 15,145 | 20 | 426s |
+| Luna / high | Standard + RTK | 240/240 | 698,797 | 64,823 | 17,782 | 16 | 386s |
+| Luna / high | Smart Compact + RTK | 240/240 | 863,844 | 43,154 | 25,810 | 22 | 554s |
+| Luna / high | Standard direct | 240/240 | 727,106 | 47,899 | 23,335 | 17 | 488s |
+| Luna / high | Smart Compact direct | 240/240 | 992,922 | 54,529 | 18,841 | 23 | 477s |
+| Luna / max | Standard + RTK | 240/240 | 936,461 | 72,561 | 32,412 | 19 | 649s |
+| Luna / max | Smart Compact + RTK | 240/240 | 741,098 | 68,806 | 27,684 | 17 | 742s |
+| Luna / max | Standard direct | 240/240 | 924,185 | 65,081 | 32,480 | 18 | 625s |
+| Luna / max | Smart Compact direct | 240/240 | 906,240 | 63,740 | 25,860 | 21 | 505s |
+
+Smart Compact’s total-token effect varied by model and reasoning setting:
+
+| Model / reasoning | With RTK | Without RTK |
+|---|---:|---:|
+| SOL / high | -30.9% | +16.6% |
+| Luna / high | +23.6% | +36.6% |
+| Luna / max | -20.9% | -1.9% |
+
+Negative values are savings. The complete input, cached-input, reasoning, source-size, and rollout data is in [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md).
+
 ## RTK reference
 
 Smart Compact was benchmarked with [RTK (Rust Token Killer)](https://github.com/rtk-ai/rtk), an independent CLI proxy that reduces noisy shell output before it reaches the model context. RTK is not bundled with this repository; it is an optional external tool used by the benchmark arms.
@@ -64,7 +95,7 @@ Run the calculator conformance harness:
 python3 case-study/calculator/harness/run_conformance.py
 ```
 
-The complete repository currently passes nine regression tests, the official Codex skill validator, and 960/960 accepted calculator checks. The promoted v2 arm separately passes 240/240 checks.
+The complete repository currently passes nine regression tests, the official Codex skill validator, and 2,880/2,880 calculator checks across the three model settings. Each model matrix separately passed 960/960.
 
 ## Benchmark limitations
 

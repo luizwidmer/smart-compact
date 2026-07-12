@@ -1,0 +1,234 @@
+{
+  "luna-high-compact-direct": {
+    "compile": {
+      "cpp": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "rust": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "swift": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      }
+    },
+    "languages": {
+      "cpp": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "javascript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "python": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "rust": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "swift": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "typescript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      }
+    },
+    "perfect": true
+  },
+  "luna-high-compact-rtk": {
+    "compile": {
+      "cpp": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "rust": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "swift": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      }
+    },
+    "languages": {
+      "cpp": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "javascript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "python": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "rust": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "swift": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "typescript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      }
+    },
+    "perfect": true
+  },
+  "luna-high-standard-direct": {
+    "compile": {
+      "cpp": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "rust": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "swift": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      }
+    },
+    "languages": {
+      "cpp": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "javascript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "python": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "rust": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "swift": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "typescript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      }
+    },
+    "perfect": true
+  },
+  "luna-high-standard-rtk": {
+    "compile": {
+      "cpp": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "rust": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      },
+      "swift": {
+        "passed": true,
+        "returncode": 0,
+        "stderr": ""
+      }
+    },
+    "languages": {
+      "cpp": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "javascript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "python": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "rust": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "swift": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      },
+      "typescript": {
+        "failures": [],
+        "passed": 40,
+        "perfect": true,
+        "total": 40
+      }
+    },
+    "perfect": true
+  }
+}
