@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Compact"
+  short_description: "Token-efficient work with adaptive safety"
+  default_prompt: "Use $codex-compact to complete this task with concise communication and economical, risk-aware tool usage."

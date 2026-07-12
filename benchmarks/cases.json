@@ -1,0 +1,44 @@
+[
+  {
+    "id": "routine-status",
+    "category": "routine",
+    "expected_mode": "compact-safe",
+    "source": "The implementation work has now been completed successfully. I updated the request parser so that empty header values are rejected before validation, and I added a regression test covering the failure case. I also ran the focused test suite and all 18 tests passed. There are no remaining blockers, and no additional action is required from the user."
+  },
+  {
+    "id": "implementation-handoff",
+    "category": "handoff",
+    "expected_mode": "compact-safe",
+    "source": "I changed `src/auth/session.ts` and `tests/auth/session.test.ts`. The session refresh path now rejects an expired token before attempting a database write, which prevents stale sessions from being persisted. I verified the behavior by running `npm test -- session`; all 12 tests passed. No migration is required, and the only residual risk is that the full integration suite has not been run."
+  },
+  {
+    "id": "review-finding",
+    "category": "review",
+    "expected_mode": "compact-safe",
+    "source": "During the review I identified a high-severity correctness issue in `src/cache.ts:84`. The code stores a failed lookup for `300` seconds, so a temporary upstream error is returned to every caller until the negative cache entry expires. This can turn a short provider outage into a five-minute application outage. Cache only confirmed not-found responses, and add a regression test for transient `503` responses."
+  },
+  {
+    "id": "exact-literals",
+    "category": "literal-preservation",
+    "expected_mode": "compact-safe",
+    "source": "Run `rtk pytest -q` from `/Users/luiz/project` and compare the result with https://example.com/build/42. Do not use `--force`, and do not change `$API_TIMEOUT` from `30`. Report the exact error string `Connection refused` if the command fails."
+  },
+  {
+    "id": "ordered-migration",
+    "category": "ordered",
+    "expected_mode": "full-prose",
+    "source": "First, create a verified backup at `/tmp/users.sql`. Before changing the schema, run `psql -f verify.sql` and confirm that it exits with status `0`. Then run `psql -f migration.sql`. After the migration succeeds, run `psql -f verify.sql` again. Do not remove the backup until both verification runs pass."
+  },
+  {
+    "id": "destructive-warning",
+    "category": "destructive",
+    "expected_mode": "full-prose",
+    "source": "Before continuing, note that `git reset --hard origin/main` permanently discards every tracked local change that is not committed. It cannot be undone through Git after unreachable objects are pruned. Confirm that the work is committed or backed up, identify the exact repository, and only then run the command."
+  },
+  {
+    "id": "ambiguous-diagnosis",
+    "category": "uncertain",
+    "expected_mode": "full-prose",
+    "source": "The intermittent timeout might be caused by connection-pool exhaustion, but the current logs do not prove that explanation. The same symptom may also come from DNS latency or an upstream rate limit. We know only that the failures begin after roughly `40` concurrent requests. Capture pool metrics, DNS timing, and upstream response headers before changing production limits."
+  }
+]
