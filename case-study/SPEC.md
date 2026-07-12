@@ -59,7 +59,7 @@ Each metric card must have a stable label and a value element carrying `data-met
 Render two equal columns:
 
 - `Baseline` with label `STANDARD CONTEXT`
-- `Codex Compact` with label `GUARDED COMPRESSION`
+- `Smart Compact` with label `GUARDED COMPRESSION`
 
 Each column contains rows for `Specification`, `Functional checks`, `Visual parity`, and `Context use`. Use the values:
 
@@ -67,7 +67,7 @@ Each column contains rows for `Specification`, `Functional checks`, `Visual pari
 - Functional checks: `12 / 12`
 - Visual parity: `100%`
 - Baseline context use: `18,240 tokens`
-- Codex Compact context use: `12,480 tokens`
+- Smart Compact context use: `12,480 tokens`
 
 ## Methodology
 
@@ -75,7 +75,7 @@ The methodology content starts hidden. Selecting `Show methodology` must reveal 
 
 Visible methodology copy:
 
-`Both agents receive the same files, acceptance tests, model family, and reasoning level. Only the compact arm receives the Codex Compact skill. Token counts use the o200k_base tokenizer.`
+`Both agents receive the same files, acceptance tests, model family, and reasoning level. Only the Smart Compact arm receives the Smart Compact skill. Token counts use the o200k_base tokenizer.`
 
 ## Interaction and accessibility
 

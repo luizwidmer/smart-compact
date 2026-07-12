@@ -17,7 +17,7 @@ else:
 
 
 SOURCE_ROOT = Path(__file__).parents[1]
-SKILL_NAME = "codex-compact"
+SKILL_NAME = "smart-compact"
 PROFILE_FILENAME = "smart-compact.config.toml"
 AGENT_FILENAME = "spark-worker.toml"
 
@@ -245,7 +245,7 @@ def main() -> int:
     if args.dry_run:
         print("Dry run complete; no files were changed.")
     else:
-        print("Start a new Codex task, then invoke $codex-compact.")
+        print("Start a new Codex task, then invoke $smart-compact.")
         if not args.no_profile:
             print("CLI profile: codex --profile smart-compact")
     return 0

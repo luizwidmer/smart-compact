@@ -66,25 +66,25 @@ def parse_rollout(path: str) -> dict[str, object]:
     }
 
 
-def delta_percent(baseline: int | float, compact: int | float) -> float:
+def delta_percent(baseline: int | float, smart_compact: int | float) -> float:
     if not baseline:
         return 0.0
-    return round((baseline - compact) / baseline * 100, 1)
+    return round((baseline - smart_compact) / baseline * 100, 1)
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--baseline", required=True)
-    parser.add_argument("--compact", required=True)
+    parser.add_argument("--smart-compact", required=True)
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
     baseline = parse_rollout(args.baseline)
-    compact = parse_rollout(args.compact)
+    smart_compact = parse_rollout(args.smart_compact)
     comparison = {
-        key: delta_percent(baseline[key], compact[key])
+        key: delta_percent(baseline[key], smart_compact[key])
         for key in (
             "duration_seconds",
             "input_tokens",
@@ -99,7 +99,11 @@ def main() -> int:
     }
     print(
         json.dumps(
-            {"baseline": baseline, "compact": compact, "savings_pct": comparison},
+            {
+                "baseline": baseline,
+                "smart_compact": smart_compact,
+                "savings_pct": comparison,
+            },
             indent=2,
         )
     )

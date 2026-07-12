@@ -54,7 +54,12 @@ INVALID_CASES = [
     "0^-1",
 ]
 
-ARMS = ("standard-rtk", "compact-rtk", "standard-direct", "compact-direct")
+ARMS = (
+    "standard-rtk",
+    "smart-compact-rtk",
+    "standard-direct",
+    "smart-compact-direct",
+)
 
 
 def run(command: list[str], *, cwd: Path, timeout: int = 20) -> subprocess.CompletedProcess[str]:

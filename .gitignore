@@ -1,8 +1,3 @@
 __pycache__/
 *.py[cod]
 .DS_Store
-case-study/*/node_modules/
-case-study/*/.vinext/
-case-study/*/dist/
-case-study/artifacts/*.tmp
-case-study/calculator/**/build/

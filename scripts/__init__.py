@@ -1,1 +1,1 @@
-"""Utilities for the codex-compact skill."""
+"""Utilities for the smart-compact skill."""

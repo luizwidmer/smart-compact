@@ -27,10 +27,10 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual([result.status for result in results], ["installed", "installed", "skipped"])
             self.assertEqual(
-                (skill_root / "codex-compact" / "SKILL.md").read_text(encoding="utf-8"),
+                (skill_root / "smart-compact" / "SKILL.md").read_text(encoding="utf-8"),
                 (ROOT / "SKILL.md").read_text(encoding="utf-8"),
             )
-            self.assertTrue((skill_root / "codex-compact" / "agents" / "openai.yaml").is_file())
+            self.assertTrue((skill_root / "smart-compact" / "agents" / "openai.yaml").is_file())
             self.assertTrue((codex_home / "smart-compact.config.toml").is_file())
 
     def test_installs_spark_when_available(self) -> None:
@@ -49,7 +49,7 @@ class PackageInstallerTests(unittest.TestCase):
     def test_skill_conflict_is_non_destructive(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             skill_root, codex_home = self.targets(directory)
-            target = skill_root / "codex-compact"
+            target = skill_root / "smart-compact"
             target.mkdir(parents=True)
             (target / "SKILL.md").write_text("user version\n", encoding="utf-8")
             results = install_package(
@@ -66,7 +66,7 @@ class PackageInstallerTests(unittest.TestCase):
     def test_force_replaces_conflicting_skill(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             skill_root, codex_home = self.targets(directory)
-            target = skill_root / "codex-compact"
+            target = skill_root / "smart-compact"
             target.mkdir(parents=True)
             (target / "SKILL.md").write_text("old\n", encoding="utf-8")
             results = install_package(
@@ -122,7 +122,7 @@ class PackageInstallerTests(unittest.TestCase):
 
             first = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)
             self.assertEqual(first.returncode, 0, first.stderr)
-            self.assertTrue((skill_root / "codex-compact" / "SKILL.md").is_file())
+            self.assertTrue((skill_root / "smart-compact" / "SKILL.md").is_file())
             self.assertTrue((codex_home / "smart-compact.config.toml").is_file())
 
             second = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, check=False)

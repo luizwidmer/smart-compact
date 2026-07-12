@@ -4,7 +4,7 @@
 
 ## Status
 
-Version `v6-harness-profile` is promoted in [`SKILL.md`](SKILL.md) and [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml). The skill works by itself; the optional profile adds native low verbosity, bounded per-tool history, suppressed reasoning summaries, and lossless machine-oriented compaction. The technical skill identifier remains `codex-compact`, preserving `$codex-compact` compatibility while the project and UI use the Smart Compact brand.
+Smart Compact is defined by [`SKILL.md`](SKILL.md) and [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml). The skill works by itself; the optional profile adds native low verbosity, bounded per-tool history, suppressed reasoning summaries, and lossless machine-oriented compaction. Its skill identifier is `smart-compact`, invoked as `$smart-compact`.
 
 ## Install
 
@@ -26,7 +26,7 @@ The installer is idempotent and does not overwrite differing files unless you pa
 
 | Component | Default target | Behavior |
 |---|---|---|
-| Smart Compact skill | `$HOME/.agents/skills/codex-compact` | Always installed |
+| Smart Compact skill | `$HOME/.agents/skills/smart-compact` | Always installed |
 | Native profile | `${CODEX_HOME:-$HOME/.codex}/smart-compact.config.toml` | Installed by default; activate with `codex --profile smart-compact` |
 | Spark worker | `${CODEX_HOME:-$HOME/.codex}/agents/spark-worker.toml` | Installed only when the local model catalog exposes Spark |
 | RTK | Existing executable on `PATH` | Detected and reported; never installed or modified |
@@ -46,7 +46,7 @@ When using the remote one-liner, pass options through `sh -s --`, for example:
 curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/install.sh | sh -s -- --dry-run
 ```
 
-Start a new Codex task after installation so skill and custom-agent discovery refreshes, then invoke `$codex-compact`. Codex documents global skills under `$HOME/.agents/skills`, profile files under `$CODEX_HOME/<name>.config.toml`, and personal custom agents under `~/.codex/agents`; see [Skills](https://learn.chatgpt.com/docs/customization/overview#skills), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), and [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
+Start a new Codex task after installation so skill and custom-agent discovery refreshes, then invoke `$smart-compact`. Codex documents global skills under `$HOME/.agents/skills`, profile files under `$CODEX_HOME/<name>.config.toml`, and personal custom agents under `~/.codex/agents`; see [Skills](https://learn.chatgpt.com/docs/customization/overview#skills), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), and [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
 
 ## Measured result
 
@@ -70,11 +70,7 @@ The savings were positive in every tested setting:
 | Luna / max | 60.1% | 46.7% | 59.9% | 68.4% | 49.5% |
 | **Aggregate** | **46.8%** | **43.0%** | **56.8%** | **57.1%** | **46.5%** |
 
-The final new-arm conformance report passed 1,200/1,200 checks. A rollout-level audit also confirmed that every submitted shell command in all eight accepted comparison traces began with `rtk`. The first v6 attempts—including the previously reported 294,264-token Luna/high run—were functionally correct but excluded after the audit found direct shell commands in traces labeled `+ RTK`; corrected arms were generated from empty target roots.
-
-Against the previous v2 policy, strict v6 used 29.6% fewer total tokens on SOL/high, 77.6% fewer on Luna/high, and 74.5% fewer on Luna/max. These remain single-run experimental results, not guaranteed production savings.
-
-See [`case-study/calculator/v6-model-matrix-results.json`](case-study/calculator/v6-model-matrix-results.json) for machine-readable metrics, [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md) for the historical direct and v2 arms, and [`experiments/RESULTS.md`](experiments/RESULTS.md) for policy iteration.
+The accepted model matrix passed 960/960 functional checks in both control and Smart Compact arms. Generated benchmark projects, candidate policies, traces, and language fixtures are intentionally omitted from the package; this README retains only the accepted aggregate results. These are single-run experimental measurements, not guaranteed production savings.
 
 ## Native Codex profile
 
@@ -136,12 +132,10 @@ Smart Compact was benchmarked with [RTK (Rust Token Killer)](https://github.com/
 After installation, start a new task and invoke the skill explicitly:
 
 ```text
-Use $codex-compact to implement this task with concise communication and economical, risk-aware tool usage.
+Use $smart-compact to implement this task with concise communication and economical, risk-aware tool usage.
 ```
 
 The policy is adaptive rather than a hard tool budget. Destructive, security-sensitive, production, high-stakes, ambiguous, or failing work retains normal verification rigor.
-
-Historical benchmark specifications, generated sites, and archived candidate policies retain the earlier “Codex Compact” label so their frozen inputs and artifacts remain reproducible.
 
 ## Repository layout
 
@@ -149,16 +143,45 @@ Historical benchmark specifications, generated sites, and archived candidate pol
 - [`SKILL.md`](SKILL.md): promoted skill policy.
 - [`agents/openai.yaml`](agents/openai.yaml): Codex UI metadata.
 - [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml): optional native Codex profile.
-- [`scripts/compact_guard.py`](scripts/compact_guard.py): risk classification and protected-literal checks.
-- [`scripts/benchmark_tokens.py`](scripts/benchmark_tokens.py): token and guardrail benchmark helper.
+- [`requirements-benchmark.txt`](requirements-benchmark.txt): optional dependency for exact token scoring.
+- [`benchmarks/cases.json`](benchmarks/cases.json): source cases for compression and safety scoring.
+- [`case-study/SPEC.md`](case-study/SPEC.md): reproducible website benchmark contract.
+- [`case-study/calculator/SPEC.md`](case-study/calculator/SPEC.md): reproducible six-language calculator contract.
+- [`case-study/harness/`](case-study/harness): rollout analysis and website contract tools.
+- [`case-study/calculator/harness/`](case-study/calculator/harness): cross-language conformance runner.
+- [`scripts/benchmark_tokens.py`](scripts/benchmark_tokens.py): token and guardrail benchmark runner.
+- [`scripts/compact_guard.py`](scripts/compact_guard.py): risk classification and literal-retention checks.
 - [`scripts/install_codex_profile.py`](scripts/install_codex_profile.py): non-overwriting profile installer.
 - [`scripts/install_smart_compact.py`](scripts/install_smart_compact.py): unified idempotent package installer.
 - [`scripts/install_spark_agent.py`](scripts/install_spark_agent.py): capability-gated Spark role installer.
-- [`scripts/rtk_trace_audit.py`](scripts/rtk_trace_audit.py): fail-closed RTK compliance audit for persisted benchmark rollouts.
-- [`tests/`](tests): regression tests for classification and literal retention.
-- [`benchmarks/`](benchmarks): text-compression benchmark cases and candidates.
-- [`case-study/`](case-study): website and cross-language calculator studies.
-- [`experiments/`](experiments): original and candidate policies, offline scorer, and promotion results.
+- [`scripts/rtk_trace_audit.py`](scripts/rtk_trace_audit.py): fail-closed RTK rollout auditor.
+- [`scripts/score_policies.py`](scripts/score_policies.py): reusable policy-size and safety scorer.
+- [`tests/`](tests): package and benchmark-tool regression tests.
+
+## Benchmark toolkit
+
+Generated projects and result snapshots are not committed. Recreate new arms from the retained contracts, then run the relevant tools:
+
+```bash
+python3 -m pip install -r requirements-benchmark.txt
+
+python3 scripts/benchmark_tokens.py \
+  --cases benchmarks/cases.json \
+  --candidates /path/to/candidates.json
+
+python3 scripts/score_policies.py SKILL.md /path/to/candidate/SKILL.md
+
+python3 case-study/harness/analyze_rollout.py \
+  --baseline /path/to/baseline.jsonl \
+  --smart-compact /path/to/smart-compact.jsonl
+
+python3 scripts/rtk_trace_audit.py /path/to/rollout.jsonl
+python3 case-study/harness/check_contract.py /path/to/generated-site
+
+python3 case-study/calculator/harness/run_conformance.py \
+  --root /path/to/generated-calculator-arms \
+  --arms standard-rtk smart-compact-rtk
+```
 
 ## Validate
 
@@ -168,13 +191,7 @@ Run the regression tests:
 python3 -m unittest discover -s tests -v
 ```
 
-Run the calculator conformance harness:
-
-```bash
-python3 case-study/calculator/harness/run_conformance.py
-```
-
-The complete repository currently passes twenty-six regression tests, the official Codex skill validator, and 5,760/5,760 accepted calculator checks across the three original main-model matrices, the strict v6 matrix, and Spark studies. The final strict-v6 new-arm report passed 1,200/1,200; each original model matrix separately passed 960/960.
+The lean package currently passes twenty-nine regression tests and the official Codex skill validator. Historical benchmark correctness and token results are summarized above without shipping generated benchmark artifacts.
 
 ## Benchmark limitations
 
