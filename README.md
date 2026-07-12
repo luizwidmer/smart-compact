@@ -6,6 +6,48 @@
 
 Version `v6-harness-profile` is promoted in [`SKILL.md`](SKILL.md) and [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml). The skill works by itself; the optional profile adds native low verbosity, bounded per-tool history, suppressed reasoning summaries, and lossless machine-oriented compaction. The technical skill identifier remains `codex-compact`, preserving `$codex-compact` compatibility while the project and UI use the Smart Compact brand.
 
+## Install
+
+Install the complete package with one command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/install.sh | sh
+```
+
+Or install from a checkout:
+
+```bash
+git clone https://github.com/luizwidmer/smart-compact.git
+cd smart-compact
+./install.sh
+```
+
+The installer is idempotent and does not overwrite differing files unless you pass `--force`.
+
+| Component | Default target | Behavior |
+|---|---|---|
+| Smart Compact skill | `$HOME/.agents/skills/codex-compact` | Always installed |
+| Native profile | `${CODEX_HOME:-$HOME/.codex}/smart-compact.config.toml` | Installed by default; activate with `codex --profile smart-compact` |
+| Spark worker | `${CODEX_HOME:-$HOME/.codex}/agents/spark-worker.toml` | Installed only when the local model catalog exposes Spark |
+| RTK | Existing executable on `PATH` | Detected and reported; never installed or modified |
+
+Common options:
+
+```bash
+./install.sh --dry-run               # preview without writing
+./install.sh --force                 # update differing managed files
+./install.sh --no-spark              # skip Spark detection and installation
+./install.sh --no-profile            # install the skill without the profile
+```
+
+When using the remote one-liner, pass options through `sh -s --`, for example:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/install.sh | sh -s -- --dry-run
+```
+
+Start a new Codex task after installation so skill and custom-agent discovery refreshes, then invoke `$codex-compact`. Codex documents global skills under `$HOME/.agents/skills`, profile files under `$CODEX_HOME/<name>.config.toml`, and personal custom agents under `~/.codex/agents`; see [Skills](https://learn.chatgpt.com/docs/customization/overview#skills), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), and [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
+
 ## Measured result
 
 V6 was validated under strict RTK enforcement on four model/effort settings. The original accepted SOL/high, Luna/high, and Luna/max Standard + RTK baselines were reused; SOL/medium received a fresh Standard + RTK control.
@@ -44,7 +86,7 @@ The optional profile uses supported Codex controls instead of grammar stripping:
 - `compact_prompt` preserves exact operational state in a terse machine-oriented handoff while dropping narration and duplicate evidence.
 - `agents.interrupt_message = false` avoids an unnecessary model-visible interruption message.
 
-Install and use the profile in Codex CLI:
+The package installer installs this profile by default. To install only the profile from a checkout:
 
 ```bash
 python3 scripts/install_codex_profile.py
@@ -76,7 +118,7 @@ The actual allowance-split case study used a Luna/high parent and one Spark/medi
 
 Offload reduced main-model token use by 68.4% and parent wall time by 68.2%. That is the primary result: eligible Pro accounts give Spark a separate usage limit, so moving bounded work from Luna to Spark protects the main-model allowance. Combined model tokens rose 41.3%, but that crosses two different allowance buckets and is recorded only as secondary capacity telemetry, not as a failure of the offload strategy. The result is a single controlled run and does not establish the provider's internal metering formula.
 
-Install the optional global role with a zero-inference catalog check:
+The package installer performs this capability check automatically. To inspect or install only the optional global role from a checkout:
 
 ```bash
 python3 scripts/install_spark_agent.py --check
@@ -91,7 +133,7 @@ Smart Compact was benchmarked with [RTK (Rust Token Killer)](https://github.com/
 
 ## Use
 
-Attach the Smart Compact repository as the `codex-compact` skill, then invoke it explicitly:
+After installation, start a new task and invoke the skill explicitly:
 
 ```text
 Use $codex-compact to implement this task with concise communication and economical, risk-aware tool usage.
@@ -103,12 +145,14 @@ Historical benchmark specifications, generated sites, and archived candidate pol
 
 ## Repository layout
 
+- [`install.sh`](install.sh): local and remote one-command bootstrap.
 - [`SKILL.md`](SKILL.md): promoted skill policy.
 - [`agents/openai.yaml`](agents/openai.yaml): Codex UI metadata.
 - [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml): optional native Codex profile.
 - [`scripts/compact_guard.py`](scripts/compact_guard.py): risk classification and protected-literal checks.
 - [`scripts/benchmark_tokens.py`](scripts/benchmark_tokens.py): token and guardrail benchmark helper.
 - [`scripts/install_codex_profile.py`](scripts/install_codex_profile.py): non-overwriting profile installer.
+- [`scripts/install_smart_compact.py`](scripts/install_smart_compact.py): unified idempotent package installer.
 - [`scripts/install_spark_agent.py`](scripts/install_spark_agent.py): capability-gated Spark role installer.
 - [`scripts/rtk_trace_audit.py`](scripts/rtk_trace_audit.py): fail-closed RTK compliance audit for persisted benchmark rollouts.
 - [`tests/`](tests): regression tests for classification and literal retention.
@@ -130,7 +174,7 @@ Run the calculator conformance harness:
 python3 case-study/calculator/harness/run_conformance.py
 ```
 
-The complete repository currently passes nineteen regression tests, the official Codex skill validator, and 5,760/5,760 accepted calculator checks across the three original main-model matrices, the strict v6 matrix, and Spark studies. The final strict-v6 new-arm report passed 1,200/1,200; each original model matrix separately passed 960/960.
+The complete repository currently passes twenty-six regression tests, the official Codex skill validator, and 5,760/5,760 accepted calculator checks across the three original main-model matrices, the strict v6 matrix, and Spark studies. The final strict-v6 new-arm report passed 1,200/1,200; each original model matrix separately passed 960/960.
 
 ## Benchmark limitations
 
