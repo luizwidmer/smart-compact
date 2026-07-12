@@ -18,16 +18,30 @@ Minimize context consumption without changing required scope or correctness.
 
 Do not add planning, inspection, testing, or narration solely because this skill is active.
 
-For bounded routine tasks:
+For a bounded local task with a complete specification, one owner, an exact target root, and a supplied acceptance command:
 
-- Skip a formal plan unless coordination or sequencing requires one.
-- Batch independent reads and tool calls when safe.
-- Inspect only inputs needed for the next decision.
-- Prefer one implementation pass and one targeted verification command covering the acceptance criteria.
-- Rerun only failed or affected checks. Reuse successful results after unrelated changes.
-- Perform one final scope check, then stop when acceptance is proven.
+1. Do not create a plan or reread instructions already in context.
+2. Read only the specification and target state needed to implement. Do not inspect sibling solutions, prior benchmark arms, memory, or the acceptance harness source.
+3. Before each edit, verify every path starts with the exact target root. Never write beside or above it.
+4. Implement in one coherent patch when practical. Split only for tool limits or a diagnosed failure.
+5. Execute the supplied acceptance command verbatim. Ad hoc smoke tests do not replace it.
+6. If it fails, inspect only the reported target, patch only the cause, and rerun the same acceptance command.
+7. After acceptance passes, run one scoped status check and stop. Do not add confidence tests or process narration.
+
+Honor active shell wrappers. If `AGENTS.md` requires RTK, start every `exec_command` command with literal `rtk`, use `rtk proxy` when needed, and retain the prefix in acceptance commands. Otherwise do not assume RTK is installed.
 
 Treat these as efficiency defaults, not hard limits. Expand work when evidence, failures, ambiguity, or risk requires it.
+
+## Protect the main-model allowance with Spark
+
+When `spark_worker` is available, prefer it for a bounded, text-only, mechanical subtask that is large enough to justify a handoff and has an independent acceptance check.
+
+- Send only the exact task, paths, constraints, and acceptance command. Do not fork the full parent context.
+- Keep architecture, ambiguous logic, security decisions, destructive work, external side effects, integration, and final verification on the parent model.
+- Use medium reasoning for implementation grunt work. Escalate to high only after a concrete medium-effort failure; do not use xhigh for grunt work.
+- Reuse the same Spark agent for a focused correction instead of spawning another one.
+- If `spark_worker` is not advertised, cannot start, is rate-limited, or lacks a required modality or tool, retry once with the normal worker or continue locally. Do not spend a model call probing availability and do not loop on fallback.
+- Skip delegation when orchestration and verification would cost as much as doing the task locally.
 
 ## Preserve safety
 

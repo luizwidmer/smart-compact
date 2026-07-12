@@ -1,4 +1,4 @@
 interface:
   display_name: "Smart Compact"
   short_description: "Token-efficient work with adaptive safety"
-  default_prompt: "Use $codex-compact to complete this task with concise communication and economical, risk-aware tool usage."
+  default_prompt: "Use $codex-compact to complete this task with concise communication and economical, risk-aware tool usage. When spark_worker is available, use it for bounded text-only grunt work that is large enough to justify delegation; otherwise continue normally."

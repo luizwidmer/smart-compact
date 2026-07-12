@@ -1,62 +1,93 @@
 # Smart Compact
 
-[Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex skill for reducing communication and context usage without weakening correctness or safety. Its promoted adaptive policy combines concise handoffs with economical tool use: batch independent work, avoid unnecessary plans, verify acceptance criteria once, rerun only affected failures, and stop when the result is proven.
+[Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex optimization package for reducing main-model communication and context usage without weakening correctness or safety. It combines an acceptance-gated skill, an optional native Codex profile, RTK compatibility, and capability-gated Spark offload.
 
 ## Status
 
-Version `v2-adaptive` is the promoted policy in [`SKILL.md`](SKILL.md). It remains a standalone development repository and is not installed globally. The technical skill identifier remains `codex-compact`, preserving `$codex-compact` compatibility while the project and UI use the Smart Compact brand.
+Version `v6-harness-profile` is promoted in [`SKILL.md`](SKILL.md) and [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml). The skill works by itself; the optional profile adds native low verbosity, bounded per-tool history, suppressed reasoning summaries, and lossless machine-oriented compaction. The technical skill identifier remains `codex-compact`, preserving `$codex-compact` compatibility while the project and UI use the Smart Compact brand.
 
 ## Measured result
 
-The strongest controlled result came from a six-language calculator task covering Python, Rust, C++, Swift, JavaScript, and TypeScript. Only the new Compact arm was rerun; the accepted Standard + RTK baseline was reused.
+V6 was validated under strict RTK enforcement on four model/effort settings. The original accepted SOL/high, Luna/high, and Luna/max Standard + RTK baselines were reused; SOL/medium received a fresh Standard + RTK control.
 
-| Metric | Standard + RTK | Previous Smart Compact + RTK | Promoted Smart Compact + RTK |
-|---|---:|---:|---:|
-| Correctness | 240/240 | 240/240 | 240/240 |
-| Total tokens | 425,765 | 708,437 | 294,388 |
-| Uncached input | 29,702 | 35,506 | 20,762 |
-| Output tokens | 14,367 | 14,499 | 12,250 |
-| Tool calls | 12 | 23 | 10 |
-| Wall time | 344.427s | 368.727s | 310.427s |
+| Model / effort | Standard + RTK | Smart Compact v6 + RTK | Total savings | Tool calls | Wall time | Correctness |
+|---|---:|---:|---:|---:|---:|---:|
+| SOL / medium | 243,831 | 109,223 | 55.2% | 9 → 4 | 162.620s → 110.205s | 240/240 both |
+| SOL / high | 425,765 | 207,227 | 51.3% | 12 → 7 | 344.427s → 161.519s | 240/240 both |
+| Luna / high | 698,797 | 193,312 | 72.3% | 16 → 7 | 386.136s → 225.323s | 240/240 both |
+| Luna / max | 936,461 | 188,849 | 79.8% | 19 → 6 | 649.303s → 327.849s | 240/240 both |
+| **Token-weighted aggregate** | **2,304,854** | **698,611** | **69.7%** | **56 → 24** | **1,542.486s → 824.896s** | **960/960 both** |
 
-The promoted policy used 30.9% fewer total tokens than Standard + RTK and 58.4% fewer than the previous Compact policy while preserving perfect functionality. These are single-run experimental results, not guaranteed savings.
+The savings were positive in every tested setting:
 
-See [`experiments/RESULTS.md`](experiments/RESULTS.md) for the policy iteration and [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md) for the full calculator benchmark.
+| Model / effort | Uncached input | Output | Reasoning output | Tool calls | Wall time |
+|---|---:|---:|---:|---:|---:|
+| SOL / medium | 30.9% | 34.3% | 60.2% | 55.6% | 32.2% |
+| SOL / high | 12.2% | 50.7% | 78.5% | 41.7% | 53.1% |
+| Luna / high | 53.8% | 33.7% | 29.7% | 56.2% | 41.6% |
+| Luna / max | 60.1% | 46.7% | 59.9% | 68.4% | 49.5% |
+| **Aggregate** | **46.8%** | **43.0%** | **56.8%** | **57.1%** | **46.5%** |
 
-The original calculator benchmark used `gpt-5.6-sol` with high reasoning. Follow-ups used `gpt-5.6-luna` with high and max reasoning; all model settings and results are recorded in the calculator report.
+The final new-arm conformance report passed 1,200/1,200 checks. A rollout-level audit also confirmed that every submitted shell command in all eight accepted comparison traces began with `rtk`. The first v6 attempts—including the previously reported 294,264-token Luna/high run—were functionally correct but excluded after the audit found direct shell commands in traces labeled `+ RTK`; corrected arms were generated from empty target roots.
 
-## Three-model calculator comparison
+Against the previous v2 policy, strict v6 used 29.6% fewer total tokens on SOL/high, 77.6% fewer on Luna/high, and 74.5% fewer on Luna/max. These remain single-run experimental results, not guaranteed production savings.
 
-Every model setting passed the same 960-case suite: 4 arms × 6 languages × 40 cases.
+See [`case-study/calculator/v6-model-matrix-results.json`](case-study/calculator/v6-model-matrix-results.json) for machine-readable metrics, [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md) for the historical direct and v2 arms, and [`experiments/RESULTS.md`](experiments/RESULTS.md) for policy iteration.
 
-| Model / reasoning | Arm | Correctness | Total tokens | Uncached input | Output | Tool calls | Wall time |
-|---|---|---:|---:|---:|---:|---:|---:|
-| SOL / high | Standard + RTK | 240/240 | 425,765 | 29,702 | 14,367 | 12 | 344s |
-| SOL / high | Smart Compact + RTK | 240/240 | 294,388 | 20,762 | 12,250 | 10 | 310s |
-| SOL / high | Standard direct | 240/240 | 535,342 | 30,315 | 15,811 | 16 | 378s |
-| SOL / high | Smart Compact direct | 240/240 | 624,298 | 30,849 | 15,145 | 20 | 426s |
-| Luna / high | Standard + RTK | 240/240 | 698,797 | 64,823 | 17,782 | 16 | 386s |
-| Luna / high | Smart Compact + RTK | 240/240 | 863,844 | 43,154 | 25,810 | 22 | 554s |
-| Luna / high | Standard direct | 240/240 | 727,106 | 47,899 | 23,335 | 17 | 488s |
-| Luna / high | Smart Compact direct | 240/240 | 992,922 | 54,529 | 18,841 | 23 | 477s |
-| Luna / max | Standard + RTK | 240/240 | 936,461 | 72,561 | 32,412 | 19 | 649s |
-| Luna / max | Smart Compact + RTK | 240/240 | 741,098 | 68,806 | 27,684 | 17 | 742s |
-| Luna / max | Standard direct | 240/240 | 924,185 | 65,081 | 32,480 | 18 | 625s |
-| Luna / max | Smart Compact direct | 240/240 | 906,240 | 63,740 | 25,860 | 21 | 505s |
+## Native Codex profile
 
-Smart Compact’s total-token effect varied by model and reasoning setting:
+The optional profile uses supported Codex controls instead of grammar stripping:
 
-| Model / reasoning | With RTK | Without RTK |
-|---|---:|---:|
-| SOL / high | -30.9% | +16.6% |
-| Luna / high | +23.6% | +36.6% |
-| Luna / max | -20.9% | -1.9% |
+- `model_verbosity = "low"` reduces visible prose without a large style prompt.
+- `tool_output_token_limit = 4000` bounds each stored tool result before later turns replay it.
+- `model_reasoning_summary = "none"` removes surfaced reasoning summaries; it does not alter hidden reasoning effort.
+- `compact_prompt` preserves exact operational state in a terse machine-oriented handoff while dropping narration and duplicate evidence.
+- `agents.interrupt_message = false` avoids an unnecessary model-visible interruption message.
 
-Negative values are savings. The complete input, cached-input, reasoning, source-size, and rollout data is in [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md).
+Install and use the profile in Codex CLI:
+
+```bash
+python3 scripts/install_codex_profile.py
+codex --profile smart-compact
+```
+
+The installer refuses to overwrite a different existing profile unless `--force` is supplied. The profile is optional because global output and tool-history preferences are user choices; the skill remains portable across Codex surfaces. See the official [Codex configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference#configtoml).
+
+## Why Smart Compact does not compress hidden thought
+
+Current Caveman is fundamentally an output-style prompt plus persistence hooks; its own honest accounting says it does not compress input, context, or model thinking and adds about 1–1.5k input tokens per turn. Smart Compact adopts its useful lesson—structured, narrow handoffs—but not article deletion or repeated style injection. [Caveman's honest numbers](https://github.com/JuliusBrussee/caveman/blob/main/docs/HONEST-NUMBERS.md)
+
+A recent eight-model study likewise found output constraints can reduce realized cost, while grammar-stripped input increased cost and reduced accuracy. Smart Compact therefore keeps specifications and technical literals intact. [CAVEWOMAN paper](https://arxiv.org/abs/2606.24083)
+
+Codex does not provide a supported way for this project to rewrite private chain-of-thought into a “100% machine thought” language. The profile can select reasoning effort, suppress reasoning summaries, and improve conversation compaction; hidden reasoning remains model-controlled.
+
+## Optional Spark offload
+
+Smart Compact includes a custom `spark_worker` agent pinned to `gpt-5.3-codex-spark`. It is intended for bounded, text-only, mechanical work with a clear acceptance check. The parent model keeps architecture, risky decisions, integration, and final verification. If Spark is absent or cannot start, Smart Compact continues with the normal worker or locally.
+
+The reasoning-effort study ran the same six-language calculator task at every Spark-supported effort. All arms eventually passed, but medium was the best measured coding default. Across two low-versus-medium runs, both settings scored 480/480; medium used 719,828 total tokens versus low's 754,025, a 4.5% reduction. High and xhigh used roughly twice the first-round tokens and required more correction work.
+
+The actual allowance-split case study used a Luna/high parent and one Spark/medium worker:
+
+| Arm | Correctness | Main-model tokens | Spark tokens | Combined tokens | Parent wall time |
+|---|---:|---:|---:|---:|---:|
+| Luna/high Standard + RTK | 240/240 | 698,797 | 0 | 698,797 | 386.136s |
+| Luna/high parent + Spark/medium worker | 240/240 | 220,671 | 766,413 | 987,084 | 122.631s |
+
+Offload reduced main-model token use by 68.4% and parent wall time by 68.2%. That is the primary result: eligible Pro accounts give Spark a separate usage limit, so moving bounded work from Luna to Spark protects the main-model allowance. Combined model tokens rose 41.3%, but that crosses two different allowance buckets and is recorded only as secondary capacity telemetry, not as a failure of the offload strategy. The result is a single controlled run and does not establish the provider's internal metering formula.
+
+Install the optional global role with a zero-inference catalog check:
+
+```bash
+python3 scripts/install_spark_agent.py --check
+python3 scripts/install_spark_agent.py
+```
+
+If Spark is not in the account's local model catalog, the installer exits successfully without changing anything. Start a new Codex task after installation so the subagent tool schema can discover `spark_worker`. See the official [Codex subagent model guidance](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning) and [plan usage notes](https://learn.chatgpt.com/docs/pricing#what-are-the-usage-limits-for-my-plan).
 
 ## RTK reference
 
-Smart Compact was benchmarked with [RTK (Rust Token Killer)](https://github.com/rtk-ai/rtk), an independent CLI proxy that reduces noisy shell output before it reaches the model context. RTK is not bundled with this repository; it is an optional external tool used by the benchmark arms.
+Smart Compact was benchmarked with [RTK (Rust Token Killer)](https://github.com/rtk-ai/rtk), an independent CLI proxy that reduces noisy shell output before it reaches the model context. RTK is not bundled with this repository; it is optional for users but mandatory in every arm labeled `+ RTK`, and those persisted traces are now audited before acceptance.
 
 ## Use
 
@@ -74,8 +105,12 @@ Historical benchmark specifications, generated sites, and archived candidate pol
 
 - [`SKILL.md`](SKILL.md): promoted skill policy.
 - [`agents/openai.yaml`](agents/openai.yaml): Codex UI metadata.
+- [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml): optional native Codex profile.
 - [`scripts/compact_guard.py`](scripts/compact_guard.py): risk classification and protected-literal checks.
 - [`scripts/benchmark_tokens.py`](scripts/benchmark_tokens.py): token and guardrail benchmark helper.
+- [`scripts/install_codex_profile.py`](scripts/install_codex_profile.py): non-overwriting profile installer.
+- [`scripts/install_spark_agent.py`](scripts/install_spark_agent.py): capability-gated Spark role installer.
+- [`scripts/rtk_trace_audit.py`](scripts/rtk_trace_audit.py): fail-closed RTK compliance audit for persisted benchmark rollouts.
 - [`tests/`](tests): regression tests for classification and literal retention.
 - [`benchmarks/`](benchmarks): text-compression benchmark cases and candidates.
 - [`case-study/`](case-study): website and cross-language calculator studies.
@@ -95,7 +130,7 @@ Run the calculator conformance harness:
 python3 case-study/calculator/harness/run_conformance.py
 ```
 
-The complete repository currently passes nine regression tests, the official Codex skill validator, and 2,880/2,880 calculator checks across the three model settings. Each model matrix separately passed 960/960.
+The complete repository currently passes nineteen regression tests, the official Codex skill validator, and 5,760/5,760 accepted calculator checks across the three original main-model matrices, the strict v6 matrix, and Spark studies. The final strict-v6 new-arm report passed 1,200/1,200; each original model matrix separately passed 960/960.
 
 ## Benchmark limitations
 
@@ -103,3 +138,7 @@ The complete repository currently passes nine regression tests, the official Cod
 - Model decisions, caching, approvals, and tool selection introduce variance.
 - Functional equivalence was scored; visual and source-code identity were not required.
 - Repeat randomized trials before treating measured percentages as expected production savings.
+
+## License
+
+Copyright 2026 Luiz Widmer. Smart Compact is licensed under the [Apache License 2.0](LICENSE); see [NOTICE](NOTICE) for attribution.

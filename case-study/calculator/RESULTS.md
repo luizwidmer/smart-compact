@@ -115,6 +115,77 @@ Within Luna high, Smart Compact increased total tokens by 23.6% with RTK and 36.
 
 Compared with Luna max, Luna high used 25.4% fewer total tokens in the Standard + RTK arm but 16.6% more in the Smart Compact + RTK arm. Compared with the original SOL/high run, Luna high used 64.1% more tokens for Standard + RTK and 193.4% more for Smart Compact + RTK. Correctness remained 100% across every model and reasoning setting.
 
+## V6 strict-RTK model validation
+
+The v2 Luna/high regression led to two more policy rounds and then a Codex-native profile. V6 combines an exact target-root guard, mandatory verbatim acceptance command, no hard tool-call cap, low model verbosity, a 4,000-token per-tool history limit, suppressed reasoning summaries, and a lossless operational compaction prompt.
+
+The promoted profile was tested with an explicit RTK treatment clause on SOL at medium and high reasoning and Luna at high and max reasoning. SOL/medium received a fresh Standard + RTK control; the other three accepted Standard + RTK baselines were reused.
+
+| Model / effort | Arm | Wall time | Total tokens | Input | Cached input | Uncached input | Output | Reasoning output | Tool calls |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| SOL / medium | Standard + RTK | 162.620s | 243,831 | 236,285 | 212,480 | 23,805 | 7,546 | 503 | 9 |
+| SOL / medium | V6 profile + RTK | 110.205s | 109,223 | 104,268 | 87,808 | 16,460 | 4,955 | 200 | 4 |
+| SOL / high | Standard + RTK | 344.427s | 425,765 | 411,398 | 381,696 | 29,702 | 14,367 | 2,220 | 12 |
+| SOL / high | V6 profile + RTK | 161.519s | 207,227 | 200,151 | 174,080 | 26,071 | 7,076 | 477 | 7 |
+| Luna / high | Standard + RTK | 386.136s | 698,797 | 681,015 | 616,192 | 64,823 | 17,782 | 3,827 | 16 |
+| Luna / high | V6 profile + RTK | 225.323s | 193,312 | 181,523 | 151,552 | 29,971 | 11,789 | 2,691 | 7 |
+| Luna / max | Standard + RTK | 649.303s | 936,461 | 904,049 | 831,488 | 72,561 | 32,412 | 17,453 | 19 |
+| Luna / max | V6 profile + RTK | 327.849s | 188,849 | 171,558 | 142,592 | 28,966 | 17,291 | 6,999 | 6 |
+| **Token-weighted aggregate** | **Standard / V6** | **1,542.486s / 824.896s** | **2,304,854 / 698,611** | **2,232,747 / 657,500** | **2,041,856 / 556,032** | **190,891 / 101,468** | **72,107 / 41,111** | **24,003 / 10,367** | **56 / 24** |
+
+| Model / effort | Total tokens | Uncached input | Output | Reasoning output | Tool calls | Wall time |
+|---|---:|---:|---:|---:|---:|---:|
+| SOL / medium | -55.2% | -30.9% | -34.3% | -60.2% | -55.6% | -32.2% |
+| SOL / high | -51.3% | -12.2% | -50.7% | -78.5% | -41.7% | -53.1% |
+| Luna / high | -72.3% | -53.8% | -33.7% | -29.7% | -56.2% | -41.6% |
+| Luna / max | -79.8% | -60.1% | -46.7% | -59.9% | -68.4% | -49.5% |
+| **Aggregate** | **-69.7%** | **-46.8%** | **-43.0%** | **-56.8%** | **-57.1%** | **-46.5%** |
+
+Every paired arm passed 240/240. The final independent report reran the four strict-v6 arms plus the new SOL/medium control and passed 1,200/1,200. The persisted rollout audit found zero RTK violations across all eight comparison traces: 93/93 submitted shell commands began with `rtk`. No strict arm wrote outside its assigned target root.
+
+The audit invalidated the first v6 attempts, including the previously reported 294,264-token Luna/high result. Those artifacts were functionally perfect but their prompts did not restate the RTK requirement, so initial inspection and acceptance commands bypassed RTK. They were replaced with empty-root reruns and are excluded from savings claims. The promoted skill and profile now preserve an active RTK wrapper requirement explicitly, and `scripts/rtk_trace_audit.py` fails closed on direct or dynamically constructed shell commands.
+
+Against v2, strict v6 reduced total tokens 29.6% on SOL/high, 77.6% on Luna/high, and 74.5% on Luna/max. V4 remains disqualified for scope spill and v5 for a 239/240 direct-arm correctness failure. A direct-shell v6 arm was not run because RTK is the global standard for this project.
+
+## Spark reasoning-effort study
+
+The local account catalog exposed `gpt-5.3-codex-spark` with low, medium, high, and xhigh reasoning. Each effort independently implemented the frozen six-language contract in a new arm. Low and medium were repeated because their first results were close; high and xhigh were not repeated after both were clearly dominated on token use and correction work.
+
+| Effort | Run | Correctness | Total tokens | Input | Cached input | Uncached input | Output | Reasoning output |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Low | 1 | 240/240 | 399,728 | 382,957 | 352,768 | 30,189 | 16,771 | 4,065 |
+| Medium | 1 | 240/240 | 379,016 | 361,839 | 286,080 | 75,759 | 17,177 | 6,193 |
+| High | 1 | 240/240 | 761,470 | 741,644 | 644,352 | 97,292 | 19,826 | 7,419 |
+| Xhigh | 1 | 240/240 | 851,833 | 824,289 | 747,264 | 77,025 | 27,544 | 17,378 |
+| Low | 2 | 240/240 | 354,297 | 333,745 | 246,144 | 87,601 | 20,552 | 3,724 |
+| Medium | 2 | 240/240 | 340,812 | 313,631 | 267,264 | 46,367 | 27,181 | 6,940 |
+
+Low and medium both achieved 480/480 across their two runs. Medium used 719,828 aggregate total tokens versus low's 754,025, 4.5% fewer, so `spark_worker` uses medium for coding grunt work. High is reserved for retrying a concrete medium-effort failure; xhigh is excluded from grunt-work routing. These are single or paired samples and remain subject to model variance.
+
+Raw black-box results are stored in `spark-effort-results.json` and `spark-effort-repeat-results.json`. The effort runs were ephemeral, so their final `turn.completed` usage events were captured by the benchmark orchestrator rather than preserved as rollout files.
+
+## Spark allowance-split study
+
+A fresh `gpt-5.6-luna` high-reasoning parent delegated the complete calculator implementation to exactly one `spark_worker` at medium effort. The parent was prohibited from writing calculator code and independently ran the conformance suite after the child reported success. No correction round was needed.
+
+| Metric | Luna high Standard + RTK | Luna high parent | Spark child | Parent + child |
+|---|---:|---:|---:|---:|
+| Correctness | 240/240 | 240/240 | 240/240 | 240/240 |
+| Total tokens | 698,797 | 220,671 | 766,413 | 987,084 |
+| Input tokens | 681,015 | 218,128 | 744,736 | 962,864 |
+| Cached input | 616,192 | 184,832 | 644,096 | 828,928 |
+| Uncached input | 64,823 | 33,296 | 100,640 | 133,936 |
+| Output tokens | 17,782 | 2,543 | 21,677 | 24,220 |
+| Reasoning output | 3,827 | 1,136 | 10,967 | 12,103 |
+| Tool calls | 16 | 9 | 18 | 27 |
+| Wall time | 386.136s | 122.631s | 59.814s nested | 122.631s |
+
+Relative to the reused Luna high Standard + RTK baseline, the parent consumed 68.4% fewer total tokens, 48.6% fewer uncached input tokens, 85.7% fewer output tokens, and 43.8% fewer tool calls. This is the study's primary success criterion because eligible Pro accounts meter Spark through a separate usage limit: the implementation work moved off the main-model bucket while correctness remained perfect.
+
+Combined parent-plus-child usage was 41.3% higher. That number crosses two different allowance buckets, so it is secondary capacity telemetry rather than the optimization target or a regression. It remains useful for avoiding wasteful delegation of tiny tasks and for understanding total system load.
+
+The result verifies token-accounting separation at the rollout level. It does not prove the provider's internal subscription accounting formula; plan limits may use different weights or change over time.
+
 ## Treatment audit
 
 The first attempted Compact + RTK agent used direct shell commands despite its assignment. Its artifact and rollout were excluded, preserved under `compact-rtk-noncompliant`, and replaced with a fresh run. Trace inspection confirmed that every shell command in the replacement used RTK, including batched commands. The standard RTK arm also used RTK throughout; both direct arms used zero RTK commands.
@@ -140,3 +211,25 @@ Luna high-reasoning follow-up rollouts:
 - Luna high Smart Compact + RTK: `019f56f9-034f-7da0-9b79-23f121ea1d33`
 - Luna high Standard direct: `019f56f9-07da-7412-9a57-7230d48d2e62`
 - Luna high Smart Compact direct: `019f56f9-0bca-7fc3-a198-731a35a3f470`
+
+Spark allowance-split rollouts:
+
+- Luna high parent: `019f57c4-5014-7073-a0f0-7a447479fdd4`
+- Spark medium child: `019f57c4-e052-7ee2-92d5-f5e8a5a244da`
+
+V6 strict-RTK validation rollouts:
+
+- SOL medium Standard + RTK: `019f57e7-e69d-73a1-af16-38aa9cb13255`
+- SOL medium v6 profile + RTK: `019f57f1-42d9-7570-aa26-99b1c2b4dc4b`
+- SOL high v6 profile + RTK: `019f57f1-6a38-74f1-9455-3eb5380ada8f`
+- Luna high v6 profile + RTK: `019f57f8-40f3-79c1-876d-0124fa1f4243`
+- Luna max v6 profile + RTK: `019f57f1-464f-7b22-95dd-69a3a3dc7bca`
+
+Excluded partial-RTK v6 rollouts:
+
+- Luna high: `019f57d3-f20e-7223-895c-f65171a68a54`
+- Luna max: `019f57e7-ee48-7ee0-8652-ce9d135dfe92`
+- SOL high: `019f57e7-ea86-78c2-9dd1-dfb92d1a6799`
+- SOL medium: `019f57e7-f264-7d81-b688-f64a447d8f1b`
+
+Machine-readable reports: `v6-model-matrix-results.json` and `v6-model-validation-results.json`.

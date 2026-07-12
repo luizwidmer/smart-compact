@@ -16,7 +16,12 @@ CURRENT_TRACE_CALLS = 23
 def projected_calls(text: str) -> int:
     lower = text.lower()
     calls = CURRENT_TRACE_CALLS
-    if "skip a formal plan" in lower or "do not create a plan" in lower:
+    if (
+        "skip a formal plan" in lower
+        or "do not create a plan" in lower
+        or "do not create or update a formal plan" in lower
+        or "skip plans" in lower
+    ):
         calls -= 3
     if "batch independent reads" in lower:
         calls -= 3
@@ -24,13 +29,33 @@ def projected_calls(text: str) -> int:
         calls -= 4
     if "inspect only inputs needed" in lower:
         calls -= 1
+    if (
+        "one consolidated implementation" in lower
+        or "complete change in one consolidated patch" in lower
+        or "one coherent patch" in lower
+    ):
+        calls -= 4
+    if "one parallel compilation" in lower or "one parallel tool-call group" in lower:
+        calls -= 2
     if "one targeted verification command" in lower:
         calls -= 5
     elif "one acceptance suite" in lower:
         calls -= 5
+    elif (
+        "provided acceptance check once" in lower
+        or "one provided acceptance-suite run" in lower
+        or "execute the supplied acceptance command verbatim" in lower
+    ):
+        calls -= 4
     if "one final scope check" in lower or "one scope audit" in lower:
         calls -= 1
-    if "target at most eight tool calls" in lower:
+    elif (
+        "one combined scope/status check" in lower
+        or "one final combined status/scope check" in lower
+        or "one scoped status check" in lower
+    ):
+        calls -= 1
+    if "target at most eight tool calls" in lower or "target at most eight tool-call groups" in lower:
         calls = min(calls, 8)
     return max(calls, 1)
 
@@ -56,6 +81,9 @@ def main() -> None:
         "v1-minimal": ROOT / "experiments/versions/v1-minimal/SKILL.md",
         "v2-adaptive": ROOT / "experiments/versions/v2-adaptive/SKILL.md",
         "v3-hard-budget": ROOT / "experiments/versions/v3-hard-budget/SKILL.md",
+        "v4-pipeline": ROOT / "experiments/versions/v4-pipeline/SKILL.md",
+        "v5-proof-budget": ROOT / "experiments/versions/v5-proof-budget/SKILL.md",
+        "v6-harness-profile": ROOT / "experiments/versions/v6-harness-profile/SKILL.md",
         "promoted": ROOT / "SKILL.md",
     }
     rows = []
@@ -73,7 +101,10 @@ def main() -> None:
                 ),
                 "safety_checks": f"{safety}/6",
                 "missing_safety_checks": missing,
-                "hard_budget": "target at most eight tool calls" in text.lower(),
+                "hard_budget": (
+                    "target at most eight tool calls" in text.lower()
+                    or "target at most eight tool-call groups" in text.lower()
+                ),
             }
         )
     print(json.dumps(rows, indent=2))
