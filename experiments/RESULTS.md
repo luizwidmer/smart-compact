@@ -1,4 +1,4 @@
-# Compact policy iteration
+# Smart Compact policy iteration
 
 Date: 2026-07-12
 
@@ -23,7 +23,7 @@ The projection is a trace-based heuristic, not a token simulation. V2 was select
 
 Only v2-adaptive was rerun. Existing Standard + RTK and prior Compact + RTK results were reused.
 
-| Metric | Standard + RTK | Previous Compact + RTK | v2 Compact + RTK |
+| Metric | Standard + RTK | Previous Smart Compact + RTK | v2 Smart Compact + RTK |
 |---|---:|---:|---:|
 | Correctness | 240/240 | 240/240 | 240/240 |
 | Total tokens | 425,765 | 708,437 | 294,388 |
@@ -44,4 +44,4 @@ Promote v2-adaptive. Keep v1 and v3 as experiment artifacts. V1 does not address
 
 ## Rollout
 
-- v2 Compact + RTK: `019f568b-6770-7e82-80e2-41405288c154`
+- v2 Smart Compact + RTK: `019f568b-6770-7e82-80e2-41405288c154`

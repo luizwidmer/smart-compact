@@ -1,16 +1,16 @@
-# Codex Compact
+# Smart Compact
 
-Codex Compact is an experimental Codex skill for reducing communication and context usage without weakening correctness or safety. Its promoted adaptive policy combines concise handoffs with economical tool use: batch independent work, avoid unnecessary plans, verify acceptance criteria once, rerun only affected failures, and stop when the result is proven.
+[Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex skill for reducing communication and context usage without weakening correctness or safety. Its promoted adaptive policy combines concise handoffs with economical tool use: batch independent work, avoid unnecessary plans, verify acceptance criteria once, rerun only affected failures, and stop when the result is proven.
 
 ## Status
 
-Version `v2-adaptive` is the promoted policy in [`SKILL.md`](SKILL.md). It remains a standalone development repository and is not installed globally.
+Version `v2-adaptive` is the promoted policy in [`SKILL.md`](SKILL.md). It remains a standalone development repository and is not installed globally. The technical skill identifier remains `codex-compact`, preserving `$codex-compact` compatibility while the project and UI use the Smart Compact brand.
 
 ## Measured result
 
 The strongest controlled result came from a six-language calculator task covering Python, Rust, C++, Swift, JavaScript, and TypeScript. Only the new Compact arm was rerun; the accepted Standard + RTK baseline was reused.
 
-| Metric | Standard + RTK | Previous Compact + RTK | Promoted Compact + RTK |
+| Metric | Standard + RTK | Previous Smart Compact + RTK | Promoted Smart Compact + RTK |
 |---|---:|---:|---:|
 | Correctness | 240/240 | 240/240 | 240/240 |
 | Total tokens | 425,765 | 708,437 | 294,388 |
@@ -25,13 +25,15 @@ See [`experiments/RESULTS.md`](experiments/RESULTS.md) for the policy iteration 
 
 ## Use
 
-Attach this repository as the `codex-compact` skill, then invoke it explicitly:
+Attach the Smart Compact repository as the `codex-compact` skill, then invoke it explicitly:
 
 ```text
 Use $codex-compact to implement this task with concise communication and economical, risk-aware tool usage.
 ```
 
 The policy is adaptive rather than a hard tool budget. Destructive, security-sensitive, production, high-stakes, ambiguous, or failing work retains normal verification rigor.
+
+Historical benchmark specifications, generated sites, and archived candidate policies retain the earlier “Codex Compact” label so their frozen inputs and artifacts remain reproducible.
 
 ## Repository layout
 

@@ -6,7 +6,7 @@ Date: 2026-07-12
 
 Four independent GPT-5.6 SOL agents received the same frozen product contract, Sites starter, model family, and reasoning level. The factors were:
 
-| Arm | Codex Compact | RTK |
+| Arm | Smart Compact | RTK |
 |---|---:|---:|
 | Standard + RTK | No | Yes |
 | Compact + RTK | Yes | Yes |

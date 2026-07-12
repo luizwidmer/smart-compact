@@ -3,7 +3,7 @@ name: codex-compact
 description: Reduce Codex communication and context usage while preserving correctness and safety. Use for token-efficient implementation work, concise responses, progress updates, summaries, and subagent handoffs.
 ---
 
-# Codex Compact
+# Smart Compact
 
 Minimize context consumption without changing required scope or correctness.
 

@@ -6,7 +6,7 @@ Date: 2026-07-12
 
 Four independent GPT-5.6 SOL agents each implemented six standalone expression calculators: Python, Rust, C++, Swift, JavaScript, and TypeScript. The same frozen contract was used in a 2x2 matrix:
 
-| Arm | Codex Compact | RTK |
+| Arm | Smart Compact | RTK |
 |---|---:|---:|
 | Standard + RTK | No | Yes |
 | Compact + RTK | Yes | Yes |
@@ -69,7 +69,7 @@ Negative values mean less consumption or time; positive values mean more.
 
 ## Interpretation
 
-Correctness was perfect and indistinguishable across policies. On this task, Codex Compact did not save total tokens. It shortened outward communication and slightly reduced direct-shell output tokens, but caused more tool calls and cached context replay. The valid Compact + RTK arm was the most token-intensive cell.
+Correctness was perfect and indistinguishable across policies. On this task, the original Smart Compact policy did not save total tokens. It shortened outward communication and slightly reduced direct-shell output tokens, but caused more tool calls and cached context replay. The valid Compact + RTK arm was the most token-intensive cell.
 
 RTK alone performed well under the standard policy: 20.5% fewer total tokens, 9.1% fewer output tokens, 8.8% less wall time, and 25% fewer tool calls than Standard direct. That result did not carry over cleanly when Compact was enabled because the Compact arm chose a substantially more verification-heavy workflow.
 
