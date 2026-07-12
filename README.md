@@ -23,6 +23,10 @@ The promoted policy used 30.9% fewer total tokens than Standard + RTK and 58.4% 
 
 See [`experiments/RESULTS.md`](experiments/RESULTS.md) for the policy iteration and [`case-study/calculator/RESULTS.md`](case-study/calculator/RESULTS.md) for the full calculator benchmark.
 
+## RTK reference
+
+Smart Compact was benchmarked with [RTK (Rust Token Killer)](https://github.com/rtk-ai/rtk), an independent CLI proxy that reduces noisy shell output before it reaches the model context. RTK is not bundled with this repository; it is an optional external tool used by the benchmark arms.
+
 ## Use
 
 Attach the Smart Compact repository as the `codex-compact` skill, then invoke it explicitly:
