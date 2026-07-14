@@ -51,7 +51,27 @@ curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/insta
 
 Restart Codex or start a new task after installation so plugin, skill, and custom-agent discovery refreshes. Use `@Smart Compact` for the app profile picker or `$smart-compact` to apply the efficiency policy in the current task. Codex documents global skills under `$HOME/.agents/skills`, profile files under `$CODEX_HOME/<name>.config.toml`, and personal custom agents under `~/.codex/agents`; see [Skills](https://learn.chatgpt.com/docs/customization/overview#skills), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), and [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
 
-## Measured result
+## Measured results
+
+### Agentic Spark/no-Spark matrix (2026-07-14)
+
+The new hermetic agentic suite ran four realistic local task shapes in both Spark-available and isolated no-Spark arms, with three randomized paired trials per case. The parent was `gpt-5.6-luna` at high effort, the worker was `gpt-5.3-codex-spark`, and three case/trial pairs ran concurrently. All 24 runs passed their hidden checks; all 12 pairs passed routing, worker-completion, scope, acceptance-command, usage-accounting, and RTK audits.
+
+Positive token changes below mean the Spark-available arm used more tokens. Percentages are medians of the three within-case paired changes, not ratios of the pooled arm medians.
+
+| Case | Spark routing | Quality parity | Parent-token change | Combined-token change |
+|---|---:|---:|---:|---:|
+| `release-readiness` | 0/3 children, expected | 3/3 | +21.7% | +21.7% |
+| `incident-triage` | 3/3 exact worker, completed | 3/3 | +28.0% | +47.4% |
+| `order-reconciliation` | 3/3 exact worker, completed | 3/3 | +69.0% | +92.1% |
+| `ttl-boundary-regression` | 0/3 children, expected | 3/3 | +0.1% | +0.1% |
+| **All 12 pairs** | **12/12 routing-valid** | **12/12** | **+28.2%** | **+37.3%** |
+
+Across arms, the Spark-available median was 168,805 parent and 182,899 combined tokens; no-Spark was 123,686 parent/combined tokens. The six actually offloaded pairs had a +31.35% median parent-token change and +50.2% combined-token change. The matrix therefore validates quality-preserving routing and fallback behavior, but it does **not** support Spark as a general token or latency optimization. Three-way parallel execution makes the observed +22.5% median wall-time change contention-affected diagnostic data, not a clean speed estimate.
+
+This negative result tightened the default gate: six targets alone no longer justify automatic offload. Smart Compact now requires either an explicit user objective to protect the parent-model allowance despite possible total-cost overhead, or repeated paired evidence that a substantially similar workload saves parent tokens. The experimental fixtures still force both arms so the tradeoff remains measurable. Full protocol, per-arm medians, hashes, and limitations are in [`RESEARCH.md`](RESEARCH.md).
+
+### Historical V6 compression matrix
 
 V6 was validated under strict RTK enforcement on four model/effort settings. The original accepted SOL/high, Luna/high, and Luna/max Standard + RTK baselines were reused; SOL/medium received a fresh Standard + RTK control.
 
@@ -100,6 +120,17 @@ Codex exposes named config profiles directly through the CLI. Smart Compact adds
 
 The plugin creates one empty task with the selected profile and returns its official `codex://threads/<id>` link. It does not modify the current task, replay the current prompt, auto-run work, patch the Codex app, or launch a GUI process from the MCP server. Task creation uses the published per-thread app-server configuration and deep-link interfaces; `codex app-server` is currently marked experimental. The stable fallback remains `codex --profile smart-compact` followed by `/app`.
 
+### What counts as a task
+
+In Codex, a **task** is the persistent conversation or thread represented by one item in **Recent Tasks**. It is not the physical app window and it is not the current prompt. Each prompt and the resulting agent work form a new **turn** inside the same task.
+
+- Sending another prompt in the current conversation continues the same task.
+- Reopening an item from **Recent Tasks** resumes that same task and transcript.
+- Starting **New Task**, using `/new`, or forking creates a separate task; a fork begins with inherited context but has its own identity afterward.
+- Opening another Codex window does not by itself create a task; the task is determined by which conversation or thread that window displays.
+
+This boundary matters for profiles: Codex selects the profile when a task is created. The Smart Compact picker therefore creates a new empty task with the selected profile. Sending a new prompt in the current task cannot switch that task's profile. After following the returned task link, send the intended prompt in the newly created task.
+
 To make Smart Compact the default for both CLI and desktop tasks without patching the app, promote its managed settings into the shared base config:
 
 ```bash
@@ -120,22 +151,22 @@ Codex does not provide a supported way for this project to rewrite private chain
 
 ## Optional Spark offload
 
-Smart Compact includes a custom `spark_worker` agent pinned to `gpt-5.3-codex-spark`. It is intended for bounded, text-only, mechanical work with a clear acceptance check. The parent model keeps architecture, risky decisions, integration, and final verification. If Spark is absent or cannot start, Smart Compact continues with the normal worker or locally.
+Smart Compact includes a custom `spark_worker` agent pinned to `gpt-5.3-codex-spark`. It is intended for bounded, text-only, mechanical work with a clear acceptance check. The parent model keeps architecture, risky decisions, integration, and final verification. If Spark is absent or cannot start, Smart Compact continues locally; it does not substitute another agent for `spark_worker`.
 
-The original policy used the qualitative gate “large enough to justify a handoff.” It produced no Spark spawns across several days of normal app workloads. The current provisional gate is deterministic: run a preflight for tasks expected to need at least six parent tool calls or containing two independent workstreams, then require one Spark worker for a parallel eligible sidecar that needs at least three tool calls, three files, or three independent targets. The selected child must be `spark_worker`, not a built-in or dynamically named substitute. Tiny, sequential, critical-path, overlapping, risky, and unverifiable work stays local. One Spark worker is active by default to cap orchestration and combined-token growth. The retained [`benchmarks/spark-cases.json`](benchmarks/spark-cases.json) fixture makes this threshold regression-testable; it is a tuning baseline, not yet a statistically optimal cutoff.
+The original policy used the qualitative gate “large enough to justify a handoff.” A later six-target gate made selection deterministic, but the repeated agentic matrix showed that target count alone did not predict an efficiency win. The current gate runs a preflight for nontrivial tasks, then permits one Spark worker only when a parallel eligible sidecar contains homogeneous work across at least six exclusive targets **and** either the user explicitly prioritizes preserving the parent-model allowance despite possible combined-token or latency overhead, or repeated paired measurements on a substantially similar workload demonstrate parent-token savings. General requests for speed or token efficiency stay local without that evidence. The selected child must be `spark_worker`, not a built-in or dynamically named substitute. It receives exclusive targets, while the parent keeps disjoint work, integration, and final verification. For cross-source semantic aggregates, the parent runs a deterministic source-to-artifact assertion before acceptance rather than trusting visual or child totals. Tiny, sequential, critical-path, overlapping, risky, and unverifiable work stays local. One Spark worker is active by default when the full gate is met. The retained [`benchmarks/spark-cases.json`](benchmarks/spark-cases.json) fixture makes the evidence/intent gate regression-testable.
 
-The final autonomous app-server validation selected `/root/spark_worker` without an explicit spawn request and completed the child-side focused verification at 20/20. This is a behavioral smoke test of selection, not a replacement for the larger token-allowance matrix.
+The post-gate autonomous app-server smoke explicitly prioritized the parent allowance, supplied one qualifying six-file read-only sidecar, selected `/root/spark_worker` exactly once, completed the parent turn, and made no edits. This validates the intentional-offload branch of the policy, not token efficiency or a general spawn recommendation.
 
 The reasoning-effort study ran the same six-language calculator task at every Spark-supported effort. All arms eventually passed, but medium was the best measured coding default. Across two low-versus-medium runs, both settings scored 480/480; medium used 719,828 total tokens versus low's 754,025, a 4.5% reduction. High and xhigh used roughly twice the first-round tokens and required more correction work.
 
-The actual allowance-split case study used a Luna/high parent and one Spark/medium worker:
+The historical single-run allowance-split case study used a Luna/high parent and one Spark/medium worker:
 
 | Arm | Correctness | Main-model tokens | Spark tokens | Combined tokens | Parent wall time |
 |---|---:|---:|---:|---:|---:|
 | Luna/high Standard + RTK | 240/240 | 698,797 | 0 | 698,797 | 386.136s |
 | Luna/high parent + Spark/medium worker | 240/240 | 220,671 | 766,413 | 987,084 | 122.631s |
 
-Offload reduced main-model token use by 68.4% and parent wall time by 68.2%. That is the primary result: eligible Pro accounts give Spark a separate usage limit, so moving bounded work from Luna to Spark protects the main-model allowance. Combined model tokens rose 41.3%, but that crosses two different allowance buckets and is recorded only as secondary capacity telemetry, not as a failure of the offload strategy. The result is a single controlled run and does not establish the provider's internal metering formula.
+That historical run reduced main-model token use by 68.4% and parent wall time by 68.2%, while combined model tokens rose 41.3%. The repeated 2026-07-14 matrix did not reproduce the parent-token saving: its actually offloaded pairs used 31.35% more parent tokens at the paired median. The older case remains evidence that allowance shifting can work for a particular workload, not evidence that generic bounded work protects the parent allowance. Provider-internal metering and separate usage buckets are not inferred from these token traces.
 
 The package installer performs this capability check automatically. To inspect or install only the optional global role from a checkout:
 
@@ -168,6 +199,8 @@ The policy is adaptive rather than a hard tool budget. Destructive, security-sen
 - [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml): optional native Codex profile.
 - [`plugin/`](plugin): personal Codex plugin with the bundled skill and `openai/form` profile picker.
 - [`requirements-benchmark.txt`](requirements-benchmark.txt): optional dependency for exact token scoring.
+- [`RESEARCH.md`](RESEARCH.md): benchmark source review, paired protocol, metrics, and limitations.
+- [`benchmarks/agentic-cases.json`](benchmarks/agentic-cases.json): frozen realistic fixtures, oracle overlays, and hidden checks.
 - [`benchmarks/cases.json`](benchmarks/cases.json): source cases for compression and safety scoring.
 - [`benchmarks/spark-cases.json`](benchmarks/spark-cases.json): structured Spark delegation decision cases.
 - [`case-study/SPEC.md`](case-study/SPEC.md): reproducible website benchmark contract.
@@ -175,6 +208,7 @@ The policy is adaptive rather than a hard tool budget. Destructive, security-sen
 - [`case-study/harness/`](case-study/harness): rollout analysis and website contract tools.
 - [`case-study/calculator/harness/`](case-study/calculator/harness): cross-language conformance runner.
 - [`scripts/benchmark_tokens.py`](scripts/benchmark_tokens.py): token and guardrail benchmark runner.
+- [`scripts/benchmark_agentic.py`](scripts/benchmark_agentic.py): paired hermetic Spark/no-Spark workload runner.
 - [`scripts/benchmark_spark_spawn.py`](scripts/benchmark_spark_spawn.py): ephemeral autonomous Spark-spawn check.
 - [`scripts/compact_guard.py`](scripts/compact_guard.py): risk classification and literal-retention checks.
 - [`scripts/default_profile.py`](scripts/default_profile.py): comment-preserving shared-config promotion and backup logic.
@@ -196,6 +230,14 @@ python3 -m pip install -r requirements-benchmark.txt
 python3 scripts/benchmark_tokens.py \
   --cases benchmarks/cases.json \
   --candidates /path/to/candidates.json
+
+python3 scripts/benchmark_agentic.py \
+  --repetitions 3 \
+  --jobs 3 \
+  --profile profiles/smart-compact.config.toml \
+  --model gpt-5.6-luna \
+  --effort high \
+  --output /path/to/generated-results.json
 
 python3 scripts/score_policies.py SKILL.md /path/to/candidate/SKILL.md
 
@@ -221,14 +263,17 @@ Run the regression tests:
 python3 -m unittest discover -s tests -v
 ```
 
-The lean package passes its current regression suite and the official Codex plugin validator. Historical benchmark correctness and token results are summarized above without shipping generated benchmark artifacts.
+The lean package passes its current 70-test regression suite and the official Codex plugin validator. Historical benchmark correctness and token results are summarized above without shipping generated benchmark artifacts.
 
 ## Benchmark limitations
 
-- Each accepted matrix cell is a single independent agent run.
+- Historical V6 compression cells are single independent agent runs; the 2026-07-14 agentic matrix uses three trials per case and arm.
 - Model decisions, caching, approvals, and tool selection introduce variance.
 - Functional equivalence was scored; visual and source-code identity were not required.
-- Repeat randomized trials before treating measured percentages as expected production savings.
+- Agentic `--jobs 3` execution was intentionally parallel, so its wall-time values are contention-affected diagnostics rather than clean latency estimates.
+- The local synthetic suite is small, and `order-reconciliation` participated in tuning; its original held-out label does not support an untouched-held-out claim.
+- `publishable=true` means the harness completeness and integrity predicates passed, not that the result is statistically or externally validated.
+- Repeat randomized trials on substantially similar workloads before treating measured percentages as expected production savings.
 
 ## License
 
