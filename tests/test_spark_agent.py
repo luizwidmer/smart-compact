@@ -55,6 +55,10 @@ class SmartCompactProfileTests(unittest.TestCase):
         self.assertFalse(config["agents"]["interrupt_message"])
         self.assertIn("lossless operational state", config["compact_prompt"])
         self.assertIn("every exec_command command must begin with rtk", config["developer_instructions"])
+        self.assertIn("MUST call spawn_agent", config["developer_instructions"])
+        self.assertIn("at least three tool calls", config["developer_instructions"])
+        self.assertIn('agent_type="spark_worker"', config["developer_instructions"])
+        self.assertIn("do not substitute default", config["developer_instructions"])
 
     def test_profile_installer_preserves_conflicting_file(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

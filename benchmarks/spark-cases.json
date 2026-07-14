@@ -1,0 +1,74 @@
+[
+  {
+    "id": "repo-audit-parallel",
+    "expected_decision": "spark",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "estimated_tool_calls": 6,
+    "target_count": 4,
+    "risk": "normal"
+  },
+  {
+    "id": "repetitive-multi-file-generation",
+    "expected_decision": "spark",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "estimated_tool_calls": 4,
+    "target_count": 6,
+    "risk": "normal"
+  },
+  {
+    "id": "independent-sidecar-test-format",
+    "expected_decision": "spark",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "estimated_tool_calls": 2,
+    "target_count": 5,
+    "risk": "normal"
+  },
+  {
+    "id": "tiny-one-file-edit",
+    "expected_decision": "local",
+    "independent": false,
+    "parallel": false,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "estimated_tool_calls": 2,
+    "target_count": 1,
+    "risk": "normal"
+  },
+  {
+    "id": "critical-path-diagnosis",
+    "expected_decision": "local",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": false,
+    "acceptance_check": true,
+    "estimated_tool_calls": 8,
+    "target_count": 3,
+    "risk": "normal"
+  },
+  {
+    "id": "security-destructive-work",
+    "expected_decision": "local",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "estimated_tool_calls": 9,
+    "target_count": 4,
+    "risk": "security"
+  }
+]

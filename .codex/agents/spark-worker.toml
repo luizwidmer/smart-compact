@@ -1,5 +1,5 @@
 name = "spark_worker"
-description = "Fast worker for bounded, text-only, mechanical tasks large enough to amortize delegation and backed by clear acceptance checks. Use only when GPT-5.3-Codex-Spark is available; if it cannot start, retry once with the built-in worker and continue normally."
+description = "Fast worker for bounded, text-only, mechanical sidecars that satisfy Smart Compact's delegation gate and have clear acceptance checks. Use only when GPT-5.3-Codex-Spark is available; if it cannot start, retry once with the built-in worker and continue normally."
 model = "gpt-5.3-codex-spark"
 model_reasoning_effort = "medium"
 

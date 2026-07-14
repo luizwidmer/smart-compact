@@ -1,0 +1,40 @@
+{
+  "name": "smart-compact",
+  "version": "0.1.0+codex.20260714143020",
+  "description": "Pick a Codex profile and create a new task with it from the Codex app.",
+  "author": {
+    "name": "Luiz Widmer",
+    "url": "https://github.com/luizwidmer"
+  },
+  "homepage": "https://github.com/luizwidmer/smart-compact",
+  "repository": "https://github.com/luizwidmer/smart-compact",
+  "license": "Apache-2.0",
+  "keywords": [
+    "codex",
+    "context",
+    "profiles",
+    "token-efficiency"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Smart Compact",
+    "shortDescription": "Pick a profile before a new Codex task starts.",
+    "longDescription": "Use an in-app profile picker to create a new Codex task with Smart Compact, another installed named profile, or the shared default configuration. Also includes the Smart Compact token-efficiency skill.",
+    "developerName": "Luiz Widmer",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/luizwidmer/smart-compact",
+    "defaultPrompt": [
+      "Start a Smart Compact task in this workspace",
+      "Show my available Codex profiles",
+      "Create a task and let me pick its profile"
+    ],
+    "brandColor": "#6757E8",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg"
+  }
+}

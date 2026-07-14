@@ -1,10 +1,10 @@
 # Smart Compact
 
-[Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex optimization package for reducing main-model communication and context usage without weakening correctness or safety. It combines an acceptance-gated skill, an optional native Codex profile, RTK compatibility, and capability-gated Spark offload.
+[Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex optimization package for reducing main-model communication and context usage without weakening correctness or safety. It combines an acceptance-gated skill, native Codex profile controls, an in-app profile-picker plugin, RTK compatibility, and capability-gated Spark offload.
 
 ## Status
 
-Smart Compact is defined by [`SKILL.md`](SKILL.md) and [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml). The skill works by itself; the optional profile adds native low verbosity, bounded per-tool history, suppressed reasoning summaries, and lossless machine-oriented compaction. Its skill identifier is `smart-compact`, invoked as `$smart-compact`.
+Smart Compact is defined by [`SKILL.md`](SKILL.md), [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml), and [`plugin/`](plugin). The skill works by itself; the optional profile adds native low verbosity, bounded per-tool history, suppressed reasoning summaries, lossless machine-oriented compaction, and the Spark delegation preflight. The plugin bundles that skill and adds supported app profile selection. Its skill identifier is `smart-compact`, invoked as `$smart-compact`.
 
 ## Install
 
@@ -28,6 +28,7 @@ The installer is idempotent and does not overwrite differing files unless you pa
 |---|---|---|
 | Smart Compact skill | `$HOME/.agents/skills/smart-compact` | Always installed |
 | Native profile | `${CODEX_HOME:-$HOME/.codex}/smart-compact.config.toml` | Installed by default; activate with `codex --profile smart-compact` |
+| Codex plugin | `$HOME/plugins/smart-compact` | Adds `@Smart Compact`, an in-app profile picker, and the bundled skill |
 | Spark worker | `${CODEX_HOME:-$HOME/.codex}/agents/spark-worker.toml` | Installed only when the local model catalog exposes Spark |
 | RTK | Existing executable on `PATH` | Detected and reported; never installed or modified |
 
@@ -38,6 +39,8 @@ Common options:
 ./install.sh --force                 # update differing managed files
 ./install.sh --no-spark              # skip Spark detection and installation
 ./install.sh --no-profile            # install the skill without the profile
+./install.sh --no-plugin             # skip plugin installation and activation
+./install.sh --make-default          # promote Smart Compact into shared config.toml
 ```
 
 When using the remote one-liner, pass options through `sh -s --`, for example:
@@ -46,7 +49,7 @@ When using the remote one-liner, pass options through `sh -s --`, for example:
 curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/install.sh | sh -s -- --dry-run
 ```
 
-Start a new Codex task after installation so skill and custom-agent discovery refreshes, then invoke `$smart-compact`. Codex documents global skills under `$HOME/.agents/skills`, profile files under `$CODEX_HOME/<name>.config.toml`, and personal custom agents under `~/.codex/agents`; see [Skills](https://learn.chatgpt.com/docs/customization/overview#skills), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), and [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
+Restart Codex or start a new task after installation so plugin, skill, and custom-agent discovery refreshes. Use `@Smart Compact` for the app profile picker or `$smart-compact` to apply the efficiency policy in the current task. Codex documents global skills under `$HOME/.agents/skills`, profile files under `$CODEX_HOME/<name>.config.toml`, and personal custom agents under `~/.codex/agents`; see [Skills](https://learn.chatgpt.com/docs/customization/overview#skills), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), and [custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
 
 ## Measured result
 
@@ -72,7 +75,7 @@ The savings were positive in every tested setting:
 
 The accepted model matrix passed 960/960 functional checks in both control and Smart Compact arms. Generated benchmark projects, candidate policies, traces, and language fixtures are intentionally omitted from the package; this README retains only the accepted aggregate results. These are single-run experimental measurements, not guaranteed production savings.
 
-## Native Codex profile
+## Codex profile and app picker
 
 The optional profile uses supported Codex controls instead of grammar stripping:
 
@@ -89,7 +92,23 @@ python3 scripts/install_codex_profile.py
 codex --profile smart-compact
 ```
 
-The installer refuses to overwrite a different existing profile unless `--force` is supplied. The profile is optional because global output and tool-history preferences are user choices; the skill remains portable across Codex surfaces. See the official [Codex configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference#configtoml).
+Codex exposes named config profiles directly through the CLI. Smart Compact adds the supported app workflow as a personal plugin: select `@Smart Compact` in the composer and ask it to start a profiled task. Its MCP tool uses Codex's `openai/form` extension to show an in-app picker containing:
+
+- Smart Compact, recommended and backed by the installed profile or the plugin's equivalent bundled configuration.
+- Every safe profile discovered at `${CODEX_HOME:-$HOME/.codex}/*.config.toml`.
+- Codex default, which uses only the shared configuration layers.
+
+The plugin creates one empty task with the selected profile and returns its official `codex://threads/<id>` link. It does not modify the current task, replay the current prompt, auto-run work, patch the Codex app, or launch a GUI process from the MCP server. Task creation uses the published per-thread app-server configuration and deep-link interfaces; `codex app-server` is currently marked experimental. The stable fallback remains `codex --profile smart-compact` followed by `/app`.
+
+To make Smart Compact the default for both CLI and desktop tasks without patching the app, promote its managed settings into the shared base config:
+
+```bash
+./install.sh --make-default
+```
+
+This is an explicit opt-in. It preserves unrelated model, reasoning-effort, project, plugin, MCP, hook, desktop, and other settings; it changes only Smart Compact's five top-level keys and `agents.interrupt_message`. Before updating an existing `${CODEX_HOME:-$HOME/.codex}/config.toml`, it creates a timestamped, hash-verified backup under `${CODEX_HOME:-$HOME/.codex}/backups/smart-compact/` and preserves the original file mode. `--dry-run --make-default` previews the operation without writing or creating a backup.
+
+The installer refuses to overwrite a different existing managed package file unless `--force` is supplied. The profile remains optional because global output and tool-history preferences are user choices; the skill remains portable across Codex surfaces. See the official [profile documentation](https://learn.chatgpt.com/docs/config-file/config-advanced#profiles), [configuration precedence](https://learn.chatgpt.com/docs/config-file/config-basic#configuration-precedence), [desktop task deep links](https://learn.chatgpt.com/docs/reference/commands#tasks), and [Codex app-server](https://learn.chatgpt.com/docs/app-server).
 
 ## Why Smart Compact does not compress hidden thought
 
@@ -102,6 +121,10 @@ Codex does not provide a supported way for this project to rewrite private chain
 ## Optional Spark offload
 
 Smart Compact includes a custom `spark_worker` agent pinned to `gpt-5.3-codex-spark`. It is intended for bounded, text-only, mechanical work with a clear acceptance check. The parent model keeps architecture, risky decisions, integration, and final verification. If Spark is absent or cannot start, Smart Compact continues with the normal worker or locally.
+
+The original policy used the qualitative gate “large enough to justify a handoff.” It produced no Spark spawns across several days of normal app workloads. The current provisional gate is deterministic: run a preflight for tasks expected to need at least six parent tool calls or containing two independent workstreams, then require one Spark worker for a parallel eligible sidecar that needs at least three tool calls, three files, or three independent targets. The selected child must be `spark_worker`, not a built-in or dynamically named substitute. Tiny, sequential, critical-path, overlapping, risky, and unverifiable work stays local. One Spark worker is active by default to cap orchestration and combined-token growth. The retained [`benchmarks/spark-cases.json`](benchmarks/spark-cases.json) fixture makes this threshold regression-testable; it is a tuning baseline, not yet a statistically optimal cutoff.
+
+The final autonomous app-server validation selected `/root/spark_worker` without an explicit spawn request and completed the child-side focused verification at 20/20. This is a behavioral smoke test of selection, not a replacement for the larger token-allowance matrix.
 
 The reasoning-effort study ran the same six-language calculator task at every Spark-supported effort. All arms eventually passed, but medium was the best measured coding default. Across two low-versus-medium runs, both settings scored 480/480; medium used 719,828 total tokens versus low's 754,025, a 4.5% reduction. High and xhigh used roughly twice the first-round tokens and required more correction work.
 
@@ -143,17 +166,22 @@ The policy is adaptive rather than a hard tool budget. Destructive, security-sen
 - [`SKILL.md`](SKILL.md): promoted skill policy.
 - [`agents/openai.yaml`](agents/openai.yaml): Codex UI metadata.
 - [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml): optional native Codex profile.
+- [`plugin/`](plugin): personal Codex plugin with the bundled skill and `openai/form` profile picker.
 - [`requirements-benchmark.txt`](requirements-benchmark.txt): optional dependency for exact token scoring.
 - [`benchmarks/cases.json`](benchmarks/cases.json): source cases for compression and safety scoring.
+- [`benchmarks/spark-cases.json`](benchmarks/spark-cases.json): structured Spark delegation decision cases.
 - [`case-study/SPEC.md`](case-study/SPEC.md): reproducible website benchmark contract.
 - [`case-study/calculator/SPEC.md`](case-study/calculator/SPEC.md): reproducible six-language calculator contract.
 - [`case-study/harness/`](case-study/harness): rollout analysis and website contract tools.
 - [`case-study/calculator/harness/`](case-study/calculator/harness): cross-language conformance runner.
 - [`scripts/benchmark_tokens.py`](scripts/benchmark_tokens.py): token and guardrail benchmark runner.
+- [`scripts/benchmark_spark_spawn.py`](scripts/benchmark_spark_spawn.py): ephemeral autonomous Spark-spawn check.
 - [`scripts/compact_guard.py`](scripts/compact_guard.py): risk classification and literal-retention checks.
+- [`scripts/default_profile.py`](scripts/default_profile.py): comment-preserving shared-config promotion and backup logic.
 - [`scripts/install_codex_profile.py`](scripts/install_codex_profile.py): non-overwriting profile installer.
 - [`scripts/install_smart_compact.py`](scripts/install_smart_compact.py): unified idempotent package installer.
 - [`scripts/install_spark_agent.py`](scripts/install_spark_agent.py): capability-gated Spark role installer.
+- [`scripts/open_app_task.py`](scripts/open_app_task.py): app-server client retained for benchmark and protocol diagnostics.
 - [`scripts/rtk_trace_audit.py`](scripts/rtk_trace_audit.py): fail-closed RTK rollout auditor.
 - [`scripts/score_policies.py`](scripts/score_policies.py): reusable policy-size and safety scorer.
 - [`tests/`](tests): package and benchmark-tool regression tests.
@@ -170,6 +198,8 @@ python3 scripts/benchmark_tokens.py \
   --candidates /path/to/candidates.json
 
 python3 scripts/score_policies.py SKILL.md /path/to/candidate/SKILL.md
+
+python3 scripts/benchmark_spark_spawn.py /path/to/repository
 
 python3 case-study/harness/analyze_rollout.py \
   --baseline /path/to/baseline.jsonl \
@@ -191,7 +221,7 @@ Run the regression tests:
 python3 -m unittest discover -s tests -v
 ```
 
-The lean package currently passes twenty-nine regression tests and the official Codex skill validator. Historical benchmark correctness and token results are summarized above without shipping generated benchmark artifacts.
+The lean package passes its current regression suite and the official Codex plugin validator. Historical benchmark correctness and token results are summarized above without shipping generated benchmark artifacts.
 
 ## Benchmark limitations
 

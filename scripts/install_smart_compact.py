@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
-"""Install the Smart Compact skill, profile, and capability-gated Spark agent."""
+"""Install the Smart Compact skill, profile, plugin, and optional Spark agent."""
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
+import subprocess
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
 if __package__:
+    from .default_profile import ProfilePromotionError, promote_profile
     from .install_spark_agent import AppServerError, SPARK_MODEL, available_models
 else:
+    from default_profile import ProfilePromotionError, promote_profile
     from install_spark_agent import AppServerError, SPARK_MODEL, available_models
 
 
@@ -20,6 +24,8 @@ SOURCE_ROOT = Path(__file__).parents[1]
 SKILL_NAME = "smart-compact"
 PROFILE_FILENAME = "smart-compact.config.toml"
 AGENT_FILENAME = "spark-worker.toml"
+PLUGIN_NAME = "smart-compact"
+MARKETPLACE_NAME = "personal"
 
 
 @dataclass(frozen=True)
@@ -115,6 +121,180 @@ def install_skill(
     return InstallResult("skill", status, target)
 
 
+def install_tree(
+    component: str,
+    source: Path,
+    target: Path,
+    *,
+    force: bool,
+    dry_run: bool,
+) -> InstallResult:
+    files = sorted(path for path in source.rglob("*") if path.is_file())
+    if not files:
+        return InstallResult(component, "conflict", target, "source tree is empty")
+    states = {
+        path.relative_to(source): file_state(
+            path.read_text(encoding="utf-8"),
+            target / path.relative_to(source),
+        )
+        for path in files
+    }
+    conflicts = [str(relative) for relative, state in states.items() if state == "conflict"]
+    if conflicts and not force:
+        return InstallResult(
+            component,
+            "conflict",
+            target,
+            "existing files differ: " + ", ".join(conflicts),
+        )
+    if all(state == "same" for state in states.values()):
+        return InstallResult(component, "already-installed", target)
+    if dry_run:
+        return InstallResult(component, "would-update" if conflicts else "would-install", target)
+
+    for relative, state in states.items():
+        if state == "same":
+            continue
+        source_file = source / relative
+        atomic_write(
+            source_file.read_text(encoding="utf-8"),
+            target / relative,
+            source_file.stat().st_mode & 0o777,
+        )
+    return InstallResult(component, "updated" if conflicts else "installed", target)
+
+
+def marketplace_entry() -> dict[str, object]:
+    return {
+        "name": PLUGIN_NAME,
+        "source": {"source": "local", "path": f"./plugins/{PLUGIN_NAME}"},
+        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+        "category": "Productivity",
+    }
+
+
+def install_marketplace(
+    target: Path,
+    *,
+    force: bool,
+    dry_run: bool,
+) -> InstallResult:
+    if target.exists() and not target.is_file():
+        return InstallResult(
+            "plugin-marketplace", "conflict", target, "target is not a file"
+        )
+
+    if target.is_file():
+        try:
+            payload = json.loads(target.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as error:
+            return InstallResult(
+                "plugin-marketplace", "conflict", target, f"invalid JSON: {error}"
+            )
+        if not isinstance(payload, dict) or not isinstance(payload.get("plugins"), list):
+            return InstallResult(
+                "plugin-marketplace",
+                "conflict",
+                target,
+                "marketplace must be an object with a plugins array",
+            )
+    else:
+        payload = {
+            "name": MARKETPLACE_NAME,
+            "interface": {"displayName": "Personal"},
+            "plugins": [],
+        }
+
+    expected = marketplace_entry()
+    plugins = payload["plugins"]
+    existing_index = next(
+        (
+            index
+            for index, entry in enumerate(plugins)
+            if isinstance(entry, dict) and entry.get("name") == PLUGIN_NAME
+        ),
+        None,
+    )
+    if existing_index is not None and plugins[existing_index] == expected:
+        return InstallResult("plugin-marketplace", "already-installed", target)
+    if existing_index is not None and not force:
+        return InstallResult(
+            "plugin-marketplace",
+            "conflict",
+            target,
+            "existing Smart Compact marketplace entry differs",
+        )
+
+    if existing_index is None:
+        plugins.append(expected)
+        action = "installed"
+    else:
+        plugins[existing_index] = expected
+        action = "updated"
+    if dry_run:
+        return InstallResult(
+            "plugin-marketplace",
+            "would-update" if target.exists() else "would-install",
+            target,
+        )
+
+    mode = target.stat().st_mode & 0o777 if target.exists() else 0o644
+    atomic_write(json.dumps(payload, indent=2) + "\n", target, mode)
+    return InstallResult("plugin-marketplace", action, target)
+
+
+def activate_plugin(codex_name: str, personal_root: Path, timeout: float) -> InstallResult:
+    codex = shutil.which(codex_name)
+    if codex is None and Path(codex_name).is_file():
+        codex = str(Path(codex_name).resolve())
+    if codex is None:
+        return InstallResult("plugin-activation", "skipped", None, "Codex CLI not found")
+
+    try:
+        marketplaces = subprocess.run(
+            [codex, "plugin", "marketplace", "list"],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+        if marketplaces.returncode != 0:
+            detail = marketplaces.stderr.strip() or marketplaces.stdout.strip()
+            return InstallResult("plugin-activation", "conflict", None, detail)
+        configured = any(
+            line.split(maxsplit=1)[0] == MARKETPLACE_NAME
+            for line in marketplaces.stdout.splitlines()
+            if line.strip() and not line.startswith("MARKETPLACE")
+        )
+        if not configured:
+            added = subprocess.run(
+                [codex, "plugin", "marketplace", "add", str(personal_root), "--json"],
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+                check=False,
+            )
+            if added.returncode != 0:
+                detail = added.stderr.strip() or added.stdout.strip()
+                return InstallResult("plugin-activation", "conflict", None, detail)
+
+        installed = subprocess.run(
+            [codex, "plugin", "add", f"{PLUGIN_NAME}@{MARKETPLACE_NAME}", "--json"],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as error:
+        return InstallResult("plugin-activation", "conflict", None, str(error))
+
+    if installed.returncode != 0:
+        detail = installed.stderr.strip() or installed.stdout.strip()
+        return InstallResult("plugin-activation", "conflict", None, detail)
+    detail = installed.stdout.strip()
+    return InstallResult("plugin-activation", "installed", None, detail)
+
+
 def install_package(
     source_root: Path,
     skill_root: Path,
@@ -123,10 +303,15 @@ def install_package(
     force: bool = False,
     dry_run: bool = False,
     include_profile: bool = True,
+    make_default: bool = False,
+    include_plugin: bool = True,
+    personal_root: Path | None = None,
     include_spark: bool = True,
     spark_available: bool = False,
     spark_detail: str = "",
 ) -> list[InstallResult]:
+    if personal_root is None:
+        personal_root = skill_root.parent.parent
     results = [
         install_skill(
             source_root,
@@ -149,6 +334,56 @@ def install_package(
         )
     else:
         results.append(InstallResult("profile", "skipped", None, "disabled by --no-profile"))
+
+    if make_default:
+        try:
+            promotion = promote_profile(
+                source_root / "profiles" / PROFILE_FILENAME,
+                codex_home / "config.toml",
+                dry_run=dry_run,
+            )
+            results.append(
+                InstallResult(
+                    "default-profile",
+                    promotion.status,
+                    promotion.target,
+                    promotion.detail,
+                )
+            )
+        except (OSError, ProfilePromotionError) as error:
+            results.append(
+                InstallResult(
+                    "default-profile",
+                    "conflict",
+                    codex_home / "config.toml",
+                    str(error),
+                )
+            )
+
+    if include_plugin:
+        results.append(
+            install_tree(
+                "plugin-source",
+                source_root / "plugin",
+                personal_root / "plugins" / PLUGIN_NAME,
+                force=force,
+                dry_run=dry_run,
+            )
+        )
+        results.append(
+            install_marketplace(
+                personal_root / ".agents" / "plugins" / "marketplace.json",
+                force=force,
+                dry_run=dry_run,
+            )
+        )
+    else:
+        results.append(
+            InstallResult("plugin-source", "skipped", None, "disabled by --no-plugin")
+        )
+        results.append(
+            InstallResult("plugin-marketplace", "skipped", None, "disabled by --no-plugin")
+        )
 
     if not include_spark:
         results.append(InstallResult("spark-agent", "skipped", None, "disabled by --no-spark"))
@@ -186,7 +421,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--force", action="store_true", help="replace differing managed files")
     parser.add_argument("--dry-run", action="store_true", help="report changes without writing")
     parser.add_argument("--no-profile", action="store_true", help="skip the Codex profile")
-    parser.add_argument("--no-spark", action="store_true", help="skip Spark capability detection and agent install")
+    parser.add_argument(
+        "--make-default",
+        action="store_true",
+        help="promote Smart Compact settings into the shared Codex config",
+    )
+    parser.add_argument("--no-plugin", action="store_true", help="skip the Codex plugin")
+    parser.add_argument(
+        "--no-spark",
+        action="store_true",
+        help="skip Spark capability detection and agent install",
+    )
     parser.add_argument("--codex", default="codex", help="Codex CLI executable or path")
     parser.add_argument("--timeout", type=float, default=15.0, help="seconds per app-server response")
     parser.add_argument(
@@ -200,6 +445,12 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")),
         help="Codex home directory (default: CODEX_HOME or ~/.codex)",
+    )
+    parser.add_argument(
+        "--personal-root",
+        type=Path,
+        default=Path.home(),
+        help="personal plugin marketplace root (default: home directory)",
     )
     return parser
 
@@ -224,10 +475,20 @@ def main() -> int:
         force=args.force,
         dry_run=args.dry_run,
         include_profile=not args.no_profile,
+        make_default=args.make_default,
+        include_plugin=not args.no_plugin,
+        personal_root=args.personal_root.expanduser(),
         include_spark=not args.no_spark,
         spark_available=spark_available,
         spark_detail=spark_detail,
     )
+
+    if (
+        not args.dry_run
+        and not args.no_plugin
+        and not any(result.status == "conflict" for result in results)
+    ):
+        results.append(activate_plugin(args.codex, args.personal_root.expanduser(), args.timeout))
 
     print("Smart Compact installation plan:" if args.dry_run else "Smart Compact installation:")
     for result in results:
@@ -248,6 +509,10 @@ def main() -> int:
         print("Start a new Codex task, then invoke $smart-compact.")
         if not args.no_profile:
             print("CLI profile: codex --profile smart-compact")
+        if args.make_default:
+            print("Default profile: Smart Compact settings are active in new CLI and app tasks")
+        if not args.no_plugin:
+            print("App picker: select @Smart Compact, then ask it to start a profiled task")
     return 0
 
 
