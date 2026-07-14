@@ -65,6 +65,21 @@ max_threads = 4
         self.assertEqual(parsed["agents"]["max_threads"], 4)
         self.assertFalse(parsed["agents"]["interrupt_message"])
 
+    def test_render_is_idempotent_with_unmanaged_top_level_keys(self) -> None:
+        base = '''model = "gpt-example"
+sandbox_mode = "workspace-write"
+
+[features]
+example = true
+'''
+        profile = PROFILE.read_text(encoding="utf-8")
+
+        first = render_promoted_config(profile, base)
+        second = render_promoted_config(profile, first)
+
+        self.assertEqual(first, second)
+        self.assertIn('sandbox_mode = "workspace-write"\n\n# BEGIN', first)
+
     def test_promote_creates_verified_backup_and_preserves_mode(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

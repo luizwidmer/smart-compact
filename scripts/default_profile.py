@@ -172,9 +172,11 @@ def _managed_block(begin: str, assignments: dict[str, str], end: str) -> list[st
     return block
 
 
-def _ensure_blank_before(lines: list[str], index: int) -> None:
+def _ensure_blank_before(lines: list[str], index: int) -> int:
     if index > 0 and lines[index - 1].strip():
         lines.insert(index, "\n")
+        return index + 1
+    return index
 
 
 def _ensure_blank_after(lines: list[str], index: int) -> None:
@@ -206,7 +208,7 @@ def render_promoted_config(profile_text: str, base_text: str) -> str:
         len(lines),
     )
     top_block = _managed_block(TOP_BEGIN, top_assignments, TOP_END)
-    _ensure_blank_before(lines, first_table)
+    first_table = _ensure_blank_before(lines, first_table)
     lines[first_table:first_table] = top_block
     after_top = first_table + len(top_block)
     _ensure_blank_after(lines, after_top)
