@@ -53,24 +53,29 @@ class SparkAgentTests(unittest.TestCase):
 
 class SmartCompactProfileTests(unittest.TestCase):
     def test_profile_uses_benchmarked_native_controls(self) -> None:
+        self.assertEqual(
+            (ROOT / "profiles" / "smart-compact.config.toml").read_bytes(),
+            (ROOT / "profiles" / "smart-compact-v7.config.toml").read_bytes(),
+        )
         config = tomllib.loads(
             (ROOT / "profiles" / "smart-compact.config.toml").read_text(encoding="utf-8")
         )
         self.assertEqual(config["model_verbosity"], "low")
         self.assertEqual(config["model_reasoning_summary"], "none")
-        self.assertEqual(config["tool_output_token_limit"], 4000)
+        self.assertEqual(config["personality"], "none")
+        self.assertEqual(config["model_auto_compact_token_limit"], 49152)
+        self.assertEqual(config["model_auto_compact_token_limit_scope"], "body_after_prefix")
+        self.assertEqual(config["tool_output_token_limit"], 2000)
         self.assertFalse(config["agents"]["interrupt_message"])
-        self.assertIn("lossless operational state", config["compact_prompt"])
-        self.assertIn("every exec_command command must begin with rtk", config["developer_instructions"])
-        self.assertIn("MUST select exactly that agent", config["developer_instructions"])
-        self.assertIn("at least six exclusive files", config["developer_instructions"])
-        self.assertIn("two small workstreams alone never justify", config["developer_instructions"])
-        self.assertIn("explicitly prioritizes preserving the parent-model allowance", config["developer_instructions"])
-        self.assertIn("six targets", config["developer_instructions"])
-        self.assertIn("delegation brief MUST repeat", config["developer_instructions"])
-        self.assertIn("shell cd/chdir is forbidden", config["developer_instructions"])
-        self.assertIn("deterministic source-to-artifact assertion", config["developer_instructions"])
-        self.assertIn("without substituting another agent", config["developer_instructions"])
+        self.assertIn("lossless operational handoff", config["compact_prompt"])
+        self.assertIn("every exec_command string starts with rtk", config["developer_instructions"])
+        self.assertIn("exact spark_worker role", config["developer_instructions"])
+        self.assertIn("smallest concurrent worker set", config["developer_instructions"])
+        self.assertIn("never apply a fixed global count", config["developer_instructions"])
+        self.assertIn("One worker may own several nonoverlapping partitions", config["developer_instructions"])
+        self.assertIn("Add another only when", config["developer_instructions"])
+        self.assertIn("one final deterministic acceptance check", config["developer_instructions"])
+        self.assertIn("without substituting another role", config["developer_instructions"])
 
     def test_profile_installer_preserves_conflicting_file(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

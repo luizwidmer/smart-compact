@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-14T19:54:43Z",
+  "candidate": "v7-spark",
+  "primary_objective": "parent_tokens_saved_per_spawned_worker",
+  "freeze_revision_reason": "Hardened fixture oracles and observable delegation evidence before the full matrix; candidate profile, policy, and Spark agent bytes are unchanged.",
+  "artifacts": {
+    "profile": {
+      "path": "profiles/smart-compact-v7.config.toml",
+      "sha256": "c264da8147f9f8a1de50b48b6eedab8dc1ada7f30fdf01400b60021639be58ce",
+      "git_blob": "3c1f2e7e6a24b4e90b4491c7dc4e6e48d8acdfb0"
+    },
+    "policy": {
+      "path": "benchmarks/policies/v7/SKILL.md",
+      "sha256": "d2aa1d3698fae44f17c15fdfcd460930103aa90da77af0353509dc8d1eda9b06",
+      "git_blob": "f2bb3ecd29eaba2c4e5d6c9b13dc66a503e7419b"
+    },
+    "spark_agent": {
+      "path": ".codex/agents/spark-worker.toml",
+      "sha256": "aa82cdaea747994b8d356e3cf34301767508e47b483a9066d782c4e305bf39dd",
+      "git_blob": "759b109410074a8bba3c92bc02d44706cd2f940b"
+    },
+    "development_manifest": {
+      "path": "benchmarks/agentic-v7-development.json",
+      "sha256": "643dcd0d7484128cc22745d0a1d3365ba89b07de1676bf091ddbbf5132d79b0f",
+      "git_blob": "50eddd83175c7a276a35135d13c3a463603b6660"
+    },
+    "heldout_manifest": {
+      "path": "benchmarks/agentic-v7-heldout.json",
+      "sha256": "5e0f3593ba45d5d44ce448f06df2be14ac10957a85cef444f98e264d5e49eeb9",
+      "git_blob": "05425daaaf0ed840c2d3c5406dc848d0b1a17627"
+    },
+    "confirmation_manifest": {
+      "path": "benchmarks/agentic-v7-confirmation.json",
+      "sha256": "4c06aee473e7ddd4bbb6b492571874e9d5482514cf52af217d99e7b336466d84",
+      "git_blob": "3d2ec8eec8edb70cc4a14ee662028edf82195c73"
+    },
+    "runner_and_scorer": {
+      "path": "scripts/benchmark_v7.py",
+      "sha256": "d84723bc805822f9cdda60b39cd1f7407d0916ff253fa6f68e6d16e50280d432",
+      "git_blob": "5b3929dbee44e1356a5f64af4b62062af496680e"
+    },
+    "dependency_lock": {
+      "path": "requirements-benchmark.txt",
+      "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0",
+      "git_blob": "77778b95ac65bf4c7fdd65c86b85fb921fde7ce6"
+    },
+    "matrix_summary": {
+      "path": "benchmarks/results/v7-40-summary.json",
+      "sha256": "2c0c0322628ef5e53a07b6d6e09ba88765fe0a849eadd9399c2a8ccfcedf5cff",
+      "git_blob": "39f71b5ccfbf09fff25c9abe6d42d2a9abdf412c"
+    }
+  },
+  "runtime": {
+    "codex": "codex-cli 0.144.1",
+    "rtk": "rtk 0.43.0",
+    "parent_model": "gpt-5.6-luna",
+    "parent_reasoning_effort": "high",
+    "spark_model": "gpt-5.3-codex-spark"
+  },
+  "development_confirmation": {
+    "status": "pre_hardening_candidate_selection_evidence",
+    "runner_and_scorer_sha256": "4cce116652bbb08404444a37bb539f7c518f50ece93d282e1b24d263008da99e",
+    "case_id": "monorepo-sdk-migration",
+    "seed": 20260717,
+    "repetitions": 3,
+    "jobs": 6,
+    "raw_artifact_sha256": "56685b2d7ff91b557dd15410a6f0ceb338cf02a65f7180fd3fbbf1306deb8961",
+    "v6_spark": {
+      "task_quality_passes": 3,
+      "routing_passes": 2,
+      "median_parent_tokens": 283172,
+      "median_spawned_workers": 1
+    },
+    "v7_spark": {
+      "task_quality_passes": 3,
+      "routing_passes": 3,
+      "median_parent_tokens": 250745,
+      "median_spawned_workers": 1
+    },
+    "paired": {
+      "median_parent_tokens_saved": 80619,
+      "median_parent_token_reduction_pct": 28.47,
+      "median_parent_tokens_saved_per_spawned_worker": 80619.0,
+      "median_quality_delta_points": 0.0
+    }
+  },
+  "full_matrix": {
+    "status": "single_pass_exploratory",
+    "case_count": 10,
+    "arm_count": 4,
+    "repetitions": 1,
+    "jobs": 6,
+    "seed": 20260718,
+    "raw_artifact_sha256": "6e4c482a9b4cb6d82a03360f6fa0359783d6552dd5f6e835ce888f1e914d204a",
+    "quality_publishable_under_three_trial_protocol": false,
+    "token_publishable_under_three_trial_protocol": false,
+    "latency_publishable": false
+  }
+}

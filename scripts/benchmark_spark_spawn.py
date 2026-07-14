@@ -30,7 +30,7 @@ else:
     )
 
 
-DEFAULT_PROMPT = """Use $smart-compact. My explicit optimization goal is to preserve the parent-model allowance; for this smoke test I accept possible combined-token or latency overhead from one Spark sidecar. One bounded read-only sidecar has six exclusive files: README.md, scripts/install_smart_compact.py, tests/test_package_installer.py, benchmarks/agentic-cases.json, scripts/benchmark_agentic.py, and tests/test_agentic_benchmark.py. Audit those six files for package-versus-benchmark inventory inconsistencies while the parent independently reconciles SKILL.md with profiles/smart-compact.config.toml. Report only mismatches with exact paths, or state that both workstreams are consistent. Do not edit files."""
+DEFAULT_PROMPT = """Use $smart-compact. My explicit optimization goal is to preserve the parent-model allowance; for this smoke test I accept possible combined-token or latency overhead from Spark offload. Audit six read-only files for package-versus-benchmark inventory inconsistencies. Partition `package` owns README.md, scripts/install_smart_compact.py, and tests/test_package_installer.py. Partition `benchmark` owns benchmarks/agentic-cases.json, scripts/benchmark_agentic.py, and tests/test_agentic_benchmark.py. Use the smallest useful Spark worker set: one worker may own both partitions, and another is justified only if it materially removes parent work or improves the critical path. There is no fixed worker cap. The parent independently reconciles SKILL.md with profiles/smart-compact.config.toml. Report only mismatches with exact paths, or state that both workstreams are consistent. Do not edit files."""
 
 
 def default_skill_path() -> Path:
@@ -69,11 +69,12 @@ def started_subagent_ids(activities: list[dict[str, Any]], parent_thread_id: str
 
 
 def benchmark_ok(result: dict[str, Any]) -> bool:
-    """Require a completed parent turn and exactly one verified Spark child."""
+    """Require a completed parent turn and at least one verified Spark child."""
     return bool(
         result.get("turn_status") == "completed"
         and result.get("spark_spawned")
-        and result.get("spawn_count") == 1
+        and isinstance(result.get("spawn_count"), int)
+        and result["spawn_count"] >= 1
         and result.get("final_message")
     )
 

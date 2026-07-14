@@ -18,6 +18,9 @@ from pathlib import Path
 MANAGED_TOP_LEVEL_KEYS = (
     "model_verbosity",
     "model_reasoning_summary",
+    "personality",
+    "model_auto_compact_token_limit",
+    "model_auto_compact_token_limit_scope",
     "tool_output_token_limit",
     "developer_instructions",
     "compact_prompt",

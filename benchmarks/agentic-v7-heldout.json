@@ -1,0 +1,204 @@
+{
+  "schema_version": 2,
+  "cases": [
+    {
+      "id": "ci-matrix-root-cause",
+      "split": "held-out",
+      "category": "ci-incident-diagnosis",
+      "inspired_by": ["Terminal-Bench 2.0", "SWE-bench"],
+      "human_minutes": 35,
+      "prompt": "Resolve the artifact-key failures across an eight-job CI matrix. The named nonoverlapping partitions are `linux`, `macos`, `windows`, and `container`, each covering its two platform logs. If the exact `spark_worker` role is available, inspect the logs concurrently with between two and four workers. Maximize parent tokens saved with the fewest spawned workers: group partitions into the smallest useful concurrent set, let one worker own multiple partition IDs, and add another only when it materially removes parent work. Every delegation brief must contain a line in the exact form `partition_ids: ...`, replacing `...` with assigned IDs, and state that the inherited working directory is already the exact target root, shell `cd`/`chdir` is forbidden, and every command string's first word must be literal `rtk`. Workers are read-only and return job, cause, actual key, expected key, and source provenance. If Spark is unavailable, inspect locally without substituting another agent. The parent alone edits `src/artifact_key.py`, creates `ci_report.json`, integrates evidence, and runs acceptance. Normalize dot prefixes, case, Windows separators, and the CI `/workspace/` prefix, while rejecting parent-directory traversal. The report must contain `failed_jobs`, exact cause counts, and sorted job IDs. Do not edit logs or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths and the exact result.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 2, "max": 4},
+        "useful_workers": {"min": 2, "max": 4},
+        "peak_concurrency": {"min": 2, "max": 4},
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {"id": "linux", "weight": 2, "markers": ["logs/linux-py311.log", "logs/linux-py312.log"], "allowed_replication": 1},
+          {"id": "macos", "weight": 2, "markers": ["logs/macos-py311.log", "logs/macos-py312.log"], "allowed_replication": 1},
+          {"id": "windows", "weight": 2, "markers": ["logs/windows-py311.log", "logs/windows-py312.log"], "allowed_replication": 1},
+          {"id": "container", "weight": 2, "markers": ["logs/container-py311.log", "logs/container-py312.log"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["ci_report.json", "src/artifact_key.py"]
+      },
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["ci_report.json", "src/artifact_key.py"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "logs/linux-py311.log": "job=linux-py311 cause=dot_prefix actual=./dist/App.whl expected=dist/app.whl\n",
+        "logs/linux-py312.log": "job=linux-py312 cause=dot_prefix actual=./dist/CLI.whl expected=dist/cli.whl\n",
+        "logs/macos-py311.log": "job=macos-py311 cause=case_mismatch actual=Dist/App.whl expected=dist/app.whl\n",
+        "logs/macos-py312.log": "job=macos-py312 cause=case_mismatch actual=DIST/CLI.whl expected=dist/cli.whl\n",
+        "logs/windows-py311.log": "job=windows-py311 cause=separator_mismatch actual=dist\\\\App.whl expected=dist/app.whl\n",
+        "logs/windows-py312.log": "job=windows-py312 cause=separator_mismatch actual=dist\\\\CLI.whl expected=dist/cli.whl\n",
+        "logs/container-py311.log": "job=container-py311 cause=workspace_prefix actual=/workspace/dist/App.whl expected=dist/app.whl\n",
+        "logs/container-py312.log": "job=container-py312 cause=workspace_prefix actual=/workspace/dist/CLI.whl expected=dist/cli.whl\n",
+        "src/artifact_key.py": "def artifact_key(path: str) -> str:\n    return path\n",
+        "tests/test_artifact_key.py": "import unittest\nfrom src.artifact_key import artifact_key\n\nclass ArtifactKeyTests(unittest.TestCase):\n    def test_platform_variants_are_canonical(self):\n        cases = {\n            './dist/App.whl': 'dist/app.whl',\n            'Dist/CLI.whl': 'dist/cli.whl',\n            'dist\\\\App.whl': 'dist/app.whl',\n            '/workspace/dist/CLI.whl': 'dist/cli.whl',\n            'dist//nested/../bad.whl': None,\n        }\n        for value, expected in cases.items():\n            with self.subTest(value=value):\n                if expected is None:\n                    with self.assertRaises(ValueError):\n                        artifact_key(value)\n                else:\n                    self.assertEqual(artifact_key(value), expected)\n"
+      },
+      "gold_files": {
+        "ci_report.json": "{\n  \"failed_jobs\": 8,\n  \"root_causes\": {\n    \"case_mismatch\": 2,\n    \"dot_prefix\": 2,\n    \"separator_mismatch\": 2,\n    \"workspace_prefix\": 2\n  },\n  \"jobs\": [\"container-py311\", \"container-py312\", \"linux-py311\", \"linux-py312\", \"macos-py311\", \"macos-py312\", \"windows-py311\", \"windows-py312\"]\n}\n",
+        "src/artifact_key.py": "def artifact_key(path: str) -> str:\n    normalized = path.replace('\\\\', '/')\n    if normalized.startswith('/workspace/'):\n        normalized = normalized[len('/workspace/'):]\n    while normalized.startswith('./'):\n        normalized = normalized[2:]\n    parts = [part for part in normalized.split('/') if part not in ('', '.')]\n    if '..' in parts:\n        raise ValueError('parent traversal is forbidden')\n    return '/'.join(parts).lower()\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "json_equals", "path": "ci_report.json", "key": "failed_jobs", "value": 8},
+        {"type": "json_equals", "path": "ci_report.json", "key": "root_causes", "value": {"case_mismatch": 2, "dot_prefix": 2, "separator_mismatch": 2, "workspace_prefix": 2}},
+        {"type": "json_equals", "path": "ci_report.json", "key": "jobs", "value": ["container-py311", "container-py312", "linux-py311", "linux-py312", "macos-py311", "macos-py312", "windows-py311", "windows-py312"]},
+        {"type": "path_not_contains", "path": "src/artifact_key.py", "text": "return path"}
+      ]
+    },
+    {
+      "id": "tenant-config-drift",
+      "split": "held-out",
+      "category": "configuration-reconciliation",
+      "inspired_by": ["TheAgentCompany", "WorkArena++"],
+      "human_minutes": 45,
+      "prompt": "Reconcile twelve tenant configurations with immutable `policy.json` while preserving every tenant ID, plan, and region. The named nonoverlapping partitions are `tenants-01-03`, `tenants-04-06`, `tenants-07-09`, and `tenants-10-12`. If the exact `spark_worker` role is available, repair configs concurrently with between two and four workers. Maximize parent tokens saved with the fewest spawned workers: group partitions into the smallest useful concurrent set, allow one worker to own multiple partition IDs, and add another only when it materially removes parent work. Every delegation brief must contain a line in the exact form `partition_ids: ...`, replacing `...` with assigned IDs, and state that the inherited working directory is already the exact target root, shell `cd`/`chdir` is forbidden, and every command string's first word must be literal `rtk`. Workers may edit only config files named by assigned partitions. If Spark is unavailable, repair locally without substituting another agent. The parent alone writes `drift_report.json` in assignment-contract order and runs acceptance; after accepting worker output, do not reread its configs unless it failed or acceptance identifies a conflict. Do not edit policy or `validate.py`, and never broaden authentication or retention limits. Run `rtk proxy python3 validate.py`, then report changed paths and the result.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "path_disjoint",
+        "spawned_workers": {"min": 2, "max": 4},
+        "useful_workers": {"min": 2, "max": 4},
+        "peak_concurrency": {"min": 2, "max": 4},
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {"id": "tenants-01-03", "weight": 3, "markers": ["tenants/t01.json", "tenants/t02.json", "tenants/t03.json"], "allowed_replication": 1},
+          {"id": "tenants-04-06", "weight": 3, "markers": ["tenants/t04.json", "tenants/t05.json", "tenants/t06.json"], "allowed_replication": 1},
+          {"id": "tenants-07-09", "weight": 3, "markers": ["tenants/t07.json", "tenants/t08.json", "tenants/t09.json"], "allowed_replication": 1},
+          {"id": "tenants-10-12", "weight": 3, "markers": ["tenants/t10.json", "tenants/t11.json", "tenants/t12.json"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["drift_report.json", "policy.json", "validate.py"]
+      },
+      "acceptance_command": ["python3", "validate.py"],
+      "allowed_changes": ["drift_report.json", "tenants/t01.json", "tenants/t02.json", "tenants/t03.json", "tenants/t04.json", "tenants/t05.json", "tenants/t06.json", "tenants/t07.json", "tenants/t08.json", "tenants/t09.json", "tenants/t10.json", "tenants/t11.json", "tenants/t12.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "policy.json": "{\n  \"plans\": {\n    \"standard\": {\"mfa\": true, \"session_minutes\": 30, \"retention_days\": 30, \"audit_log\": false},\n    \"regulated\": {\"mfa\": true, \"session_minutes\": 15, \"retention_days\": 7, \"audit_log\": true},\n    \"enterprise\": {\"mfa\": true, \"session_minutes\": 45, \"retention_days\": 30, \"audit_log\": true}\n  },\n  \"tenants\": {\n    \"t01\": {\"plan\": \"standard\", \"region\": \"us-east\"},\n    \"t02\": {\"plan\": \"regulated\", \"region\": \"eu-west\"},\n    \"t03\": {\"plan\": \"enterprise\", \"region\": \"ap-south\"},\n    \"t04\": {\"plan\": \"regulated\", \"region\": \"us-west\"},\n    \"t05\": {\"plan\": \"standard\", \"region\": \"eu-central\"},\n    \"t06\": {\"plan\": \"enterprise\", \"region\": \"ca-central\"},\n    \"t07\": {\"plan\": \"standard\", \"region\": \"sa-east\"},\n    \"t08\": {\"plan\": \"regulated\", \"region\": \"eu-north\"},\n    \"t09\": {\"plan\": \"enterprise\", \"region\": \"ap-east\"},\n    \"t10\": {\"plan\": \"regulated\", \"region\": \"af-south\"},\n    \"t11\": {\"plan\": \"standard\", \"region\": \"me-central\"},\n    \"t12\": {\"plan\": \"enterprise\", \"region\": \"us-central\"}\n  }\n}\n",
+        "tenants/t01.json": "{\"tenant_id\":\"t01\",\"plan\":\"standard\",\"region\":\"us-east\",\"mfa\":false,\"session_minutes\":60,\"retention_days\":90,\"audit_log\":false}\n",
+        "tenants/t02.json": "{\"tenant_id\":\"t02\",\"plan\":\"regulated\",\"region\":\"eu-west\",\"mfa\":false,\"session_minutes\":60,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t03.json": "{\"tenant_id\":\"t03\",\"plan\":\"enterprise\",\"region\":\"ap-south\",\"mfa\":false,\"session_minutes\":90,\"retention_days\":60,\"audit_log\":false}\n",
+        "tenants/t04.json": "{\"tenant_id\":\"t04\",\"plan\":\"regulated\",\"region\":\"us-west\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":14,\"audit_log\":false}\n",
+        "tenants/t05.json": "{\"tenant_id\":\"t05\",\"plan\":\"standard\",\"region\":\"eu-central\",\"mfa\":false,\"session_minutes\":30,\"retention_days\":45,\"audit_log\":false}\n",
+        "tenants/t06.json": "{\"tenant_id\":\"t06\",\"plan\":\"enterprise\",\"region\":\"ca-central\",\"mfa\":true,\"session_minutes\":60,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t07.json": "{\"tenant_id\":\"t07\",\"plan\":\"standard\",\"region\":\"sa-east\",\"mfa\":false,\"session_minutes\":120,\"retention_days\":120,\"audit_log\":false}\n",
+        "tenants/t08.json": "{\"tenant_id\":\"t08\",\"plan\":\"regulated\",\"region\":\"eu-north\",\"mfa\":true,\"session_minutes\":20,\"retention_days\":10,\"audit_log\":false}\n",
+        "tenants/t09.json": "{\"tenant_id\":\"t09\",\"plan\":\"enterprise\",\"region\":\"ap-east\",\"mfa\":false,\"session_minutes\":45,\"retention_days\":45,\"audit_log\":true}\n",
+        "tenants/t10.json": "{\"tenant_id\":\"t10\",\"plan\":\"regulated\",\"region\":\"af-south\",\"mfa\":false,\"session_minutes\":15,\"retention_days\":21,\"audit_log\":true}\n",
+        "tenants/t11.json": "{\"tenant_id\":\"t11\",\"plan\":\"standard\",\"region\":\"me-central\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t12.json": "{\"tenant_id\":\"t12\",\"plan\":\"enterprise\",\"region\":\"us-central\",\"mfa\":false,\"session_minutes\":75,\"retention_days\":90,\"audit_log\":false}\n",
+        "validate.py": "import json\nfrom pathlib import Path\n\ndocument = json.loads(Path('policy.json').read_text())\nplans = document['plans']\nidentities = document['tenants']\nsources = sorted(Path('tenants').glob('*.json'))\nassert [source.stem for source in sources] == sorted(identities)\ntenants = []\nfor source in sources:\n    config = json.loads(source.read_text())\n    tenant_id = source.stem\n    identity = identities[tenant_id]\n    assert config['tenant_id'] == tenant_id\n    assert config['plan'] == identity['plan']\n    assert config['region'] == identity['region']\n    expected = plans[identity['plan']]\n    observed = {key: config[key] for key in ('mfa', 'session_minutes', 'retention_days', 'audit_log')}\n    assert observed == expected, (tenant_id, observed, expected)\n    tenants.append(tenant_id)\nreport = json.loads(Path('drift_report.json').read_text())\nassert report == {'corrected_tenants': tenants, 'partitions': ['tenants-01-03', 'tenants-04-06', 'tenants-07-09', 'tenants-10-12']}\nprint('tenant drift: 12 identities, configs, controls, and report valid')\n"
+      },
+      "gold_files": {
+        "drift_report.json": "{\n  \"corrected_tenants\": [\"t01\", \"t02\", \"t03\", \"t04\", \"t05\", \"t06\", \"t07\", \"t08\", \"t09\", \"t10\", \"t11\", \"t12\"],\n  \"partitions\": [\"tenants-01-03\", \"tenants-04-06\", \"tenants-07-09\", \"tenants-10-12\"]\n}\n",
+        "tenants/t01.json": "{\"tenant_id\":\"t01\",\"plan\":\"standard\",\"region\":\"us-east\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t02.json": "{\"tenant_id\":\"t02\",\"plan\":\"regulated\",\"region\":\"eu-west\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t03.json": "{\"tenant_id\":\"t03\",\"plan\":\"enterprise\",\"region\":\"ap-south\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n",
+        "tenants/t04.json": "{\"tenant_id\":\"t04\",\"plan\":\"regulated\",\"region\":\"us-west\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t05.json": "{\"tenant_id\":\"t05\",\"plan\":\"standard\",\"region\":\"eu-central\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t06.json": "{\"tenant_id\":\"t06\",\"plan\":\"enterprise\",\"region\":\"ca-central\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n",
+        "tenants/t07.json": "{\"tenant_id\":\"t07\",\"plan\":\"standard\",\"region\":\"sa-east\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t08.json": "{\"tenant_id\":\"t08\",\"plan\":\"regulated\",\"region\":\"eu-north\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t09.json": "{\"tenant_id\":\"t09\",\"plan\":\"enterprise\",\"region\":\"ap-east\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n",
+        "tenants/t10.json": "{\"tenant_id\":\"t10\",\"plan\":\"regulated\",\"region\":\"af-south\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t11.json": "{\"tenant_id\":\"t11\",\"plan\":\"standard\",\"region\":\"me-central\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t12.json": "{\"tenant_id\":\"t12\",\"plan\":\"enterprise\",\"region\":\"us-central\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "validate.py"]},
+        {"type": "json_equals", "path": "drift_report.json", "key": "corrected_tenants", "value": ["t01", "t02", "t03", "t04", "t05", "t06", "t07", "t08", "t09", "t10", "t11", "t12"]}
+      ]
+    },
+    {
+      "id": "support-credit-adjudication",
+      "split": "held-out",
+      "category": "backoffice-policy-workflow",
+      "inspired_by": ["WorkArena++", "TheAgentCompany", "tau3-bench"],
+      "human_minutes": 45,
+      "prompt": "Adjudicate ten synthetic support tickets under immutable `credit_policy.json`. The named nonoverlapping partitions are `tickets-01-02`, `tickets-03-04`, `tickets-05-06`, `tickets-07-08`, and `tickets-09-10`. If the exact `spark_worker` role is available, inspect evidence concurrently with between three and five workers. Maximize parent tokens saved with the fewest spawned workers: group partitions into the smallest useful concurrent set, let one worker own multiple partition IDs, and add another only when it materially removes parent work. Every delegation brief must contain a line in the exact form `partition_ids: ...`, replacing `...` with assigned IDs, and state that the inherited working directory is already the exact target root, shell `cd`/`chdir` is forbidden, and every command string's first word must be literal `rtk`. Workers are read-only and return ticket ID, eligibility facts, proposed credit, reason, and source provenance. If Spark is unavailable, inspect locally without substituting another agent. The parent alone implements `adjudicate.py`, integrates every decision, writes `out/credits.json` and `out/audit.md`, and runs acceptance. Active verified accounts receive outage credit 20 for premium outages of at least 120 minutes, otherwise 10 for outages of at least 60 minutes; confirmed duplicate billing receives the overcharge capped at 50; all other cases receive zero. Freshly recompute all ten decisions before acceptance. Do not edit tickets, policy, or `validate.py`. Run `rtk proxy python3 adjudicate.py` and `rtk proxy python3 validate.py`, then report changed paths and both results.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 3, "max": 5},
+        "useful_workers": {"min": 3, "max": 5},
+        "peak_concurrency": {"min": 3, "max": 5},
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {"id": "tickets-01-02", "weight": 2, "markers": ["tickets/t01.json", "tickets/t02.json"], "allowed_replication": 1},
+          {"id": "tickets-03-04", "weight": 2, "markers": ["tickets/t03.json", "tickets/t04.json"], "allowed_replication": 1},
+          {"id": "tickets-05-06", "weight": 2, "markers": ["tickets/t05.json", "tickets/t06.json"], "allowed_replication": 1},
+          {"id": "tickets-07-08", "weight": 2, "markers": ["tickets/t07.json", "tickets/t08.json"], "allowed_replication": 1},
+          {"id": "tickets-09-10", "weight": 2, "markers": ["tickets/t09.json", "tickets/t10.json"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["adjudicate.py", "out/credits.json", "out/audit.md"]
+      },
+      "acceptance_command": ["python3", "validate.py"],
+      "allowed_changes": ["adjudicate.py", "out/audit.md", "out/credits.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "credit_policy.json": "{\"outage_standard_min_minutes\":60,\"outage_standard_credit\":10,\"outage_premium_min_minutes\":120,\"outage_premium_credit\":20,\"duplicate_billing_cap\":50}\n",
+        "tickets/t01.json": "{\"ticket_id\":\"t01\",\"category\":\"outage\",\"plan\":\"standard\",\"minutes\":75,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t02.json": "{\"ticket_id\":\"t02\",\"category\":\"outage\",\"plan\":\"premium\",\"minutes\":130,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t03.json": "{\"ticket_id\":\"t03\",\"category\":\"duplicate_billing\",\"overcharge\":18,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t04.json": "{\"ticket_id\":\"t04\",\"category\":\"outage\",\"plan\":\"standard\",\"minutes\":45,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t05.json": "{\"ticket_id\":\"t05\",\"category\":\"duplicate_billing\",\"overcharge\":75,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t06.json": "{\"ticket_id\":\"t06\",\"category\":\"user_error\",\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t07.json": "{\"ticket_id\":\"t07\",\"category\":\"outage\",\"plan\":\"premium\",\"minutes\":90,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t08.json": "{\"ticket_id\":\"t08\",\"category\":\"duplicate_billing\",\"overcharge\":12,\"account_active\":true,\"evidence_verified\":false}\n",
+        "tickets/t09.json": "{\"ticket_id\":\"t09\",\"category\":\"outage\",\"plan\":\"premium\",\"minutes\":150,\"account_active\":false,\"evidence_verified\":true}\n",
+        "tickets/t10.json": "{\"ticket_id\":\"t10\",\"category\":\"duplicate_billing\",\"overcharge\":7,\"account_active\":true,\"evidence_verified\":true}\n",
+        "validate.py": "import json\nfrom pathlib import Path\n\nexpected = {\n    't01': (10, 'outage_60'), 't02': (20, 'outage_120_premium'),\n    't03': (18, 'duplicate_billing'), 't04': (0, 'ineligible'),\n    't05': (50, 'duplicate_billing'), 't06': (0, 'ineligible'),\n    't07': (10, 'outage_60'), 't08': (0, 'unverified'),\n    't09': (0, 'inactive'), 't10': (7, 'duplicate_billing'),\n}\nreport = json.loads(Path('out/credits.json').read_text())\ndecisions = report['decisions']\nassert len(decisions) == 10\nassert all(set(item) == {'ticket_id', 'credit', 'reason'} for item in decisions)\nticket_ids = [item['ticket_id'] for item in decisions]\nassert len(set(ticket_ids)) == 10\nassert set(ticket_ids) == set(expected)\nobserved = {item['ticket_id']: (item['credit'], item['reason']) for item in decisions}\nassert observed == expected\nawarded_count = sum(item['credit'] > 0 for item in decisions)\ntotal_credit = sum(item['credit'] for item in decisions)\nassert report['awarded_count'] == awarded_count == 6\nassert report['total_credit'] == total_credit == 115\naudit = Path('out/audit.md').read_text()\nassert 'Awarded tickets: 6' in audit and 'Total credit: 115' in audit\nprint('support credits: exactly 10 unique decisions valid')\n"
+      },
+      "gold_files": {
+        "adjudicate.py": "import json\nfrom pathlib import Path\n\npolicy = json.loads(Path('credit_policy.json').read_text())\n\ndef decide(ticket):\n    if not ticket['account_active']:\n        return 0, 'inactive'\n    if not ticket['evidence_verified']:\n        return 0, 'unverified'\n    if ticket['category'] == 'duplicate_billing':\n        return min(ticket['overcharge'], policy['duplicate_billing_cap']), 'duplicate_billing'\n    if ticket['category'] == 'outage':\n        if ticket['plan'] == 'premium' and ticket['minutes'] >= policy['outage_premium_min_minutes']:\n            return policy['outage_premium_credit'], 'outage_120_premium'\n        if ticket['minutes'] >= policy['outage_standard_min_minutes']:\n            return policy['outage_standard_credit'], 'outage_60'\n    return 0, 'ineligible'\n\ndecisions = []\nfor source in sorted(Path('tickets').glob('*.json')):\n    ticket = json.loads(source.read_text())\n    credit, reason = decide(ticket)\n    decisions.append({'ticket_id': ticket['ticket_id'], 'credit': credit, 'reason': reason})\nreport = {\n    'awarded_count': sum(item['credit'] > 0 for item in decisions),\n    'total_credit': sum(item['credit'] for item in decisions),\n    'decisions': decisions,\n}\nout = Path('out')\nout.mkdir(exist_ok=True)\n(out / 'credits.json').write_text(json.dumps(report, indent=2) + '\\n')\n(out / 'audit.md').write_text(f\"# Credit adjudication\\n\\nAwarded tickets: {report['awarded_count']}\\n\\nTotal credit: {report['total_credit']}\\n\")\n",
+        "out/credits.json": "{\n  \"awarded_count\": 6,\n  \"total_credit\": 115,\n  \"decisions\": [\n    {\"ticket_id\":\"t01\",\"credit\":10,\"reason\":\"outage_60\"},\n    {\"ticket_id\":\"t02\",\"credit\":20,\"reason\":\"outage_120_premium\"},\n    {\"ticket_id\":\"t03\",\"credit\":18,\"reason\":\"duplicate_billing\"},\n    {\"ticket_id\":\"t04\",\"credit\":0,\"reason\":\"ineligible\"},\n    {\"ticket_id\":\"t05\",\"credit\":50,\"reason\":\"duplicate_billing\"},\n    {\"ticket_id\":\"t06\",\"credit\":0,\"reason\":\"ineligible\"},\n    {\"ticket_id\":\"t07\",\"credit\":10,\"reason\":\"outage_60\"},\n    {\"ticket_id\":\"t08\",\"credit\":0,\"reason\":\"unverified\"},\n    {\"ticket_id\":\"t09\",\"credit\":0,\"reason\":\"inactive\"},\n    {\"ticket_id\":\"t10\",\"credit\":7,\"reason\":\"duplicate_billing\"}\n  ]\n}\n",
+        "out/audit.md": "# Credit adjudication\n\nAwarded tickets: 6\n\nTotal credit: 115\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "adjudicate.py"]},
+        {"type": "command", "argv": ["python3", "validate.py"]},
+        {"type": "json_equals", "path": "out/credits.json", "key": "total_credit", "value": 115},
+        {"type": "json_equals", "path": "out/credits.json", "key": "awarded_count", "value": 6},
+        {"type": "path_contains", "path": "out/audit.md", "text": "Total credit: 115"}
+      ]
+    },
+    {
+      "id": "permission-scope-regression",
+      "split": "held-out",
+      "category": "sequential-security-control",
+      "inspired_by": ["SWE-bench Verified"],
+      "human_minutes": 8,
+      "prompt": "Fix the permission-scope boundary regression in `src/permissions.py`. Exact grants authorize only the identical scope. A grant ending in `.*` authorizes descendants under that dotted prefix, but not the prefix itself, unrelated prefixes, or a global wildcard. This is a small security-sensitive one-file fix; do not delegate it. Do not change tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report the changed path, exact result, and residual risk.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 0, "max": 0},
+        "useful_workers": {"min": 0, "max": 0},
+        "peak_concurrency": {"min": 0, "max": 0},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [],
+        "parent_reserved_paths": ["src/permissions.py"]
+      },
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["src/permissions.py"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "src/permissions.py": "def allows(grants: set[str], required: str) -> bool:\n    return any(required.startswith(grant) for grant in grants)\n",
+        "tests/test_permissions.py": "import unittest\nfrom src.permissions import allows\n\nclass PermissionTests(unittest.TestCase):\n    def test_exact_scope(self):\n        self.assertTrue(allows({'billing.read'}, 'billing.read'))\n        self.assertFalse(allows({'billing.read'}, 'billing.reader'))\n        self.assertFalse(allows({'billing'}, 'billing.refund'))\n\n    def test_descendant_wildcard(self):\n        self.assertTrue(allows({'billing.*'}, 'billing.refund'))\n        self.assertTrue(allows({'billing.*'}, 'billing.invoice.read'))\n        self.assertFalse(allows({'billing.*'}, 'billing'))\n        self.assertFalse(allows({'bill.*'}, 'billing.read'))\n\n    def test_global_wildcard_is_not_supported(self):\n        self.assertFalse(allows({'*'}, 'admin.delete'))\n"
+      },
+      "gold_files": {
+        "src/permissions.py": "def allows(grants: set[str], required: str) -> bool:\n    if required in grants:\n        return True\n    for grant in grants:\n        if grant.endswith('.*'):\n            prefix = grant[:-2]\n            if prefix and required.startswith(prefix + '.'):\n                return True\n    return False\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "path_not_contains", "path": "src/permissions.py", "text": "required.startswith(grant)"}
+      ]
+    }
+  ]
+}

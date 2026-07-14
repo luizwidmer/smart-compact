@@ -14,7 +14,8 @@ class SparkSpawnBenchmarkTests(unittest.TestCase):
     def test_default_prompt_explicitly_prioritizes_parent_allowance(self) -> None:
         self.assertIn("explicit optimization goal", DEFAULT_PROMPT)
         self.assertIn("preserve the parent-model allowance", DEFAULT_PROMPT)
-        self.assertIn("six exclusive files", DEFAULT_PROMPT)
+        self.assertIn("smallest useful Spark worker set", DEFAULT_PROMPT)
+        self.assertIn("There is no fixed worker cap", DEFAULT_PROMPT)
 
     def test_extracts_spawn_item(self) -> None:
         notification = {
@@ -54,7 +55,7 @@ class SparkSpawnBenchmarkTests(unittest.TestCase):
         ]
         self.assertEqual(started_subagent_ids(activities, "parent"), ["child"])
 
-    def test_requires_completed_turn_and_exactly_one_spark_child(self) -> None:
+    def test_requires_completed_turn_and_at_least_one_spark_child(self) -> None:
         passing = {
             "turn_status": "completed",
             "spark_spawned": True,
@@ -62,10 +63,12 @@ class SparkSpawnBenchmarkTests(unittest.TestCase):
             "final_message": "done",
         }
         self.assertTrue(benchmark_ok(passing))
+        two_workers = dict(passing, spawn_count=2)
+        self.assertTrue(benchmark_ok(two_workers))
         for key, value in (
             ("turn_status", "failed"),
             ("spark_spawned", False),
-            ("spawn_count", 2),
+            ("spawn_count", 0),
             ("final_message", None),
         ):
             with self.subTest(key=key):

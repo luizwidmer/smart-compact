@@ -110,5 +110,19 @@
     "estimated_tool_calls": 5,
     "target_count": 8,
     "risk": "normal"
+  },
+  {
+    "id": "measured-two-partition-offload",
+    "expected_decision": "spark",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": true,
+    "estimated_tool_calls": 3,
+    "target_count": 2,
+    "risk": "normal"
   }
 ]

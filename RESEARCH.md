@@ -22,161 +22,242 @@ Fixtures should be offline, hermetic, resettable, and automatically graded. This
 | [ClawArena-Team](https://arxiv.org/abs/2606.31174) v2, 2026-07-02 | Execution-based subagent-management evaluation: task correctness, routing, least privilege, integration, and cost are measured separately. | Its parent agent is deliberately constrained and delegation is mandatory. Smart Compact's no-Spark arm must remain independently solvable. |
 | [METR Time Horizon 1.1](https://metr.org/time-horizons/) | Human-duration estimates and success by difficulty/time band. | Do not publish a METR-style time horizon from a small suite intentionally containing parallelizable tasks. METR's long tasks are coherent units that cannot be trivially split. |
 
-## Proposed hermetic task shapes
+## Hermetic task design
 
-The suite should include delegation-positive work and negative controls:
+The suite should combine delegation-positive work with negative controls:
 
-1. A multi-package issue-to-patch task with hidden regression tests.
-2. A broken dependency or build environment requiring terminal diagnosis and repair.
-3. Incident triage across independent log shards, followed by one integrated fix and postmortem.
-4. Release readiness spanning code, tests, configuration, changelog, and documentation.
-5. Policy and knowledge retrieval over a local document corpus followed by a stateful JSON or SQLite update.
-6. A cross-source data workflow producing a validated report and machine-readable artifact.
-7. A small, sequential bug where delegation is unnecessary.
-8. An architecture, security, or write-overlapping task where delegation is unsafe or counterproductive.
+1. multi-package issue-to-patch work with hidden regression tests;
+2. broken dependency or build environments requiring terminal diagnosis;
+3. incident triage across independent evidence shards followed by integrated repair;
+4. release readiness spanning code, tests, configuration, changelog, and documentation;
+5. policy retrieval followed by a stateful local update;
+6. cross-source data workflows producing validated human- and machine-readable artifacts;
+7. small sequential bugs where delegation is unnecessary; and
+8. overlapping, risky, or architecture-heavy work where delegation is unsafe.
 
-Cases 1-6 should be explicitly labeled `offload_expected: true` only when they satisfy the policy's stated Spark preconditions. Cases 7-8 should be labeled `offload_expected: false` and measure over-delegation. Every case must remain solvable without Spark.
+Every fixture must remain solvable by the parent without Spark and contain a clean initial snapshot, deterministic reset, user-facing specification, hidden outcome checks, oracle overlay used only for fixture validation, declared timeout and allowed filesystem scope, human solve-time estimate, and no required external network or mutable third-party service.
 
-Each fixture should contain:
+## Frozen v6 provenance
 
-- a clean initial snapshot and deterministic reset;
-- a user-facing task specification;
-- hidden outcome checks and optional partial subchecks;
-- an oracle solution used only to prove fixture solvability;
-- a declared runner timeout and allowed filesystem scope, plus any token budget when one is actually enforced;
-- a human solve-time estimate or measured baseline;
-- no required external network or mutable third-party service.
+The v7 control is the exact v6 harness profile preserved by commit `14508ec3f0d4cfee86acbc2a639502bee33af037`, not the later expanded Smart Compact policy on `main`.
 
-## Implemented local suite
+| Frozen artifact | Git object | Current benchmark copy |
+| --- | --- | --- |
+| `experiments/versions/v6-harness-profile/SKILL.md` | blob `47f91b8340685e87825aca2552d4ada2b61890e2` | [`benchmarks/policies/v6/SKILL.md`](benchmarks/policies/v6/SKILL.md) |
+| `experiments/versions/v6-harness-profile/profile.config.toml` | blob `4d3e8166f6ea746ad191543ebeb9e9b66142c7ba` | [`benchmarks/profiles/v6.config.toml`](benchmarks/profiles/v6.config.toml) |
+| `profiles/smart-compact.config.toml` at the same commit | blob `4d3e8166f6ea746ad191543ebeb9e9b66142c7ba` | Byte-identical to the frozen profile above. |
 
-[`benchmarks/agentic-cases.json`](benchmarks/agentic-cases.json) currently freezes four stdlib-only cases:
+Historical v6 measurements remain background evidence only. The primary v7 comparison must run a fresh frozen `v6-spark` control under the same current parent model, reasoning setting, Codex runtime, tool surface, Spark role definition and availability, multi-agent capability, RTK version, fixture revision, timeout, and hardware class. Reusing the July 2026 token totals would confound policy effects with runtime and model drift.
 
-| Case | Split | Task shape | Experimental treatment |
+## Historical four-case suite
+
+The existing [`benchmarks/agentic-cases.json`](benchmarks/agentic-cases.json) contains an exploratory four-case suite. Its forced exactly-one-worker treatment and original split labels are historical and are not the v7 confirmatory design.
+
+| Case | Historical role | Historical treatment |
+| --- | --- | --- |
+| `release-readiness` | Development negative control | Stay local. |
+| `incident-triage` | Development offload case | Force one worker over six log shards. |
+| `order-reconciliation` | Originally labeled held-out, but used during tuning | Force one worker over six CSV exports. |
+| `ttl-boundary-regression` | Originally labeled held-out negative control | Stay local. |
+
+The historical runner's hidden checks, allowed-path checks, role attribution, child completion, delegation-brief validation, acceptance-command observation, RTK audit, and per-thread token accounting fail closed. Those properties should be retained while replacing its fixed `expected_children` assumption with partition-aware adaptive fan-out.
+
+## V7 ten-case suite
+
+The executed suite contains six development cases and four held-out cases. Worker ranges are design envelopes, not targets: the policy should group named nonoverlapping partitions into the smallest useful concurrent worker set, and one worker may own multiple partitions.
+
+| Case | Split | Planned task shape and partitions | Useful worker envelope |
+| --- | --- | --- | ---: |
+| `release-readiness` | Development | Existing five-target release reconciliation; negative control. | 0 |
+| `incident-triage` | Development | Existing incident workflow partitioned as `logs-ab`, `logs-cd`, and `logs-ef`; read-only evidence. | 2–3 |
+| `order-reconciliation` | Development | Relabeled existing data workflow partitioned as `central-coastal`, `east-north`, and `south-west`; read-only evidence. | 2–3 |
+| `ttl-boundary-regression` | Development | Existing sequential boundary bug; negative control. | 0 |
+| `monorepo-sdk-migration` | Development | New multi-package migration partitioned as `packages-ab`, `packages-cd`, `packages-ef`, and `packages-gh`; path-disjoint writes. One worker may own multiple partitions. | 1–4 |
+| `offline-advisory-triage` | Development | New offline service advisory workflow partitioned as `services-ab`, `services-cd`, `services-ef`, and `services-gh`; read-only evidence. | 2–4 |
+| `ci-matrix-root-cause` | Held-out | Multi-platform CI diagnosis with named platform partitions. | 2–4 |
+| `tenant-config-drift` | Held-out | Configuration reconciliation across four tenant groups. | 2–4 |
+| `support-credit-adjudication` | Held-out | Evidence-based adjudication across five ticket-pair partitions. | 3–5 |
+| `permission-scope-regression` | Held-out | Sequential permission-boundary regression; negative control. | 0 |
+
+The four held-out fixtures were created only after the candidate profile and policy were frozen. Before any matrix run, fixture audits strengthened the held-out and development oracles and the scorer's observable-evidence checks; the candidate profile, policy, and Spark worker bytes did not change. The final combined manifest and revised scorer hashes were frozen before execution.
+
+## V7 adaptive fan-out protocol
+
+The staged primary comparison is **`v6-spark` versus `v7-spark`** from the same clean fixture. Both arms expose the identical `spark_worker` definition and multi-agent capability so the frozen policy/profile is the changing factor. Neither prompt forces a worker count: the historical v6 policy may choose zero or more workers, while v7 applies its adaptive partition policy. A missing or unequal Spark capability makes the primary pair protocol-invalid rather than silently converting it to a no-Spark comparison.
+
+Full confirmation adds explicit fallback arms:
+
+| Arm | Policy | Spark and multi-agent availability | Purpose |
 | --- | --- | --- | --- |
-| `release-readiness` | Development | Reconcile package metadata, plugin metadata, changelog, and installation documentation. | Stay local as a five-target break-even control. |
-| `incident-triage` | Development | Reconcile six log shards, repair retry behavior, and produce a machine-readable incident report with precisely defined status semantics. | Force offload of the six-source evidence pass in the Spark arm; require a parent-side source-to-artifact assertion for the final aggregate. |
-| `order-reconciliation` | Held-out | Reconcile six regional CSV exports into a reusable script, JSON summary, and report. | Force homogeneous source analysis into the Spark arm. |
-| `ttl-boundary-regression` | Held-out | Diagnose and fix one exact cache-expiration boundary bug. | Stay local as a sequential negative control. |
+| `v6-spark` | Frozen v6 | Enabled with the frozen shared worker definition | Primary same-capability control. |
+| `v7-spark` | Frozen v7 candidate | Identical to `v6-spark` | Primary policy treatment. |
+| `standard-no-spark` | Standard control | Disabled and isolated from custom agents | No-Spark baseline. |
+| `v7-no-spark` | Frozen v7 candidate | Disabled and isolated from custom agents | V7 local-fallback behavior. |
 
-The runner materializes only each case's seed files into a fresh Git repository. Gold overlays prove that every fixture is solvable but are never copied into the agent workspace. Hidden checks, allowed-path checks, exact Spark-role attribution, completed-child checks, semantic delegation-brief checks, acceptance-command observation, RTK command auditing, and internally consistent per-thread token accounting all fail closed. In this suite, `offload_expected: true` identifies a forced experimental treatment, not a recommendation that the current default policy should automatically offload that task.
+The no-Spark arms use an isolated Codex home with no custom-agent definition and multi-agent disabled. They are a separate fallback contrast, not substitutes for a failed `v6-spark` or `v7-spark` run.
 
-## Paired Spark/no-Spark protocol
+Adaptive fan-out follows these rules:
 
-Run every case in both arms from the same clean fixture. Independent case/trial pairs may run concurrently, but the two arms inside each pair stay sequential in seeded randomized order:
+1. Define named partitions, weights, allowed replication, input ownership, and write ownership before execution.
+2. Spawn the smallest useful set of concurrent workers whose results can replace parent inspection or editing. A worker may own multiple partitions.
+3. Add another worker only when the extra partitioning is expected to remove material parent work; maximum fan-out is not a success criterion.
+4. Keep worker inputs read-only or writes path-disjoint. The parent owns shared decisions, integration, and one deterministic final acceptance check.
+5. Continue disjoint parent integration while workers run, then consume correct worker results without repeating their work unless results fail, conflict, or leave coverage gaps.
+6. Keep negative controls local. Any worker on a zero-worker control is over-delegation.
 
-- **Spark-enabled:** the Spark worker is available. Treatment-positive workloads use the same conditional prompt in both arms to assign exactly one six-source read-only sidecar when `spark_worker` exists; a missed spawn remains a routing failure. Local-control workloads exercise autonomous restraint and must not spawn.
-- **No-Spark:** Spark is unavailable. The runner starts from an isolated ephemeral Codex home containing authentication but no custom-agent definition; `features.multi_agent=false` is also set at process and thread scope. Keep the parent model, policy text, task prompt, budgets, runtime, and fixture otherwise identical.
+For every arm and trial:
 
-The conditional treatment sentence is identical in both arms: use exactly one `spark_worker` when that role is available, otherwise complete the same evidence pass locally without substituting another agent. This prevents stochastic treatment crossover in the offload A/B while the separate policy oracle continues to test autonomous threshold decisions.
+1. Freeze model and inference settings, tool schema, dependency lock, hardware class, timeout, retry policy, and RTK treatment.
+2. Materialize only seed files in a fresh Git repository; never expose gold overlays or hidden checks to the agent.
+3. Randomize arm order within each paired block. Run independent case/trial blocks in parallel for throughput, while preserving the pair relationship.
+4. A confirmatory publication normally requires at least three trials per case. Preserve every attempt, including failures, timeouts, unavailable workers, missed partitions, and over-delegation. A one-trial matrix must be labeled exploratory.
+5. Grade final state and allowed paths rather than requiring one exact tool trajectory.
+6. Keep profile-only measurement isolated from separately installed Smart Compact instructions so the policy is not duplicated.
 
-For both arms:
+Parallel blocks intentionally trade clean latency measurement for throughput. When `jobs > 1`, wall time is contention-affected and diagnostic only; token, quality, safety, partition, and routing metrics remain the release evidence.
 
-1. Freeze the model and inference settings, policy commit, tool schema, dependency lock, hardware class, timeout, and retry policy.
-2. Reset the fixture before every attempt and randomize arm order.
-3. Run at least three trials per case; five is preferable when cost permits.
-4. Preserve all attempts, including failures, timeouts, and missed delegations.
-5. Grade final files, database state, commands, and tests. Do not require one exact tool-call trajectory unless the task genuinely has only one valid path.
-6. Keep worker writes read-only or path-disjoint where possible. Treat write collisions and integration repairs as measured failures or overhead, not harness noise.
+## Objective and metric contract
 
-For profile-only measurement, the runner sets `project_doc_max_bytes=0` and disables the separately installed Smart Compact skill so machine-global instructions cannot duplicate the profile policy. It then adds only the same strict RTK command constraint to both arms. Raw workspaces and run JSON remain generated artifacts outside Git.
+V7 uses a lexicographic objective. Parent tokens saved per spawned Spark worker is the primary adaptive-fan-out optimization metric; absolute parent-token reduction remains the headline release outcome:
 
-Headline comparisons should use all assigned runs. A spawned-only analysis may be published as a diagnostic, but it must not replace the Spark-available versus Spark-unavailable comparison.
+1. **Correctness, safety, and protocol validity are mandatory.** A failed task, scope escape, invalid worker role, incomplete required partition, or missing acceptance evidence cannot be traded for token savings.
+2. **Among valid runs, maximize `parent_tokens_saved_per_spawned_worker` against the paired fresh `v6-spark` control while requiring material absolute parent-token savings.** Every spawn counts in the denominator, including workers that fail or contribute no unique correct partition.
+3. **Among configurations with comparable savings efficiency and task coverage, choose the smallest spawned worker set and minimize coordination overhead.** More workers are not better by themselves.
 
-## Metric contract
+Spark-worker tokens, combined parent-plus-worker tokens, and latency are required secondary disclosures. Parent-token savings must not be described as total-cost savings unless combined tokens also decline.
 
-The following is the target metric set for continued suite development. The current runner aggregates the quality, routing, completion, scope, acceptance, RTK, usage, tool-call, and time fields represented in its result schema; it does not yet aggregate every coordination diagnostic below.
+Keep these outcomes separate:
 
-### Quality and reliability
+- `task_success`: hidden functional and artifact checks pass;
+- `policy_success`: routing, partitioning, integration, and restraint satisfy the frozen policy;
+- `protocol_valid`: environment, role, trace, usage, acceptance, scope, and RTK audits are complete and valid.
 
-- binary task success;
-- partial subchecks passed, reported alongside full success;
-- paired success delta between arms;
-- success by task family and human-duration band;
-- repeated-trial success and a clearly defined multi-trial reliability statistic;
-- timeout and unrecoverable-error rates.
+### Parent and system tokens
 
-### Token and time efficiency
+- parent input, cached-input, output, reasoning-output, and total tokens;
+- child tokens by worker and in aggregate;
+- combined parent-plus-child tokens;
+- non-useful-child tokens from workers that contribute no unique correct partition;
+- `parent_tokens_saved = parent_tokens_v6_spark - parent_tokens_v7_spark`;
+- `parent_token_reduction = 1 - parent_tokens_v7_spark / parent_tokens_v6_spark`;
+- `parent_tokens_saved_per_spawned_worker = parent_tokens_saved / spawned_workers`;
+- `parent_tokens_saved_per_useful_worker = parent_tokens_saved / useful_workers` as a diagnostic only;
+- `total_token_ratio = combined_tokens_v7_spark / combined_tokens_v6_spark`.
 
-- parent input, cached-input, and output tokens;
-- Spark worker tokens;
-- total system tokens across parent and workers;
-- parent and worker tool calls;
-- end-to-end wall time and time to first delegation;
-- `parent_token_reduction = 1 - parent_tokens_spark / parent_tokens_no_spark`;
-- `total_token_ratio = total_tokens_spark / total_tokens_no_spark`;
-- `wall_time_speedup = wall_time_no_spark / wall_time_spark`.
+Per-worker savings metrics are `N/A` when their denominator is zero. Negative values must remain negative rather than being clipped.
 
-Parent-token savings must never be presented as total-cost savings unless total system tokens also decline.
+### Adaptive fan-out and partition quality
 
-### Delegation and coordination
+- spawned, completed, and useful worker counts;
+- useful-worker rate: `useful_workers / spawned_workers`, reported as a diagnostic rather than an optimization target;
+- peak worker concurrency from child start-to-terminal intervals;
+- weighted partition coverage: unique correctly completed partition weight divided by total required weight;
+- per-child result correctness against its declared partition contract;
+- useful-result score: the best correct result per partition, without duplicate credit;
+- useful workers: workers contributing at least one unique correct partition;
+- useful partitions per parent token, reported at a fixed scale such as per 1,000 parent tokens;
+- duplicate work units: `sum(partition_weight * max(0, workers_touching_partition - allowed_replication))`;
+- duplicate-work ratio: duplicate units divided by attempted partition weight;
+- conflicting edits, scope escapes, integration repairs, parent corrections, time to first delegation, and idle wait.
 
-- delegation recall: eligible cases with a Spark spawn divided by eligible cases;
-- over-delegation rate: ineligible cases with a Spark spawn divided by ineligible cases;
-- worker completion and useful-result rates;
-- duplicated investigation or tool calls;
-- conflicting edits, scope escapes, and merge/integration failures;
-- parent corrections after worker return;
-- idle wait and coordination overhead.
+For comparable fan-out configurations on the same case and runtime, report `marginal_parent_savings_per_extra_worker = change_in_parent_tokens_saved / change_in_spawned_workers`. Publish the Pareto frontier of valid configurations led by parent tokens saved per spawned worker, then absolute parent-token savings and correct partition coverage, while minimizing spawned workers, duplicate work, non-useful-child tokens, and combined tokens. Useful-worker count and rate diagnose routing quality but do not remove failed or redundant spawns from the primary denominator. A maximum-concurrency configuration is dominated when a smaller spawned worker set achieves comparable savings and quality.
 
-### Safety
+### Quality, safety, and reliability
 
+- binary task success and partial hidden subchecks;
+- repeated-trial success and paired quality delta;
+- timeout and unrecoverable-error rates;
 - forbidden or out-of-scope mutations;
 - destructive action without authorization;
-- excessive permissions granted to a worker;
-- policy or task-constraint violations;
-- success conditional on zero safety violations.
+- excessive worker permissions or overlapping writes;
+- task and policy-constraint violations.
 
-Publish quality, parent-token use, total-token use, time, and orchestration as separate dimensions. With only three trials per case, report every paired effect without inferential or confidence-interval claims. A Pareto view is more informative than one composite score.
+Publish every assigned run and paired effect. Three trials per case are a minimum reliability check, not a basis for strong confidence-interval or significance claims.
 
-## Measured matrix: 2026-07-14
+## Staged v7 tuning and confirmation
 
-The post-RTK-fine-tune matrix completed 24/24 assigned runs and 12/12 valid pairs. Both arms achieved 100% hidden-check quality. Eligible Spark routing was 6/6 with the exact `spark_worker`, completed-child status was 6/6, and the six negative-control Spark-available runs created no child. No-Spark created no child in 12/12 runs. Scope, delegation-brief, acceptance-command, usage-accounting, and RTK audits passed 24/24.
+1. **Single-case tuning, complete:** tune only `monorepo-sdk-migration`, comparing `v7-spark` with a newly executed frozen `v6-spark` control under identical Spark role availability and multi-agent capability. Use its four path-disjoint package partitions to evaluate adaptive groups of one through four spawned workers, including one worker owning multiple partitions, and tune handoff size, join behavior, output limits, and compaction settings. Do not inspect the other nine fixtures for policy decisions during this stage.
+2. **Candidate freeze, complete:** preserve immutable hashes for the selected v7 policy, profile, Spark worker configuration, development manifest, runner/scorer, runtime, and dependency lock in [`benchmarks/v7-freeze.json`](benchmarks/v7-freeze.json).
+3. **Full matrix, complete:** run `v6-spark`, `v7-spark`, `standard-no-spark`, and `v7-no-spark` once across all six development and four held-out cases with randomized arm order. The user explicitly selected one pass rather than the proposed three repetitions, producing 40 total runs. Six runs executed concurrently for throughput.
+4. **Exploratory publication, complete:** report all 40 attempts, task/policy/protocol outcomes, primary parent-token effects, secondary child and combined tokens, fan-out efficiency, partition coverage, and contention-labeled latency. Because every cell has one observation, these are exploratory measurements rather than repeated-trial estimates.
+
+### Development-attempt ledger excluded from confirmation
+
+| Attempt | Disposition | Reason or observed result |
+| --- | --- | --- |
+| `r1` | Invalid and excluded | The fixture contained a contradictory requirement, so neither policy comparison nor token effect was interpretable. |
+| `r2` | Invalid and excluded | A scorer false negative invalidated the grade; it is harness-diagnostic evidence only. |
+| `r3` | V7 arm valid; paired attempt excluded from confirmation | V7 passed routing. Frozen v6 had a genuine policy failure because parent and worker work overlapped; this was not a fixture or scorer defect. The single tuning attempt is not publishable confirmation. |
+
+Preserve all three attempts and their diagnostics. Do not pool `r1` or `r2` into policy metrics, and do not present `r3` as confirmation because it preceded the candidate freeze and ran on the sole tuning case.
+
+## V7 freeze and candidate-selection evidence
+
+The final matrix freeze was recorded at `2026-07-14T19:54:43Z`. Fixture oracles and observable delegation evidence were hardened after candidate selection but before the full matrix; the selected profile, policy, and Spark agent bytes did not change. [`benchmarks/v7-freeze.json`](benchmarks/v7-freeze.json) records:
+
+| Artifact | SHA-256 | Git blob |
+| --- | --- | --- |
+| `profiles/smart-compact-v7.config.toml` | `c264da8147f9f8a1de50b48b6eedab8dc1ada7f30fdf01400b60021639be58ce` | `3c1f2e7e6a24b4e90b4491c7dc4e6e48d8acdfb0` |
+| `benchmarks/policies/v7/SKILL.md` | `d2aa1d3698fae44f17c15fdfcd460930103aa90da77af0353509dc8d1eda9b06` | `f2bb3ecd29eaba2c4e5d6c9b13dc66a503e7419b` |
+| `.codex/agents/spark-worker.toml` | `aa82cdaea747994b8d356e3cf34301767508e47b483a9066d782c4e305bf39dd` | `759b109410074a8bba3c92bc02d44706cd2f940b` |
+| `benchmarks/agentic-v7-development.json` | `643dcd0d7484128cc22745d0a1d3365ba89b07de1676bf091ddbbf5132d79b0f` | `50eddd83175c7a276a35135d13c3a463603b6660` |
+| `benchmarks/agentic-v7-heldout.json` | `5e0f3593ba45d5d44ce448f06df2be14ac10957a85cef444f98e264d5e49eeb9` | `05425daaaf0ed840c2d3c5406dc848d0b1a17627` |
+| `benchmarks/agentic-v7-confirmation.json` | `4c06aee473e7ddd4bbb6b492571874e9d5482514cf52af217d99e7b336466d84` | `3d2ec8eec8edb70cc4a14ee662028edf82195c73` |
+| `scripts/benchmark_v7.py` | `d84723bc805822f9cdda60b39cd1f7407d0916ff253fa6f68e6d16e50280d432` | `5b3929dbee44e1356a5f64af4b62062af496680e` |
+| `requirements-benchmark.txt` | `bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0` | `77778b95ac65bf4c7fdd65c86b85fb921fde7ce6` |
+| `benchmarks/results/v7-40-summary.json` | `2c0c0322628ef5e53a07b6d6e09ba88765fe0a849eadd9399c2a8ccfcedf5cff` | `39f71b5ccfbf09fff25c9abe6d42d2a9abdf412c` |
+
+The frozen runtime is Codex `0.144.1`, RTK `0.43.0`, parent `gpt-5.6-luna` at high effort, and worker `gpt-5.3-codex-spark`.
+
+The pre-hardening candidate-selection run covered only `monorepo-sdk-migration`: three trials per Spark arm, seed `20260717`, and `jobs=6`. V7 achieved 3/3 task and routing passes versus v6's 3/3 task and 2/3 routing passes. Paired medians were `80,619` parent tokens saved, `28.47%` parent-token reduction, and `80,619` parent tokens saved per spawned worker. One trial regressed by `17,212` parent tokens, so improvement was not uniform. This selected the candidate but is not pooled into the full-matrix metrics because the scorer was subsequently hardened.
+
+## V7 single-pass 40-run matrix
+
+The full matrix executed all ten cases and all four arms once, for exactly 40 assigned runs. Arm order was randomized with seed `20260718`; `jobs=6` made latency contention-affected. The compact per-run evidence and aggregates are in [`benchmarks/results/v7-40-summary.json`](benchmarks/results/v7-40-summary.json); its source raw artifact has SHA-256 `6e4c482a9b4cb6d82a03360f6fa0359783d6552dd5f6e835ce888f1e914d204a`.
+
+| Arm | Task quality | Routing | Full policy success | Median parent tokens | Median child tokens | Median combined tokens | Median spawned/useful workers |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `standard-no-spark` | 9/10 | 10/10 | 9/10 | 205,225 | 0 | 205,225 | 0 / 0 |
+| `v6-spark` | 9/10 | 4/10 | 3/10 | 229,234 | 118,298 | 373,556.5 | 2 / 0 |
+| `v7-no-spark` | 9/10 | 10/10 | 9/10 | 136,101.5 | 0 | 136,101.5 | 0 / 0 |
+| `v7-spark` | 9/10 | 4/10 | 4/10 | 162,251.5 | 154,170.5 | 313,743.5 | 2 / 0 |
+
+All arms failed the same `ci-matrix-root-cause` task, producing an equal mean quality score of `94.0`; the primary quality delta was therefore zero. Full policy success is stricter than task quality: it also requires correct worker roles, literal partition assignment, observable source evidence, nonoverlapping ownership, scope, acceptance, RTK compliance, and complete usage telemetry.
+
+| Paired contrast | Parent-token wins | Median parent tokens saved | Median parent reduction | Median saved per spawned worker | Median combined reduction |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `v6-spark` → `v7-spark` | 8/10 | 41,894.5 | 30.153% | 34,765.667 | 17.693% |
+| `standard-no-spark` → `v7-no-spark` | 8/10 | 59,516.5 | 31.593% | N/A | 31.593% |
+| `v7-no-spark` → `v7-spark` | 1/10 | -15,380.5 | -10.4755% | -11,236.5 | -141.691% |
+
+The primary same-capability result is favorable to v7: it used fewer parent tokens than frozen v6 in eight cases, with a paired median `30.153%` parent reduction and `17.693%` combined reduction at equal task quality. The strongest overall parent-token result, however, was v7 with Spark disabled. Enabling Spark on the same v7 profile increased paired median parent use by `10.4755%` and combined use by `141.691%`, winning parent tokens in only one case. This means the profile improvements are supported, while Spark offload remains a selectively gated capability rather than a default token-saving mechanism.
+
+The median useful-worker count was zero under the hardened evidence definition because many completed workers did not evidence every assigned source marker or literal partition contract. Spawned workers still count fully in the primary efficiency denominator. This exposes the current routing weakness instead of treating completed but unauditable workers as free savings.
+
+These are complete single-pass observations, not repeated-trial estimates. The runner therefore marks confirmatory quality and token publication false under its three-trial rule, and latency is non-publishable under parallel contention. The matrix is suitable for an exploratory v7 release note, not statistical confidence or production-generalization claims.
+
+## Historical exactly-one matrix: 2026-07-14
+
+This section is retained only as exploratory evidence that motivated adaptive fan-out. It is not a v7 result, does not use the planned ten-case suite, and must not be used as the frozen-v6 control.
+
+The historical four-case matrix completed 24/24 runs and 12/12 valid pairs with full hidden-check quality. Its treatment forced exactly one worker on six eligible Spark runs; all six completed, while six Spark-available negative controls and all 12 no-Spark runs created no child. Scope, acceptance-command, usage-accounting, and RTK audits passed 24/24.
 
 | Arm | Runs | Success | Median parent tokens | Median combined tokens | Median duration* |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | No-Spark | 12 | 12/12 | 123,686 | 123,686 | 61.113s |
 | Spark-available | 12 | 12/12 | 168,805 | 182,899 | 74.805s |
 
-| Scope | Pairs | Parent-token change | Combined-token change | Wall-time change* |
-| --- | ---: | ---: | ---: | ---: |
-| All assigned runs | 12 | +28.15% | +37.3% | +22.5% |
-| Actually offloaded diagnostic | 6 | +31.35% | +50.2% | +26.65% |
-| No-offload controls | 6 | +15.9% | +15.9% | +11.95% |
-
-Positive changes mean the Spark-available arm used more tokens or time. These effects are medians of within-pair percentage changes, so they need not equal ratios of the pooled arm medians. `*` Wall time is contention-affected because three case/trial pairs ran concurrently; it is diagnostic, not a clean latency comparison.
-
-Per-case marginal medians provide additional scale context:
-
-| Case | Arm | Parent | Child | Combined | Duration* |
-| --- | --- | ---: | ---: | ---: | ---: |
-| `release-readiness` | No-Spark / Spark | 101,870 / 112,112 | 0 / 0 | 101,870 / 112,112 | 60.604s / 64.129s |
-| `incident-triage` | No-Spark / Spark | 233,558 / 216,364 | 0 / 41,481 | 233,558 / 286,036 | 97.929s / 97.605s |
-| `order-reconciliation` | No-Spark / Spark | 146,732 / 226,919 | 0 / 31,011 | 146,732 / 257,930 | 62.716s / 113.079s |
-| `ttl-boundary-regression` | No-Spark / Spark | 64,675 / 64,715 | 0 / 0 | 64,675 / 64,715 | 25.626s / 27.164s |
-
-Reproducibility metadata: parent `gpt-5.6-luna` at high effort; worker `gpt-5.3-codex-spark`; Codex `0.144.2`; RTK `0.43.0`; three trials per case and arm; `jobs=3`; seed `20260714`; cases SHA-256 `ac0d2d1a0907ec60bbe691aced8551ed2d21da31b14476453c4e9ab2c1e37d70`; treatment-profile SHA-256 `055919d98461aefe480ea06bb48a21cddc5faf08849d57ea12b8662aa7d8aa9b`; worker SHA-256 `aa82cdaea747994b8d356e3cf34301767508e47b483a9066d782c4e305bf39dd`.
-
-The matrix validates quality-preserving treatment execution, exact routing, and local fallback. It does not reproduce the historical single-run parent-allowance saving and does not support Spark as a general token or latency optimization. After observing this result, the default automatic policy was tightened to require either an explicit user parent-allowance objective or repeated paired benefit on a substantially similar workload. `publishable=true` in the generated artifact means only that the runner's completeness and audit predicates passed; it is not a statistical or external-validation label.
-
-## Tuning and evaluation splits
-
-Split the suite before changing the policy:
-
-- **Development split:** used to diagnose delegation thresholds, handoff wording, worker scope, and join behavior.
-- **Held-out split:** unseen task templates or materially different fixtures, not merely renamed copies or new seeds from the same template.
-
-For a future confirmatory release, tune only on development cases, freeze the selected policy, then run the complete baseline and tuned policy on an untouched evaluation split under both Spark arms. Publish the frozen versions, all run counts, exclusions, failures, and any deviations from the preregistered protocol. If an evaluation fixture is found broken, document the defect and rerun every compared policy on the corrected version.
-
-The current `order-reconciliation` fixture participated in implementation tuning even though its manifest label is `held-out`; this matrix therefore makes no untouched-held-out generalization claim. The supported release claim is narrower: **quality and routing parity for the forced Spark/no-Spark treatment on this local suite, with a measured token regression and contention-affected time disclosed**.
+Across all 12 historical pairs, the Spark-available arm's median within-pair change was +28.15% parent tokens and +37.3% combined tokens. Positive values mean more consumption. Wall time was contention-affected because three case/trial blocks ran concurrently. The result supports neither a general token-saving claim nor a fixed-one-worker policy; it motivates measuring whether adaptive partitioning can remove enough parent work to justify each worker.
 
 ## Limitations
 
-- Synthetic local tasks approximate real work but omit organizational context, evolving requirements, live users, browser drift, and many GUI failures.
-- A small suite has wide uncertainty and may not support strong significance or time-horizon claims.
-- Model and tool runtimes remain stochastic even with matched settings; repeated paired trials are required.
-- Token accounting can differ by provider, caching implementation, and hidden system overhead.
-- Wall time depends on hardware load and concurrency; this matrix's `jobs=3` values are not a controlled latency comparison.
-- Shared-workspace Spark runs can introduce write races that do not exist in read-only delegation.
-- Public benchmark tasks may appear in training data; locally authored future evaluation fixtures can reduce but do not eliminate policy overfitting.
+- Synthetic local tasks omit organizational context, evolving requirements, live users, browser drift, and many GUI failures.
+- Ten task templates and three minimum trials per case remain too small for broad significance or time-horizon claims.
+- Model and tool behavior is stochastic even under matched settings; fresh paired controls are required.
+- Provider accounting, caching, and hidden system overhead may differ from recorded token telemetry.
+- Parallel-block latency is contention-affected and cannot establish clean speedup.
+- Shared-workspace workers can introduce races absent from read-only delegation; path ownership must be audited.
+- Partition definitions and weights can bias coverage and usefulness metrics, so they must be frozen before confirmation.
+- Public benchmark patterns may appear in training data; locally authored held-out fixtures reduce but do not eliminate overfitting.
 - Recent sources such as OSWorld 2.0 and ClawArena-Team are preprints and may change.
-- The suite evaluates Smart Compact's policy and available agent scaffold together; it does not isolate raw model capability.
+- The suite evaluates policy, profile, worker scaffold, and model together; it does not isolate raw model capability.

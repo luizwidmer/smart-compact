@@ -1,4 +1,6 @@
 interface:
   display_name: "Smart Compact"
-  short_description: "Token-efficient work with adaptive safety"
-  default_prompt: "Use $smart-compact to complete this task with concise communication and economical, risk-aware tool usage. Run the Spark delegation preflight at task start and select agent_type spark_worker exactly for every qualifying independent mechanical sidecar; otherwise continue locally."
+  short_description: "Reduce parent tokens with adaptive Spark offload"
+  default_prompt: "Use $smart-compact to minimize parent-model tokens while preserving correctness, safety, exact constraints, and decisive verification. Use the smallest useful spark_worker set only when it can replace material parent work; otherwise continue locally."
+policy:
+  allow_implicit_invocation: false

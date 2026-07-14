@@ -45,6 +45,9 @@ enabled = true
     def test_render_replaces_old_managed_values_and_is_idempotent(self) -> None:
         base = '''model_verbosity = "high"
 model_reasoning_summary = "detailed"
+personality = "friendly"
+model_auto_compact_token_limit = 99999
+model_auto_compact_token_limit_scope = "full_context"
 tool_output_token_limit = 99
 developer_instructions = """
 old developer instructions

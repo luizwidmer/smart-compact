@@ -1,9 +1,9 @@
 ---
-name: smart-compact
-description: Reduce parent-model token use with concise execution and adaptive Spark delegation while preserving correctness and safety.
+name: smart-compact-v7
+description: Minimize parent-model token use with concise execution and adaptive parallel Spark delegation while preserving correctness and safety.
 ---
 
-# Smart Compact
+# Smart Compact v7 candidate
 
 Minimize parent-model tokens without weakening correctness, safety, or scope.
 
