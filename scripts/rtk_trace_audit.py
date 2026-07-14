@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shlex
 from pathlib import Path
 
 
@@ -57,7 +58,38 @@ def extract_exec_commands(source: str) -> list[str | None]:
 
 def _is_rtk(command: str) -> bool:
     stripped = command.lstrip()
+    try:
+        parts = shlex.split(stripped)
+    except ValueError:
+        parts = []
+    if len(parts) >= 3 and Path(parts[0]).name in {"bash", "sh", "zsh"} and parts[1] in {
+        "-c",
+        "-lc",
+    }:
+        stripped = parts[2].lstrip()
     return stripped == "rtk" or stripped.startswith("rtk ")
+
+
+def audit_commands(commands: list[str | None]) -> dict[str, object]:
+    """Audit literal commands from either rollout calls or app-server items."""
+    violations = []
+    for index, command in enumerate(commands, start=1):
+        if command is None:
+            violations.append({"shell_call": index, "reason": "command is not a literal"})
+        elif not _is_rtk(command):
+            violations.append(
+                {
+                    "shell_call": index,
+                    "reason": "command does not start with rtk",
+                    "command": command[:200],
+                }
+            )
+    return {
+        "shell_calls": len(commands),
+        "rtk_calls": sum(command is not None and _is_rtk(command) for command in commands),
+        "violations": violations,
+        "compliant": bool(commands) and not violations,
+    }
 
 
 def audit_rollout(path: Path) -> dict[str, object]:
@@ -83,26 +115,7 @@ def audit_rollout(path: Path) -> dict[str, object]:
             command = decoded.get("cmd") if isinstance(decoded, dict) else None
             commands.append(command if isinstance(command, str) else None)
 
-    violations = []
-    for index, command in enumerate(commands, start=1):
-        if command is None:
-            violations.append({"shell_call": index, "reason": "command is not a literal"})
-        elif not _is_rtk(command):
-            violations.append(
-                {
-                    "shell_call": index,
-                    "reason": "command does not start with rtk",
-                    "command": command[:200],
-                }
-            )
-
-    return {
-        "rollout": str(path),
-        "shell_calls": len(commands),
-        "rtk_calls": sum(command is not None and _is_rtk(command) for command in commands),
-        "violations": violations,
-        "compliant": bool(commands) and not violations,
-    }
+    return {"rollout": str(path), **audit_commands(commands)}
 
 
 def main() -> int:

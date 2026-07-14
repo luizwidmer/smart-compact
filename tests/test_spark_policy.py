@@ -21,10 +21,8 @@ class SparkPolicyDecisionTests(unittest.TestCase):
                 and case["mechanical"]
                 and case["acceptance_check"]
                 and case["risk"] == "normal"
-                and (
-                    case["estimated_tool_calls"] >= 3
-                    or case["target_count"] >= 3
-                )
+                and case["target_count"] >= 6
+                and (case["allowance_priority"] or case["paired_parent_savings"])
             )
             else "local"
         )
@@ -42,6 +40,8 @@ class SparkPolicyDecisionTests(unittest.TestCase):
             "text_only",
             "mechanical",
             "acceptance_check",
+            "allowance_priority",
+            "paired_parent_savings",
             "estimated_tool_calls",
             "target_count",
             "risk",
@@ -61,11 +61,13 @@ class SparkPolicyDecisionTests(unittest.TestCase):
             self.assertIsInstance(case["text_only"], bool)
             self.assertIsInstance(case["mechanical"], bool)
             self.assertIsInstance(case["acceptance_check"], bool)
+            self.assertIsInstance(case["allowance_priority"], bool)
+            self.assertIsInstance(case["paired_parent_savings"], bool)
             self.assertIsInstance(case["estimated_tool_calls"], int)
             self.assertIsInstance(case["target_count"], int)
             self.assertIsInstance(case["risk"], str)
 
-        self.assertGreaterEqual(len(cases), 6)
+        self.assertGreaterEqual(len(cases), 8)
 
     def test_oracle_decisions(self) -> None:
         cases = json.loads(CASES_PATH.read_text(encoding="utf-8"))

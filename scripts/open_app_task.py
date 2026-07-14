@@ -26,6 +26,15 @@ class AppTaskError(RuntimeError):
     """Raised when the local Codex app-server cannot create a configured task."""
 
 
+def app_server_command(codex: str, config_overrides: list[str] | None = None) -> list[str]:
+    override_args = [
+        argument
+        for value in (config_overrides or [])
+        for argument in ("-c", value)
+    ]
+    return [codex, *override_args, "app-server", "--listen", "stdio://"]
+
+
 def default_codex_home() -> Path:
     return Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")).expanduser()
 
@@ -74,10 +83,17 @@ def task_url(thread_id: str) -> str:
 
 
 class AppServerClient:
-    def __init__(self, codex: str, timeout: float) -> None:
+    def __init__(
+        self,
+        codex: str,
+        timeout: float,
+        config_overrides: list[str] | None = None,
+        environment: dict[str, str] | None = None,
+    ) -> None:
         self.timeout = timeout
         self.process = subprocess.Popen(
-            [codex, "app-server", "--listen", "stdio://"],
+            app_server_command(codex, config_overrides),
+            env={**os.environ, **(environment or {})},
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,

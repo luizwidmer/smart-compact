@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "release-readiness",
+      "split": "development",
+      "category": "repository-maintenance",
+      "inspired_by": ["SWE-bench", "WorkArena++"],
+      "offload_expected": false,
+      "human_minutes": 20,
+      "prompt": "Prepare this package for release 2.4.0 by reconciling all five release surfaces in one coherent pass: runtime metadata, package metadata, plugin metadata, changelog, and installation documentation. Add the exact changelog heading `## 2.4.0 - 2026-07-14`. Preserve manifest api_version v2. Do not change tests. Run `rtk proxy python3 -m unittest discover -s tests -v` as the acceptance check. Finish with changed paths, the exact test result, and residual risk.",
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": [
+        "CHANGELOG.md",
+        "docs/installation.md",
+        "plugin/manifest.json",
+        "pyproject.toml",
+        "src/acme/__init__.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "CHANGELOG.md": "# Changelog\n\n## 2.3.1 - 2026-06-20\n\n- Fix retry accounting.\n",
+        "docs/installation.md": "# Installation\n\nInstall Acme 2.3.0 with `pip install acme==2.3.0`.\n",
+        "plugin/manifest.json": "{\n  \"name\": \"acme\",\n  \"version\": \"2.3.0\",\n  \"api_version\": \"v2\"\n}\n",
+        "pyproject.toml": "[project]\nname = \"acme\"\nversion = \"2.3.1\"\nrequires-python = \">=3.11\"\n",
+        "src/acme/__init__.py": "__version__ = \"2.3.1\"\n",
+        "tests/test_release.py": "import json\nimport re\nimport tomllib\nimport unittest\nfrom pathlib import Path\n\nROOT = Path(__file__).parents[1]\n\nclass ReleaseTests(unittest.TestCase):\n    def test_versions_match_target(self):\n        project = tomllib.loads((ROOT / \"pyproject.toml\").read_text())\n        init = (ROOT / \"src/acme/__init__.py\").read_text()\n        manifest = json.loads((ROOT / \"plugin/manifest.json\").read_text())\n        version = re.search(r'__version__ = \"([^\"]+)\"', init).group(1)\n        self.assertEqual(project[\"project\"][\"version\"], \"2.4.0\")\n        self.assertEqual(version, \"2.4.0\")\n        self.assertEqual(manifest[\"version\"], \"2.4.0\")\n\n    def test_api_version_is_preserved(self):\n        manifest = json.loads((ROOT / \"plugin/manifest.json\").read_text())\n        self.assertEqual(manifest[\"api_version\"], \"v2\")\n"
+      },
+      "gold_files": {
+        "CHANGELOG.md": "# Changelog\n\n## 2.4.0 - 2026-07-14\n\n- Reconcile package and plugin release metadata.\n- Document the pinned installation command.\n\n## 2.3.1 - 2026-06-20\n\n- Fix retry accounting.\n",
+        "docs/installation.md": "# Installation\n\nInstall Acme 2.4.0 with `pip install acme==2.4.0`.\n",
+        "plugin/manifest.json": "{\n  \"name\": \"acme\",\n  \"version\": \"2.4.0\",\n  \"api_version\": \"v2\"\n}\n",
+        "pyproject.toml": "[project]\nname = \"acme\"\nversion = \"2.4.0\"\nrequires-python = \">=3.11\"\n",
+        "src/acme/__init__.py": "__version__ = \"2.4.0\"\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "path_contains", "path": "CHANGELOG.md", "text": "## 2.4.0 - 2026-07-14"},
+        {"type": "path_contains", "path": "docs/installation.md", "text": "pip install acme==2.4.0"},
+        {"type": "json_equals", "path": "plugin/manifest.json", "key": "api_version", "value": "v2"}
+      ]
+    },
+    {
+      "id": "incident-triage",
+      "split": "development",
+      "category": "incident-response",
+      "inspired_by": ["Terminal-Bench 2.0", "TheAgentCompany"],
+      "offload_expected": true,
+      "human_minutes": 30,
+      "prompt": "Resolve the retry storm represented by six independent log shards. If the exact `spark_worker` role is available, offload exactly one read-only sidecar across all six log shards while you fix `src/retry_policy.py`; if it is unavailable, perform the evidence pass locally without substituting another agent. In any delegation brief, state that the inherited working directory is already the exact target root, shell `cd`/`chdir` is forbidden, and every command string's first word must be literal `rtk`. Retry only HTTP 429, 500, and 503. A non-retryable error event is any event with status >=400 whose status is not 429, 500, or 503. Backoff starts at 0.25 seconds for attempt 1, doubles, and caps at 2.0 seconds. Create `incident_report.json` with integer keys `retryable_events` and `non_retryable_error_events`, derived from all shards. Before acceptance, run a deterministic fresh parse of all six shards and compare both recomputed totals with the JSON artifact; visual counting or an unverified sidecar aggregate is insufficient. Do not change logs or tests. Run `rtk proxy python3 -m unittest discover -s tests -v` as acceptance, then report changed paths and the result.",
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["incident_report.json", "src/retry_policy.py"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "logs/shard-a.log": "2026-07-14T10:00:01Z status=503\n2026-07-14T10:00:02Z status=200\n2026-07-14T10:00:03Z status=503\n",
+        "logs/shard-b.log": "2026-07-14T10:00:04Z status=429\n2026-07-14T10:00:05Z status=401\n2026-07-14T10:00:06Z status=429\n",
+        "logs/shard-c.log": "2026-07-14T10:00:07Z status=500\n2026-07-14T10:00:08Z status=400\n",
+        "logs/shard-d.log": "2026-07-14T10:00:09Z status=503\n2026-07-14T10:00:10Z status=200\n2026-07-14T10:00:11Z status=200\n",
+        "logs/shard-e.log": "2026-07-14T10:00:12Z status=429\n2026-07-14T10:00:13Z status=403\n",
+        "logs/shard-f.log": "2026-07-14T10:00:14Z status=200\n2026-07-14T10:00:15Z status=200\n",
+        "src/retry_policy.py": "RETRYABLE = {400, 401, 429, 500, 503}\n\ndef should_retry(status: int) -> bool:\n    return status in RETRYABLE\n\ndef delay_seconds(attempt: int) -> float:\n    return attempt * 0.25\n",
+        "tests/test_retry_policy.py": "import unittest\nfrom src.retry_policy import delay_seconds, should_retry\n\nclass RetryPolicyTests(unittest.TestCase):\n    def test_retryable_statuses(self):\n        self.assertEqual([s for s in (400, 401, 429, 500, 503) if should_retry(s)], [429, 500, 503])\n\n    def test_backoff(self):\n        self.assertEqual([delay_seconds(i) for i in range(1, 6)], [0.25, 0.5, 1.0, 2.0, 2.0])\n"
+      },
+      "gold_files": {
+        "incident_report.json": "{\n  \"retryable_events\": 7,\n  \"non_retryable_error_events\": 3\n}\n",
+        "src/retry_policy.py": "RETRYABLE = {429, 500, 503}\n\ndef should_retry(status: int) -> bool:\n    return status in RETRYABLE\n\ndef delay_seconds(attempt: int) -> float:\n    return min(0.25 * (2 ** (attempt - 1)), 2.0)\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "json_equals", "path": "incident_report.json", "key": "retryable_events", "value": 7},
+        {"type": "json_equals", "path": "incident_report.json", "key": "non_retryable_error_events", "value": 3}
+      ]
+    },
+    {
+      "id": "order-reconciliation",
+      "split": "held-out",
+      "category": "data-workflow",
+      "inspired_by": ["WorkArena++", "OSWorld 2.0"],
+      "offload_expected": true,
+      "human_minutes": 25,
+      "prompt": "Reconcile the six independent regional order exports. If the exact `spark_worker` role is available, offload exactly one read-only sidecar across all six CSV exports while you implement the reconciler; if it is unavailable, inspect the exports locally without substituting another agent. In any delegation brief, state that the inherited working directory is already the exact target root, shell `cd`/`chdir` is forbidden, and every command string's first word must be literal `rtk`. For duplicate `order_id` values, the lexicographically latest ISO `updated_at` row wins. Include only final status `paid`. Create a reusable `reconcile.py` that writes `out/summary.json` and `out/report.md`; the JSON must contain `paid_orders`, `paid_revenue`, and sorted `order_ids`. The report must state the paid order count and revenue. Do not change inputs or `validate.py`. Run `rtk proxy python3 reconcile.py` and `rtk proxy python3 validate.py`, then report changed paths and both results.",
+      "acceptance_command": ["python3", "validate.py"],
+      "allowed_changes": ["out/report.md", "out/summary.json", "reconcile.py"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "data/east.csv": "order_id,amount,status,updated_at\no1,110,refunded,2026-07-04\no3,90,paid,2026-07-05\no6,40,paid,2026-07-03\n",
+        "data/central.csv": "order_id,amount,status,updated_at\no8,60,paid,2026-07-05\no2,70,refunded,2026-07-08\n",
+        "data/coastal.csv": "order_id,amount,status,updated_at\no9,90,paid,2026-07-04\no5,35,paid,2026-07-09\n",
+        "data/north.csv": "order_id,amount,status,updated_at\no1,120,paid,2026-07-01\no2,50,cancelled,2026-07-02\no3,80,paid,2026-07-01\n",
+        "data/south.csv": "order_id,amount,status,updated_at\no2,65,paid,2026-07-03\no4,200,paid,2026-07-01\no5,30,paid,2026-07-01\n",
+        "data/west.csv": "order_id,amount,status,updated_at\no4,180,paid,2026-07-06\no5,30,cancelled,2026-07-07\no7,75,paid,2026-07-02\n",
+        "validate.py": "import json\nfrom pathlib import Path\n\nsummary = json.loads(Path('out/summary.json').read_text())\nassert summary == {'paid_orders': 7, 'paid_revenue': 570, 'order_ids': ['o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9']}\nreport = Path('out/report.md').read_text()\nassert 'Paid orders: 7' in report\nassert 'Paid revenue: 570' in report\nprint('order reconciliation: 5/5 checks passed')\n"
+      },
+      "gold_files": {
+        "out/report.md": "# Paid order reconciliation\n\nPaid orders: 7\n\nPaid revenue: 570\n",
+        "out/summary.json": "{\n  \"paid_orders\": 7,\n  \"paid_revenue\": 570,\n  \"order_ids\": [\"o3\", \"o4\", \"o5\", \"o6\", \"o7\", \"o8\", \"o9\"]\n}\n",
+        "reconcile.py": "import csv\nimport json\nfrom pathlib import Path\n\nlatest = {}\nfor source in sorted(Path('data').glob('*.csv')):\n    with source.open(newline='') as stream:\n        for row in csv.DictReader(stream):\n            current = latest.get(row['order_id'])\n            if current is None or row['updated_at'] > current['updated_at']:\n                latest[row['order_id']] = row\npaid = sorted((row for row in latest.values() if row['status'] == 'paid'), key=lambda row: row['order_id'])\nsummary = {'paid_orders': len(paid), 'paid_revenue': sum(int(row['amount']) for row in paid), 'order_ids': [row['order_id'] for row in paid]}\nout = Path('out')\nout.mkdir(exist_ok=True)\n(out / 'summary.json').write_text(json.dumps(summary, indent=2) + '\\n')\n(out / 'report.md').write_text(f\"# Paid order reconciliation\\n\\nPaid orders: {summary['paid_orders']}\\n\\nPaid revenue: {summary['paid_revenue']}\\n\")\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "reconcile.py"]},
+        {"type": "command", "argv": ["python3", "validate.py"]},
+        {"type": "json_equals", "path": "out/summary.json", "key": "paid_revenue", "value": 570}
+      ]
+    },
+    {
+      "id": "ttl-boundary-regression",
+      "split": "held-out",
+      "category": "sequential-bugfix-control",
+      "inspired_by": ["SWE-bench Verified"],
+      "offload_expected": false,
+      "human_minutes": 5,
+      "prompt": "Fix the TTL boundary regression in `src/cache.py`: an entry must be expired when `now` is exactly equal to `expires_at`. This is a small sequential one-file fix. Do not change tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report the changed path and result.",
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["src/cache.py"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "src/cache.py": "class Cache:\n    def __init__(self, clock):\n        self.clock = clock\n        self.entries = {}\n\n    def set(self, key, value, ttl):\n        self.entries[key] = (value, self.clock() + ttl)\n\n    def get(self, key):\n        value, expires_at = self.entries[key]\n        if expires_at < self.clock():\n            del self.entries[key]\n            raise KeyError(key)\n        return value\n",
+        "tests/test_cache.py": "import unittest\nfrom src.cache import Cache\n\nclass CacheTests(unittest.TestCase):\n    def test_exact_boundary_is_expired(self):\n        now = [10.0]\n        cache = Cache(lambda: now[0])\n        cache.set('token', 'value', 5.0)\n        now[0] = 15.0\n        with self.assertRaises(KeyError):\n            cache.get('token')\n"
+      },
+      "gold_files": {
+        "src/cache.py": "class Cache:\n    def __init__(self, clock):\n        self.clock = clock\n        self.entries = {}\n\n    def set(self, key, value, ttl):\n        self.entries[key] = (value, self.clock() + ttl)\n\n    def get(self, key):\n        value, expires_at = self.entries[key]\n        if expires_at <= self.clock():\n            del self.entries[key]\n            raise KeyError(key)\n        return value\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "path_contains", "path": "src/cache.py", "text": "expires_at <= self.clock()"}
+      ]
+    }
+  ]
+}

@@ -30,7 +30,7 @@ else:
     )
 
 
-DEFAULT_PROMPT = """Use $smart-compact. Perform a read-only consistency audit with two independent workstreams. First, reconcile the installed package components across README.md, scripts/install_smart_compact.py, and tests/test_package_installer.py. Second, reconcile the retained benchmark inventory across README.md, benchmarks, scripts, and tests. Report only mismatches with exact paths, or state that each workstream is consistent. Do not edit files."""
+DEFAULT_PROMPT = """Use $smart-compact. My explicit optimization goal is to preserve the parent-model allowance; for this smoke test I accept possible combined-token or latency overhead from one Spark sidecar. One bounded read-only sidecar has six exclusive files: README.md, scripts/install_smart_compact.py, tests/test_package_installer.py, benchmarks/agentic-cases.json, scripts/benchmark_agentic.py, and tests/test_agentic_benchmark.py. Audit those six files for package-versus-benchmark inventory inconsistencies while the parent independently reconciles SKILL.md with profiles/smart-compact.config.toml. Report only mismatches with exact paths, or state that both workstreams are consistent. Do not edit files."""
 
 
 def default_skill_path() -> Path:
@@ -65,6 +65,16 @@ def started_subagent_ids(activities: list[dict[str, Any]], parent_thread_id: str
             and isinstance(activity.get("agent_thread_id"), str)
             and activity["agent_thread_id"] != parent_thread_id
         }
+    )
+
+
+def benchmark_ok(result: dict[str, Any]) -> bool:
+    """Require a completed parent turn and exactly one verified Spark child."""
+    return bool(
+        result.get("turn_status") == "completed"
+        and result.get("spark_spawned")
+        and result.get("spawn_count") == 1
+        and result.get("final_message")
     )
 
 
@@ -231,8 +241,9 @@ def main() -> int:
     except AppTaskError as error:
         print(f"benchmark-spark-spawn: {error}", file=sys.stderr)
         return 2
+    result["ok"] = benchmark_ok(result)
     print(json.dumps(result, indent=2, sort_keys=True))
-    return 0 if result["spark_spawned"] else 1
+    return 0 if result["ok"] else 1
 
 
 if __name__ == "__main__":

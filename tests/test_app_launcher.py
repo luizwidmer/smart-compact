@@ -4,10 +4,23 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.open_app_task import load_profile, task_url, thread_start_params
+from scripts.open_app_task import app_server_command, load_profile, task_url, thread_start_params
 
 
 class AppLauncherTests(unittest.TestCase):
+    def test_app_server_command_applies_startup_feature_overrides(self) -> None:
+        self.assertEqual(
+            app_server_command("codex", ["features.multi_agent=false"]),
+            [
+                "codex",
+                "-c",
+                "features.multi_agent=false",
+                "app-server",
+                "--listen",
+                "stdio://",
+            ],
+        )
+
     def test_loads_profile_and_builds_thread_override(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

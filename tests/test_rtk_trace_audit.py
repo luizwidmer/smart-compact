@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.rtk_trace_audit import audit_rollout, extract_exec_commands
+from scripts.rtk_trace_audit import audit_commands, audit_rollout, extract_exec_commands
 
 
 def write_rollout(directory: str, payloads: list[dict[str, object]]) -> Path:
@@ -19,6 +19,13 @@ def write_rollout(directory: str, payloads: list[dict[str, object]]) -> Path:
 
 
 class RtkTraceAuditTests(unittest.TestCase):
+    def test_accepts_app_server_shell_wrapper(self) -> None:
+        report = audit_commands(
+            ["/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"]
+        )
+        self.assertTrue(report["compliant"])
+        self.assertEqual(report["rtk_calls"], 1)
+
     def test_extracts_multiple_literal_commands(self) -> None:
         source = (
             'await Promise.all([tools.exec_command({"cmd":"rtk cat a"}),'

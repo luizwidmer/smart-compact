@@ -28,27 +28,30 @@ For a bounded local task with a complete specification, one owner, an exact targ
 6. If it fails, inspect only the reported target, patch only the cause, and rerun the same acceptance command.
 7. After acceptance passes, run one scoped status check and stop. Do not add confidence tests or process narration.
 
-Honor active shell wrappers. If `AGENTS.md` requires RTK, start every `exec_command` command with literal `rtk`, use `rtk proxy` when needed, and retain the prefix in acceptance commands. Otherwise do not assume RTK is installed.
+Honor active shell wrappers. If `AGENTS.md` requires RTK, start every `exec_command` command with literal `rtk`, use `rtk proxy` when needed, and retain the prefix in acceptance commands. If the shell cannot resolve or launch a required wrapper, report that exact wrapper failure. If a wrapped command fails, diagnose or retry only through commands that retain the wrapper; never fall back to a raw command or absolute binary path. Otherwise do not assume RTK is installed.
 
 Treat these as efficiency defaults, not hard limits. Expand work when evidence, failures, ambiguity, or risk requires it.
 
 ## Protect the main-model allowance with Spark
 
-At the start of every nontrivial task, perform one delegation preflight after identifying the parent's immediate next step. A task is nontrivial when it is expected to need at least six parent tool calls or contains at least two independent workstreams.
+At the start of every nontrivial task, perform one delegation preflight after identifying the parent's immediate next step and before the second parent tool call. A task is nontrivial when it is expected to need at least six parent tool calls or contains at least two independent workstreams.
 
-When `spark_worker` is available, you MUST spawn one with `fork_context=false` when all of these are true:
+When `spark_worker` is surfaced by the spawn tool, you MUST select exactly that agent when all of these are true:
 
 1. A bounded sidecar can run in parallel without blocking the parent's immediate next step.
 2. The sidecar is text-only and mechanical, with exact paths or targets and a clear acceptance check.
 3. It requires no architecture, ambiguous product logic, security judgment, destructive work, permission changes, or external side effects.
-4. It would otherwise require at least three tool calls, touch or generate at least three files, or inspect at least three independent targets.
+4. After batching related operations, it contains material homogeneous work across at least six exclusive files or independent targets. Tool-call count or the task's total size alone does not qualify the sidecar.
+5. Either the user explicitly prioritizes preserving the parent-model allowance despite possible combined-token or latency overhead, or repeated paired measurements on a substantially similar workload demonstrate parent-token savings. Spark availability and a six-target count alone are not evidence of benefit.
 
-Prefer repetitive edits, fixture or code generation, focused repository scans, independent test runs, formatting, and structured summaries. Call `spawn_agent` with `agent_type="spark_worker"`; do not fork the parent context. The selected child type or path must be exactly `spark_worker`; while it is available, do not substitute `default`, `explorer`, `worker`, or a dynamically named agent. Send only the task, paths, constraints, and acceptance command, then continue the parent's independent work immediately.
+Prefer repetitive edits, fixture or code generation, focused repository scans, independent test runs, formatting, and structured summaries. Keep work local when the task asks generally for speed or token efficiency but supplies neither an explicit parent-allowance objective nor workload-specific evidence; do not infer that objective from Spark availability. Use the surfaced spawn schema to select the exact `spark_worker` type or path. Disable context forking when the schema supports it; otherwise send only a self-contained task, paths, constraints, and acceptance command. The delegation brief MUST repeat every active shell-wrapper constraint, including the literal RTK prefix when required; do not assume the child inherits the parent's `AGENTS.md`. When RTK is active, also state that the inherited working directory is already the target root, shell `cd`/`chdir` is forbidden, and every command string's first word must be literal `rtk`. Give the sidecar exclusive paths or targets. Continue the parent's disjoint work immediately, then consume the handoff without repeating the child's inspection or edits unless it failed.
+
+When correctness depends on counting, reconciliation, ordering, or deduplication across sources, delegate per-source evidence extraction with provenance unless the child has a deterministic acceptance check that covers the aggregate. The parent MUST own the final derived artifact and, before acceptance, run a deterministic source-to-artifact assertion that independently recomputes and compares every aggregate field. Visual counting, trusting the child total, or a public check that does not cover those fields is insufficient.
 
 - Keep integration and final verification on the parent model.
 - Use one active Spark agent by default. Reuse it for a focused correction instead of spawning another one.
 - Use medium reasoning for implementation grunt work. Escalate only after a concrete medium-effort failure; never use xhigh for grunt work.
-- If `spark_worker` is not advertised, cannot start, is rate-limited, or lacks a required modality or tool, retry once with the normal worker or continue locally. Do not probe availability with a model call or loop on fallback.
+- If exact `spark_worker` selection is unsupported, unavailable, rate-limited, or lacks a required modality or tool, continue locally. Do not substitute another agent or repeatedly probe availability.
 - Keep the task local when it is tiny, sequential, on the immediate critical path, write-overlapping, unsafe, or lacks an independent acceptance check.
 
 ## Preserve safety

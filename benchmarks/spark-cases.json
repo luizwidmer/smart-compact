@@ -1,14 +1,16 @@
 [
   {
     "id": "repo-audit-parallel",
-    "expected_decision": "spark",
+    "expected_decision": "local",
     "independent": true,
     "parallel": true,
     "text_only": true,
     "mechanical": true,
     "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": false,
     "estimated_tool_calls": 6,
-    "target_count": 4,
+    "target_count": 5,
     "risk": "normal"
   },
   {
@@ -19,18 +21,22 @@
     "text_only": true,
     "mechanical": true,
     "acceptance_check": true,
+    "allowance_priority": true,
+    "paired_parent_savings": false,
     "estimated_tool_calls": 4,
     "target_count": 6,
     "risk": "normal"
   },
   {
     "id": "independent-sidecar-test-format",
-    "expected_decision": "spark",
+    "expected_decision": "local",
     "independent": true,
     "parallel": true,
     "text_only": true,
     "mechanical": true,
     "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": false,
     "estimated_tool_calls": 2,
     "target_count": 5,
     "risk": "normal"
@@ -43,6 +49,8 @@
     "text_only": true,
     "mechanical": true,
     "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": false,
     "estimated_tool_calls": 2,
     "target_count": 1,
     "risk": "normal"
@@ -55,6 +63,8 @@
     "text_only": true,
     "mechanical": false,
     "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": false,
     "estimated_tool_calls": 8,
     "target_count": 3,
     "risk": "normal"
@@ -67,8 +77,38 @@
     "text_only": true,
     "mechanical": true,
     "acceptance_check": true,
+    "allowance_priority": true,
+    "paired_parent_savings": false,
     "estimated_tool_calls": 9,
     "target_count": 4,
     "risk": "security"
+  },
+  {
+    "id": "six-source-analysis-without-benefit-evidence",
+    "expected_decision": "local",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": false,
+    "estimated_tool_calls": 4,
+    "target_count": 6,
+    "risk": "normal"
+  },
+  {
+    "id": "benchmarked-repetitive-sidecar",
+    "expected_decision": "spark",
+    "independent": true,
+    "parallel": true,
+    "text_only": true,
+    "mechanical": true,
+    "acceptance_check": true,
+    "allowance_priority": false,
+    "paired_parent_savings": true,
+    "estimated_tool_calls": 5,
+    "target_count": 8,
+    "risk": "normal"
   }
 ]
