@@ -55,14 +55,14 @@ Use $smart-compact. Minimize parent-model tokens while preserving all requiremen
 
 ## V7 benchmark snapshot
 
-The v7 suite contains ten hermetic agentic cases: six development cases and four held-out cases. The agreed matrix ran four arms once each, for 40 total runs, with six runs executing concurrently.
+The v7 suite contains ten hermetic agentic cases: six development cases and four held-out cases. The agreed matrix ran four arms once each, for 40 total runs, with six runs executing concurrently. The parent ran `gpt-5.6-luna` at high reasoning; Spark arms used `gpt-5.3-codex-spark` at medium reasoning.
 
-| Arm | Task quality | Full policy success | Median parent tokens | Median combined tokens | Median spawned workers |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Standard, no Spark | 9/10 | 9/10 | 205,225 | 205,225 | 0 |
-| Frozen v6, Spark | 9/10 | 3/10 | 229,234 | 373,556.5 | 2 |
-| V7, no Spark | 9/10 | 9/10 | 136,101.5 | 136,101.5 | 0 |
-| V7, Spark | 9/10 | 4/10 | 162,251.5 | 313,743.5 | 2 |
+| Comparison | Parent model / effort | Spark model / effort | Baseline parent tokens | Smart Compact v7 parent tokens | Parent tokens saved | Total savings | Correctness |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Standard, no Spark -> v7, no Spark | `gpt-5.6-luna` / high | Disabled | 1,841,804 | 1,223,877 | 617,927 | 33.5% | 9/10 both |
+| Frozen v6, Spark -> v7, Spark | `gpt-5.6-luna` / high | `gpt-5.3-codex-spark` / medium | 3,757,550 | 1,537,036 | 2,220,514 | 59.1% | 9/10 both |
+
+These are token-weighted totals across ten runs per arm, matching the presentation used for v6. The less outlier-sensitive paired medians were 59,516.5 parent tokens saved (31.593%) without Spark and 41,894.5 saved (30.153%) against frozen v6 with Spark. Full policy success was 9/10 for v7 without Spark and 4/10 for v7 with Spark because routing evidence is stricter than task correctness.
 
 Against frozen v6 with the same Spark capability, v7 reduced paired median parent tokens by **30.153%** and combined tokens by **17.693%**, with equal task quality. V7 used fewer parent tokens in 8/10 cases.
 
