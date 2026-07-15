@@ -36,9 +36,9 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual(
                 [result.status for result in results],
-                ["installed"] * 8 + ["skipped"],
+                ["installed"] * 10 + ["skipped"],
             )
-            for version in ("v6", "v8"):
+            for version in ("v6", "v8", "v8-natural"):
                 self.assertEqual(
                     (skill_root / f"smart-compact-{version}" / "SKILL.md").read_text(
                         encoding="utf-8"
@@ -156,7 +156,7 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual(
                 [result.status for result in results],
-                ["would-install"] * 8 + ["skipped"],
+                ["would-install"] * 10 + ["skipped"],
             )
             self.assertFalse(skill_root.exists())
             self.assertFalse(codex_home.exists())
@@ -168,7 +168,7 @@ class PackageInstallerTests(unittest.TestCase):
             results = install_package(ROOT, skill_root, codex_home, include_spark=False)
             self.assertEqual(
                 [result.status for result in results],
-                ["already-installed"] * 8 + ["skipped"],
+                ["already-installed"] * 10 + ["skipped"],
             )
 
     def test_v6_profile_is_the_frozen_benchmark_profile(self) -> None:
@@ -179,6 +179,10 @@ class PackageInstallerTests(unittest.TestCase):
 
     def test_default_version_is_v8(self) -> None:
         self.assertEqual(build_parser().parse_args([]).version, "v8")
+        version_action = next(
+            action for action in build_parser()._actions if action.dest == "version"
+        )
+        self.assertEqual(version_action.choices, ("v6", "v8"))
 
     def test_selected_alias_switches_between_managed_versions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -230,8 +234,8 @@ class PackageInstallerTests(unittest.TestCase):
                 ),
             )
 
-    def test_plugin_bundles_both_versioned_skills_and_profiles(self) -> None:
-        for version in ("v6", "v8"):
+    def test_plugin_bundles_all_versioned_skills_and_profiles(self) -> None:
+        for version in ("v6", "v8", "v8-natural"):
             with self.subTest(version=version):
                 self.assertEqual(
                     (

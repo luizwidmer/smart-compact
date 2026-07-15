@@ -1,0 +1,800 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "v8-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 198562,
+        "median_parent_tokens": 198562,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v8-spark-auto": {
+        "grade_passes": 1,
+        "median_child_tokens": 27598,
+        "median_combined_tokens": 221572,
+        "median_parent_tokens": 193974,
+        "median_peak_concurrency": 1,
+        "median_spawned_worker_count": 1,
+        "median_useful_worker_count": 1,
+        "median_useful_worker_rate": 1.0,
+        "median_worker_count": 1,
+        "routing_passes": 0,
+        "runs": 1,
+        "successes": 0,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v8-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 198562,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 1,
+        "successes": 1
+      },
+      {
+        "arm": "v8-spark-auto",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 193974,
+        "median_spawned_worker_count": 1,
+        "median_worker_count": 1,
+        "rank": 2,
+        "successes": 0
+      }
+    ]
+  },
+  "arm_metadata": {
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-optimizer-work/benchmarks/experiments/v9-candidate-r2/SKILL.md",
+      "policy_sha256": "dd11cf9c09ff119d82d30709951533dba0bea05c923c633cf55550f0958af381",
+      "profile_path": "/private/tmp/smart-compact-optimizer-work/benchmarks/experiments/v9-candidate-r2/profile.config.toml",
+      "profile_sha256": "dc67b911cd293fc8c367e0bf8a8fa37071a33a93b15988f11eba5715e659d23e",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v8-spark-auto": {
+      "multi_agent": true,
+      "policy_path": "/private/tmp/smart-compact-optimizer-work/benchmarks/experiments/v9-candidate-r2/SKILL.md",
+      "policy_sha256": "dd11cf9c09ff119d82d30709951533dba0bea05c923c633cf55550f0958af381",
+      "profile_path": "/private/tmp/smart-compact-optimizer-work/benchmarks/experiments/v9-candidate-r2/profile.config.toml",
+      "profile_sha256": "dc67b911cd293fc8c367e0bf8a8fa37071a33a93b15988f11eba5715e659d23e",
+      "routing_mode": "auto",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "v8-no-spark",
+    "v8-spark-auto"
+  ],
+  "cases_path": "/private/tmp/smart-compact-optimizer-work/benchmarks/agentic-v8-confirmation.json",
+  "cases_sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {
+    "v8_no_spark_to_auto_spark": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v8-no-spark",
+      "baseline_successes": 1,
+      "both_success": 0,
+      "candidate_arm": "v8-spark-auto",
+      "candidate_successes": 0,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 17.441,
+      "median_parent_token_reduction_pct": 2.311,
+      "median_parent_tokens_saved": 4588,
+      "median_primary_efficiency": 4588.0,
+      "median_saved_per_spawned_worker": 4588.0,
+      "median_saved_per_useful_worker": 4588.0,
+      "median_spawned_worker_count": 1,
+      "median_wall_seconds_saved": 21.956,
+      "median_wall_seconds_saved_per_useful_worker": 21.956,
+      "median_worker_count": 1,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": 2.311,
+          "median_parent_tokens_saved": 4588,
+          "median_primary_efficiency": 4588.0,
+          "median_saved_per_spawned_worker": 4588.0,
+          "median_saved_per_useful_worker": 4588.0,
+          "median_wall_seconds_saved_per_useful_worker": 21.956,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": 2.311,
+          "median_parent_tokens_saved": 4588,
+          "median_primary_efficiency": 4588.0,
+          "median_saved_per_spawned_worker": 4588.0,
+          "median_saved_per_useful_worker": 4588.0,
+          "median_wall_seconds_saved_per_useful_worker": 21.956,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "allowance_or_wall_time_win": false,
+      "baseline_arm": "v8-no-spark",
+      "baseline_success": true,
+      "both_success": false,
+      "candidate_arm": "v8-spark-auto",
+      "candidate_success": false,
+      "case_id": "multi-service-contract-rollout",
+      "combined_token_reduction_pct": -11.588,
+      "comparison": "v8_no_spark_to_auto_spark",
+      "complete": true,
+      "latency_reduction_pct": 17.441,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 2.311,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 4588,
+      "parent_tokens_saved_per_spawned_worker": 4588.0,
+      "parent_tokens_saved_per_useful_worker": 4588.0,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": 4588.0,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 1,
+      "trial": 1,
+      "useful_worker_count": 1,
+      "wall_seconds_saved": 21.956,
+      "wall_seconds_saved_per_useful_worker": 21.956,
+      "wall_time_winner": "candidate",
+      "worker_count": 1
+    }
+  ],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "xhigh",
+  "execution_order": [
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "multi-service-contract-rollout",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "multi-service-contract-rollout",
+      "index": 1,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "multi-service-contract-rollout",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T07:20:24Z",
+  "jobs": 1,
+  "model": "gpt-5.6-luna",
+  "publication_status": {
+    "candidate_all_pass": false,
+    "exploratory_metrics_publishable": false,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": false,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "multi-service-contract-rollout",
+      "category": "multi-service-api-migration",
+      "changed_paths": [
+        "rollout.py",
+        "rollout_report.json",
+        "services/billing.json",
+        "services/checkout.json",
+        "services/fulfillment.json",
+        "services/identity.json",
+        "services/notifications.json",
+        "services/permissions.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 126.216,
+      "combined_total_tokens": 198562,
+      "commands_by_thread": {
+        "019f64a4-0313-7a31-8a40-d516c7a25dfd": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' rollout.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/billing.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' validate.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/notifications.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/fulfillment.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/identity.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/permissions.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/checkout.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,160p' contract/api_contract.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 rollout.py'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.328,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 125.888,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f64a4-0313-7a31-8a40-d516c7a25dfd": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/rollout.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/rollout_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/services/billing.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/services/checkout.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/services/fulfillment.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/services/identity.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/services/notifications.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/services/permissions.json"
+        ]
+      },
+      "final_message": "Completed API contract v2 rollout across all six services. `spark_worker` was unavailable, so work proceeded locally.\n\nChanged:\n\n- Six service configs under `services/`\n- [rollout.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/rollout.py>)\n- [rollout_report.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-no-spark/multi-service-contract-rollout/rollout_report.json>)\n\nVerification:\n\n- `rtk proxy python3 rollout.py` \u2014 exit 0\n- Unit tests \u2014 1 test passed\n- `rtk proxy python3 validate.py` \u2014 exit 0; exact services and mutation probe passed\n\n`contract/api_contract.json`, tests, and `validate.py` were unchanged.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.034,
+            "ok": true,
+            "output": "",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.041,
+            "ok": true,
+            "output": "test_every_service_matches_contract (test_contract_rollout.ContractRolloutTests.test_every_service_matches_contract) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.054,
+            "ok": true,
+            "output": "contract rollout: exact services and mutation probe passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 2,
+            "key": "contract_version",
+            "ok": true,
+            "path": "rollout_report.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": 6,
+            "key": "service_count",
+            "ok": true,
+            "path": "rollout_report.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": [
+              "billing",
+              "checkout",
+              "fulfillment",
+              "identity",
+              "notifications",
+              "permissions"
+            ],
+            "key": "services",
+            "ok": true,
+            "path": "rollout_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 6,
+        "score_pct": 100.0,
+        "total": 6
+      },
+      "item_counts_by_thread": {
+        "019f64a4-0313-7a31-8a40-d516c7a25dfd": {
+          "agentMessage": 8,
+          "commandExecution": 13,
+          "fileChange": 1,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 11,
+        "configWarning": 1,
+        "item/agentMessage/delta": 571,
+        "item/completed": 35,
+        "item/started": 36,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 11,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f64a4-0313-7a31-8a40-d516c7a25dfd",
+      "parent_total_tokens": 198562,
+      "parent_usage": {
+        "cachedInputTokens": 167168,
+        "inputTokens": 192360,
+        "outputTokens": 6202,
+        "reasoningOutputTokens": 2467,
+        "totalTokens": 198562
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 13,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f64a4-0313-7a31-8a40-d516c7a25dfd": 14
+      },
+      "tool_output_chars_by_thread": {
+        "019f64a4-0313-7a31-8a40-d516c7a25dfd": 3483
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "multi-service-contract-rollout",
+      "category": "multi-service-api-migration",
+      "changed_paths": [
+        "rollout.py",
+        "rollout_report.json",
+        "services/billing.json",
+        "services/checkout.json",
+        "services/fulfillment.json",
+        "services/identity.json",
+        "services/notifications.json",
+        "services/permissions.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": true
+      },
+      "child_evidence_markers": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": [
+          "services/billing.json",
+          "services/checkout.json",
+          "services/fulfillment.json",
+          "services/identity.json",
+          "services/notifications.json",
+          "services/permissions.json"
+        ]
+      },
+      "child_final_messages": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": "Migration evidence (current vs target contract):\n\nTarget contract (for every file):  \n- `endpoint`: `/v2/events`  \n- `payload_fields`: `[\"event_id\", \"occurred_at\", \"kind\"]` (exact order)  \n- `headers`: `{\"X-Contract-Version\": \"2\"}`\n\n1. `[services/billing.json](/var/folders/k6/3htkbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/billing.json)`  \n- Provenance: `rtk cat services/billing.json`  \n- Current: `service = \"billing\"`, `endpoint = \"/v1/events\"`, `payload_fields = [\"id\", \"timestamp\", \"type\"]`, `headers = {}`  \n- Target comparison: endpoint wrong, payload fields wrong, header missing, service name preserved (`billing`)  \n- Migration needed: **yes**\n\n2. `[services/checkout.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/checkout.json)`  \n- Provenance: `rtk cat services/checkout.json`  \n- Current: `service = \"checkout\"`, `endpoint = \"/v1/events\"`, `payload_fields = [\"id\", \"timestamp\", \"type\"]`, `headers = {}`  \n- Target comparison: endpoint wrong, payload fields wrong, header missing, service name preserved (`checkout`)  \n- Migration needed: **yes**\n\n3. `[services/identity.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/identity.json)`  \n- Provenance: `rtk cat services/identity.json`  \n- Current: `service = \"identity\"`, `endpoint = \"/v1/events\"`, `payload_fields = [\"id\", \"timestamp\", \"type\"]`, `headers = {}`  \n- Target comparison: endpoint wrong, payload fields wrong, header missing, service name preserved (`identity`)  \n- Migration needed: **yes**\n\n4. `[services/permissions.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/permissions.json)`  \n- Provenance: `rtk cat services/permissions.json`  \n- Current: `service = \"permissions\"`, `endpoint = \"/v1/events\"`, `payload_fields = [\"id\", \"timestamp\", \"type\"]`, `headers = {}`  \n- Target comparison: endpoint wrong, payload fields wrong, header missing, service name preserved (`permissions`)  \n- Migration needed: **yes**\n\n5. `[services/fulfillment.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/fulfillment.json)`  \n- Provenance: `rtk cat services/fulfillment.json`  \n- Current: `service = \"fulfillment\"`, `endpoint = \"/v1/events\"`, `payload_fields = [\"id\", \"timestamp\", \"type\"]`, `headers = {}`  \n- Target comparison: endpoint wrong, payload fields wrong, header missing, service name preserved (`fulfillment`)  \n- Migration needed: **yes**\n\n6. `[services/notifications.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/notifications.json)`  \n- Provenance: `rtk cat services/notifications.json`  \n- Current: `service = \"notifications\"`, `endpoint = \"/v1/events\"`, `payload_fields = [\"id\", \"timestamp\", \"type\"]`, `headers = {}`  \n- Target comparison: endpoint wrong, payload fields wrong, header missing, service name preserved (`notifications`)  \n- Migration needed: **yes**\n\nSummary: all six files are at the same pre-migration state; each service requires migration to the target contract."
+      },
+      "child_io_ok": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": true
+      },
+      "child_missing_evidence_markers": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f64a2-af36-7701-8a0e-3b07e3384f32"
+      ],
+      "child_total_tokens": 27598,
+      "child_turn_errors": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": null
+      },
+      "child_turn_statuses": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": "completed"
+      },
+      "child_usage": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": {
+          "cachedInputTokens": 16512,
+          "inputTokens": 25238,
+          "outputTokens": 2360,
+          "reasoningOutputTokens": 1094,
+          "totalTokens": 27598
+        }
+      },
+      "collection_duration_seconds": 104.258,
+      "combined_total_tokens": 221572,
+      "commands_by_thread": {
+        "019f64a2-6a74-74e1-b8c8-7366cc377cc1": [
+          "/bin/zsh -lc 'rtk proxy rg --files'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' services/billing.json services/checkout.json services/identity.json services/permissions.json services/fulfillment.json services/notifications.json contract/api_contract.json tests/test_contract_rollout.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 rollout.py'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ],
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": [
+          "/bin/zsh -lc 'rtk cat services/fulfillment.json'",
+          "/bin/zsh -lc 'rtk cat services/checkout.json'",
+          "/bin/zsh -lc 'rtk cat services/notifications.json'",
+          "/bin/zsh -lc 'rtk cat services/identity.json'",
+          "/bin/zsh -lc 'rtk cat services/billing.json'",
+          "/bin/zsh -lc 'rtk cat services/permissions.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.326,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "commerce",
+            "markers": [
+              "services/billing.json",
+              "services/checkout.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "identity-access",
+            "markers": [
+              "services/identity.json",
+              "services/permissions.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "operations",
+            "markers": [
+              "services/fulfillment.json",
+              "services/notifications.json"
+            ],
+            "weight": 2
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 103.932,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f64a2-6a74-74e1-b8c8-7366cc377cc1": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/rollout.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/billing.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/checkout.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/fulfillment.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/identity.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/notifications.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/permissions.json"
+        ]
+      },
+      "final_message": "Implemented API contract v2 across all six services.\n\nChanged:\n\n- `services/{billing,checkout,fulfillment,identity,notifications,permissions}.json`\n- [rollout.py](.../rollout.py)\n- [rollout_report.json](.../rollout_report.json)\n\nReport:\n\n```json\n{\"contract_version\":2,\"service_count\":6,\"services\":[\"billing\",\"checkout\",\"fulfillment\",\"identity\",\"notifications\",\"permissions\"]}\n```\n\nVerification:\n\n- `rtk proxy python3 rollout.py` \u2014 passed\n- `rtk proxy python3 -m unittest discover -s tests -v` \u2014 1 test passed\n- `rtk proxy python3 validate.py` \u2014 `contract rollout: exact services and mutation probe passed`",
+      "first_spawn_seconds": 17.573,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.032,
+            "ok": true,
+            "output": "",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.041,
+            "ok": true,
+            "output": "test_every_service_matches_contract (test_contract_rollout.ContractRolloutTests.test_every_service_matches_contract) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.054,
+            "ok": true,
+            "output": "contract rollout: exact services and mutation probe passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 2,
+            "key": "contract_version",
+            "ok": true,
+            "path": "rollout_report.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": 6,
+            "key": "service_count",
+            "ok": true,
+            "path": "rollout_report.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": [
+              "billing",
+              "checkout",
+              "fulfillment",
+              "identity",
+              "notifications",
+              "permissions"
+            ],
+            "key": "services",
+            "ok": true,
+            "path": "rollout_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 6,
+        "score_pct": 100.0,
+        "total": 6
+      },
+      "item_counts_by_thread": {
+        "019f64a2-6a74-74e1-b8c8-7366cc377cc1": {
+          "agentMessage": 4,
+          "collabAgentToolCall": 1,
+          "commandExecution": 6,
+          "fileChange": 1,
+          "reasoning": 12,
+          "userMessage": 1
+        },
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": {
+          "agentMessage": 2,
+          "commandExecution": 6,
+          "reasoning": 2,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 13,
+        "configWarning": 1,
+        "item/agentMessage/delta": 320,
+        "item/completed": 36,
+        "item/started": 36,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 13,
+        "turn/completed": 2,
+        "turn/diff/updated": 7,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f64a2-6a74-74e1-b8c8-7366cc377cc1",
+      "parent_total_tokens": 193974,
+      "parent_usage": {
+        "cachedInputTokens": 157952,
+        "inputTokens": 188805,
+        "outputTokens": 5169,
+        "reasoningOutputTokens": 2254,
+        "totalTokens": 193974
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/billing.json",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/checkout.json",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/fulfillment.json",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/identity.json",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/notifications.json",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-4v7tive_/multi-service-contract-rollout-trial-1-v8-spark-auto/multi-service-contract-rollout/services/permissions.json"
+      ],
+      "parent_worker_read_overlap_ok": false,
+      "parent_worker_read_overlap_paths": [
+        "services/billing.json",
+        "services/checkout.json",
+        "services/fulfillment.json",
+        "services/identity.json",
+        "services/notifications.json",
+        "services/permissions.json"
+      ],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": [
+          "commerce",
+          "identity-access",
+          "operations"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "commerce": 1,
+        "identity-access": 1,
+        "operations": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 12,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 16.908,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": {
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "partition_ids: commerce, identity-access, operations\n\nExclusive paths: services/billing.json, services/checkout.json, services/identity.json, services/permissions.json, services/fulfillment.json, services/notifications.json. You own all six paths read-only; no overlapping ownership exists. Mechanically inspect each current service configuration and compare it with the target API contract: endpoint /v2/events, payload fields exactly [\"event_id\", \"occurred_at\", \"kind\"] in that order, header X-Contract-Version: 2, preserving each service name. Return current-to-target migration evidence with provenance for every file (path, current relevant values, target comparison, and whether migration is needed). Do not edit files, do not inspect tests, validate.py, acceptance harness, or sibling solutions. Shell constraint: every shell command must start with literal rtk; use rtk proxy when raw output is required and retain rtk in acceptance commands; never run cd/chdir; use the provided working directory. If rtk cannot launch, report wrapper failure."
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f64a2-6a74-74e1-b8c8-7366cc377cc1": 8,
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f64a2-6a74-74e1-b8c8-7366cc377cc1": 2580,
+        "019f64a2-af36-7701-8a0e-3b07e3384f32": 838
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f64a2-af36-7701-8a0e-3b07e3384f32"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-optimizer-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": false
+}

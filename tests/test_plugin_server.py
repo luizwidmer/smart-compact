@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import itertools
 import os
 import queue
 import subprocess
@@ -11,10 +12,15 @@ import tomllib
 import unittest
 from pathlib import Path
 
+from scripts.select_optimizer_profile import load_table, recommend
+
 
 ROOT = Path(__file__).parents[1]
 SERVER = ROOT / "plugin" / "mcp" / "server.mjs"
 PLUGIN_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact.config.json"
+NATURAL_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v8-natural.config.json"
+V6_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v6.config.json"
+V8_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v8.config.json"
 NATIVE_PROFILE = ROOT / "profiles" / "smart-compact.config.toml"
 SMART_COMPACT_LABEL = "Smart Compact (recommended)"
 
@@ -189,9 +195,218 @@ class PluginServerTests(unittest.TestCase):
             profiles = response["result"]["structuredContent"]["profiles"]
             self.assertEqual(
                 [profile["id"] for profile in profiles],
-                ["smart-compact", "zeta", "__codex_default__"],
+                [
+                    "smart-compact",
+                    "smart-compact-v6",
+                    "smart-compact-v8",
+                    "smart-compact-v8-natural",
+                    "zeta",
+                    "__codex_default__",
+                ],
             )
             self.assertEqual(profiles[0]["source"], "bundled")
+
+    def test_optimizer_recommends_terse_for_auto_and_natural_for_local_general(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            codex_home = Path(directory) / ".codex"
+            codex_home.mkdir()
+            with McpProcess(environment(codex_home)) as client:
+                responses = []
+                for request_id, routing_mode in ((2, "auto_spark"), (3, "no_spark")):
+                    client.send(
+                        {
+                            "jsonrpc": "2.0",
+                            "id": request_id,
+                            "method": "tools/call",
+                            "params": {
+                                "name": "smart_compact_recommend_profile",
+                                "arguments": {
+                                    "routingMode": routing_mode,
+                                    "taskShape": "general",
+                                },
+                            },
+                        }
+                    )
+                    responses.append(client.receive())
+            self.assertEqual(
+                responses[0]["result"]["structuredContent"]["profile"],
+                "smart-compact-v8",
+            )
+            self.assertEqual(
+                responses[1]["result"]["structuredContent"]["profile"],
+                "smart-compact-v8-natural",
+            )
+
+    def test_optimizer_plugin_matches_all_8_package_decisions(self) -> None:
+        table = load_table()
+        dimensions = table["dimensions"]
+        combinations = itertools.product(
+            dimensions["routing_mode"],
+            dimensions["task_shape"],
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            codex_home = Path(directory) / ".codex"
+            codex_home.mkdir()
+            with McpProcess(environment(codex_home)) as client:
+                for request_id, values in enumerate(combinations, start=2):
+                    routing_mode, task_shape = values
+                    client.send(
+                        {
+                            "jsonrpc": "2.0",
+                            "id": request_id,
+                            "method": "tools/call",
+                            "params": {
+                                "name": "smart_compact_recommend_profile",
+                                "arguments": {
+                                    "routingMode": routing_mode,
+                                    "taskShape": task_shape,
+                                },
+                            },
+                        }
+                    )
+                    response = client.receive()
+                    self.assertEqual(
+                        response["result"]["structuredContent"]["profile"],
+                        recommend(*values, table=table)["profile"],
+                        values,
+                    )
+
+    def test_optimized_local_task_uses_frozen_profile_and_zero_token_toggle(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codex_home = root / ".codex"
+            workspace = root / "workspace"
+            codex_home.mkdir()
+            workspace.mkdir()
+            (codex_home / "smart-compact-v6.config.toml").write_text(
+                "developer_instructions = 'custom drift'\n",
+                encoding="utf-8",
+            )
+            executable, args_path, thread_path, _ = fake_codex(root)
+            with McpProcess(environment(codex_home, executable), form=False) as client:
+                client.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 2,
+                        "method": "tools/call",
+                        "params": {
+                            "name": "smart_compact_start_optimized_task",
+                            "arguments": {
+                                "workspacePath": str(workspace),
+                                "routingMode": "no_spark",
+                                "taskShape": "implementation",
+                            },
+                        },
+                    }
+                )
+                response = client.receive()
+            result = response["result"]["structuredContent"]
+            self.assertEqual(result["status"], "created")
+            self.assertEqual(result["profile"], "smart-compact-v6")
+            self.assertTrue(result["routingEnforced"])
+            self.assertEqual(
+                json.loads(args_path.read_text()),
+                ["app-server", "--listen", "stdio://"],
+            )
+            expected = json.loads(V6_PROFILE.read_text())
+            expected["features"] = {"multi_agent": False}
+            self.assertEqual(json.loads(thread_path.read_text())["config"], expected)
+
+    def test_optimized_auto_task_enables_multi_agent_before_inference(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codex_home = root / ".codex"
+            workspace = root / "workspace"
+            codex_home.mkdir()
+            workspace.mkdir()
+            executable, _, thread_path, _ = fake_codex(root)
+            with McpProcess(environment(codex_home, executable), form=False) as client:
+                client.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 2,
+                        "method": "tools/call",
+                        "params": {
+                            "name": "smart_compact_start_optimized_task",
+                            "arguments": {
+                                "workspacePath": str(workspace),
+                                "routingMode": "auto_spark",
+                                "taskShape": "general",
+                            },
+                        },
+                    }
+                )
+                response = client.receive()
+            result = response["result"]["structuredContent"]
+            self.assertEqual(result["profile"], "smart-compact-v8")
+            expected = json.loads(V8_PROFILE.read_text())
+            expected["features"] = {"multi_agent": True}
+            self.assertEqual(json.loads(thread_path.read_text())["config"], expected)
+
+    def test_explicit_bundled_profile_starts_without_form_support(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codex_home = root / ".codex"
+            workspace = root / "workspace"
+            codex_home.mkdir()
+            workspace.mkdir()
+            executable, args_path, thread_path, _ = fake_codex(root)
+            with McpProcess(environment(codex_home, executable), form=False) as client:
+                client.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 2,
+                        "method": "tools/call",
+                        "params": {
+                            "name": "smart_compact_start_task",
+                            "arguments": {
+                                "workspacePath": str(workspace),
+                                "profileId": "smart-compact-v8-natural",
+                            },
+                        },
+                    }
+                )
+                response = client.receive()
+            self.assertEqual(response["result"]["structuredContent"]["status"], "created")
+            self.assertEqual(
+                response["result"]["structuredContent"]["profile"],
+                "smart-compact-v8-natural",
+            )
+            self.assertEqual(
+                json.loads(args_path.read_text()),
+                ["app-server", "--listen", "stdio://"],
+            )
+            self.assertEqual(
+                json.loads(thread_path.read_text())["config"],
+                json.loads(NATURAL_PROFILE.read_text()),
+            )
+
+    def test_invalid_explicit_profile_does_not_spawn_codex(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codex_home = root / ".codex"
+            workspace = root / "workspace"
+            codex_home.mkdir()
+            workspace.mkdir()
+            executable, args_path, _, _ = fake_codex(root)
+            with McpProcess(environment(codex_home, executable), form=False) as client:
+                client.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 2,
+                        "method": "tools/call",
+                        "params": {
+                            "name": "smart_compact_start_task",
+                            "arguments": {
+                                "workspacePath": str(workspace),
+                                "profileId": "missing-profile",
+                            },
+                        },
+                    }
+                )
+                response = client.receive()
+            self.assertTrue(response["result"]["isError"])
+            self.assertFalse(args_path.exists())
 
     def test_picker_creates_task_with_installed_named_profile(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

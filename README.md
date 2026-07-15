@@ -2,7 +2,7 @@
 
 [Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex profile and skill for reducing parent-model token use while preserving correctness, safety, and exact task constraints.
 
-V8 is the current profile. It uses terse machine-oriented instructions, native Codex compaction, bounded tool history, and optional Spark offload. Parent tokens are the primary objective; Spark and combined tokens are disclosed separately.
+V8 is the default profile. The experimental optimizer package also installs the frozen v6 compatibility profile and the tested natural-language v8 lane, then recommends a lane before a new task starts. Parent tokens are the primary objective; Spark and combined tokens are disclosed separately.
 
 ## Install
 
@@ -26,18 +26,29 @@ V6 remains available as the frozen compatibility version:
 ./install.sh --version v6
 ```
 
-The installer always installs both versions side by side: CLI profiles `smart-compact-v6` and `smart-compact-v8`, plus skills `$smart-compact-v6` and `$smart-compact-v8`. `--version` only selects the `smart-compact` / `$smart-compact` compatibility alias and default target. The installer is idempotent and preserves differing files unless `--force` is supplied. It also supports `--dry-run`, `--no-spark`, `--no-profile`, `--no-plugin`, and `--make-default`. Restart Codex or open a new task after installation.
+The installer keeps `--version v6` and `--version v8` as the alias choices. It installs both frozen versions plus the `smart-compact-v8-natural` optimizer lane side by side. The installer is idempotent and preserves differing files unless `--force` is supplied. It also supports `--dry-run`, `--no-spark`, `--no-profile`, `--no-plugin`, and `--make-default`. Restart Codex or open a new task after installation.
 
 ## Use
 
 - Selected CLI alias: `codex --profile smart-compact`
-- Versioned CLI profiles: `codex --profile smart-compact-v6` or `codex --profile smart-compact-v8`
-- Existing task: `$smart-compact`, `$smart-compact-v6`, or `$smart-compact-v8`
+- Versioned CLI profiles: `smart-compact-v6`, `smart-compact-v8`, or `smart-compact-v8-natural`
+- Existing task skills: `$smart-compact`, `$smart-compact-v6`, `$smart-compact-v8`, or `$smart-compact-v8-natural`
 - Codex app: select `@Smart Compact`
 
 ```text
 Use $smart-compact. Minimize parent-model tokens while preserving all requirements and verification.
 ```
+
+For a new task, select the lane from routing mode and task shape:
+
+```bash
+python3 scripts/select_optimizer_profile.py \
+  --routing-mode auto_spark \
+  --task-shape general \
+  --format command
+```
+
+The command includes a config-level multi-agent toggle, so routing state adds no prompt tokens. The plugin exposes the same read-only recommendation and can create an empty optimized task with the exact bundled profile and routing configuration. Profile selection happens before task creation; it does not change the current task. See [`optimizer/README.md`](optimizer/README.md) for the lane rules and evidence boundary.
 
 ## What v8 changes
 
@@ -99,7 +110,7 @@ The release used one observation per cell, seed `20260721`, Codex `0.144.1`, and
 - Parallel execution makes release wall time nonpublishable.
 - Parent-token savings are not total-cost savings when combined tokens increase.
 
-A separate 42-cell verbose natural-language sensitivity experiment is documented in [`RESEARCH.md`](RESEARCH.md). It is not pooled into the 66-cell release and does not change the installed terse v8 profile.
+A separate 42-cell verbose natural-language sensitivity experiment is documented in [`RESEARCH.md`](RESEARCH.md). It is not pooled into the 66-cell release; its exact treatment is now installed as the optional natural lane while terse v8 remains the default.
 
 ## Validate
 
@@ -107,6 +118,8 @@ A separate 42-cell verbose natural-language sensitivity experiment is documented
 python3 scripts/benchmark_v8.py \
   --cases benchmarks/agentic-v8-confirmation.json \
   --validate-fixtures
+
+python3 scripts/verify_optimizer_package.py
 
 python3 -m unittest discover -s tests -v
 ```

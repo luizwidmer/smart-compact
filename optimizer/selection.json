@@ -1,0 +1,109 @@
+{
+  "schema_version": 2,
+  "objective": "minimize_parent_model_tokens",
+  "selection_stage": "before_task_creation",
+  "dimensions": {
+    "routing_mode": ["no_spark", "auto_spark"],
+    "task_shape": ["implementation", "migration", "handoff", "general"]
+  },
+  "task_shape_help": {
+    "implementation": "Path-disjoint implementations of the same contract.",
+    "migration": "Repetitive path-disjoint edits under one shared migration contract.",
+    "handoff": "Tightly coupled parent work with at most one externally supplied handoff.",
+    "general": "Any task not known to match a measured shape."
+  },
+  "replay_case_shapes": {
+    "legacy-calculator": "implementation",
+    "monorepo-sdk-migration": "migration",
+    "legacy-relay-bench": "handoff"
+  },
+  "routing_treatments": {
+    "no_spark": {
+      "enforcement": "config_before_inference",
+      "cli_args": ["--disable", "multi_agent"],
+      "thread_config": {"features": {"multi_agent": false}}
+    },
+    "auto_spark": {
+      "enforcement": "config_before_inference",
+      "cli_args": ["--enable", "multi_agent"],
+      "thread_config": {"features": {"multi_agent": true}}
+    }
+  },
+  "profiles": {
+    "v6": {
+      "profile": "smart-compact-v6",
+      "skill": "smart-compact-v6",
+      "role": "frozen_local_implementation"
+    },
+    "v8-terse": {
+      "profile": "smart-compact-v8",
+      "skill": "smart-compact-v8",
+      "role": "terse_auto_routing"
+    },
+    "v8-natural": {
+      "profile": "smart-compact-v8-natural",
+      "skill": "smart-compact-v8-natural",
+      "role": "natural_local_fallback"
+    }
+  },
+  "rules": [
+    {
+      "when": {"routing_mode": "auto_spark"},
+      "lane": "v8-terse",
+      "reason_code": "auto_aggregate_terse",
+      "evidence_tier": "directional_harness"
+    },
+    {
+      "when": {"routing_mode": "no_spark", "task_shape": "implementation"},
+      "lane": "v6",
+      "reason_code": "local_implementation_v6",
+      "evidence_tier": "task_shape_aggregate"
+    },
+    {
+      "when": {"routing_mode": "no_spark"},
+      "lane": "v8-natural",
+      "reason_code": "local_other_natural",
+      "evidence_tier": "task_shape_aggregate"
+    }
+  ],
+  "evidence": {
+    "auto_aggregate_terse": "Natural auto used 90,588 more parent tokens than terse across 9 cells.",
+    "local_implementation_v6": "Frozen v6 used 31,359 fewer parent tokens than terse across the 4-setting implementation aggregate.",
+    "local_other_natural": "Natural no-Spark used 1,048,078 fewer parent tokens than terse across the remaining 17 cells."
+  },
+  "counterfactual_replay": {
+    "kind": "selector_replay_over_single_pass_observations_not_fresh_inference",
+    "scope": "no_spark_only",
+    "excluded_treatment": "auto_spark_used_a_harness_availability_prompt_and_forced_spark_used_a_harness_handoff",
+    "cells": 21,
+    "all_terse_parent_tokens": 4509801,
+    "selected_parent_tokens": 3430364,
+    "parent_tokens_saved_vs_all_terse": 1079437,
+    "parent_token_reduction_pct_vs_all_terse": 23.935,
+    "by_routing_mode": {
+      "no_spark": {"cells": 21, "all_terse_parent_tokens": 4509801, "selected_parent_tokens": 3430364}
+    }
+  },
+  "sources": [
+    {
+      "path": "benchmarks/results/v8-release-summary.json",
+      "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"
+    },
+    {
+      "path": "benchmarks/results/v8-verbose-comparison.json",
+      "sha256": "c8ff91cb7afca507d35d2d8783973fbc55bcfe42c91f6e02da0110421f250c86"
+    },
+    {
+      "path": "profiles/smart-compact-v6.config.toml",
+      "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
+    },
+    {
+      "path": "profiles/smart-compact-v8.config.toml",
+      "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    },
+    {
+      "path": "profiles/smart-compact-v8-natural.config.toml",
+      "sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717"
+    }
+  ]
+}

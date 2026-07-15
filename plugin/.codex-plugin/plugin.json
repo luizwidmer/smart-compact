@@ -1,7 +1,7 @@
 {
   "name": "smart-compact",
-  "version": "0.1.0+codex.20260714143020",
-  "description": "Pick a Codex profile and create a new task with it from the Codex app.",
+  "version": "0.1.0+codex.20260715080408",
+  "description": "Recommend a token-saving Codex profile and create a new task with it.",
   "author": {
     "name": "Luiz Widmer",
     "url": "https://github.com/luizwidmer"
@@ -19,8 +19,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Smart Compact",
-    "shortDescription": "Pick a profile before a new Codex task starts.",
-    "longDescription": "Use an in-app profile picker to create a new Codex task with Smart Compact, another installed named profile, or the shared default configuration. Also includes the Smart Compact token-efficiency skill.",
+    "shortDescription": "Optimize the profile before a new Codex task starts.",
+    "longDescription": "Recommend an experimental Smart Compact lane from no-Spark or auto-Spark mode and task shape, enforce routing through zero-prompt-token task configuration, or use the manual profile picker.",
     "developerName": "Luiz Widmer",
     "category": "Productivity",
     "capabilities": [
@@ -29,9 +29,9 @@
     ],
     "websiteURL": "https://github.com/luizwidmer/smart-compact",
     "defaultPrompt": [
-      "Start a Smart Compact task in this workspace",
+      "Recommend a Smart Compact profile for my next task",
       "Show my available Codex profiles",
-      "Create a task and let me pick its profile"
+      "Start an optimized Smart Compact task here"
     ],
     "brandColor": "#6757E8",
     "composerIcon": "./assets/icon.svg",

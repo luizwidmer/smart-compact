@@ -147,7 +147,33 @@ Within the verbose treatment, forced Spark reduced the matching anchor no-Spark 
 
 The verbose run produced 45 cell observations for 42 accepted cells. A calculator Luna/max forced attempt failed task correctness and was replaced by one targeted retry. A migration SOL/medium forced attempt failed in an interrupted artifact and was replaced by one targeted retry. A Relay Luna/max pass was preserved in an incomplete checkpoint and rerun once solely to obtain complete top-level provenance. All attempts remain in `benchmarks/results/raw/v8-verbose/`; none is averaged. The verifier binds 16 complete source artifacts and explicitly excludes the complete failed calculator attempt.
 
-This experiment is exploratory. It has no fresh Standard/v6 controls, one observation per cell, possible provider drift, and contention-affected wall time. It is not pooled into the release and does not change the installed terse v8 profile.
+This experiment is exploratory. It has no fresh Standard/v6 controls, one observation per cell, possible provider drift, and contention-affected wall time. It is not pooled into the release. Its exact treatment is packaged as an optional optimizer lane; terse v8 remains the alias default.
+
+## Post-release optimization package
+
+Two frozen static hybrids were first tested on the worst verbose-auto cell, `multi-service-contract-rollout` at Luna/xhigh. Both completed the task correctly but failed promotion:
+
+| Candidate | Paired no-Spark parent | Auto parent | Parent saved | Workers | Promotion result |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Hybrid R1 | 185,029 | 175,377 | 9,652 (5.216%) | 1 useful | Rejected: 1,887 tokens above the prior terse-auto result |
+| Hybrid R2 | 198,562 | 193,974 | 4,588 (2.311%) | 1 useful | Rejected: still spawned and regressed further |
+
+The misses were protocol diagnostics, not task-correctness failures. R1 used 39,426 Spark child tokens; R2 used 27,598. Their frozen inputs and raw outputs remain under [`benchmarks/experiments/`](benchmarks/experiments) and [`benchmarks/results/raw/`](benchmarks/results/raw), but neither became an installed profile.
+
+| Target artifact | SHA-256 |
+| --- | --- |
+| [`v9-candidate-target-multi-service-luna-xhigh.json`](benchmarks/results/raw/v9-candidate-target-multi-service-luna-xhigh.json) | `19638988a0afa69c3ac3c4023dc5aa926de90bbc9676b8a5d479ff3d5b357115` |
+| [`v9-candidate-r2-target-multi-service-luna-xhigh.json`](benchmarks/results/raw/v9-candidate-r2-target-multi-service-luna-xhigh.json) | `008cb936ead2743bd24bc52dc88c849bfa22fc9df21847c5adabab62eec816a5` |
+
+The resulting experimental package uses executable conditional lane selection instead of another static blend:
+
+- terse v8 for automatic routing, where natural v8 used 90,588 more parent tokens across nine cells;
+- frozen v6 for the four-setting no-Spark implementation aggregate, where it used 31,359 fewer parent tokens than terse v8;
+- natural v8 for the remaining 17 no-Spark cells, where it used 1,048,078 fewer parent tokens than terse v8.
+
+No-Spark and production auto-Spark use a pre-inference `multi_agent` configuration toggle, which adds no prompt tokens. The historical auto arm also injected a Spark-availability instruction, so it informs the terse-lane direction but is excluded from the package replay. Forced Spark stays benchmark-only because its harness-supplied handoff cannot be reproduced by a profile without adding instructions or changing the treatment.
+
+The machine-readable rules live in [`optimizer/selection.json`](optimizer/selection.json). A counterfactual replay over the existing 21 no-Spark cells selects 3,430,364 parent tokens versus 4,509,801 for all-terse v8, a difference of 1,079,437 (23.935%). This replay is explicitly not fresh inference or a release claim; it is a development estimate used to choose the next held-out validation matrix.
 
 Frozen verbose treatment hashes:
 

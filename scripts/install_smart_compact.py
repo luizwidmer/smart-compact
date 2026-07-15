@@ -25,6 +25,8 @@ SOURCE_ROOT = Path(__file__).parents[1]
 SKILL_NAME = "smart-compact"
 PROFILE_FILENAME = "smart-compact.config.toml"
 SUPPORTED_VERSIONS = ("v6", "v8")
+OPTIMIZER_LANES = ("v8-natural",)
+INSTALLABLE_VARIANTS = SUPPORTED_VERSIONS + OPTIMIZER_LANES
 AGENT_FILENAME = "spark-worker.toml"
 PLUGIN_NAME = "smart-compact"
 MARKETPLACE_NAME = "personal"
@@ -232,7 +234,7 @@ def profile_contents(source_root: Path) -> dict[str, str]:
         version: (
             source_root / "profiles" / f"smart-compact-{version}.config.toml"
         ).read_text(encoding="utf-8")
-        for version in SUPPORTED_VERSIONS
+        for version in INSTALLABLE_VARIANTS
     }
 
 
@@ -407,7 +409,7 @@ def install_package(
         personal_root = skill_root.parent.parent
     versioned_skills = {
         candidate: skill_contents(source_root / "versions" / candidate)
-        for candidate in SUPPORTED_VERSIONS
+        for candidate in INSTALLABLE_VARIANTS
     }
     compatibility_skills = {
         candidate: compatibility_skill_contents(source_root, candidate)
@@ -422,7 +424,7 @@ def install_package(
             force=force,
             dry_run=dry_run,
         )
-        for candidate in SUPPORTED_VERSIONS
+        for candidate in INSTALLABLE_VARIANTS
     ]
     results.append(
         install_content_tree(
@@ -436,7 +438,7 @@ def install_package(
     )
 
     if include_profile:
-        for candidate in SUPPORTED_VERSIONS:
+        for candidate in INSTALLABLE_VARIANTS:
             results.append(
                 install_file(
                     f"profile-{candidate}",
@@ -653,7 +655,8 @@ def main() -> int:
         if not args.no_profile:
             print(
                 f"CLI profiles: codex --profile smart-compact "
-                f"or codex --profile smart-compact-{args.version}"
+                f"or codex --profile smart-compact-{args.version}; "
+                "optimizer lane: codex --profile smart-compact-v8-natural"
             )
         if args.make_default:
             print("Default profile: Smart Compact settings are active in new CLI and app tasks")

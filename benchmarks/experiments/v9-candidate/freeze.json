@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-15T07:06:46Z",
+  "candidate": "smart-compact-v9",
+  "status": "target_gate_input_frozen_before_inference",
+  "primary_objective": "parent_total_tokens",
+  "secondary_objective": "fewest_spawned_workers_for_parent_tokens_saved",
+  "method": {
+    "v6_strengths": [
+      "explicit bounded-work contract",
+      "exact target-root edit boundary",
+      "no sibling, prior-arm, memory, or acceptance-harness inspection",
+      "verbatim acceptance and diagnosed retry"
+    ],
+    "v8_strengths": [
+      "native-default automatic compaction",
+      "1500-token stored tool-output limit",
+      "lossless machine compaction handoff",
+      "work-replacing Spark delegation with no parent worker cap"
+    ],
+    "verbose_strength": "natural-language parent instructions",
+    "new_routing_rule": "Spark availability is not a spawn command; stay local unless comparable evidence or explicit user priority makes expected parent-token return positive after batching"
+  },
+  "treatment": {
+    "changed": [
+      "parent_profile.developer_instructions",
+      "auto_routing.spark_available_instruction"
+    ],
+    "skill_input": false,
+    "unchanged": [
+      "model_verbosity",
+      "model_reasoning_summary",
+      "personality",
+      "tool_output_token_limit",
+      "compact_prompt",
+      "automatic_compaction_default",
+      "Spark worker profile and instructions",
+      "task fixture, model, effort, seed, and repetitions"
+    ]
+  },
+  "target_gate": {
+    "case_id": "multi-service-contract-rollout",
+    "manifest": "benchmarks/agentic-v8-confirmation.json",
+    "arms": [
+      "v8-no-spark",
+      "v8-spark-auto"
+    ],
+    "model": "gpt-5.6-luna",
+    "effort": "xhigh",
+    "seed": 20260721,
+    "repetitions": 1,
+    "jobs": 1,
+    "prior_parent_tokens": {
+      "terse_v8_no_spark": 183945,
+      "terse_v8_auto": 173490,
+      "verbose_v8_no_spark": 149210,
+      "verbose_v8_auto": 221207
+    },
+    "hard_gates": [
+      "both cells pass task correctness and acceptance",
+      "candidate profile and policy hashes bind both cells",
+      "parent usage is complete and all children drain",
+      "candidate auto parent tokens are below the best prior auto result of 173490",
+      "candidate auto spawns no more than one worker"
+    ],
+    "preferred_not_blocking": [
+      "candidate no-Spark beats terse v8 no-Spark",
+      "candidate auto does not exceed the paired candidate no-Spark parent total",
+      "candidate auto stays local when six small structured files fit one batched parent read"
+    ],
+    "protocol_note": "A stay-local decision can miss the legacy fixture's required-when-available routing protocol while still satisfying the graded task; disclose it without treating it as task failure."
+  },
+  "artifacts": {
+    "candidate_profile": {
+      "path": "benchmarks/experiments/v9-candidate/profile.config.toml",
+      "sha256": "47ec7905587a5b849550aa04383006fd39cc0ba16b3bde2574ceb11413bb77ae"
+    },
+    "candidate_policy": {
+      "path": "benchmarks/experiments/v9-candidate/SKILL.md",
+      "sha256": "773d5d6f501ef5fb6268e600a50f6239b1572bd748fcec542acd31823917f959"
+    },
+    "candidate_wrapper": {
+      "path": "scripts/benchmark_v9_candidate.py",
+      "sha256": "fdc7bb8d804afd889dc90853b5d0942215b7a8208c59c8f647479eb64953867e"
+    },
+    "base_runner": {
+      "path": "scripts/benchmark_v8.py",
+      "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea"
+    },
+    "manifest": {
+      "path": "benchmarks/agentic-v8-confirmation.json",
+      "sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534"
+    },
+    "spark_agent": {
+      "path": ".codex/agents/spark-worker.toml",
+      "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+    },
+    "v6_profile": {
+      "path": "profiles/smart-compact-v6.config.toml",
+      "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
+    },
+    "v8_profile": {
+      "path": "profiles/smart-compact-v8.config.toml",
+      "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    },
+    "verbose_profile": {
+      "path": "benchmarks/experiments/v8-verbose/profile.config.toml",
+      "sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717"
+    },
+    "release_summary": {
+      "path": "benchmarks/results/v8-release-summary.json",
+      "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"
+    },
+    "verbose_summary": {
+      "path": "benchmarks/results/v8-verbose-comparison.json",
+      "sha256": "c8ff91cb7afca507d35d2d8783973fbc55bcfe42c91f6e02da0110421f250c86"
+    },
+    "dependency_lock": {
+      "path": "requirements-benchmark.txt",
+      "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0"
+    }
+  },
+  "runtime": {
+    "codex": "codex-cli 0.144.1",
+    "rtk": "rtk 0.43.0"
+  },
+  "policy_static_score": {
+    "tokens": 465,
+    "projected_trace_calls": 7,
+    "safety_checks": "6/6",
+    "hard_budget": false
+  }
+}

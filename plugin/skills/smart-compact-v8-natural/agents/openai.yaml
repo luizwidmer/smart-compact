@@ -1,0 +1,6 @@
+interface:
+  display_name: "Smart Compact v8 Natural"
+  short_description: "Natural contract for local or forced-Spark work"
+  default_prompt: "Use $smart-compact-v8-natural to minimize parent-model tokens while preserving correctness, safety, exact constraints, and decisive verification. Use this lane for explicit local work or explicit Spark offload."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-15T07:15:19Z",
+  "candidate": "smart-compact-v9-r2",
+  "status": "target_gate_input_frozen_before_inference",
+  "primary_objective": "parent_total_tokens",
+  "secondary_objective": "fewest_spawned_workers_for_parent_tokens_saved",
+  "revision_reason": "Revision 1 improved the verbose auto result by 45830 parent tokens but missed the best prior auto result by 1887 tokens. Its routing policy burdened every arm and still spawned. Revision 2 restores a concise natural parent contract and moves the decisive expected-return rule into the auto-only Spark preflight.",
+  "treatment": {
+    "parent_contract": "381-token natural-language synthesis of the proven verbose contract and v6 bounded-work safeguards",
+    "auto_preflight": "stay local for read-only inspection of six or fewer small structured files that the parent must edit or integrate",
+    "skill_input": false,
+    "unchanged": [
+      "model_verbosity",
+      "model_reasoning_summary",
+      "personality",
+      "tool_output_token_limit",
+      "compact_prompt",
+      "automatic_compaction_default",
+      "Spark worker profile and instructions",
+      "task fixture, model, effort, seed, and repetitions"
+    ]
+  },
+  "target_gate": {
+    "case_id": "multi-service-contract-rollout",
+    "manifest": "benchmarks/agentic-v8-confirmation.json",
+    "arms": [
+      "v8-no-spark",
+      "v8-spark-auto"
+    ],
+    "model": "gpt-5.6-luna",
+    "effort": "xhigh",
+    "seed": 20260721,
+    "repetitions": 1,
+    "jobs": 1,
+    "prior_parent_tokens": {
+      "terse_v8_no_spark": 183945,
+      "terse_v8_auto": 173490,
+      "verbose_v8_no_spark": 149210,
+      "verbose_v8_auto": 221207,
+      "v9_r1_no_spark": 185029,
+      "v9_r1_auto": 175377
+    },
+    "hard_gates": [
+      "both cells pass task correctness and acceptance",
+      "candidate profile and policy hashes bind both cells",
+      "parent usage is complete and all children drain",
+      "candidate auto parent tokens are below 173490",
+      "candidate auto spawns zero workers on this small read-only inspection"
+    ],
+    "preferred_not_blocking": [
+      "candidate no-Spark beats terse v8 no-Spark",
+      "candidate auto does not exceed the paired candidate no-Spark parent total"
+    ],
+    "protocol_note": "The legacy fixture requires a worker when available. A deliberate local decision is expected to miss only that routing protocol while preserving task correctness."
+  },
+  "artifacts": {
+    "candidate_profile": {
+      "path": "benchmarks/experiments/v9-candidate-r2/profile.config.toml",
+      "sha256": "dc67b911cd293fc8c367e0bf8a8fa37071a33a93b15988f11eba5715e659d23e"
+    },
+    "candidate_policy": {
+      "path": "benchmarks/experiments/v9-candidate-r2/SKILL.md",
+      "sha256": "dd11cf9c09ff119d82d30709951533dba0bea05c923c633cf55550f0958af381"
+    },
+    "candidate_wrapper": {
+      "path": "scripts/benchmark_v9_candidate_r2.py",
+      "sha256": "f2829c73b85f1d2213e57126ed5c74544e98182b4031fc8661d89b4bd503e37e"
+    },
+    "r1_freeze": {
+      "path": "benchmarks/experiments/v9-candidate/freeze.json",
+      "sha256": "ba564c4639c784123029ad8e5bb233b63fae933f51abf6b5f9e7abb2eaad2517"
+    },
+    "r1_raw": {
+      "path": "benchmarks/results/raw/v9-candidate-target-multi-service-luna-xhigh.json",
+      "sha256": "19638988a0afa69c3ac3c4023dc5aa926de90bbc9676b8a5d479ff3d5b357115"
+    },
+    "base_runner": {
+      "path": "scripts/benchmark_v8.py",
+      "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea"
+    },
+    "manifest": {
+      "path": "benchmarks/agentic-v8-confirmation.json",
+      "sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534"
+    },
+    "spark_agent": {
+      "path": ".codex/agents/spark-worker.toml",
+      "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+    },
+    "dependency_lock": {
+      "path": "requirements-benchmark.txt",
+      "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0"
+    }
+  },
+  "runtime": {
+    "codex": "codex-cli 0.144.1",
+    "rtk": "rtk 0.43.0"
+  },
+  "policy_static_score": {
+    "tokens": 381,
+    "projected_trace_calls": 7,
+    "safety_checks": "6/6",
+    "hard_budget": false
+  }
+}

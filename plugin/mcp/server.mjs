@@ -10,14 +10,38 @@ const SERVER_NAME = "Smart Compact Profile Picker";
 const SERVER_VERSION = JSON.parse(
   await readFile(new URL("../.codex-plugin/plugin.json", import.meta.url), "utf8"),
 ).version;
-const BUNDLED_PROFILE_URL = new URL(
-  "../profiles/smart-compact.config.json",
-  import.meta.url,
-);
 const DEFAULT_PROFILE_ID = "__codex_default__";
 const DEFAULT_PROFILE_LABEL = "Codex default (shared config)";
 const SMART_COMPACT_ID = "smart-compact";
 const SMART_COMPACT_LABEL = "Smart Compact (recommended)";
+const BUNDLED_PROFILES = [
+  {
+    id: SMART_COMPACT_ID,
+    label: SMART_COMPACT_LABEL,
+    url: new URL("../profiles/smart-compact.config.json", import.meta.url),
+  },
+  {
+    id: "smart-compact-v6",
+    label: "Smart Compact v6 (compatibility)",
+    url: new URL("../profiles/smart-compact-v6.config.json", import.meta.url),
+  },
+  {
+    id: "smart-compact-v8",
+    label: "Smart Compact v8 (terse auto)",
+    url: new URL("../profiles/smart-compact-v8.config.json", import.meta.url),
+  },
+  {
+    id: "smart-compact-v8-natural",
+    label: "Smart Compact v8 Natural (no-Spark)",
+    url: new URL(
+      "../profiles/smart-compact-v8-natural.config.json",
+      import.meta.url,
+    ),
+  },
+];
+const OPTIMIZER_TABLE = JSON.parse(
+  await readFile(new URL("../optimizer/selection.json", import.meta.url), "utf8"),
+);
 const APP_CODEX = "/Applications/ChatGPT.app/Contents/Resources/codex";
 const PROFILE_SUFFIX = ".config.toml";
 const PROFILE_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
@@ -84,15 +108,15 @@ async function installedProfileNames() {
 
 async function availableProfiles() {
   const installed = await installedProfileNames();
-  const profiles = [
-    {
-      id: SMART_COMPACT_ID,
-      label: SMART_COMPACT_LABEL,
-      source: installed.includes(SMART_COMPACT_ID) ? "named" : "bundled",
-    },
-  ];
+  const bundledIds = new Set(BUNDLED_PROFILES.map(({ id }) => id));
+  const profiles = BUNDLED_PROFILES.map(({ id, label }) => ({
+    id,
+    label,
+    source:
+      id === SMART_COMPACT_ID && installed.includes(id) ? "named" : "bundled",
+  }));
   for (const id of installed) {
-    if (id !== SMART_COMPACT_ID) {
+    if (!bundledIds.has(id)) {
       profiles.push({ id, label: id, source: "named" });
     }
   }
@@ -104,8 +128,12 @@ async function availableProfiles() {
   return profiles;
 }
 
-async function bundledProfile() {
-  const value = JSON.parse(await readFile(BUNDLED_PROFILE_URL, "utf8"));
+async function bundledProfile(profileId) {
+  const bundled = BUNDLED_PROFILES.find(({ id }) => id === profileId);
+  if (bundled === undefined) {
+    throw new Error(`No bundled profile exists for ${profileId}.`);
+  }
+  const value = JSON.parse(await readFile(bundled.url, "utf8"));
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     throw new Error("The bundled Smart Compact profile is invalid.");
   }
@@ -289,7 +317,26 @@ class AppServerClient {
   }
 }
 
-async function createTask(profile, workspacePath, taskName) {
+function mergeConfig(base, overlay) {
+  const merged = { ...base };
+  for (const [key, value] of Object.entries(overlay)) {
+    if (
+      typeof value === "object" &&
+      value !== null &&
+      !Array.isArray(value) &&
+      typeof merged[key] === "object" &&
+      merged[key] !== null &&
+      !Array.isArray(merged[key])
+    ) {
+      merged[key] = mergeConfig(merged[key], value);
+    } else {
+      merged[key] = value;
+    }
+  }
+  return merged;
+}
+
+async function createTask(profile, workspacePath, taskName, threadConfig = {}) {
   const codex = await resolveCodex();
   const args = [];
   if (profile.source === "named") {
@@ -301,7 +348,10 @@ async function createTask(profile, workspacePath, taskName) {
   try {
     await client.initialize();
     const params = { cwd: workspacePath, ephemeral: false };
-    if (profile.source === "bundled") params.config = await bundledProfile();
+    const baseConfig =
+      profile.source === "bundled" ? await bundledProfile(profile.id) : {};
+    const config = mergeConfig(baseConfig, threadConfig);
+    if (Object.keys(config).length > 0) params.config = config;
     const result = await client.request("thread/start", params);
     const threadId = result?.thread?.id;
     if (typeof threadId !== "string" || threadId.length === 0) {
@@ -327,6 +377,79 @@ function requireArguments(value) {
     throw new Error("Tool arguments must be an object.");
   }
   return value;
+}
+
+function optimizerDimension(name) {
+  const values = OPTIMIZER_TABLE?.dimensions?.[name];
+  if (!Array.isArray(values) || values.length === 0) {
+    throw new Error(`Optimizer table has invalid dimension ${name}.`);
+  }
+  return values;
+}
+
+function optimizerInput(argumentsValue, argumentName, dimensionName, fallback) {
+  const value = argumentsValue[argumentName] ?? fallback;
+  const allowed = optimizerDimension(dimensionName);
+  if (typeof value !== "string" || !allowed.includes(value)) {
+    throw new Error(
+      `${argumentName} must be one of ${allowed.join(", ")}.`,
+    );
+  }
+  return value;
+}
+
+function optimizerRecommendation(argumentsValue) {
+  const inputs = {
+    routing_mode: optimizerInput(
+      argumentsValue,
+      "routingMode",
+      "routing_mode",
+      undefined,
+    ),
+    task_shape: optimizerInput(
+      argumentsValue,
+      "taskShape",
+      "task_shape",
+      undefined,
+    ),
+  };
+  const rule = OPTIMIZER_TABLE.rules.find(({ when }) =>
+    Object.entries(when).every(([key, value]) => inputs[key] === value),
+  );
+  if (rule === undefined) throw new Error("Optimizer table has no matching rule.");
+  const lane = OPTIMIZER_TABLE.profiles[rule.lane];
+  const evidence = OPTIMIZER_TABLE.evidence[rule.reason_code];
+  const treatment = OPTIMIZER_TABLE.routing_treatments[inputs.routing_mode];
+  const profileSource = OPTIMIZER_TABLE.sources.find(
+    ({ path: sourcePath }) => sourcePath === `profiles/${lane?.profile}.config.toml`,
+  );
+  if (
+    lane === undefined ||
+    typeof evidence !== "string" ||
+    typeof treatment !== "object" ||
+    treatment === null ||
+    !Array.isArray(treatment.cli_args) ||
+    typeof treatment.thread_config !== "object" ||
+    treatment.thread_config === null ||
+    typeof profileSource?.sha256 !== "string"
+  ) {
+    throw new Error("Optimizer table references incomplete lane evidence.");
+  }
+  return {
+    schemaVersion: OPTIMIZER_TABLE.schema_version,
+    objective: OPTIMIZER_TABLE.objective,
+    selectionStage: OPTIMIZER_TABLE.selection_stage,
+    inputs,
+    lane: rule.lane,
+    profile: lane.profile,
+    skill: lane.skill,
+    reasonCode: rule.reason_code,
+    evidenceTier: rule.evidence_tier,
+    evidence,
+    routingTreatment: treatment,
+    profileSha256: profileSource.sha256,
+    cliArgs: ["codex", "--profile", lane.profile, ...treatment.cli_args],
+  };
 }
 
 async function workspaceFrom(argumentsValue) {
@@ -385,12 +508,99 @@ async function handleListProfiles(id) {
   );
 }
 
+async function handleRecommendProfile(id, params) {
+  const argumentsValue = requireArguments(params?.arguments ?? {});
+  const recommendation = optimizerRecommendation(argumentsValue);
+  const profile = BUNDLED_PROFILES.find(
+    ({ id: profileId }) => profileId === recommendation.profile,
+  );
+  if (profile === undefined) {
+    throw new Error(`Recommended profile is unavailable: ${recommendation.profile}`);
+  }
+  sendResult(
+    id,
+    toolResult(
+      `Use ${recommendation.profile}: ${recommendation.evidence}`,
+      {
+        ...recommendation,
+        profileSource: "bundled",
+        compatibilityProfile: "smart-compact-v6",
+      },
+    ),
+  );
+}
+
+async function handleStartOptimizedTask(id, params) {
+  const argumentsValue = requireArguments(params?.arguments ?? {});
+  const workspacePath = await workspaceFrom(argumentsValue);
+  const recommendation = optimizerRecommendation(argumentsValue);
+  const bundled = BUNDLED_PROFILES.find(
+    ({ id: profileId }) => profileId === recommendation.profile,
+  );
+  if (bundled === undefined) {
+    throw new Error(`Recommended profile is unavailable: ${recommendation.profile}`);
+  }
+  const profile = { id: bundled.id, label: bundled.label, source: "bundled" };
+  const taskName = requestedTaskName(argumentsValue, workspacePath, profile);
+  const threadId = await createTask(
+    profile,
+    workspacePath,
+    taskName,
+    recommendation.routingTreatment.thread_config,
+  );
+  const url = `codex://threads/${threadId}`;
+  sendResult(
+    id,
+    toolResult(
+      `Created “${taskName}” with ${profile.label} and ${recommendation.inputs.routing_mode}. Open the task: ${url}`,
+      {
+        status: "created",
+        ...recommendation,
+        profileSource: "bundled",
+        routingEnforced: true,
+        taskName,
+        threadId,
+        url,
+        workspacePath,
+      },
+    ),
+  );
+}
+
 async function handleStartTask(id, params) {
+  const argumentsValue = requireArguments(params?.arguments ?? {});
+  const workspacePath = await workspaceFrom(argumentsValue);
+  const profiles = await availableProfiles();
+  const requestedProfileId = argumentsValue.profileId;
+  if (requestedProfileId !== undefined) {
+    if (typeof requestedProfileId !== "string" || requestedProfileId.length === 0) {
+      throw new Error("profileId must be a non-empty string when supplied.");
+    }
+    const profile = profiles.find(({ id: profileId }) => profileId === requestedProfileId);
+    if (profile === undefined) throw new Error("The requested profile is not available.");
+    const taskName = requestedTaskName(argumentsValue, workspacePath, profile);
+    const threadId = await createTask(profile, workspacePath, taskName);
+    const url = `codex://threads/${threadId}`;
+    sendResult(
+      id,
+      toolResult(`Created “${taskName}” with ${profile.label}. Open the task: ${url}`, {
+        status: "created",
+        profile: profile.id,
+        profileSource: profile.source,
+        taskName,
+        threadId,
+        url,
+        workspacePath,
+      }),
+    );
+    return;
+  }
+
   if (!clientSupportsOpenAIForm) {
     sendResult(
       id,
       toolResult(
-        "This Codex client does not support the in-app profile form. Use `codex --profile smart-compact` or install Smart Compact with `--make-default`.",
+        "This Codex client does not support the in-app profile form. Supply an explicit profileId, use `codex --profile smart-compact`, or install Smart Compact with `--make-default`.",
         { status: "unsupported" },
         true,
       ),
@@ -398,9 +608,6 @@ async function handleStartTask(id, params) {
     return;
   }
 
-  const argumentsValue = requireArguments(params?.arguments ?? {});
-  const workspacePath = await workspaceFrom(argumentsValue);
-  const profiles = await availableProfiles();
   const elicitation = await requestHost("openai/form", {
     message: "Choose the Codex profile for the new task",
     requestedSchema: {
@@ -475,10 +682,39 @@ const tools = [
     },
   },
   {
-    name: "smart_compact_start_task",
-    title: "Start a Profiled Codex Task",
+    name: "smart_compact_recommend_profile",
+    title: "Recommend a Smart Compact Profile",
     description:
-      "Show an in-app profile picker, then create one empty Codex task in the supplied workspace and return its codex://threads link. The selected profile applies only to the new task; this never changes the current task or starts user work automatically.",
+      "Select the evidence-backed v6, terse-v8, or natural-v8 lane before task creation. This is read-only and does not change the current task.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        routingMode: {
+          type: "string",
+          enum: optimizerDimension("routing_mode"),
+          description: "Whether Spark is disabled or available for automatic routing.",
+        },
+        taskShape: {
+          type: "string",
+          enum: optimizerDimension("task_shape"),
+          description: "Closest measured task shape; use general when uncertain.",
+        },
+      },
+      required: ["routingMode", "taskShape"],
+      additionalProperties: false,
+    },
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
+  },
+  {
+    name: "smart_compact_start_optimized_task",
+    title: "Start an Optimized Smart Compact Task",
+    description:
+      "Select a bundled optimizer profile, apply no-Spark or auto-Spark through a zero-prompt-token config toggle, create one empty Codex task, and return its codex://threads link. This never changes the current task or starts user work automatically.",
     inputSchema: {
       type: "object",
       properties: {
@@ -492,6 +728,52 @@ const tools = [
           minLength: 1,
           maxLength: 128,
           description: "Optional task name shown in Codex.",
+        },
+        routingMode: {
+          type: "string",
+          enum: optimizerDimension("routing_mode"),
+          description: "Disable multi-agent tools or allow normal automatic Spark routing.",
+        },
+        taskShape: {
+          type: "string",
+          enum: optimizerDimension("task_shape"),
+          description: "Closest measured task shape; use general when uncertain.",
+        },
+      },
+      required: ["workspacePath", "routingMode", "taskShape"],
+      additionalProperties: false,
+    },
+    annotations: {
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: false,
+      openWorldHint: false,
+    },
+  },
+  {
+    name: "smart_compact_start_task",
+    title: "Start a Profiled Codex Task",
+    description:
+      "Create one empty Codex task with an explicit profileId, or show the in-app profile picker when profileId is omitted. Return its codex://threads link. The profile applies only to the new task; this never changes the current task or starts user work automatically.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        workspacePath: {
+          type: "string",
+          minLength: 1,
+          description: "Absolute path to the workspace for the new task.",
+        },
+        taskName: {
+          type: "string",
+          minLength: 1,
+          maxLength: 128,
+          description: "Optional task name shown in Codex.",
+        },
+        profileId: {
+          type: "string",
+          minLength: 1,
+          description:
+            "Optional exact profile id. When supplied, skip the form and start the empty task directly.",
         },
       },
       required: ["workspacePath"],
@@ -516,7 +798,7 @@ async function handleRequest(message) {
       capabilities: { tools: {} },
       serverInfo: { name: SERVER_NAME, version: SERVER_VERSION },
       instructions:
-        "Use smart_compact_list_profiles for inspection. Use smart_compact_start_task only when the user wants a new task; it must not be described as changing the current task.",
+        "Use smart_compact_list_profiles for inspection and smart_compact_recommend_profile for read-only pre-task optimization. Use smart_compact_start_optimized_task only when the user wants an optimizer-created task. Use smart_compact_start_task for manual profile selection. Neither start tool changes the current task.",
     });
     return;
   }
@@ -532,6 +814,10 @@ async function handleRequest(message) {
     try {
       if (params?.name === "smart_compact_list_profiles") {
         await handleListProfiles(id);
+      } else if (params?.name === "smart_compact_recommend_profile") {
+        await handleRecommendProfile(id, params);
+      } else if (params?.name === "smart_compact_start_optimized_task") {
+        await handleStartOptimizedTask(id, params);
       } else if (params?.name === "smart_compact_start_task") {
         await handleStartTask(id, params);
       } else {
