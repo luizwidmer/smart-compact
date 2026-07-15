@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "source_path": "raw/v8-release-luna-xhigh-terse-r2.json",
+  "source_sha256": "11c04490eb8f9b92ce7155b89b1390b04c7d3650187ca906144b6aea6ed371dd",
+  "source_runner_sha256": "8f9b2e3a8d8c47a74f093ac56f0fc0a8903b4f4890cc2004be70a60cb0082f43",
+  "no_spark_config_sha256": "8c25d5f2343bb543533fa39f9f00be1a94c89240630140d7e29f52e8000c8616",
+  "selected_cells": [
+    {
+      "case_id": "monorepo-sdk-migration",
+      "arm": "standard-no-spark"
+    },
+    {
+      "case_id": "monorepo-sdk-migration",
+      "arm": "v8-no-spark"
+    },
+    {
+      "case_id": "monorepo-sdk-migration",
+      "arm": "v8-spark-forced"
+    }
+  ],
+  "excluded_cells": [
+    {
+      "case_id": "monorepo-sdk-migration",
+      "arm": "v6-no-spark",
+      "reason": "Excluded: upstream 503 and stream disconnects exhausted the 900-second turn timeout before grading; the isolated same-seed retry completed with 100% task correctness."
+    }
+  ]
+}

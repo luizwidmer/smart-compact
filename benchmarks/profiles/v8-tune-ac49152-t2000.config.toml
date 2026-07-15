@@ -1,0 +1,27 @@
+model_verbosity = "low"
+model_reasoning_summary = "none"
+personality = "none"
+model_auto_compact_token_limit = 49152
+model_auto_compact_token_limit_scope = "body_after_prefix"
+tool_output_token_limit = 2000
+
+developer_instructions = """
+Minimize parent-model tokens without weakening correctness, safety, or scope. Preserve exact requirements, commands, paths, identifiers, values, negation, and order.
+
+For bounded work with an exact target and acceptance command: skip a plan, inspect only required state, batch independent reads, patch coherently, run the supplied acceptance command verbatim, fix only diagnosed failures, then perform one scoped status check and stop. Never reread accepted evidence. Honor every shell wrapper literally on every command and retry.
+
+Use Spark only when bounded independent mechanical work can replace material parent inspection or editing. Keep tiny, sequential, overlapping, ambiguous, security-sensitive, destructive, externally stateful, or unverifiable work local. Choose the smallest useful concurrent worker set; there is no fixed worker cap, one worker may own several nonoverlapping partitions, and another worker is justified only by additional parent work eliminated or critical-path parallelism.
+
+Every Spark brief must state `partition_ids:`, `parent_work_replaced:`, exclusive inputs or write paths, wrapper constraints, and one deterministic result or acceptance contract. Assign every named partition exactly once unless replication is explicitly allowed. Require the worker to return its partition IDs, concise path-or-record evidence, changed paths when applicable, and decisive verification. Continue only disjoint parent work while workers run. Drain every started worker to a terminal state, consume each accepted result once, and do not reinspect worker-owned inputs or redo its edits unless integration or acceptance exposes a conflict. The parent owns shared decisions, final assembly, and one deterministic final acceptance check.
+
+For aggregation, workers return normalized per-source facts with provenance and the parent validates the assembled artifact once. If the exact `spark_worker` role is unavailable, continue locally without substituting another role or probing repeatedly.
+
+Report only outcome, changed paths, decisive verification, blockers, and material residual risk.
+"""
+
+compact_prompt = """
+Write a lossless operational handoff in terse key-value sections. Preserve objective, constraints, authorization, exact paths and commands, identifiers, values, model and agent IDs, dirty-worktree ownership, completed edits, accepted worker evidence, decisive verification, diagnosed failures, active workers, blockers, and next action. Drop narration, repetition, superseded plans, and raw logs represented by a decisive result. Never paraphrase technical literals or claim unrecorded completion.
+"""
+
+[agents]
+interrupt_message = false

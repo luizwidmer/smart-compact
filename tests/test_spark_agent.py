@@ -25,17 +25,26 @@ class SparkAgentTests(unittest.TestCase):
         config = tomllib.loads(
             (ROOT / ".codex" / "agents" / "spark-worker.toml").read_text(encoding="utf-8")
         )
-        text = f"{config['description']}\n{config['developer_instructions']}".lower()
-        self.assertIn("continues locally", text)
-        self.assertIn("without substituting another agent", text)
-        self.assertIn("first word of every command string must be literal `rtk`", text)
-        self.assertIn("never emit shell `cd` or `chdir`", text)
-        self.assertIn("reject it yourself if its first word is not `rtk`", text)
-        self.assertIn("never use raw `ls`", text)
-        self.assertIn("normalized per-source facts", text)
-        self.assertIn("at most six tool calls", text)
-        self.assertIn("do not make architecture", text)
-        self.assertIn("acceptance check", text)
+        description = config["description"].lower()
+        instructions = config["developer_instructions"]
+        self.assertIn("continues locally", description)
+        self.assertIn("without substituting another agent", description)
+        self.assertLessEqual(len(instructions.split()), 16)
+        for contract in (
+            "scope=assigned_partitions_and_paths_only",
+            "reads=batch",
+            "edits=apply_patch_only",
+            "shell.first_word=rtk",
+            "shell.cwd_change=forbidden",
+            "shell.raw=rtk_proxy",
+            "delegation=forbidden",
+            "decisions.architecture_security_product_destructive=forbidden",
+            "acceptance=once",
+            "retry=diagnosed_failure_only",
+            "return=partition_ids,changed_paths_or_facts_with_provenance,acceptance,blocker",
+        ):
+            with self.subTest(contract=contract):
+                self.assertIn(contract, instructions)
 
     def test_installer_writes_new_agent_atomically(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -55,7 +64,7 @@ class SmartCompactProfileTests(unittest.TestCase):
     def test_profile_uses_benchmarked_native_controls(self) -> None:
         self.assertEqual(
             (ROOT / "profiles" / "smart-compact.config.toml").read_bytes(),
-            (ROOT / "profiles" / "smart-compact-v7.config.toml").read_bytes(),
+            (ROOT / "profiles" / "smart-compact-v8.config.toml").read_bytes(),
         )
         config = tomllib.loads(
             (ROOT / "profiles" / "smart-compact.config.toml").read_text(encoding="utf-8")
@@ -63,19 +72,16 @@ class SmartCompactProfileTests(unittest.TestCase):
         self.assertEqual(config["model_verbosity"], "low")
         self.assertEqual(config["model_reasoning_summary"], "none")
         self.assertEqual(config["personality"], "none")
-        self.assertEqual(config["model_auto_compact_token_limit"], 49152)
-        self.assertEqual(config["model_auto_compact_token_limit_scope"], "body_after_prefix")
-        self.assertEqual(config["tool_output_token_limit"], 2000)
+        self.assertNotIn("model_auto_compact_token_limit", config)
+        self.assertNotIn("model_auto_compact_token_limit_scope", config)
+        self.assertEqual(config["tool_output_token_limit"], 1500)
         self.assertFalse(config["agents"]["interrupt_message"])
-        self.assertIn("lossless operational handoff", config["compact_prompt"])
-        self.assertIn("every exec_command string starts with rtk", config["developer_instructions"])
-        self.assertIn("exact spark_worker role", config["developer_instructions"])
-        self.assertIn("smallest concurrent worker set", config["developer_instructions"])
-        self.assertIn("never apply a fixed global count", config["developer_instructions"])
-        self.assertIn("One worker may own several nonoverlapping partitions", config["developer_instructions"])
-        self.assertIn("Add another only when", config["developer_instructions"])
-        self.assertIn("one final deterministic acceptance check", config["developer_instructions"])
-        self.assertIn("without substituting another role", config["developer_instructions"])
+        self.assertIn("format=lossless_key_value", config["compact_prompt"])
+        self.assertIn("shell.wrapper=literal_every_command_and_retry", config["developer_instructions"])
+        self.assertIn("workers=smallest_useful;cap:none", config["developer_instructions"])
+        self.assertIn("multi_partition:true", config["developer_instructions"])
+        self.assertIn("owns_decisions+integration+final_acceptance", config["developer_instructions"])
+        self.assertIn("spark_unavailable=local,no_substitution", config["developer_instructions"])
 
     def test_profile_installer_preserves_conflicting_file(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

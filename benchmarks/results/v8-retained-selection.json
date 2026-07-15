@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "source_path": "raw/v8-release-paired-gate5-luna-xhigh.json",
+  "source_sha256": "f75f8eb315ec96e48e086adf59997e0ea2a69ee7b1744f0999557905b849beea",
+  "source_runner_sha256": "bbf651eab8db08fa3bb026e1609c5d4d6602eb9800957c7b4f2305ad719721f0",
+  "no_spark_config_sha256": "61c4b66f90393cab6c1ec7804b59d8ad45ec61180b5a95ee3dfe5ea439a1c326",
+  "selected_cells": [
+    {
+      "case_id": "monorepo-sdk-migration",
+      "arm": "v8-no-spark"
+    }
+  ],
+  "excluded_cells": [
+    {
+      "case_id": "monorepo-sdk-migration",
+      "arm": "v8-spark",
+      "reason": "Excluded: the parent omitted agent_type, so AgentControl spawned gpt-5.6-luna instead of the frozen Spark role; terminal role telemetry was unavailable and the protocol failed."
+    }
+  ]
+}

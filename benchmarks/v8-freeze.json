@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-14T21:14:07Z",
+  "refrozen_at": "2026-07-15T00:18:49Z",
+  "candidate": "v8",
+  "primary_objective": "parent_total_tokens",
+  "secondary_objective": "wall_time_reduction_when_parent_savings_are_not_material",
+  "tertiary_objective": "fewest_spawned_workers_for_parent_or_wall_time_saved",
+  "freeze_reason": "Profile tuning completed before unseen fixtures were released. Six excluded Spark gates and five pre-rewrite release cells informed the terse parent, worker, compaction-handoff, and auto-Spark contracts; none are pooled into v8 metrics. Six cells from an interrupted first post-rewrite batch are also superseded. The final release keeps forced efficacy separate from native auto-routing reliability, leaves useful fanout uncapped, and uses task correctness as the hard gate while disclosing protocol and RTK compliance. The selected evidence is six tuning runs plus 34 single-pass release cells at seed 20260721.",
+  "no_spark_normalized_config_sha256": "8c25d5f2343bb543533fa39f9f00be1a94c89240630140d7e29f52e8000c8616",
+  "artifacts": {
+    "profile": {
+      "path": "profiles/smart-compact-v8.config.toml",
+      "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "git_blob": "3a876307533cd9c11def10602c794e23bf3556ac"
+    },
+    "policy": {
+      "path": "benchmarks/policies/v8/SKILL.md",
+      "sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "git_blob": "85444acd58d4e5e18efcd34f17cec7b098b73c49"
+    },
+    "spark_agent": {
+      "path": ".codex/agents/spark-worker.toml",
+      "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68",
+      "git_blob": "6da8e0cc959c56820275234aecac942d0426d719"
+    },
+    "development_manifest": {
+      "path": "benchmarks/agentic-v8-development.json",
+      "sha256": "90770e2ae247acd4bfbaba9323e2197bc90b8e7c64b9d4037891c2fa3d5b12ac",
+      "git_blob": "5eed5a9982b54316f675666b8f293b3021519cd4"
+    },
+    "heldout_manifest": {
+      "path": "benchmarks/agentic-v8-heldout.json",
+      "sha256": "669469a7b42acd01e023b851f0402f06c8e3436f93dd6d145fb98a2a1690dfb3",
+      "git_blob": "abcc9ee966fb677724581c05262529a1348c08ba"
+    },
+    "confirmation_manifest": {
+      "path": "benchmarks/agentic-v8-confirmation.json",
+      "sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534",
+      "git_blob": "1377a23ecfed3eaa807235c5c28114f29c3d34d0"
+    },
+    "runner_and_scorer": {
+      "path": "scripts/benchmark_v8.py",
+      "sha256": "8f9b2e3a8d8c47a74f093ac56f0fc0a8903b4f4890cc2004be70a60cb0082f43",
+      "git_blob": "d8cb8d797a36b0bcaf33eccae67d67e74d15957f"
+    },
+    "release_verifier": {
+      "path": "scripts/verify_v8_release.py",
+      "sha256": "4e7de7b96b0f855a0a111918e9d88a3b0d84e695eaff2f350e045a979661f2c5",
+      "git_blob": "00d9628acf12763675b84c93de648888189a5e8a"
+    },
+    "release_summary": {
+      "path": "benchmarks/results/v8-release-summary.json",
+      "sha256": "fcf262d3ffd28a9f280d85434c35a7783cbc625191bdbc7c3b6f2650c2037a48",
+      "git_blob": "57e9fab26574bd6dfabf4d4096933d5d7e027f4b"
+    },
+    "release_luna_xhigh_selection": {
+      "path": "benchmarks/results/v8-release-luna-xhigh-selection.json",
+      "sha256": "364a46057d499a5cedf1ef641ccec8f5bfa5ce6f084c92646779b46d26508d2f",
+      "git_blob": "420328c68cf114c70177a42901c1b0a68140c187"
+    },
+    "release_primary_luna_xhigh": {
+      "path": "benchmarks/results/raw/v8-release-primary-luna-xhigh-terse-r2.json",
+      "sha256": "0743ba2cb113d5e7e5228f4b9cd16c4e3c4c942b1003b5ce6b76b3f3fc6ad895",
+      "git_blob": "c04202a2eb0fdbd13163b2e28c3b6769d1ae3146"
+    },
+    "release_luna_xhigh_forced": {
+      "path": "benchmarks/results/raw/v8-release-luna-xhigh-terse-r2.json",
+      "sha256": "11c04490eb8f9b92ce7155b89b1390b04c7d3650187ca906144b6aea6ed371dd",
+      "git_blob": "2571d7340f3b08d43ed9e510a60728edcbbc7dbf"
+    },
+    "release_sol_medium": {
+      "path": "benchmarks/results/raw/v8-release-sol-medium-terse-r2.json",
+      "sha256": "79fe5cce23097a33b2c87a557433ddfb645ec005edb8d406ab0840e89cd614cb",
+      "git_blob": "b3da6d6b0d7016bae361694f36206591b9027b74"
+    },
+    "release_sol_high": {
+      "path": "benchmarks/results/raw/v8-release-sol-high-terse-r2.json",
+      "sha256": "df95bb72a95b5a5b15bb61677d9e2fa4a8daf777927f5c1ce2f10c2297c85b26",
+      "git_blob": "e370c80ac5243b41195fa8563a75ef8358be6ffe"
+    },
+    "release_luna_max": {
+      "path": "benchmarks/results/raw/v8-release-luna-max-terse-r2.json",
+      "sha256": "73eacdc6e16ba6f911525d4f7d6d30e14d8fbba15e30833b56544f851034b068",
+      "git_blob": "24b78512e8358a9693dd192ad2af8f4c35e0070b"
+    },
+    "release_v6_luna_xhigh_retry": {
+      "path": "benchmarks/results/raw/v8-release-v6-luna-xhigh-retry-terse-r2.json",
+      "sha256": "b88778d53651494032afc37d3ad4019d83dc9939ce9eb63c4e0be4481542409b",
+      "git_blob": "22938a35fec532b81a36004cd985796c8680f616"
+    },
+    "interrupted_post_terse_primary": {
+      "path": "benchmarks/results/raw/v8-release-primary-luna-xhigh-terse-interrupted.json",
+      "sha256": "2caebbfa73f628c3fb687530e2b15bf85d93a45a83848af52595743739ed3fa7",
+      "git_blob": "5f61fa315ecd8a000cbead03c27fff3ea4f2a2b3"
+    },
+    "interrupted_post_terse_sol_medium": {
+      "path": "benchmarks/results/raw/v8-release-sol-medium-terse-interrupted.json",
+      "sha256": "82d587437a712f94966bd7aa86a1d5ef074015706448f886d70762b57eb46318",
+      "git_blob": "684913d9000578dbcd3784d16e28d9004a5fe92c"
+    },
+    "interrupted_post_terse_sol_high": {
+      "path": "benchmarks/results/raw/v8-release-sol-high-terse-interrupted.json",
+      "sha256": "2c22dbd57cde9386ad80542ea022ac85a8e0a4539422e5433f382aa2ede7e362",
+      "git_blob": "acb4040c1a0edce816b384b78381d5dfa013430b"
+    },
+    "dependency_lock": {
+      "path": "requirements-benchmark.txt",
+      "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0",
+      "git_blob": "77778b95ac65bf4c7fdd65c86b85fb921fde7ce6"
+    },
+    "tuning_summary": {
+      "path": "benchmarks/results/v8-tuning-summary.json",
+      "sha256": "12bf756ae57779b2897c975d15dd89a150403aea5ca0c558cc7a72c72a748af7",
+      "git_blob": "a010a579b6a32ed384b07350213228afc3acf4cb"
+    },
+    "pre_terse_gate_source": {
+      "path": "benchmarks/results/raw/v8-release-paired-gate5-luna-xhigh.json",
+      "sha256": "f75f8eb315ec96e48e086adf59997e0ea2a69ee7b1744f0999557905b849beea",
+      "git_blob": "5af6495db9e547deca30701091e400a5c60dc184"
+    },
+    "pre_terse_gate_selection": {
+      "path": "benchmarks/results/v8-retained-selection.json",
+      "sha256": "6515fb51dae20db5bf267aa9eb8af78910a8fa6e5f7a0db7b3418ec7c4717b70",
+      "git_blob": "d98c2a17c77806169a018e9d870c2d70a0417bf2"
+    },
+    "pre_terse_forced_scope_failure_source": {
+      "path": "benchmarks/results/raw/v8-forced-efficacy-luna-xhigh.json",
+      "sha256": "5217b42266414b7321207a9c56fd2fa9441abc1cb633a99d5cee6e484c291d56",
+      "git_blob": "9cc0877cf2e9adf87918d27452a47178a52eef65"
+    },
+    "pre_terse_forced_pass_source": {
+      "path": "benchmarks/results/raw/v8-forced-ownership-retest-luna-xhigh.json",
+      "sha256": "3ec4014e972756d2e78f87a7ca96a1ff54a037fe110ca94bd717dc5ff7f85212",
+      "git_blob": "9837e6bda4698ec550acb90a382166427925c097"
+    },
+    "pre_terse_interrupted_primary_source": {
+      "path": "benchmarks/results/raw/v8-release-primary-luna-xhigh-interrupted-pre-terse-policy.json",
+      "sha256": "a5eaee4c5c55e9851a6559439af18634c18e15fd3df82f4cba0272e25d8b4582",
+      "git_blob": "439e0fb57972f7c07c0b081d486d76186c9c257f"
+    },
+    "v6_control_profile": {
+      "path": "benchmarks/profiles/v6.config.toml",
+      "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+      "git_blob": "4d3e8166f6ea746ad191543ebeb9e9b66142c7ba"
+    },
+    "v6_control_policy": {
+      "path": "benchmarks/policies/v6/SKILL.md",
+      "sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "git_blob": "47f91b8340685e87825aca2552d4ada2b61890e2"
+    }
+  },
+  "runtime": {
+    "codex": "codex-cli 0.144.1",
+    "rtk": "rtk 0.43.0",
+    "spark_model": "gpt-5.3-codex-spark",
+    "spark_effort": "medium",
+    "parent_settings": [
+      {"model": "gpt-5.6-sol", "effort": "medium"},
+      {"model": "gpt-5.6-sol", "effort": "high"},
+      {"model": "gpt-5.6-luna", "effort": "xhigh"},
+      {"model": "gpt-5.6-luna", "effort": "max"}
+    ]
+  },
+  "profile_decision": {
+    "auto_compaction": "native-default",
+    "tool_output_token_limit": 1500,
+    "instruction_encoding": "machine-key-value",
+    "post_tuning_instruction_rewrite": true,
+    "completed_development_runs": 6,
+    "all_development_runs_green": true
+  },
+  "release_plan": {
+    "target_scored_runs": 40,
+    "excluded_failed_gate_attempts": 6,
+    "superseded_release_attempts": 11,
+    "excluded_transient_release_attempts": 1,
+    "observed_inference_attempts": 58,
+    "development_selection_runs": 6,
+    "release_matrix_runs": 34,
+    "selected_release_runs": 34,
+    "v8_candidate_runs": 26,
+    "fresh_control_runs": 8,
+    "retained_release_runs": 3,
+    "remaining_release_runs": 0,
+    "v7_reruns": 0,
+    "repetitions_per_cell": 1,
+    "seed": 20260721,
+    "forced_improvement_gate": {
+      "case": "monorepo-sdk-migration",
+      "arms": [
+        "v8-no-spark",
+        "v8-spark-forced"
+      ],
+      "model": "gpt-5.6-luna",
+      "effort": "xhigh",
+      "jobs": 1,
+      "baseline_reused": false,
+      "same_batch": true
+    },
+    "release_cell_allocation": {
+      "v8-no-spark": 13,
+      "standard-and-v6-controls": 8,
+      "v8-spark-forced": 4,
+      "v8-spark-auto": 9
+    }
+  },
+  "release_evidence": {
+    "status": "verified_task_correctness_release",
+    "acceptance": {
+      "hard_gate": "task_correctness",
+      "task_correct_cells": 34,
+      "task_correctness_pct": 100.0,
+      "protocol_pass_cells": 26,
+      "protocol_compliance_pct": 76.471,
+      "candidate_protocol_pass_cells": 18,
+      "candidate_protocol_compliance_pct": 69.231,
+      "rtk_pass_cells": 33,
+      "rtk_compliance_pct": 97.059,
+      "protocol_is_disclosed_not_release_blocking": true,
+      "all_children_drained": true,
+      "summary": "benchmarks/results/v8-release-summary.json"
+    },
+    "excluded_transient_release_attempt": {
+      "count": 1,
+      "case": "monorepo-sdk-migration",
+      "arm": "v6-no-spark",
+      "model": "gpt-5.6-luna",
+      "effort": "xhigh",
+      "reason": "Upstream 503 and stream disconnects exhausted the 900-second turn timeout before grading; the isolated same-seed retry completed with 100% task correctness.",
+      "source": "benchmarks/results/raw/v8-release-luna-xhigh-terse-r2.json",
+      "selection": "benchmarks/results/v8-release-luna-xhigh-selection.json",
+      "retry": "benchmarks/results/raw/v8-release-v6-luna-xhigh-retry-terse-r2.json",
+      "pooled_into_release_metrics": false
+    },
+    "superseded_post_terse_release_attempts": {
+      "count": 6,
+      "reason": "The first post-rewrite batch was interrupted before its planned matrix completed, so its six completed cells are preserved as diagnostics and excluded from the selected release matrix.",
+      "sources": [
+        "benchmarks/results/raw/v8-release-primary-luna-xhigh-terse-interrupted.json",
+        "benchmarks/results/raw/v8-release-sol-medium-terse-interrupted.json",
+        "benchmarks/results/raw/v8-release-sol-high-terse-interrupted.json"
+      ],
+      "pooled_into_release_metrics": false
+    },
+    "superseded_pre_terse_release_attempts": {
+      "count": 5,
+      "reason": "The model-visible v8 profile and policy changed before the release matrix; these successful rows are diagnostic only and must be rerun.",
+      "raw_sha256": [
+        "f75f8eb315ec96e48e086adf59997e0ea2a69ee7b1744f0999557905b849beea",
+        "3ec4014e972756d2e78f87a7ca96a1ff54a037fe110ca94bd717dc5ff7f85212",
+        "a5eaee4c5c55e9851a6559439af18634c18e15fd3df82f4cba0272e25d8b4582"
+      ],
+      "cells": [
+        {"case": "monorepo-sdk-migration", "arm": "v8-no-spark", "model": "gpt-5.6-luna", "effort": "xhigh", "parent_total_tokens": 176229, "child_total_tokens": 0},
+        {"case": "monorepo-sdk-migration", "arm": "v8-spark-forced", "model": "gpt-5.6-luna", "effort": "xhigh", "parent_total_tokens": 158612, "child_total_tokens": 413318},
+        {"case": "release-readiness", "arm": "v8-spark-auto", "model": "gpt-5.6-luna", "effort": "xhigh", "parent_total_tokens": 100669, "child_total_tokens": 0},
+        {"case": "tenant-config-drift", "arm": "v8-spark-auto", "model": "gpt-5.6-luna", "effort": "xhigh", "parent_total_tokens": 169159, "child_total_tokens": 102711},
+        {"case": "permission-scope-regression", "arm": "v8-spark-auto", "model": "gpt-5.6-luna", "effort": "xhigh", "parent_total_tokens": 79017, "child_total_tokens": 0}
+      ]
+    },
+    "excluded_development_gates": [
+      {
+        "raw_sha256": "2ca9fa5d303a3485f1706c08333c4b4b4d44ec3b0967869fe12fe29df86a2157",
+        "task_pass": true,
+        "protocol_pass": false,
+        "failure": "missing parent_work_replaced literal prefix",
+        "parent_total_tokens": 319941,
+        "child_total_tokens": 161956,
+        "spawned_workers": 1,
+        "useful_workers": 1,
+        "execution_duration_seconds": 104.306,
+        "first_spawn_seconds": 68.108,
+        "no_active_children": true,
+        "pooled_into_release_metrics": false
+      },
+      {
+        "raw_sha256": "d391bc7800e324d1d34723c22e3ad9108a052a9c5a833f0ad4b819b987c973a3",
+        "task_pass": true,
+        "protocol_pass": false,
+        "failure": "capability-validated spark_worker incorrectly treated as unavailable",
+        "parent_total_tokens": 164440,
+        "child_total_tokens": 0,
+        "spawned_workers": 0,
+        "useful_workers": 0,
+        "execution_duration_seconds": 104.83,
+        "first_spawn_seconds": null,
+        "no_active_children": true,
+        "pooled_into_release_metrics": false
+      },
+      {
+        "raw_sha256": "490909ea2a851d09db20646a5d54bffce71a216c1acf3596dc54a2f300db4e73",
+        "task_pass": true,
+        "protocol_pass": false,
+        "failure": "uncapped worker issued 40 tool calls and one non-RTK functions.exec_command shell command",
+        "parent_total_tokens": 289497,
+        "child_total_tokens": 526989,
+        "spawned_workers": 1,
+        "useful_workers": 1,
+        "execution_duration_seconds": 151.349,
+        "first_spawn_seconds": 31.63,
+        "no_active_children": true,
+        "pooled_into_release_metrics": false
+      },
+      {
+        "raw_sha256": "6a65ac2d9f7309e4f65ad9dc66495554d4bf9f999e0fb601db082ad11df54079",
+        "task_pass": true,
+        "protocol_pass": false,
+        "failure": "worker used invalid rtk -c probe and stopped; parent embedded partition_ids and omitted parent_work_replaced",
+        "parent_total_tokens": 183454,
+        "child_total_tokens": 26156,
+        "spawned_workers": 1,
+        "useful_workers": 0,
+        "execution_duration_seconds": 130.766,
+        "first_spawn_seconds": 28.39,
+        "no_active_children": true,
+        "pooled_into_release_metrics": false
+      },
+      {
+        "raw_sha256": "f75f8eb315ec96e48e086adf59997e0ea2a69ee7b1744f0999557905b849beea",
+        "task_pass": true,
+        "protocol_pass": false,
+        "failure": "parent omitted exact agent_type and spawned a default gpt-5.6-luna child with unreadable terminal role telemetry",
+        "parent_total_tokens": 260177,
+        "child_total_tokens": 199959,
+        "spawned_workers": 1,
+        "useful_workers": 0,
+        "execution_duration_seconds": 187.724,
+        "first_spawn_seconds": 25.956,
+        "no_active_children": false,
+        "pooled_into_release_metrics": false
+      },
+      {
+        "raw_sha256": "5217b42266414b7321207a9c56fd2fa9441abc1cb633a99d5cee6e484c291d56",
+        "task_pass": true,
+        "protocol_pass": false,
+        "failure": "forced worker completed the task but the verbose brief embedded a second malformed partition marker and parent-only report instructions; worker edited migration_report.json",
+        "parent_total_tokens": 119110,
+        "child_total_tokens": 443260,
+        "spawned_workers": 1,
+        "useful_workers": 0,
+        "execution_duration_seconds": 89.763,
+        "first_spawn_seconds": 0.011,
+        "no_active_children": true,
+        "pooled_into_release_metrics": false
+      }
+    ]
+  }
+}

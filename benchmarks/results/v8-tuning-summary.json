@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-14T21:02:00Z",
+  "status": "single_pass_development_selection",
+  "primary_objective": "parent_total_tokens",
+  "model": "gpt-5.6-luna",
+  "effort": "xhigh",
+  "seed": 20260721,
+  "completed_scored_runs": 6,
+  "selection_rule": [
+    "reject any task or protocol failure",
+    "minimize parent_total_tokens",
+    "break close ties conservatively using fewer tool calls and the less restrictive setting"
+  ],
+  "auto_compaction": {
+    "case_id": "monorepo-sdk-migration",
+    "fixed_tool_output_token_limit": 2000,
+    "winner": "native-default",
+    "rows": [
+      {
+        "setting": "native-default",
+        "profile_sha256": "78f52766f6b4fe04107853f0fdc2d815817c5be161db7d39506c402481959b1a",
+        "task_pass": true,
+        "protocol_pass": true,
+        "parent_total_tokens": 127368,
+        "input_tokens": 122896,
+        "cached_input_tokens": 108544,
+        "output_tokens": 4472,
+        "reasoning_output_tokens": 1224,
+        "tool_calls": 6,
+        "tool_output_characters": 9022
+      },
+      {
+        "setting": 32768,
+        "profile_sha256": "2ac1187d248aa1cb0145bd190ac2aae4a646c8076eef3f83a40c7ccb5f11169e",
+        "task_pass": true,
+        "protocol_pass": true,
+        "parent_total_tokens": 130906,
+        "input_tokens": 126944,
+        "cached_input_tokens": 108544,
+        "output_tokens": 3962,
+        "reasoning_output_tokens": 1714,
+        "tool_calls": 6,
+        "tool_output_characters": 16340
+      },
+      {
+        "setting": 49152,
+        "profile_sha256": "bbf987318d383bff66375a08d8de360794bd976f9475275818011f2ee17ec6d3",
+        "task_pass": true,
+        "protocol_pass": true,
+        "parent_total_tokens": 141306,
+        "input_tokens": 137245,
+        "cached_input_tokens": 119808,
+        "output_tokens": 4061,
+        "reasoning_output_tokens": 802,
+        "tool_calls": 7,
+        "tool_output_characters": 10860
+      },
+      {
+        "setting": 40960,
+        "profile_sha256": "77eadd40ec02cdba95c322cc2ec22df83d743814ef614a407cf8a137f7cec48c",
+        "task_pass": true,
+        "protocol_pass": true,
+        "parent_total_tokens": 148832,
+        "input_tokens": 143352,
+        "cached_input_tokens": 117760,
+        "output_tokens": 5480,
+        "reasoning_output_tokens": 1286,
+        "tool_calls": 5,
+        "tool_output_characters": 9023
+      }
+    ]
+  },
+  "tool_output_limit": {
+    "case_id": "incident-triage",
+    "fixed_auto_compaction_setting": 32768,
+    "winner": 1500,
+    "rows": [
+      {
+        "setting": 1500,
+        "profile_sha256": "075a26153b451734add372583db71b899766649372e682e4023cfd5293aa6fd8",
+        "task_pass": true,
+        "protocol_pass": true,
+        "parent_total_tokens": 164592,
+        "input_tokens": 161153,
+        "cached_input_tokens": 142592,
+        "output_tokens": 3439,
+        "reasoning_output_tokens": 1327,
+        "tool_calls": 9,
+        "tool_output_characters": 4018
+      },
+      {
+        "setting": 2000,
+        "profile_sha256": "2ac1187d248aa1cb0145bd190ac2aae4a646c8076eef3f83a40c7ccb5f11169e",
+        "task_pass": true,
+        "protocol_pass": true,
+        "parent_total_tokens": 165735,
+        "input_tokens": 162264,
+        "cached_input_tokens": 146944,
+        "output_tokens": 3471,
+        "reasoning_output_tokens": 1510,
+        "tool_calls": 10,
+        "tool_output_characters": 3395
+      }
+    ]
+  },
+  "frozen_candidate": {
+    "auto_compaction_setting": "native-default",
+    "tool_output_token_limit": 1500,
+    "profile_path": "profiles/smart-compact-v8.config.toml",
+    "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+    "tuned_profile_sha256_before_instruction_rewrite": "717e96bfc6f0fd5100bcb4ad41c9a2ab0ae01b1c1755749cd8e924906aa71352",
+    "instruction_encoding": "machine-key-value"
+  },
+  "parent_instruction_compaction": {
+    "reason": "The user stopped the initial release batch before completion and requested the parent skill use the same terse machine-oriented form as the worker contract.",
+    "change": "The parent execution contract is now thirteen key-value lines, the compaction handoff is five key-value lines, and the auto-Spark availability preflight is five key-value lines. Configuration knob winners are unchanged.",
+    "superseded_release_attempts": 5,
+    "superseded_attempts_pooled_into_release_metrics": false,
+    "release_matrix_restart_required": true
+  },
+  "release_hardening": {
+    "reason": "The first development Spark gate completed correctly but omitted the required parent_work_replaced literal prefix.",
+    "change": "Made the two-line Spark brief template an explicit pre-spawn check; no native tuning knob changed.",
+    "failed_gate_preserved": true,
+    "failed_gate_pooled_into_release_metrics": false,
+    "superseded_by": "spark_contract_simplification"
+  },
+  "availability_hardening": {
+    "reason": "The replacement development gate completed locally after incorrectly treating the capability-validated spark_worker role as unavailable.",
+    "change": "The Spark arm now tells the parent that capability preflight succeeded and permits local fallback only after an explicit spawn-tool error.",
+    "failed_gate_preserved": true,
+    "failed_gate_pooled_into_release_metrics": false
+  },
+  "worker_budget_hardening": {
+    "reason": "The third development gate routed correctly but an uncapped worker expanded to 40 tool calls and emitted one non-RTK shell command.",
+    "change": "Bounded Spark workers now batch assigned reads, stop at twelve tool calls, never shell tool names, and return an evidence capsule of at most 250 words.",
+    "parent_worker_count_cap": null,
+    "failed_gate_preserved": true,
+    "failed_gate_pooled_into_release_metrics": false,
+    "superseded_by": "spark_contract_simplification"
+  },
+  "rtk_probe_and_prompt_hardening": {
+    "reason": "The fourth development gate used an invalid rtk -c probe, then treated the wrapped command error as a missing RTK executable; its parent prompt also embedded one marker mid-sentence.",
+    "change": "Workers now start with a real required RTK command and distinguish wrapped-command failure from executable launch failure. Every required case and the Spark arm require the two delegation markers as standalone opening lines.",
+    "failed_gate_preserved": true,
+    "failed_gate_pooled_into_release_metrics": false,
+    "superseded_by": "spark_contract_simplification"
+  },
+  "spark_contract_simplification": {
+    "reason": "Four excluded gates showed that repeated prompt-format and RTK-probe rules delayed first spawn by 28.390 to 68.108 seconds and optimized compliance instead of work replacement.",
+    "change": "Spark now spawns as the first tool action for required named partitions. The parent supplies only partition IDs, exclusive paths, task, and result contract; the worker has no artificial tool-call cap. Claimed parent_work_replaced text was removed, and the harness proves replacement from completed useful child work plus absence of parent read/write overlap.",
+    "worker_ranges": "required cases use min 1 and no maximum; observed count and savings per worker are metrics",
+    "selection_objective": "correctness and protocol first; parent tokens primary; wall-time reduction fallback; child and combined tokens disclosed",
+    "failed_gates_preserved": 4,
+    "failed_gates_pooled_into_release_metrics": false
+  },
+  "limitations": [
+    "Each setting was observed once, so the study selects a candidate rather than estimating variance.",
+    "The two knobs were screened sequentially on different development cases; the exact combined candidate is gated on the confirmation workload before the release matrix.",
+    "Latency was contention-affected and is not publishable."
+  ]
+}

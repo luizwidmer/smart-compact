@@ -1,0 +1,981 @@
+{
+  "acceptance_policy": {
+    "candidate_protocol_compliance_pct": 69.231,
+    "candidate_protocol_pass_cells": 18,
+    "hard_gate": "task_correctness",
+    "protocol_compliance_pct": 76.471,
+    "protocol_is_disclosed_not_release_blocking": true,
+    "protocol_pass_cells": 26,
+    "rtk_compliance_pct": 97.059,
+    "rtk_pass_cells": 33,
+    "task_correct_cells": 34,
+    "task_correctness_pct": 100.0
+  },
+  "auto_routing_case_rows": [
+    {
+      "baseline_reused": false,
+      "case_id": "release-readiness",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "forbidden",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 111120,
+      "no_spark_wall_seconds": 67.894,
+      "parent_token_reduction_pct": -1.165,
+      "parent_tokens_saved": -1295,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_work_replaced": true,
+      "protocol_pass": true,
+      "routing_pass": true,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 0,
+      "spark_combined_tokens": 112415,
+      "spark_first_spawn_seconds": null,
+      "spark_parent_tokens": 112415,
+      "spark_parent_work_replaced": true,
+      "spark_protocol_pass": true,
+      "spark_routing_pass": true,
+      "spark_spawn_delay_pct": null,
+      "spark_wall_seconds": 100.162,
+      "spawn_expected": false,
+      "spawned_workers": 0,
+      "useful_workers": 0,
+      "wall_seconds_saved": -32.268,
+      "wall_seconds_saved_per_spawned_worker": null,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": -47.527,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "incident-triage",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "required_when_available",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 216571,
+      "no_spark_wall_seconds": 103.764,
+      "parent_token_reduction_pct": -74.531,
+      "parent_tokens_saved": -161413,
+      "parent_tokens_saved_per_spawned_worker": -80706.5,
+      "parent_work_replaced": true,
+      "protocol_pass": false,
+      "routing_pass": false,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 184548,
+      "spark_combined_tokens": 562532,
+      "spark_first_spawn_seconds": 18.07,
+      "spark_parent_tokens": 377984,
+      "spark_parent_work_replaced": true,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 6.627,
+      "spark_wall_seconds": 272.658,
+      "spawn_expected": true,
+      "spawned_workers": 2,
+      "useful_workers": 2,
+      "wall_seconds_saved": -168.894,
+      "wall_seconds_saved_per_spawned_worker": -84.447,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": -162.767,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "offline-advisory-triage",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "required_when_available",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 202042,
+      "no_spark_wall_seconds": 111.681,
+      "parent_token_reduction_pct": 17.967,
+      "parent_tokens_saved": 36301,
+      "parent_tokens_saved_per_spawned_worker": 36301.0,
+      "parent_work_replaced": false,
+      "protocol_pass": false,
+      "routing_pass": false,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 167571,
+      "spark_combined_tokens": 333312,
+      "spark_first_spawn_seconds": 20.684,
+      "spark_parent_tokens": 165741,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 24.794,
+      "spark_wall_seconds": 83.424,
+      "spawn_expected": true,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": 28.257,
+      "wall_seconds_saved_per_spawned_worker": 28.257,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": 25.302,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "ci-matrix-root-cause",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "required_when_available",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 186044,
+      "no_spark_wall_seconds": 81.379,
+      "parent_token_reduction_pct": 22.457,
+      "parent_tokens_saved": 41780,
+      "parent_tokens_saved_per_spawned_worker": 41780.0,
+      "parent_work_replaced": false,
+      "protocol_pass": false,
+      "routing_pass": false,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 213025,
+      "spark_combined_tokens": 357289,
+      "spark_first_spawn_seconds": 18.734,
+      "spark_parent_tokens": 144264,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 23.312,
+      "spark_wall_seconds": 80.361,
+      "spawn_expected": true,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": 1.018,
+      "wall_seconds_saved_per_spawned_worker": 1.018,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": 1.251,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "tenant-config-drift",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "required_when_available",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 226106,
+      "no_spark_wall_seconds": 123.433,
+      "parent_token_reduction_pct": -1.156,
+      "parent_tokens_saved": -2613,
+      "parent_tokens_saved_per_spawned_worker": -2613.0,
+      "parent_work_replaced": false,
+      "protocol_pass": false,
+      "routing_pass": false,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 152753,
+      "spark_combined_tokens": 381472,
+      "spark_first_spawn_seconds": 24.901,
+      "spark_parent_tokens": 228719,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 20.922,
+      "spark_wall_seconds": 119.019,
+      "spawn_expected": true,
+      "spawned_workers": 1,
+      "useful_workers": 0,
+      "wall_seconds_saved": 4.414,
+      "wall_seconds_saved_per_spawned_worker": 4.414,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": 3.576,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "support-credit-adjudication",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "required_when_available",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 254926,
+      "no_spark_wall_seconds": 118.156,
+      "parent_token_reduction_pct": 5.473,
+      "parent_tokens_saved": 13953,
+      "parent_tokens_saved_per_spawned_worker": 13953.0,
+      "parent_work_replaced": false,
+      "protocol_pass": false,
+      "routing_pass": false,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 70009,
+      "spark_combined_tokens": 310982,
+      "spark_first_spawn_seconds": 28.726,
+      "spark_parent_tokens": 240973,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 19.288,
+      "spark_wall_seconds": 148.931,
+      "spawn_expected": true,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": -30.775,
+      "wall_seconds_saved_per_spawned_worker": -30.775,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": -26.046,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "permission-scope-regression",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "forbidden",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 78580,
+      "no_spark_wall_seconds": 46.947,
+      "parent_token_reduction_pct": 36.471,
+      "parent_tokens_saved": 28659,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_work_replaced": true,
+      "protocol_pass": true,
+      "routing_pass": true,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 0,
+      "spark_combined_tokens": 49921,
+      "spark_first_spawn_seconds": null,
+      "spark_parent_tokens": 49921,
+      "spark_parent_work_replaced": true,
+      "spark_protocol_pass": true,
+      "spark_routing_pass": true,
+      "spark_spawn_delay_pct": null,
+      "spark_wall_seconds": 25.708,
+      "spawn_expected": false,
+      "spawned_workers": 0,
+      "useful_workers": 0,
+      "wall_seconds_saved": 21.239,
+      "wall_seconds_saved_per_spawned_worker": null,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": 45.24,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "multi-service-contract-rollout",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "required_when_available",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 246951,
+      "no_spark_wall_seconds": 144.756,
+      "parent_token_reduction_pct": 13.825,
+      "parent_tokens_saved": 34141,
+      "parent_tokens_saved_per_spawned_worker": 34141.0,
+      "parent_work_replaced": false,
+      "protocol_pass": false,
+      "routing_pass": false,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 40324,
+      "spark_combined_tokens": 253134,
+      "spark_first_spawn_seconds": 24.63,
+      "spark_parent_tokens": 212810,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 19.524,
+      "spark_wall_seconds": 126.154,
+      "spawn_expected": true,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": 18.602,
+      "wall_seconds_saved_per_spawned_worker": 18.602,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": 12.851,
+      "wall_time_reportable": false
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "policy-bound-batch-update",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "delegation_mode": "forbidden",
+      "effort": "xhigh",
+      "exact_role_model_origin_ok": true,
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "no_spark_parent_tokens": 153514,
+      "no_spark_wall_seconds": 93.057,
+      "parent_token_reduction_pct": 17.811,
+      "parent_tokens_saved": 27342,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_work_replaced": true,
+      "protocol_pass": true,
+      "routing_pass": true,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-auto",
+      "spark_child_tokens": 0,
+      "spark_combined_tokens": 126172,
+      "spark_first_spawn_seconds": null,
+      "spark_parent_tokens": 126172,
+      "spark_parent_work_replaced": true,
+      "spark_protocol_pass": true,
+      "spark_routing_pass": true,
+      "spark_spawn_delay_pct": null,
+      "spark_wall_seconds": 86.055,
+      "spawn_expected": false,
+      "spawned_workers": 0,
+      "useful_workers": 0,
+      "wall_seconds_saved": 7.002,
+      "wall_seconds_saved_per_spawned_worker": null,
+      "wall_time_comparison": "exploratory",
+      "wall_time_contended": true,
+      "wall_time_reduction_pct": 7.524,
+      "wall_time_reportable": false
+    }
+  ],
+  "auto_routing_summary": {
+    "all_children_drained": true,
+    "all_spawned_workers_useful": false,
+    "auto_child_tokens": 828230,
+    "auto_combined_tokens": 2487229,
+    "auto_parent_tokens": 1658999,
+    "cases": 9,
+    "effort": "xhigh",
+    "forbidden_cases": 3,
+    "forbidden_cases_quiescent": 3,
+    "model": "gpt-5.6-luna",
+    "no_spark_parent_tokens": 1675854,
+    "parent_token_reduction_pct": 1.006,
+    "parent_tokens_saved": 16855,
+    "parent_tokens_saved_per_spawned_worker": 2407.857,
+    "protocol_compliance_pct": 33.333,
+    "protocol_passes": 3,
+    "required_cases": 6,
+    "required_cases_with_spawn": 6,
+    "routing_passes": 3,
+    "routing_reliability_pct": 33.333,
+    "scope": "auto-routing-nine-case-suite",
+    "spawned_workers": 7,
+    "useful_workers": 6
+  },
+  "forced_efficacy_table": [
+    {
+      "baseline_reused": false,
+      "case_id": "monorepo-sdk-migration",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "no_spark_parent_tokens": 117286,
+      "no_spark_wall_seconds": 59.753,
+      "parent_token_reduction_pct": 21.897,
+      "parent_tokens_saved": 25682,
+      "parent_tokens_saved_per_spawned_worker": 25682.0,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-forced",
+      "spark_child_tokens": 192670,
+      "spark_combined_tokens": 284274,
+      "spark_first_spawn_seconds": 0.007,
+      "spark_parent_tokens": 91604,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 0.013,
+      "spark_wall_seconds": 52.197,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": 7.556,
+      "wall_seconds_saved_per_spawned_worker": 7.556,
+      "wall_time_comparison": "same-batch",
+      "wall_time_contended": false,
+      "wall_time_reduction_pct": 12.645,
+      "wall_time_reportable": true
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "monorepo-sdk-migration",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "no_spark_parent_tokens": 100218,
+      "no_spark_wall_seconds": 81.329,
+      "parent_token_reduction_pct": -30.72,
+      "parent_tokens_saved": -30787,
+      "parent_tokens_saved_per_spawned_worker": -30787.0,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-forced",
+      "spark_child_tokens": 512620,
+      "spark_combined_tokens": 643625,
+      "spark_first_spawn_seconds": 0.007,
+      "spark_parent_tokens": 131005,
+      "spark_parent_work_replaced": false,
+      "spark_protocol_pass": false,
+      "spark_routing_pass": false,
+      "spark_spawn_delay_pct": 0.007,
+      "spark_wall_seconds": 93.677,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": -12.348,
+      "wall_seconds_saved_per_spawned_worker": -12.348,
+      "wall_time_comparison": "same-batch",
+      "wall_time_contended": false,
+      "wall_time_reduction_pct": -15.183,
+      "wall_time_reportable": true
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "monorepo-sdk-migration",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "no_spark_parent_tokens": 251845,
+      "no_spark_wall_seconds": 139.025,
+      "parent_token_reduction_pct": 62.249,
+      "parent_tokens_saved": 156770,
+      "parent_tokens_saved_per_spawned_worker": 156770.0,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-forced",
+      "spark_child_tokens": 368338,
+      "spark_combined_tokens": 463413,
+      "spark_first_spawn_seconds": 0.006,
+      "spark_parent_tokens": 95075,
+      "spark_parent_work_replaced": true,
+      "spark_protocol_pass": true,
+      "spark_routing_pass": true,
+      "spark_spawn_delay_pct": 0.01,
+      "spark_wall_seconds": 60.795,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": 78.23,
+      "wall_seconds_saved_per_spawned_worker": 78.23,
+      "wall_time_comparison": "same-batch",
+      "wall_time_contended": false,
+      "wall_time_reduction_pct": 56.27,
+      "wall_time_reportable": true
+    },
+    {
+      "baseline_reused": false,
+      "case_id": "monorepo-sdk-migration",
+      "correctness": {
+        "no_spark": true,
+        "spark": true
+      },
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "no_spark_parent_tokens": 213073,
+      "no_spark_wall_seconds": 164.569,
+      "parent_token_reduction_pct": 45.499,
+      "parent_tokens_saved": 96947,
+      "parent_tokens_saved_per_spawned_worker": 96947.0,
+      "same_batch": true,
+      "same_source_artifact": true,
+      "spark_arm": "v8-spark-forced",
+      "spark_child_tokens": 120155,
+      "spark_combined_tokens": 236281,
+      "spark_first_spawn_seconds": 0.005,
+      "spark_parent_tokens": 116126,
+      "spark_parent_work_replaced": true,
+      "spark_protocol_pass": true,
+      "spark_routing_pass": true,
+      "spark_spawn_delay_pct": 0.007,
+      "spark_wall_seconds": 70.322,
+      "spawned_workers": 1,
+      "useful_workers": 1,
+      "wall_seconds_saved": 94.247,
+      "wall_seconds_saved_per_spawned_worker": 94.247,
+      "wall_time_comparison": "same-batch",
+      "wall_time_contended": false,
+      "wall_time_reduction_pct": 57.269,
+      "wall_time_reportable": true
+    }
+  ],
+  "frozen_hashes": {
+    "standard-no-spark": {
+      "policy_sha256": null,
+      "profile_sha256": null
+    },
+    "v6-no-spark": {
+      "policy_sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "profile_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
+    },
+    "v8-no-spark": {
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    },
+    "v8-spark-auto": {
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    },
+    "v8-spark-forced": {
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    }
+  },
+  "parent_token_table": [
+    {
+      "correctness": {
+        "standard": true,
+        "v6": true,
+        "v8": true
+      },
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "scope": "monorepo-sdk-migration",
+      "standard_parent_tokens": 125857,
+      "v6_parent_tokens": 193980,
+      "v6_saved_pct": -54.127,
+      "v6_saved_tokens": -68123,
+      "v8_arm": "v8-no-spark",
+      "v8_parent_tokens": 117286,
+      "v8_saved_vs_standard_pct": 6.81,
+      "v8_saved_vs_standard_tokens": 8571,
+      "v8_saved_vs_v6_pct": 39.537,
+      "v8_saved_vs_v6_tokens": 76694
+    },
+    {
+      "correctness": {
+        "standard": true,
+        "v6": true,
+        "v8": true
+      },
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "scope": "monorepo-sdk-migration",
+      "standard_parent_tokens": 131074,
+      "v6_parent_tokens": 206214,
+      "v6_saved_pct": -57.326,
+      "v6_saved_tokens": -75140,
+      "v8_arm": "v8-no-spark",
+      "v8_parent_tokens": 100218,
+      "v8_saved_vs_standard_pct": 23.541,
+      "v8_saved_vs_standard_tokens": 30856,
+      "v8_saved_vs_v6_pct": 51.401,
+      "v8_saved_vs_v6_tokens": 105996
+    },
+    {
+      "correctness": {
+        "standard": true,
+        "v6": true,
+        "v8": true
+      },
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "scope": "monorepo-sdk-migration",
+      "standard_parent_tokens": 220872,
+      "v6_parent_tokens": 348084,
+      "v6_saved_pct": -57.595,
+      "v6_saved_tokens": -127212,
+      "v8_arm": "v8-no-spark",
+      "v8_parent_tokens": 251845,
+      "v8_saved_vs_standard_pct": -14.023,
+      "v8_saved_vs_standard_tokens": -30973,
+      "v8_saved_vs_v6_pct": 27.648,
+      "v8_saved_vs_v6_tokens": 96239
+    },
+    {
+      "correctness": {
+        "standard": true,
+        "v6": true,
+        "v8": true
+      },
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "scope": "monorepo-sdk-migration",
+      "standard_parent_tokens": 315109,
+      "v6_parent_tokens": 714788,
+      "v6_saved_pct": -126.838,
+      "v6_saved_tokens": -399679,
+      "v8_arm": "v8-no-spark",
+      "v8_parent_tokens": 213073,
+      "v8_saved_vs_standard_pct": 32.381,
+      "v8_saved_vs_standard_tokens": 102036,
+      "v8_saved_vs_v6_pct": 70.191,
+      "v8_saved_vs_v6_tokens": 501715
+    }
+  ],
+  "release_plan": {
+    "arm_cells": {
+      "standard-no-spark": 4,
+      "v6-no-spark": 4,
+      "v8-no-spark": 13,
+      "v8-spark-auto": 9,
+      "v8-spark-forced": 4
+    },
+    "candidate_cells": 26,
+    "confirmation_manifest": "benchmarks/agentic-v8-confirmation.json",
+    "confirmation_sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534",
+    "control_cells": 8,
+    "full_suite_cases": 10,
+    "seed": 20260721,
+    "total_cells": 34
+  },
+  "schema_version": 3,
+  "source_artifacts": [
+    {
+      "cells": 4,
+      "effort": "max",
+      "excluded_cells": [],
+      "model": "gpt-5.6-luna",
+      "path": "benchmarks/results/raw/v8-release-luna-max-terse-r2.json",
+      "retained_selection": false,
+      "selected_cells": [
+        {
+          "arm": "standard-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "max",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v6-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "max",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "max",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-forced",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "max",
+          "model": "gpt-5.6-luna"
+        }
+      ],
+      "sha256": "73eacdc6e16ba6f911525d4f7d6d30e14d8fbba15e30833b56544f851034b068"
+    },
+    {
+      "cells": 18,
+      "effort": "xhigh",
+      "excluded_cells": [],
+      "model": "gpt-5.6-luna",
+      "path": "benchmarks/results/raw/v8-release-primary-luna-xhigh-terse-r2.json",
+      "retained_selection": false,
+      "selected_cells": [
+        {
+          "arm": "v8-no-spark",
+          "case_id": "ci-matrix-root-cause",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "ci-matrix-root-cause",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "incident-triage",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "incident-triage",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "multi-service-contract-rollout",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "multi-service-contract-rollout",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "offline-advisory-triage",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "offline-advisory-triage",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "permission-scope-regression",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "permission-scope-regression",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "policy-bound-batch-update",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "policy-bound-batch-update",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "release-readiness",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "release-readiness",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "support-credit-adjudication",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "support-credit-adjudication",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "tenant-config-drift",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-auto",
+          "case_id": "tenant-config-drift",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        }
+      ],
+      "sha256": "0743ba2cb113d5e7e5228f4b9cd16c4e3c4c942b1003b5ce6b76b3f3fc6ad895"
+    },
+    {
+      "cells": 4,
+      "effort": "high",
+      "excluded_cells": [],
+      "model": "gpt-5.6-sol",
+      "path": "benchmarks/results/raw/v8-release-sol-high-terse-r2.json",
+      "retained_selection": false,
+      "selected_cells": [
+        {
+          "arm": "standard-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "high",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "arm": "v6-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "high",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "high",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "arm": "v8-spark-forced",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "high",
+          "model": "gpt-5.6-sol"
+        }
+      ],
+      "sha256": "df95bb72a95b5a5b15bb61677d9e2fa4a8daf777927f5c1ce2f10c2297c85b26"
+    },
+    {
+      "cells": 4,
+      "effort": "medium",
+      "excluded_cells": [],
+      "model": "gpt-5.6-sol",
+      "path": "benchmarks/results/raw/v8-release-sol-medium-terse-r2.json",
+      "retained_selection": false,
+      "selected_cells": [
+        {
+          "arm": "standard-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "medium",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "arm": "v6-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "medium",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "medium",
+          "model": "gpt-5.6-sol"
+        },
+        {
+          "arm": "v8-spark-forced",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "medium",
+          "model": "gpt-5.6-sol"
+        }
+      ],
+      "sha256": "79fe5cce23097a33b2c87a557433ddfb645ec005edb8d406ab0840e89cd614cb"
+    },
+    {
+      "cells": 1,
+      "effort": "xhigh",
+      "excluded_cells": [],
+      "model": "gpt-5.6-luna",
+      "path": "benchmarks/results/raw/v8-release-v6-luna-xhigh-retry-terse-r2.json",
+      "retained_selection": false,
+      "selected_cells": [
+        {
+          "arm": "v6-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        }
+      ],
+      "sha256": "b88778d53651494032afc37d3ad4019d83dc9939ce9eb63c4e0be4481542409b"
+    },
+    {
+      "cells": 3,
+      "effort": "xhigh",
+      "excluded_cells": [
+        {
+          "arm": "v6-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna",
+          "protocol_pass": false,
+          "reason": "Excluded: upstream 503 and stream disconnects exhausted the 900-second turn timeout before grading; the isolated same-seed retry completed with 100% task correctness.",
+          "success": false,
+          "task_pass": false
+        }
+      ],
+      "model": "gpt-5.6-luna",
+      "no_spark_config_sha256": "8c25d5f2343bb543533fa39f9f00be1a94c89240630140d7e29f52e8000c8616",
+      "path": "benchmarks/results/raw/v8-release-luna-xhigh-terse-r2.json",
+      "retained_selection": true,
+      "selected_cells": [
+        {
+          "arm": "standard-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-no-spark",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        },
+        {
+          "arm": "v8-spark-forced",
+          "case_id": "monorepo-sdk-migration",
+          "effort": "xhigh",
+          "model": "gpt-5.6-luna"
+        }
+      ],
+      "selection_path": "benchmarks/results/v8-release-luna-xhigh-selection.json",
+      "selection_sha256": "364a46057d499a5cedf1ef641ccec8f5bfa5ce6f084c92646779b46d26508d2f",
+      "sha256": "11c04490eb8f9b92ce7155b89b1390b04c7d3650187ca906144b6aea6ed371dd",
+      "source_publication_status": {
+        "candidate_all_pass": true,
+        "exploratory_metrics_publishable": false,
+        "latency_publishable": false,
+        "matrix_complete": true,
+        "protocol_publishable": false,
+        "quality_publishable": false,
+        "repeat_confirmed": false,
+        "task_publishable": false,
+        "token_publishable": false
+      },
+      "source_runner_sha256": "8f9b2e3a8d8c47a74f093ac56f0fc0a8903b4f4890cc2004be70a60cb0082f43"
+    }
+  ],
+  "verified": true
+}

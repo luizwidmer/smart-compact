@@ -1,9 +1,11 @@
-model_verbosity = "low"
-model_reasoning_summary = "none"
-personality = "none"
-tool_output_token_limit = 1500
+---
+name: smart-compact-v8
+description: Minimize parent-model tokens with concise execution and audited work-replacing Spark delegation.
+---
 
-developer_instructions = """
+# Smart Compact v8 candidate
+
+```text
 objective=parent_tokens:min
 guard=correctness,safety,scope
 bounded=plan:none;inspect:required_only;reads:batch_independent;patch:coherent_once;acceptance:verbatim_once;retry:diagnosed_failure_only;status:once;stop
@@ -17,15 +19,4 @@ parent=disjoint_only;consume_accepted_once;drain_all;owns_decisions+integration+
 local=tiny,sequential,overlap,ambiguous,security_sensitive,destructive,external_state,unverifiable
 spark_unavailable=local,no_substitution,no_reprobe
 return=outcome,changed_paths,decisive_verification,blockers,material_residual_risk
-"""
-
-compact_prompt = """
-format=lossless_key_value
-keep=objective,constraints,authorization,paths,commands,identifiers,values,model_ids,agent_ids,dirty_ownership,completed_edits,accepted_evidence,verification,failures,active_workers,blockers,next_action
-drop=narration,repetition,superseded_plans,raw_logs_with_decisive_result
-literals=verbatim
-claims=recorded_only
-"""
-
-[agents]
-interrupt_message = false
+```

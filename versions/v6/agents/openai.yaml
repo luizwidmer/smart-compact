@@ -1,0 +1,6 @@
+interface:
+  display_name: "Smart Compact v6"
+  short_description: "Use the frozen v6 compact workflow"
+  default_prompt: "Use $smart-compact-v6 to reduce task context while preserving exact requirements, safety, scope, and decisive verification."
+policy:
+  allow_implicit_invocation: false

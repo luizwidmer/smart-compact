@@ -19,18 +19,20 @@ def projected_calls(text: str, baseline_calls: int = DEFAULT_TRACE_CALLS) -> int
         or "do not create a plan" in lower
         or "do not create or update a formal plan" in lower
         or "skip plans" in lower
+        or "plan:none" in lower
     ):
         calls -= 3
-    if "batch independent reads" in lower:
+    if "batch independent reads" in lower or "reads:batch_independent" in lower:
         calls -= 3
     elif "one batched inspection" in lower:
         calls -= 4
-    if "inspect only inputs needed" in lower:
+    if "inspect only inputs needed" in lower or "inspect:required_only" in lower:
         calls -= 1
     if (
         "one consolidated implementation" in lower
         or "complete change in one consolidated patch" in lower
         or "one coherent patch" in lower
+        or "patch:coherent_once" in lower
     ):
         calls -= 4
     if "one parallel compilation" in lower or "one parallel tool-call group" in lower:
@@ -43,6 +45,7 @@ def projected_calls(text: str, baseline_calls: int = DEFAULT_TRACE_CALLS) -> int
         "provided acceptance check once" in lower
         or "one provided acceptance-suite run" in lower
         or "execute the supplied acceptance command verbatim" in lower
+        or "acceptance:verbatim_once" in lower
     ):
         calls -= 4
     if "one final scope check" in lower or "one scope audit" in lower:
@@ -51,6 +54,7 @@ def projected_calls(text: str, baseline_calls: int = DEFAULT_TRACE_CALLS) -> int
         "one combined scope/status check" in lower
         or "one final combined status/scope check" in lower
         or "one scoped status check" in lower
+        or "status:once" in lower
     ):
         calls -= 1
     if "target at most eight tool calls" in lower or "target at most eight tool-call groups" in lower:
@@ -74,6 +78,15 @@ def safety_score(text: str) -> tuple[int, list[str]]:
 
 def policy_name(path: Path) -> str:
     if path.name == "SKILL.md":
+        if path.is_file():
+            lines = path.read_text(encoding="utf-8").splitlines()
+            if lines and lines[0].strip() == "---":
+                for line in lines[1:]:
+                    if line.strip() == "---":
+                        break
+                    key, separator, value = line.partition(":")
+                    if separator and key.strip() == "name" and value.strip():
+                        return value.strip().strip('"\'')
         return path.parent.name or path.resolve().parent.name
     return path.stem
 

@@ -1,0 +1,826 @@
+{
+  "arms": [
+    "v8-no-spark",
+    "v8-spark-auto"
+  ],
+  "complete": false,
+  "completed_arms": 3,
+  "execution_order": [
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "permission-scope-regression",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "policy-bound-batch-update",
+      "index": 1,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "tenant-config-drift",
+      "index": 2,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "support-credit-adjudication",
+      "index": 3,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "support-credit-adjudication",
+      "index": 4,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "release-readiness",
+      "index": 5,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "multi-service-contract-rollout",
+      "index": 6,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "tenant-config-drift",
+      "index": 7,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "incident-triage",
+      "index": 8,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "multi-service-contract-rollout",
+      "index": 9,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "incident-triage",
+      "index": 10,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "release-readiness",
+      "index": 11,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "ci-matrix-root-cause",
+      "index": 12,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "offline-advisory-triage",
+      "index": 13,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "ci-matrix-root-cause",
+      "index": 14,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "policy-bound-batch-update",
+      "index": 15,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "permission-scope-regression",
+      "index": 16,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "offline-advisory-triage",
+      "index": 17,
+      "trial": 1
+    }
+  ],
+  "generated_at": "2026-07-14T23:23:44Z",
+  "jobs": 6,
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "release-readiness",
+      "category": "repository-maintenance",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "docs/installation.md",
+        "plugin/manifest.json",
+        "pyproject.toml",
+        "src/acme/__init__.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 76.922,
+      "combined_total_tokens": 100669,
+      "commands_by_thread": {
+        "019f62f0-5e58-7e81-a6e3-e79b66788b41": [
+          "/bin/zsh -lc 'rtk proxy pwd'",
+          "/bin/zsh -lc \"rtk proxy rg --files -g 'AGENTS.md' -g '.codex/**' -g '.agents/**'\"",
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!tests/**'\"' -g '\"'!*.pyc'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,280p' pyproject.toml\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' src/acme/__init__.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,300p' CHANGELOG.md\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' plugin/manifest.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' docs/installation.md\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.315,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 76.606,
+      "execution_order_index": 5,
+      "file_changes_by_thread": {
+        "019f62f0-5e58-7e81-a6e3-e79b66788b41": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/CHANGELOG.md",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/docs/installation.md",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/plugin/manifest.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/pyproject.toml",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/src/acme/__init__.py"
+        ]
+      },
+      "final_message": "Prepared release 2.4.0 across all five surfaces; `api_version` remains `v2`.\n\nChanged paths:\n\n- [CHANGELOG.md](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/CHANGELOG.md)\n- [docs/installation.md](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/docs/installation.md)\n- [plugin/manifest.json](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/plugin/manifest.json)\n- [pyproject.toml](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/pyproject.toml)\n- [src/acme/__init__.py](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/release-readiness-trial-1-v8-spark-auto/release-readiness/src/acme/__init__.py)\n\nTest result:\n\n```text\nRan 2 tests in 0.000s\n\nOK\n```\n\nResidual risk: packaging/build and publishing workflows were not exercised.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.059,
+            "ok": true,
+            "output": "test_api_version_is_preserved (test_release.ReleaseTests.test_api_version_is_preserved) ... ok\ntest_versions_match_target (test_release.ReleaseTests.test_versions_match_target) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "CHANGELOG.md",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "docs/installation.md",
+            "type": "path_contains"
+          },
+          {
+            "actual": "v2",
+            "key": "api_version",
+            "ok": true,
+            "path": "plugin/manifest.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f62f0-5e58-7e81-a6e3-e79b66788b41": {
+          "agentMessage": 5,
+          "commandExecution": 11,
+          "fileChange": 1,
+          "reasoning": 7,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 590,
+        "item/completed": 25,
+        "item/started": 25,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f62f0-5e58-7e81-a6e3-e79b66788b41",
+      "parent_total_tokens": 100669,
+      "parent_usage": {
+        "cachedInputTokens": 82176,
+        "inputTokens": 96895,
+        "outputTokens": 3774,
+        "reasoningOutputTokens": 1125,
+        "totalTokens": 100669
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 11,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f62f0-5e58-7e81-a6e3-e79b66788b41": 12
+      },
+      "tool_output_chars_by_thread": {
+        "019f62f0-5e58-7e81-a6e3-e79b66788b41": 904
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "tenant-config-drift",
+      "category": "configuration-reconciliation",
+      "changed_paths": [
+        "drift_report.json",
+        "tenants/t01.json",
+        "tenants/t02.json",
+        "tenants/t03.json",
+        "tenants/t04.json",
+        "tenants/t05.json",
+        "tenants/t06.json",
+        "tenants/t07.json",
+        "tenants/t08.json",
+        "tenants/t09.json",
+        "tenants/t10.json",
+        "tenants/t11.json",
+        "tenants/t12.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": true
+      },
+      "child_evidence_markers": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": [
+          "tenants/t01.json",
+          "tenants/t02.json",
+          "tenants/t03.json",
+          "tenants/t04.json",
+          "tenants/t05.json",
+          "tenants/t06.json",
+          "tenants/t07.json",
+          "tenants/t08.json",
+          "tenants/t09.json",
+          "tenants/t10.json",
+          "tenants/t11.json",
+          "tenants/t12.json"
+        ]
+      },
+      "child_final_messages": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": "Updated tenant configs:\n- [tenants/t01.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t01.json): set `mfa` to `true`, `session_minutes` to `30`, `retention_days` to `30`.\n- [tenants/t02.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t02.json): set `mfa` to `true`, `session_minutes` to `15`, `retention_days` to `7`, `audit_log` to `true`.\n- [tenants/t03.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t03.json): set `mfa` to `true`, `session_minutes` to `45`, `retention_days` to `30`, `audit_log` to `true`.\n- [tenants/t04.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t04.json): set `session_minutes` to `15`, `retention_days` to `7`, `audit_log` to `true` (kept required `mfa: true`).\n- [tenants/t05.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t05.json): set `mfa` to `true`, `retention_days` to `30`.\n- [tenants/t06.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t06.json): set `session_minutes` to `45`, `audit_log` to `true`.\n- [tenants/t07.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t07.json): set `mfa` to `true`, `session_minutes` to `30`, `retention_days` to `30`.\n- [tenants/t08.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t08.json): set `session_minutes` to `15`, `retention_days` to `7`, `audit_log` to `true` (kept `mfa: true`).\n- [tenants/t09.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t09.json): set `mfa` to `true`, `retention_days` to `30`.\n- [tenants/t10.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t10.json): set `mfa` to `true`, `retention_days` to `7`.\n- [tenants/t11.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t11.json): set `session_minutes` to `30`.\n- [tenants/t12.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t12.json): set `mfa` to `true`, `session_minutes` to `45`, `retention_days` to `30`, `audit_log` to `true`.\n\n`policy.json` and `validate.py` were not changed."
+      },
+      "child_io_ok": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": true
+      },
+      "child_missing_evidence_markers": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f"
+      ],
+      "child_total_tokens": 102711,
+      "child_turn_errors": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": null
+      },
+      "child_turn_statuses": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": "completed"
+      },
+      "child_usage": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": {
+          "cachedInputTokens": 85504,
+          "inputTokens": 97804,
+          "outputTokens": 4907,
+          "reasoningOutputTokens": 1809,
+          "totalTokens": 102711
+        }
+      },
+      "collection_duration_seconds": 74.835,
+      "combined_total_tokens": 271870,
+      "commands_by_thread": {
+        "019f62f0-5e64-7cf2-be2f-0aea1c7e0ede": [
+          "/bin/zsh -lc 'rtk proxy rg --files'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' validate.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' policy.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ],
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": [
+          "/bin/zsh -lc 'rtk ls'",
+          "/bin/zsh -lc \"rtk rg --files tenants | rg 'tenant-(0[1-9]|1[0-2])|policy\\\\.json|validate\\\\.py'\"",
+          "/bin/zsh -lc 'rtk cat policy.json'",
+          "/bin/zsh -lc 'rtk ls tenants'",
+          "/bin/zsh -lc 'rtk rg --files tenants'",
+          "/bin/zsh -lc 'rtk cat tenants/t01.json tenants/t02.json tenants/t03.json tenants/t04.json tenants/t05.json tenants/t06.json tenants/t07.json tenants/t08.json tenants/t09.json tenants/t10.json tenants/t11.json tenants/t12.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.328,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "tenants-01-03",
+            "markers": [
+              "tenants/t01.json",
+              "tenants/t02.json",
+              "tenants/t03.json"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tenants-04-06",
+            "markers": [
+              "tenants/t04.json",
+              "tenants/t05.json",
+              "tenants/t06.json"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tenants-07-09",
+            "markers": [
+              "tenants/t07.json",
+              "tenants/t08.json",
+              "tenants/t09.json"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tenants-10-12",
+            "markers": [
+              "tenants/t10.json",
+              "tenants/t11.json",
+              "tenants/t12.json"
+            ],
+            "weight": 3
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 74.507,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f62f0-5e64-7cf2-be2f-0aea1c7e0ede": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/drift_report.json"
+        ],
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t01.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t02.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t03.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t04.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t05.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t06.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t07.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t08.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t09.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t10.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t11.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t12.json"
+        ]
+      },
+      "final_message": "Reconciled all twelve tenant configs and added `drift_report.json`.\n\nChanged paths:\n\n- `tenants/t01.json` through `tenants/t12.json`\n- `drift_report.json`\n\nValidation passed:\n\n`tenant drift: 12 identities, configs, controls, and report valid`\n\n`policy.json` and `validate.py` were unchanged.",
+      "first_spawn_seconds": 32.436,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.031,
+            "ok": true,
+            "output": "tenant drift: 12 identities, configs, controls, and report valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": [
+              "t01",
+              "t02",
+              "t03",
+              "t04",
+              "t05",
+              "t06",
+              "t07",
+              "t08",
+              "t09",
+              "t10",
+              "t11",
+              "t12"
+            ],
+            "key": "corrected_tenants",
+            "ok": true,
+            "path": "drift_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f62f0-5e64-7cf2-be2f-0aea1c7e0ede": {
+          "agentMessage": 4,
+          "collabAgentToolCall": 2,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 10,
+          "userMessage": 1
+        },
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": {
+          "agentMessage": 4,
+          "commandExecution": 6,
+          "fileChange": 2,
+          "reasoning": 7,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 18,
+        "configWarning": 1,
+        "item/agentMessage/delta": 241,
+        "item/completed": 43,
+        "item/started": 43,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 18,
+        "turn/completed": 2,
+        "turn/diff/updated": 10,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f62f0-5e64-7cf2-be2f-0aea1c7e0ede",
+      "parent_total_tokens": 169159,
+      "parent_usage": {
+        "cachedInputTokens": 144896,
+        "inputTokens": 166073,
+        "outputTokens": 3086,
+        "reasoningOutputTokens": 1235,
+        "totalTokens": 169159
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": [
+          "tenants-01-03",
+          "tenants-04-06",
+          "tenants-07-09",
+          "tenants-10-12"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": false,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "tenants-01-03": 1,
+        "tenants-04-06": 1,
+        "tenants-07-09": 1,
+        "tenants-10-12": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 11,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 43.534,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": {
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "partition_ids: tenants-01-03, tenants-04-06, tenants-07-09, tenants-10-12\n\nExclusive paths: only the tenant configuration files named for tenant IDs 01 through 12 in the assigned workspace; do not edit policy.json, validate.py, drift_report.json, or any other file.\n\nMechanical task: inspect immutable policy.json and the assigned tenant configs, then reconcile every assigned tenant config to policy.json while preserving each tenant ID, plan, and region. Do not broaden authentication or retention limits. Use apply_patch for edits. You own all four named partitions, so avoid overlapping edits and do not modify anything outside the tenant config files.\n\nResult contract: report the exact changed config paths and a concise summary of each repair; confirm policy.json and validate.py were not changed. The parent alone writes drift_report.json in assignment-contract order and runs acceptance. After the parent accepts your result, it must not reread your configs unless validation fails or exposes a conflict.\n\nComplete shell constraint: every shell command must start with literal rtk; use the rtk proxy when raw output is required and retain rtk in acceptance commands. The task starts in the exact target working directory: never run cd or chdir in a shell command, and pass directories through the tool workdir field. If the shell cannot launch rtk itself, stop and report wrapper failure. If a wrapped command fails, diagnose or retry only with another rtk-prefixed command; never use raw shell or an absolute binary path."
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f62f0-5e64-7cf2-be2f-0aea1c7e0ede": 8,
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": 8
+      },
+      "tool_output_chars_by_thread": {
+        "019f62f0-5e64-7cf2-be2f-0aea1c7e0ede": 2609,
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f": 3007
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f62f0-dd79-7b70-b2cc-5b816db5af1f"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "permission-scope-regression",
+      "category": "sequential-security-control",
+      "changed_paths": [
+        "src/permissions.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 39.452,
+      "combined_total_tokens": 79017,
+      "commands_by_thread": {
+        "019f62f0-5e4f-7813-8061-aabe891ecd28": [
+          "/bin/zsh -lc \"rtk sed -n '1,240p' src/permissions.py && rtk rg -n \\\"permission|scope|wildcard|\\\\.\\\\*\\\" tests src/permissions.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,200p' tests/test_permissions.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk git status --short -- src/permissions.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.315,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 39.137,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f62f0-5e4f-7813-8061-aabe891ecd28": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-vb3jivd2/permission-scope-regression-trial-1-v8-spark-auto/permission-scope-regression/src/permissions.py"
+        ]
+      },
+      "final_message": "Fixed `src/permissions.py`.\n\n- Exact grants require identical scopes.\n- `.*` grants authorize only dotted descendants.\n- Global `*` remains unsupported.\n\nVerification: `rtk proxy python3 -m unittest discover -s tests -v` \u2014 3 tests passed.\n\nResidual risk: no known risk within the requested scope; tests were unchanged.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.048,
+            "ok": true,
+            "output": "test_descendant_wildcard (test_permissions.PermissionTests.test_descendant_wildcard) ... ok\ntest_exact_scope (test_permissions.PermissionTests.test_exact_scope) ... ok\ntest_global_wildcard_is_not_supported (test_permissions.PermissionTests.test_global_wildcard_is_not_supported) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "src/permissions.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f62f0-5e4f-7813-8061-aabe891ecd28": {
+          "agentMessage": 3,
+          "commandExecution": 4,
+          "fileChange": 1,
+          "reasoning": 6,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 6,
+        "configWarning": 1,
+        "item/agentMessage/delta": 146,
+        "item/completed": 15,
+        "item/started": 15,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 6,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f62f0-5e4f-7813-8061-aabe891ecd28",
+      "parent_total_tokens": 79017,
+      "parent_usage": {
+        "cachedInputTokens": 66048,
+        "inputTokens": 77283,
+        "outputTokens": 1734,
+        "reasoningOutputTokens": 888,
+        "totalTokens": 79017
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 4,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f62f0-5e4f-7813-8061-aabe891ecd28": 5
+      },
+      "tool_output_chars_by_thread": {
+        "019f62f0-5e4f-7813-8061-aabe891ecd28": 1899
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "schema_version": 3,
+  "wall_time_contended": true
+}

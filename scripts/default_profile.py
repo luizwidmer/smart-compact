@@ -192,8 +192,11 @@ def render_promoted_config(profile_text: str, base_text: str) -> str:
 
     profile = _parse_toml(profile_text, "Smart Compact profile")
     _parse_toml(base_text, "Codex base config")
+    selected_top_level_keys = tuple(
+        key for key in MANAGED_TOP_LEVEL_KEYS if key in profile
+    )
     top_assignments = _extract_assignments(
-        profile_text, None, MANAGED_TOP_LEVEL_KEYS
+        profile_text, None, selected_top_level_keys
     )
     agent_assignments = _extract_assignments(
         profile_text, "agents", MANAGED_AGENT_KEYS
@@ -240,8 +243,10 @@ def render_promoted_config(profile_text: str, base_text: str) -> str:
         rendered += "\n"
     result = _parse_toml(rendered, "promoted Codex base config")
     for key in MANAGED_TOP_LEVEL_KEYS:
-        if result.get(key) != profile.get(key):
+        if key in profile and result.get(key) != profile.get(key):
             raise ProfilePromotionError(f"promotion verification failed for {key!r}")
+        if key not in profile and key in result:
+            raise ProfilePromotionError(f"promotion retained omitted key {key!r}")
     result_agents = result.get("agents")
     profile_agents = profile.get("agents")
     if not isinstance(result_agents, dict) or not isinstance(profile_agents, dict):

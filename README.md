@@ -2,12 +2,14 @@
 
 [Smart Compact](https://github.com/luizwidmer/smart-compact) is an experimental Codex profile and skill for reducing parent-model token use while preserving correctness, safety, and exact task constraints.
 
-V7 combines concise native profile settings with conservative, adaptive Spark delegation. Parent tokens are the primary objective. Spark tokens and combined tokens are reported separately.
+V8 is the current profile. It uses terse machine-oriented instructions, native Codex compaction, bounded tool history, and optional Spark offload. Parent tokens are the primary objective; Spark and combined tokens are disclosed separately.
 
 ## Install
 
+Install v8 from GitHub:
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/luizwidmer/smart-compact/main/install.sh | sh -s -- --version v8
 ```
 
 From a checkout:
@@ -15,138 +17,92 @@ From a checkout:
 ```bash
 git clone https://github.com/luizwidmer/smart-compact.git
 cd smart-compact
-./install.sh
+./install.sh --version v8
 ```
 
-The installer is idempotent and does not overwrite differing files unless `--force` is supplied. Useful options:
+V6 remains available as the frozen compatibility version:
 
 ```bash
-./install.sh --dry-run
-./install.sh --force
-./install.sh --no-spark
-./install.sh --no-profile
-./install.sh --no-plugin
-./install.sh --make-default
+./install.sh --version v6
 ```
 
-Restart Codex or open a new task after installation.
+The installer always installs both versions side by side: CLI profiles `smart-compact-v6` and `smart-compact-v8`, plus skills `$smart-compact-v6` and `$smart-compact-v8`. `--version` only selects the `smart-compact` / `$smart-compact` compatibility alias and default target. The installer is idempotent and preserves differing files unless `--force` is supplied. It also supports `--dry-run`, `--no-spark`, `--no-profile`, `--no-plugin`, and `--make-default`. Restart Codex or open a new task after installation.
 
 ## Use
 
-- Start the named CLI profile with `codex --profile smart-compact`.
-- Invoke the skill in an existing task with `$smart-compact`.
-- Select `@Smart Compact` in the Codex app to create a task through the bundled profile picker.
-
-Example:
+- Selected CLI alias: `codex --profile smart-compact`
+- Versioned CLI profiles: `codex --profile smart-compact-v6` or `codex --profile smart-compact-v8`
+- Existing task: `$smart-compact`, `$smart-compact-v6`, or `$smart-compact-v8`
+- Codex app: select `@Smart Compact`
 
 ```text
 Use $smart-compact. Minimize parent-model tokens while preserving all requirements and verification.
 ```
 
-## What v7 changes
+## What v8 changes
 
-- Uses low visible verbosity, no surfaced reasoning summary, a 2,000-token stored tool-output limit, and lossless operational compaction.
-- Avoids plans and repeated inspection for bounded tasks with an exact target and acceptance command.
-- Batches independent reads and keeps final integration and acceptance on the parent.
-- Treats Spark as optional. There is no fixed one-worker cap.
-- Chooses the smallest useful worker set; one worker may own several nonoverlapping partitions.
-- Adds another worker only for material parent work avoided or critical-path parallelism.
-- Keeps tiny, sequential, overlapping, risky, destructive, externally stateful, or unverifiable work local.
+- Uses low verbosity, no surfaced reasoning summary, native-default automatic compaction, and a 1,500-token stored tool-output limit.
+- Encodes parent, worker, and compaction instructions as terse key-value contracts.
+- Batches necessary reads, patches coherently, runs exact acceptance once, and retries only diagnosed failures.
+- Gives Spark no fixed worker cap, but selects the smallest useful set and counts every spawn in the efficiency metric.
+- Keeps shared decisions, integration, safety-sensitive work, and final acceptance on the parent.
 
-## V7 benchmark snapshot
+## V8 benchmark snapshot
 
-The v7 suite contains ten hermetic agentic cases: six development cases and four held-out cases. The agreed matrix ran four arms once each, for 40 total runs, with six runs executing concurrently. The parent ran `gpt-5.6-luna` at high reasoning; Spark arms used `gpt-5.3-codex-spark` at medium reasoning.
+The release matrix contains 34 single-pass cells over ten hermetic agentic cases. The hard gate is task correctness: all 34 cells passed. A secondary audit recorded 26/34 full-protocol and 33/34 RTK compliance without changing graded outputs. Six earlier tuning cells bring the scored v8 total to 40. V7 was a diagnostic gap and was not rerun.
 
-| Comparison | Parent model / effort | Spark model / effort | Baseline parent tokens | Smart Compact v7 parent tokens | Parent tokens saved | Total savings | Correctness |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Standard, no Spark -> v7, no Spark | `gpt-5.6-luna` / high | Disabled | 1,841,804 | 1,223,877 | 617,927 | 33.5% | 9/10 both |
-| Frozen v6, Spark -> v7, Spark | `gpt-5.6-luna` / high | `gpt-5.3-codex-spark` / medium | 3,757,550 | 1,537,036 | 2,220,514 | 59.1% | 9/10 both |
+### Standard to v6 to v8, no Spark
 
-These are token-weighted totals across ten runs per arm, matching the presentation used for v6. The less outlier-sensitive paired medians were 59,516.5 parent tokens saved (31.593%) without Spark and 41,894.5 saved (30.153%) against frozen v6 with Spark. Full policy success was 9/10 for v7 without Spark and 4/10 for v7 with Spark because routing evidence is stricter than task correctness.
+These rows run the same `monorepo-sdk-migration` task. All 12 arm/settings combinations passed correctness.
 
-Against frozen v6 with the same Spark capability, v7 reduced paired median parent tokens by **30.153%** and combined tokens by **17.693%**, with equal task quality. V7 used fewer parent tokens in 8/10 cases.
+| Parent model / effort | Standard parent tokens | V6 parent tokens | V6 saved vs Standard | V8 no-Spark parent tokens | V8 saved vs Standard | V8 saved vs v6 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `gpt-5.6-sol` / medium | 125,857 | 193,980 | -68,123 (-54.1%) | 117,286 | 8,571 (6.8%) | 76,694 (39.5%) |
+| `gpt-5.6-sol` / high | 131,074 | 206,214 | -75,140 (-57.3%) | 100,218 | 30,856 (23.5%) | 105,996 (51.4%) |
+| `gpt-5.6-luna` / xhigh | 220,872 | 348,084 | -127,212 (-57.6%) | 251,845 | -30,973 (-14.0%) | 96,239 (27.6%) |
+| `gpt-5.6-luna` / max | 315,109 | 714,788 | -399,679 (-126.8%) | 213,073 | 102,036 (32.4%) | 501,715 (70.2%) |
+| **Token-weighted aggregate** | **792,912** | **1,463,066** | **-670,154 (-84.5%)** | **682,422** | **110,490 (13.9%)** | **780,644 (53.4%)** |
 
-The strongest parent-token result was v7 without Spark: paired median parent use was 31.593% below the standard no-Spark arm. Enabling Spark on the same v7 profile increased paired median parent use by 10.4755% and combined use by 141.691%, winning parent tokens in only 1/10 cases.
+V8 beat frozen v6 in every setting and Standard in three of four. The current v6 controls are fresh same-task controls, not the historical calculator totals.
 
-That result makes the release guidance deliberately conservative: the v7 profile is the measured improvement; Spark remains a selectively gated offload mechanism, not a default token-saving claim.
+### Forced Spark efficacy
 
-These are single-pass exploratory measurements. The runner requires three trials per cell for confirmatory publication, and parallel execution makes latency non-publishable. See [`RESEARCH.md`](RESEARCH.md) for protocol, provenance, exclusions, and limitations, and [`benchmarks/results/v7-40-summary.json`](benchmarks/results/v7-40-summary.json) for compact per-run evidence.
+Each forced row used one `gpt-5.3-codex-spark` / medium worker. All eight no-Spark/Spark cells passed correctness. Positive savings mean Spark reduced parent use or wall time; combined tokens include the child.
 
-## Spark behavior
+| Parent model / effort | No-Spark parent | Spark parent | Parent saved | Spark child | Combined | Spawned / useful | Wall time saved |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `gpt-5.6-sol` / medium | 117,286 | 91,604 | 25,682 (21.9%) | 192,670 | 284,274 | 1 / 1 | 7.556s (12.6%) |
+| `gpt-5.6-sol` / high | 100,218 | 131,005 | -30,787 (-30.7%) | 512,620 | 643,625 | 1 / 1 | -12.348s (-15.2%) |
+| `gpt-5.6-luna` / xhigh | 251,845 | 95,075 | 156,770 (62.2%) | 368,338 | 463,413 | 1 / 1 | 78.230s (56.3%) |
+| `gpt-5.6-luna` / max | 213,073 | 116,126 | 96,947 (45.5%) | 120,155 | 236,281 | 1 / 1 | 94.247s (57.3%) |
+| **Aggregate** | **682,422** | **433,810** | **248,612 (36.4%)** | **1,193,783** | **1,627,593** | **4 / 4** | **167.685s (37.7%)** |
 
-When `spark_worker` is available, Smart Compact may delegate substantial independent mechanical work under these rules:
+The aggregate parent saving was 62,153 tokens per spawned worker. Combined tokens increased because Spark uses a separate worker allowance. SOL/high regressed, so Spark is not a universal win.
 
-1. Name nonoverlapping partitions and exclusive inputs or write paths.
-2. Count every spawned worker in the efficiency denominator, including failed or redundant workers.
-3. Prefer the fewest workers that can replace meaningful parent inspection or editing.
-4. Preserve exact shell-wrapper and acceptance constraints in every delegation brief.
-5. Do not reread or redo accepted worker work unless integration or acceptance finds a conflict.
-6. Keep final decisions, shared edits, integration, and deterministic acceptance on the parent.
+### Native auto-routing
 
-If Spark is unavailable, Smart Compact continues locally without substituting another role or probing repeatedly.
+Across nine `gpt-5.6-luna` / xhigh cases, auto-routing reduced parent tokens from 1,675,854 to 1,658,999: 16,855 saved (1.0%). It spawned seven workers, six useful, for 2,407.857 saved parent tokens per spawn; child tokens were 828,230 and combined tokens were 2,487,229. All six delegation-required cases spawned, all three forbidden cases stayed local, and every child drained. Parallel execution makes wall time diagnostic only.
 
-## Package contents
+## Evidence and limitations
 
-| Path | Purpose |
-| --- | --- |
-| [`SKILL.md`](SKILL.md) | User-invoked Smart Compact policy |
-| [`profiles/smart-compact.config.toml`](profiles/smart-compact.config.toml) | Native Codex profile |
-| [`.codex/agents/spark-worker.toml`](.codex/agents/spark-worker.toml) | Optional Spark worker definition |
-| [`plugin/`](plugin) | Bundled skill and in-app profile picker |
-| [`benchmarks/`](benchmarks) | Frozen cases, policies, profiles, freeze metadata, and summary results |
-| [`scripts/benchmark_v7.py`](scripts/benchmark_v7.py) | Hermetic four-arm v7 runner and scorer |
-| [`RESEARCH.md`](RESEARCH.md) | Detailed methodology and evidence |
-| [`tests/`](tests) | Package and benchmark regression tests |
+The matrix used one observation per cell, seed `20260721`, Codex `0.144.1`, and RTK `0.43.0`. A Luna/xhigh v6 control was selected from an isolated same-seed retry after upstream 503 and stream disconnects exhausted its original 900-second run; the failed attempt is preserved and excluded. Full provenance, hashes, and raw artifacts are in [`RESEARCH.md`](RESEARCH.md).
 
-RTK is supported but not bundled. When a workspace requires RTK, Smart Compact preserves the literal wrapper on every command and retry.
+- Single-pass measurements do not estimate variance or statistical confidence.
+- Synthetic local tasks do not represent every production repository or organization.
+- Parallel auto-routing latency is contention-affected and is not a speedup claim.
+- Parent-token savings are not total-cost savings when combined tokens increase.
 
-## Reproduce and validate
-
-Install the optional benchmark dependency:
+## Validate
 
 ```bash
-python3 -m pip install -r requirements-benchmark.txt
-```
-
-Validate all ten fixtures without model calls:
-
-```bash
-python3 scripts/benchmark_v7.py \
-  --cases benchmarks/agentic-v7-confirmation.json \
+python3 scripts/benchmark_v8.py \
+  --cases benchmarks/agentic-v8-confirmation.json \
   --validate-fixtures
-```
 
-Run the same single-pass 40-cell matrix:
-
-```bash
-python3 scripts/benchmark_v7.py \
-  --cases benchmarks/agentic-v7-confirmation.json \
-  --arm standard-no-spark \
-  --arm v6-spark \
-  --arm v7-no-spark \
-  --arm v7-spark \
-  --repetitions 1 \
-  --jobs 6 \
-  --seed 20260718 \
-  --output /path/to/v7-results.json
-```
-
-Run package tests:
-
-```bash
 python3 -m unittest discover -s tests -v
 ```
 
-The current suite contains 93 passing regression tests.
-
-## Limitations
-
-- One model run per matrix cell does not estimate variance or statistical confidence.
-- Synthetic local tasks do not represent every production repository or organization.
-- Token caching, model decisions, and tool selection introduce run-to-run variance.
-- Parallel latency is contention-affected and must not be presented as clean speedup.
-- Parent-token savings are not total-cost savings unless combined tokens also decline.
-- Repeat substantially similar workloads before enabling Spark automatically in production.
+The benchmark toolkit, frozen inputs, raw evidence, verifier, and tests live under [`benchmarks/`](benchmarks), [`scripts/`](scripts), and [`tests/`](tests).
 
 ## License
 

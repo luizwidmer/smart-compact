@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Iterable, Mapping, Sequence
 
 if __package__:
     from .default_profile import ProfilePromotionError, promote_profile
@@ -23,6 +24,7 @@ else:
 SOURCE_ROOT = Path(__file__).parents[1]
 SKILL_NAME = "smart-compact"
 PROFILE_FILENAME = "smart-compact.config.toml"
+SUPPORTED_VERSIONS = ("v6", "v8")
 AGENT_FILENAME = "spark-worker.toml"
 PLUGIN_NAME = "smart-compact"
 MARKETPLACE_NAME = "personal"
@@ -62,6 +64,18 @@ def file_state(content: str, target: Path) -> str:
     return "same" if target.read_text(encoding="utf-8") == content else "conflict"
 
 
+def managed_file_state(
+    content: str,
+    target: Path,
+    managed_contents: Iterable[str] = (),
+) -> str:
+    state = file_state(content, target)
+    if state != "conflict" or not target.is_file():
+        return state
+    existing = target.read_text(encoding="utf-8")
+    return "managed" if existing in managed_contents else state
+
+
 def install_file(
     component: str,
     content: str,
@@ -70,8 +84,9 @@ def install_file(
     mode: int,
     force: bool,
     dry_run: bool,
+    managed_contents: Iterable[str] = (),
 ) -> InstallResult:
-    state = file_state(content, target)
+    state = managed_file_state(content, target, managed_contents)
     if state == "same":
         return InstallResult(component, "already-installed", target)
     if state == "conflict" and not force:
@@ -80,64 +95,54 @@ def install_file(
         status = "would-update" if state == "conflict" else "would-install"
         return InstallResult(component, status, target)
     atomic_write(content, target, mode)
-    status = "updated" if state == "conflict" else "installed"
+    status = "updated" if state in {"conflict", "managed"} else "installed"
     return InstallResult(component, status, target)
 
 
-def install_skill(
-    source_root: Path,
+def skill_contents(source: Path) -> dict[Path, str]:
+    return {
+        Path("SKILL.md"): (source / "SKILL.md").read_text(encoding="utf-8"),
+        Path("agents/openai.yaml"): (source / "agents" / "openai.yaml").read_text(
+            encoding="utf-8"
+        ),
+    }
+
+
+def compatibility_skill_contents(source_root: Path, version: str) -> dict[Path, str]:
+    contents = skill_contents(source_root / "versions" / version)
+    versioned_name = f"name: smart-compact-{version}"
+    skill = contents[Path("SKILL.md")]
+    if skill.count(versioned_name) != 1:
+        raise ValueError(f"{version} skill must declare exactly one {versioned_name!r}")
+    contents[Path("SKILL.md")] = skill.replace(versioned_name, "name: smart-compact", 1)
+    agent = contents[Path("agents/openai.yaml")]
+    contents[Path("agents/openai.yaml")] = (
+        agent.replace(f'$smart-compact-{version}', "$smart-compact")
+        .replace(f'display_name: "Smart Compact {version}"', 'display_name: "Smart Compact"')
+    )
+    return contents
+
+
+def install_content_tree(
+    component: str,
+    contents: Mapping[Path, str],
     target: Path,
     *,
     force: bool = False,
     dry_run: bool = False,
+    managed_variants: Sequence[Mapping[Path, str]] = (),
 ) -> InstallResult:
-    files = {
-        Path("SKILL.md"): source_root / "SKILL.md",
-        Path("agents/openai.yaml"): source_root / "agents" / "openai.yaml",
-    }
     states = {
-        relative: file_state(source.read_text(encoding="utf-8"), target / relative)
-        for relative, source in files.items()
-    }
-    conflicts = [str(relative) for relative, state in states.items() if state == "conflict"]
-    if conflicts and not force:
-        return InstallResult(
-            "skill",
-            "conflict",
-            target,
-            "existing files differ: " + ", ".join(conflicts),
+        relative: managed_file_state(
+            content,
+            target / relative,
+            (
+                variant[relative]
+                for variant in managed_variants
+                if relative in variant
+            ),
         )
-    if all(state == "same" for state in states.values()):
-        return InstallResult("skill", "already-installed", target)
-    if dry_run:
-        status = "would-update" if conflicts else "would-install"
-        return InstallResult("skill", status, target)
-
-    for relative, source in files.items():
-        content = source.read_text(encoding="utf-8")
-        if states[relative] != "same":
-            atomic_write(content, target / relative, 0o644)
-    status = "updated" if conflicts else "installed"
-    return InstallResult("skill", status, target)
-
-
-def install_tree(
-    component: str,
-    source: Path,
-    target: Path,
-    *,
-    force: bool,
-    dry_run: bool,
-) -> InstallResult:
-    files = sorted(path for path in source.rglob("*") if path.is_file())
-    if not files:
-        return InstallResult(component, "conflict", target, "source tree is empty")
-    states = {
-        path.relative_to(source): file_state(
-            path.read_text(encoding="utf-8"),
-            target / path.relative_to(source),
-        )
-        for path in files
+        for relative, content in contents.items()
     }
     conflicts = [str(relative) for relative, state in states.items() if state == "conflict"]
     if conflicts and not force:
@@ -150,18 +155,100 @@ def install_tree(
     if all(state == "same" for state in states.values()):
         return InstallResult(component, "already-installed", target)
     if dry_run:
-        return InstallResult(component, "would-update" if conflicts else "would-install", target)
+        status = "would-update" if target.exists() else "would-install"
+        return InstallResult(component, status, target)
+
+    for relative, content in contents.items():
+        if states[relative] != "same":
+            atomic_write(content, target / relative, 0o644)
+    status = "updated" if target.exists() and any(
+        state in {"conflict", "managed"} for state in states.values()
+    ) else "installed"
+    return InstallResult(component, status, target)
+
+
+def install_tree(
+    component: str,
+    source: Path,
+    target: Path,
+    *,
+    force: bool,
+    dry_run: bool,
+    overlays: Mapping[Path, str] | None = None,
+    managed_overlays: Sequence[Mapping[Path, str]] = (),
+) -> InstallResult:
+    files = sorted(path for path in source.rglob("*") if path.is_file())
+    if not files:
+        return InstallResult(component, "conflict", target, "source tree is empty")
+    base_contents = {
+        path.relative_to(source): path.read_text(encoding="utf-8") for path in files
+    }
+    contents = dict(base_contents)
+    if overlays:
+        contents.update(overlays)
+    states = {
+        relative: managed_file_state(
+            content,
+            target / relative,
+            (
+                candidate
+                for candidate in (
+                    base_contents.get(relative),
+                    *(overlay.get(relative) for overlay in managed_overlays),
+                )
+                if candidate is not None
+            ),
+        )
+        for relative, content in contents.items()
+    }
+    conflicts = [str(relative) for relative, state in states.items() if state == "conflict"]
+    if conflicts and not force:
+        return InstallResult(
+            component,
+            "conflict",
+            target,
+            "existing files differ: " + ", ".join(conflicts),
+        )
+    if all(state == "same" for state in states.values()):
+        return InstallResult(component, "already-installed", target)
+    if dry_run:
+        return InstallResult(component, "would-update" if target.exists() else "would-install", target)
 
     for relative, state in states.items():
         if state == "same":
             continue
         source_file = source / relative
         atomic_write(
-            source_file.read_text(encoding="utf-8"),
+            contents[relative],
             target / relative,
-            source_file.stat().st_mode & 0o777,
+            source_file.stat().st_mode & 0o777 if source_file.is_file() else 0o644,
         )
-    return InstallResult(component, "updated" if conflicts else "installed", target)
+    updated = any(state in {"conflict", "managed"} for state in states.values())
+    return InstallResult(component, "updated" if updated else "installed", target)
+
+
+def profile_contents(source_root: Path) -> dict[str, str]:
+    return {
+        version: (
+            source_root / "profiles" / f"smart-compact-{version}.config.toml"
+        ).read_text(encoding="utf-8")
+        for version in SUPPORTED_VERSIONS
+    }
+
+
+def plugin_alias_overlays(source_root: Path, version: str) -> dict[Path, str]:
+    selected_skill = compatibility_skill_contents(source_root, version)
+    return {
+        Path("skills/smart-compact") / relative: content
+        for relative, content in selected_skill.items()
+    } | {
+        Path("profiles/smart-compact.config.json"): (
+            source_root
+            / "plugin"
+            / "profiles"
+            / f"smart-compact-{version}.config.json"
+        ).read_text(encoding="utf-8")
+    }
 
 
 def marketplace_entry() -> dict[str, object]:
@@ -300,6 +387,7 @@ def install_package(
     skill_root: Path,
     codex_home: Path,
     *,
+    version: str = "v8",
     force: bool = False,
     dry_run: bool = False,
     include_profile: bool = True,
@@ -310,35 +398,73 @@ def install_package(
     spark_available: bool = False,
     spark_detail: str = "",
 ) -> list[InstallResult]:
+    if version not in SUPPORTED_VERSIONS:
+        raise ValueError(
+            f"unsupported Smart Compact version {version!r}; "
+            f"expected one of {', '.join(SUPPORTED_VERSIONS)}"
+        )
     if personal_root is None:
         personal_root = skill_root.parent.parent
+    versioned_skills = {
+        candidate: skill_contents(source_root / "versions" / candidate)
+        for candidate in SUPPORTED_VERSIONS
+    }
+    compatibility_skills = {
+        candidate: compatibility_skill_contents(source_root, candidate)
+        for candidate in SUPPORTED_VERSIONS
+    }
+    profiles = profile_contents(source_root)
     results = [
-        install_skill(
-            source_root,
-            skill_root / SKILL_NAME,
+        install_content_tree(
+            f"skill-{candidate}",
+            versioned_skills[candidate],
+            skill_root / f"{SKILL_NAME}-{candidate}",
             force=force,
             dry_run=dry_run,
         )
+        for candidate in SUPPORTED_VERSIONS
     ]
+    results.append(
+        install_content_tree(
+            "skill-alias",
+            compatibility_skills[version],
+            skill_root / SKILL_NAME,
+            force=force,
+            dry_run=dry_run,
+            managed_variants=tuple(compatibility_skills.values()),
+        )
+    )
 
     if include_profile:
+        for candidate in SUPPORTED_VERSIONS:
+            results.append(
+                install_file(
+                    f"profile-{candidate}",
+                    profiles[candidate],
+                    codex_home / f"smart-compact-{candidate}.config.toml",
+                    mode=0o600,
+                    force=force,
+                    dry_run=dry_run,
+                )
+            )
         results.append(
             install_file(
-                "profile",
-                (source_root / "profiles" / PROFILE_FILENAME).read_text(encoding="utf-8"),
+                "profile-alias",
+                profiles[version],
                 codex_home / PROFILE_FILENAME,
                 mode=0o600,
                 force=force,
                 dry_run=dry_run,
+                managed_contents=profiles.values(),
             )
         )
     else:
-        results.append(InstallResult("profile", "skipped", None, "disabled by --no-profile"))
+        results.append(InstallResult("profiles", "skipped", None, "disabled by --no-profile"))
 
     if make_default:
         try:
             promotion = promote_profile(
-                source_root / "profiles" / PROFILE_FILENAME,
+                source_root / "profiles" / f"smart-compact-{version}.config.toml",
                 codex_home / "config.toml",
                 dry_run=dry_run,
             )
@@ -361,6 +487,11 @@ def install_package(
             )
 
     if include_plugin:
+        selected_plugin_overlay = plugin_alias_overlays(source_root, version)
+        all_plugin_overlays = tuple(
+            plugin_alias_overlays(source_root, candidate)
+            for candidate in SUPPORTED_VERSIONS
+        )
         results.append(
             install_tree(
                 "plugin-source",
@@ -368,6 +499,8 @@ def install_package(
                 personal_root / "plugins" / PLUGIN_NAME,
                 force=force,
                 dry_run=dry_run,
+                overlays=selected_plugin_overlay,
+                managed_overlays=all_plugin_overlays,
             )
         )
         results.append(
@@ -418,6 +551,12 @@ def spark_capability(codex_name: str, timeout: float) -> tuple[bool, str]:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--version",
+        choices=SUPPORTED_VERSIONS,
+        default="v8",
+        help="compatibility alias version (default: v8; both versions are installed)",
+    )
     parser.add_argument("--force", action="store_true", help="replace differing managed files")
     parser.add_argument("--dry-run", action="store_true", help="report changes without writing")
     parser.add_argument("--no-profile", action="store_true", help="skip the Codex profile")
@@ -472,6 +611,7 @@ def main() -> int:
         SOURCE_ROOT,
         args.skill_root.expanduser(),
         args.codex_home.expanduser(),
+        version=args.version,
         force=args.force,
         dry_run=args.dry_run,
         include_profile=not args.no_profile,
@@ -506,9 +646,15 @@ def main() -> int:
     if args.dry_run:
         print("Dry run complete; no files were changed.")
     else:
-        print("Start a new Codex task, then invoke $smart-compact.")
+        print(
+            f"Start a new Codex task, then invoke $smart-compact "
+            f"(alias for $smart-compact-{args.version})."
+        )
         if not args.no_profile:
-            print("CLI profile: codex --profile smart-compact")
+            print(
+                f"CLI profiles: codex --profile smart-compact "
+                f"or codex --profile smart-compact-{args.version}"
+            )
         if args.make_default:
             print("Default profile: Smart Compact settings are active in new CLI and app tasks")
         if not args.no_plugin:

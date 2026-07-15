@@ -1,12 +1,20 @@
 from __future__ import annotations
 
+import json
 import subprocess
 import tempfile
+import tomllib
 import unittest
 from unittest import mock
 from pathlib import Path
 
-from scripts.install_smart_compact import activate_plugin, install_marketplace, install_package
+from scripts.install_smart_compact import (
+    activate_plugin,
+    build_parser,
+    compatibility_skill_contents,
+    install_marketplace,
+    install_package,
+)
 
 
 ROOT = Path(__file__).parents[1]
@@ -28,17 +36,56 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual(
                 [result.status for result in results],
-                ["installed", "installed", "installed", "installed", "skipped"],
+                ["installed"] * 8 + ["skipped"],
             )
+            for version in ("v6", "v8"):
+                self.assertEqual(
+                    (skill_root / f"smart-compact-{version}" / "SKILL.md").read_text(
+                        encoding="utf-8"
+                    ),
+                    (ROOT / "versions" / version / "SKILL.md").read_text(encoding="utf-8"),
+                )
+                self.assertEqual(
+                    (codex_home / f"smart-compact-{version}.config.toml").read_text(
+                        encoding="utf-8"
+                    ),
+                    (ROOT / "profiles" / f"smart-compact-{version}.config.toml").read_text(
+                        encoding="utf-8"
+                    ),
+                )
+            alias = compatibility_skill_contents(ROOT, "v8")
             self.assertEqual(
                 (skill_root / "smart-compact" / "SKILL.md").read_text(encoding="utf-8"),
-                (ROOT / "SKILL.md").read_text(encoding="utf-8"),
+                alias[Path("SKILL.md")],
             )
-            self.assertTrue((skill_root / "smart-compact" / "agents" / "openai.yaml").is_file())
-            self.assertTrue((codex_home / "smart-compact.config.toml").is_file())
+            self.assertEqual(
+                (codex_home / "smart-compact.config.toml").read_text(encoding="utf-8"),
+                (ROOT / "profiles" / "smart-compact-v8.config.toml").read_text(
+                    encoding="utf-8"
+                ),
+            )
             personal_root = skill_root.parent.parent
             self.assertTrue(
                 (personal_root / "plugins" / "smart-compact" / ".codex-plugin" / "plugin.json").is_file()
+            )
+            installed_plugin = personal_root / "plugins" / "smart-compact"
+            self.assertEqual(
+                (installed_plugin / "skills" / "smart-compact" / "SKILL.md").read_text(
+                    encoding="utf-8"
+                ),
+                alias[Path("SKILL.md")],
+            )
+            self.assertEqual(
+                json.loads(
+                    (installed_plugin / "profiles" / "smart-compact.config.json").read_text(
+                        encoding="utf-8"
+                    )
+                ),
+                tomllib.loads(
+                    (ROOT / "profiles" / "smart-compact-v8.config.toml").read_text(
+                        encoding="utf-8"
+                    )
+                ),
             )
             marketplace = personal_root / ".agents" / "plugins" / "marketplace.json"
             self.assertIn('"name": "smart-compact"', marketplace.read_text(encoding="utf-8"))
@@ -70,7 +117,8 @@ class PackageInstallerTests(unittest.TestCase):
                 include_plugin=False,
                 include_spark=False,
             )
-            self.assertEqual(results[0].status, "conflict")
+            alias_result = next(result for result in results if result.component == "skill-alias")
+            self.assertEqual(alias_result.status, "conflict")
             self.assertEqual((target / "SKILL.md").read_text(encoding="utf-8"), "user version\n")
             self.assertFalse((target / "agents" / "openai.yaml").exists())
 
@@ -89,10 +137,11 @@ class PackageInstallerTests(unittest.TestCase):
                 include_plugin=False,
                 include_spark=False,
             )
-            self.assertEqual(results[0].status, "updated")
+            alias_result = next(result for result in results if result.component == "skill-alias")
+            self.assertEqual(alias_result.status, "updated")
             self.assertEqual(
                 (target / "SKILL.md").read_text(encoding="utf-8"),
-                (ROOT / "SKILL.md").read_text(encoding="utf-8"),
+                compatibility_skill_contents(ROOT, "v8")[Path("SKILL.md")],
             )
 
     def test_dry_run_changes_nothing(self) -> None:
@@ -107,13 +156,7 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual(
                 [result.status for result in results],
-                [
-                    "would-install",
-                    "would-install",
-                    "would-install",
-                    "would-install",
-                    "skipped",
-                ],
+                ["would-install"] * 8 + ["skipped"],
             )
             self.assertFalse(skill_root.exists())
             self.assertFalse(codex_home.exists())
@@ -125,13 +168,136 @@ class PackageInstallerTests(unittest.TestCase):
             results = install_package(ROOT, skill_root, codex_home, include_spark=False)
             self.assertEqual(
                 [result.status for result in results],
-                [
-                    "already-installed",
-                    "already-installed",
-                    "already-installed",
-                    "already-installed",
-                    "skipped",
-                ],
+                ["already-installed"] * 8 + ["skipped"],
+            )
+
+    def test_v6_profile_is_the_frozen_benchmark_profile(self) -> None:
+        self.assertEqual(
+            (ROOT / "profiles" / "smart-compact-v6.config.toml").read_bytes(),
+            (ROOT / "benchmarks" / "profiles" / "v6.config.toml").read_bytes(),
+        )
+
+    def test_default_version_is_v8(self) -> None:
+        self.assertEqual(build_parser().parse_args([]).version, "v8")
+
+    def test_selected_alias_switches_between_managed_versions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            skill_root, codex_home = self.targets(directory)
+            install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                version="v6",
+                include_plugin=False,
+                include_spark=False,
+            )
+            self.assertEqual(
+                (skill_root / "smart-compact" / "SKILL.md").read_text(encoding="utf-8"),
+                compatibility_skill_contents(ROOT, "v6")[Path("SKILL.md")],
+            )
+            self.assertEqual(
+                (codex_home / "smart-compact.config.toml").read_text(encoding="utf-8"),
+                (ROOT / "profiles" / "smart-compact-v6.config.toml").read_text(
+                    encoding="utf-8"
+                ),
+            )
+
+            results = install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                version="v8",
+                include_plugin=False,
+                include_spark=False,
+            )
+
+            self.assertEqual(
+                next(
+                    result.status for result in results if result.component == "skill-alias"
+                ),
+                "updated",
+            )
+            self.assertEqual(
+                next(
+                    result.status for result in results if result.component == "profile-alias"
+                ),
+                "updated",
+            )
+            self.assertEqual(
+                (codex_home / "smart-compact.config.toml").read_text(encoding="utf-8"),
+                (ROOT / "profiles" / "smart-compact-v8.config.toml").read_text(
+                    encoding="utf-8"
+                ),
+            )
+
+    def test_plugin_bundles_both_versioned_skills_and_profiles(self) -> None:
+        for version in ("v6", "v8"):
+            with self.subTest(version=version):
+                self.assertEqual(
+                    (
+                        ROOT
+                        / "plugin"
+                        / "skills"
+                        / f"smart-compact-{version}"
+                        / "SKILL.md"
+                    ).read_bytes(),
+                    (ROOT / "versions" / version / "SKILL.md").read_bytes(),
+                )
+                self.assertEqual(
+                    (
+                        ROOT
+                        / "plugin"
+                        / "skills"
+                        / f"smart-compact-{version}"
+                        / "agents"
+                        / "openai.yaml"
+                    ).read_bytes(),
+                    (ROOT / "versions" / version / "agents" / "openai.yaml").read_bytes(),
+                )
+                native = tomllib.loads(
+                    (
+                        ROOT / "profiles" / f"smart-compact-{version}.config.toml"
+                    ).read_text(encoding="utf-8")
+                )
+                bundled = json.loads(
+                    (
+                        ROOT
+                        / "plugin"
+                        / "profiles"
+                        / f"smart-compact-{version}.config.json"
+                    ).read_text(encoding="utf-8")
+                )
+                self.assertEqual(bundled, native)
+
+    def test_installed_plugin_alias_follows_v6_selection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            skill_root, codex_home = self.targets(directory)
+            install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                version="v6",
+                include_profile=False,
+                include_spark=False,
+            )
+            installed = skill_root.parent.parent / "plugins" / "smart-compact"
+            self.assertEqual(
+                (installed / "skills" / "smart-compact" / "SKILL.md").read_text(
+                    encoding="utf-8"
+                ),
+                compatibility_skill_contents(ROOT, "v6")[Path("SKILL.md")],
+            )
+            self.assertEqual(
+                json.loads(
+                    (installed / "profiles" / "smart-compact.config.json").read_text(
+                        encoding="utf-8"
+                    )
+                ),
+                tomllib.loads(
+                    (ROOT / "profiles" / "smart-compact-v6.config.toml").read_text(
+                        encoding="utf-8"
+                    )
+                ),
             )
 
     def test_marketplace_install_preserves_other_plugins(self) -> None:
@@ -217,6 +383,36 @@ class PackageInstallerTests(unittest.TestCase):
             self.assertIn('model = "gpt-example"\n', rendered)
             self.assertIn('[plugins."example"]\nenabled = true\n', rendered)
             self.assertIn('model_verbosity = "low"\n', rendered)
+
+    def test_make_default_uses_selected_v6_profile(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            skill_root, codex_home = self.targets(directory)
+            results = install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                version="v6",
+                make_default=True,
+                include_plugin=False,
+                include_spark=False,
+            )
+
+            default_result = next(
+                result for result in results if result.component == "default-profile"
+            )
+            self.assertEqual(default_result.status, "installed")
+            promoted = tomllib.loads(
+                (codex_home / "config.toml").read_text(encoding="utf-8")
+            )
+            selected = tomllib.loads(
+                (ROOT / "profiles" / "smart-compact-v6.config.toml").read_text(
+                    encoding="utf-8"
+                )
+            )
+            for key, value in selected.items():
+                self.assertEqual(promoted[key], value)
+            self.assertNotIn("personality", promoted)
+            self.assertNotIn("model_auto_compact_token_limit", promoted)
 
     def test_shell_entrypoint_installs_and_reinstalls(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

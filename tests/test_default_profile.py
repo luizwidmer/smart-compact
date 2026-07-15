@@ -40,7 +40,10 @@ enabled = true
         self.assertEqual(parsed["agents"]["max_threads"], 8)
         self.assertFalse(parsed["agents"]["interrupt_message"])
         for key in MANAGED_TOP_LEVEL_KEYS:
-            self.assertEqual(parsed[key], profile[key])
+            if key in profile:
+                self.assertEqual(parsed[key], profile[key])
+            else:
+                self.assertNotIn(key, parsed)
 
     def test_render_replaces_old_managed_values_and_is_idempotent(self) -> None:
         base = '''model_verbosity = "high"

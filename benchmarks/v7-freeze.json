@@ -16,7 +16,7 @@
       "git_blob": "f2bb3ecd29eaba2c4e5d6c9b13dc66a503e7419b"
     },
     "spark_agent": {
-      "path": ".codex/agents/spark-worker.toml",
+      "path": "benchmarks/agents/v7/spark-worker.toml",
       "sha256": "aa82cdaea747994b8d356e3cf34301767508e47b483a9066d782c4e305bf39dd",
       "git_blob": "759b109410074a8bba3c92bc02d44706cd2f940b"
     },

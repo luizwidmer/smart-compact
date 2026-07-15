@@ -1,0 +1,1339 @@
+{
+  "schema_version": 2,
+  "cases": [
+    {
+      "id": "release-readiness",
+      "split": "development",
+      "category": "repository-maintenance",
+      "inspired_by": [
+        "SWE-bench",
+        "WorkArena++"
+      ],
+      "human_minutes": 20,
+      "prompt": "Prepare this package for release 2.4.0 by reconciling all five release surfaces in one coherent pass: runtime metadata, package metadata, plugin metadata, changelog, and installation documentation. This is a tightly coupled integration task; do not delegate it. Add the exact changelog heading `## 2.4.0 - 2026-07-14`. Preserve manifest api_version v2. Do not change tests. Run `rtk proxy python3 -m unittest discover -s tests -v` as the acceptance check. Finish with changed paths, the exact test result, and residual risk.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 0,
+          "max": 0
+        },
+        "useful_workers": {
+          "min": 0,
+          "max": 0
+        },
+        "peak_concurrency": {
+          "min": 0,
+          "max": 0
+        },
+        "duplicate_work_ratio_max": 0,
+        "expected_partitions": [],
+        "parent_reserved_paths": [
+          "CHANGELOG.md",
+          "docs/installation.md",
+          "plugin/manifest.json",
+          "pyproject.toml",
+          "src/acme/__init__.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "allowed_changes": [
+        "CHANGELOG.md",
+        "docs/installation.md",
+        "plugin/manifest.json",
+        "pyproject.toml",
+        "src/acme/__init__.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "CHANGELOG.md": "# Changelog\n\n## 2.3.1 - 2026-06-20\n\n- Fix retry accounting.\n",
+        "docs/installation.md": "# Installation\n\nInstall Acme 2.3.0 with `pip install acme==2.3.0`.\n",
+        "plugin/manifest.json": "{\n  \"name\": \"acme\",\n  \"version\": \"2.3.0\",\n  \"api_version\": \"v2\"\n}\n",
+        "pyproject.toml": "[project]\nname = \"acme\"\nversion = \"2.3.1\"\nrequires-python = \">=3.11\"\n",
+        "src/acme/__init__.py": "__version__ = \"2.3.1\"\n",
+        "tests/test_release.py": "import json\nimport re\nimport tomllib\nimport unittest\nfrom pathlib import Path\n\nROOT = Path(__file__).parents[1]\n\nclass ReleaseTests(unittest.TestCase):\n    def test_versions_match_target(self):\n        project = tomllib.loads((ROOT / \"pyproject.toml\").read_text())\n        init = (ROOT / \"src/acme/__init__.py\").read_text()\n        manifest = json.loads((ROOT / \"plugin/manifest.json\").read_text())\n        version = re.search(r'__version__ = \"([^\"]+)\"', init).group(1)\n        self.assertEqual(project[\"project\"][\"version\"], \"2.4.0\")\n        self.assertEqual(version, \"2.4.0\")\n        self.assertEqual(manifest[\"version\"], \"2.4.0\")\n\n    def test_api_version_is_preserved(self):\n        manifest = json.loads((ROOT / \"plugin/manifest.json\").read_text())\n        self.assertEqual(manifest[\"api_version\"], \"v2\")\n"
+      },
+      "gold_files": {
+        "CHANGELOG.md": "# Changelog\n\n## 2.4.0 - 2026-07-14\n\n- Reconcile package and plugin release metadata.\n- Document the pinned installation command.\n\n## 2.3.1 - 2026-06-20\n\n- Fix retry accounting.\n",
+        "docs/installation.md": "# Installation\n\nInstall Acme 2.4.0 with `pip install acme==2.4.0`.\n",
+        "plugin/manifest.json": "{\n  \"name\": \"acme\",\n  \"version\": \"2.4.0\",\n  \"api_version\": \"v2\"\n}\n",
+        "pyproject.toml": "[project]\nname = \"acme\"\nversion = \"2.4.0\"\nrequires-python = \">=3.11\"\n",
+        "src/acme/__init__.py": "__version__ = \"2.4.0\"\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "path_contains",
+          "path": "CHANGELOG.md",
+          "text": "## 2.4.0 - 2026-07-14"
+        },
+        {
+          "type": "path_contains",
+          "path": "docs/installation.md",
+          "text": "pip install acme==2.4.0"
+        },
+        {
+          "type": "json_equals",
+          "path": "plugin/manifest.json",
+          "key": "api_version",
+          "value": "v2"
+        }
+      ]
+    },
+    {
+      "id": "incident-triage",
+      "split": "development",
+      "category": "incident-response",
+      "inspired_by": [
+        "Terminal-Bench 2.0",
+        "TheAgentCompany"
+      ],
+      "human_minutes": 30,
+      "prompt": "Resolve the retry storm represented by six independent log shards. The named nonoverlapping partitions are `logs-ab`, `logs-cd`, and `logs-ef`. If the exact `spark_worker` role is available, process the evidence in parallel with one or more useful workers. Maximize parent tokens saved with the fewest workers: group the named partitions into the smallest useful set of concurrent workers, let a worker own one or more named partition IDs, and add another worker only when it materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. Workers are read-only and return per-shard counts with provenance. If the role is unavailable, perform the evidence pass locally without substituting another agent. The parent alone must implement reusable `analyze_incident.py`, edit `src/retry_policy.py`, derive `incident_report.json` from all current `logs/*.log`, integrate worker evidence, and run acceptance. Retry only HTTP 429, 500, and 503. A non-retryable error event is any event with status >=400 whose status is not 429, 500, or 503. Backoff starts at 0.25 seconds for attempt 1, doubles, and caps at 2.0 seconds. Do not hardcode totals: `validate.py` independently recomputes current counts and exercises the analyzer on mutated temporary logs. Do not change logs, tests, or `validate.py`. Run `rtk proxy python3 analyze_incident.py`, `rtk proxy python3 -m unittest discover -s tests -v`, and `rtk proxy python3 validate.py`; the validator is the acceptance command. Then report changed paths and all results.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {
+            "id": "logs-ab",
+            "weight": 2,
+            "markers": [
+              "logs/shard-a.log",
+              "logs/shard-b.log"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "logs-cd",
+            "weight": 2,
+            "markers": [
+              "logs/shard-c.log",
+              "logs/shard-d.log"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "logs-ef",
+            "weight": 2,
+            "markers": [
+              "logs/shard-e.log",
+              "logs/shard-f.log"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "analyze_incident.py",
+          "incident_report.json",
+          "src/retry_policy.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "validate.py"
+      ],
+      "allowed_changes": [
+        "analyze_incident.py",
+        "incident_report.json",
+        "src/retry_policy.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "logs/shard-a.log": "2026-07-14T10:00:01Z status=503\n2026-07-14T10:00:02Z status=200\n2026-07-14T10:00:03Z status=503\n",
+        "logs/shard-b.log": "2026-07-14T10:00:04Z status=429\n2026-07-14T10:00:05Z status=401\n2026-07-14T10:00:06Z status=429\n",
+        "logs/shard-c.log": "2026-07-14T10:00:07Z status=500\n2026-07-14T10:00:08Z status=400\n",
+        "logs/shard-d.log": "2026-07-14T10:00:09Z status=503\n2026-07-14T10:00:10Z status=200\n2026-07-14T10:00:11Z status=200\n",
+        "logs/shard-e.log": "2026-07-14T10:00:12Z status=429\n2026-07-14T10:00:13Z status=403\n",
+        "logs/shard-f.log": "2026-07-14T10:00:14Z status=200\n2026-07-14T10:00:15Z status=200\n",
+        "src/retry_policy.py": "RETRYABLE = {400, 401, 429, 500, 503}\n\ndef should_retry(status: int) -> bool:\n    return status in RETRYABLE\n\ndef delay_seconds(attempt: int) -> float:\n    return attempt * 0.25\n",
+        "tests/test_retry_policy.py": "import unittest\nfrom src.retry_policy import delay_seconds, should_retry\n\nclass RetryPolicyTests(unittest.TestCase):\n    def test_retryable_statuses(self):\n        self.assertEqual([s for s in (400, 401, 429, 500, 503) if should_retry(s)], [429, 500, 503])\n\n    def test_backoff(self):\n        self.assertEqual([delay_seconds(i) for i in range(1, 6)], [0.25, 0.5, 1.0, 2.0, 2.0])\n",
+        "validate.py": "import json\nimport re\nimport tempfile\nfrom pathlib import Path\n\nfrom analyze_incident import analyze\n\nRETRYABLE = {429, 500, 503}\n\ndef recompute(paths):\n    retryable = 0\n    non_retryable = 0\n    for source in sorted(paths):\n        for match in re.finditer(r'status=(\\d+)', source.read_text()):\n            status = int(match.group(1))\n            retryable += status in RETRYABLE\n            non_retryable += status >= 400 and status not in RETRYABLE\n    return {'retryable_events': retryable, 'non_retryable_error_events': non_retryable}\n\nsources = sorted(Path('logs').glob('*.log'))\nassert len(sources) == 6\nexpected = recompute(sources)\nassert json.loads(Path('incident_report.json').read_text()) == expected\nassert analyze(sources) == expected\nwith tempfile.TemporaryDirectory() as temporary:\n    root = Path(temporary)\n    mutated = []\n    for source in sources:\n        target = root / source.name\n        target.write_text(source.read_text())\n        mutated.append(target)\n    (root / 'shard-a.log').write_text((root / 'shard-a.log').read_text() + 'probe status=503\\n')\n    (root / 'shard-b.log').write_text((root / 'shard-b.log').read_text() + 'probe status=418\\n')\n    changed = recompute(mutated)\n    assert changed == {'retryable_events': expected['retryable_events'] + 1, 'non_retryable_error_events': expected['non_retryable_error_events'] + 1}\n    assert analyze(mutated) == changed\nprint('incident: source recomputation and mutation probe passed')\n"
+      },
+      "gold_files": {
+        "analyze_incident.py": "import json\nimport re\nfrom pathlib import Path\n\nRETRYABLE = {429, 500, 503}\n\ndef analyze(paths):\n    report = {'retryable_events': 0, 'non_retryable_error_events': 0}\n    for source in sorted(paths):\n        for match in re.finditer(r'status=(\\d+)', source.read_text()):\n            status = int(match.group(1))\n            if status in RETRYABLE:\n                report['retryable_events'] += 1\n            elif status >= 400:\n                report['non_retryable_error_events'] += 1\n    return report\n\ndef main():\n    report = analyze(Path('logs').glob('*.log'))\n    Path('incident_report.json').write_text(json.dumps(report, indent=2) + '\\n')\n\nif __name__ == '__main__':\n    main()\n",
+        "incident_report.json": "{\n  \"retryable_events\": 7,\n  \"non_retryable_error_events\": 3\n}\n",
+        "src/retry_policy.py": "RETRYABLE = {429, 500, 503}\n\ndef should_retry(status: int) -> bool:\n    return status in RETRYABLE\n\ndef delay_seconds(attempt: int) -> float:\n    return min(0.25 * (2 ** (attempt - 1)), 2.0)\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "analyze_incident.py"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "validate.py"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "incident_report.json",
+          "key": "retryable_events",
+          "value": 7
+        },
+        {
+          "type": "json_equals",
+          "path": "incident_report.json",
+          "key": "non_retryable_error_events",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "id": "monorepo-sdk-migration",
+      "split": "development",
+      "category": "multi-package-code-migration",
+      "inspired_by": [
+        "SWE-bench",
+        "SWE-Lancer"
+      ],
+      "human_minutes": 60,
+      "prompt": "Migrate sixteen behaviorally distinct package adapters from removed send-style APIs to the immutable client's request-style APIs while preserving each adapter's method, endpoint, payload, async, batch, stream, and audit behavior. The named nonoverlapping partitions are `packages-ab` for synchronous create/update adapters, `packages-cd` for asynchronous lookup/delete adapters, `packages-ef` for batch adapters, and `packages-gh` for streaming/audit adapters. If the exact `spark_worker` role is available, execute the migration with one or more useful workers. Maximize parent tokens saved with the fewest workers: group the named partitions into the smallest useful concurrent worker set, let a worker own one or more named partition IDs, and add another worker only when it materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. Workers own and may edit only the four adapter files named by each assigned partition. If the role is unavailable, migrate the adapters locally without substituting another agent. The parent alone owns integration: workers must not edit `src/sdk/client.py`, tests, or `migration_report.json`; after accepting a worker result, the parent must not reread that worker's adapter files unless the worker failed or the full acceptance command identifies a conflict. When workers are used, the parent writes only `migration_report.json`; without Spark, the parent may also own the adapter edits. Derive the report's `migrated_adapters` and partition list in the assignment-contract order, set `shared_api` to `request-family`, and run the full acceptance command. Do not add any compatibility send-style method or change the shared client or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths, the exact result, and residual risk.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "path_disjoint",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {
+            "id": "packages-ab",
+            "weight": 4,
+            "markers": [
+              "packages/a_create.py",
+              "packages/a_update.py",
+              "packages/b_create.py",
+              "packages/b_update.py"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "packages-cd",
+            "weight": 4,
+            "markers": [
+              "packages/c_lookup.py",
+              "packages/c_delete.py",
+              "packages/d_lookup.py",
+              "packages/d_delete.py"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "packages-ef",
+            "weight": 4,
+            "markers": [
+              "packages/e_bulk_create.py",
+              "packages/e_bulk_update.py",
+              "packages/f_bulk_publish.py",
+              "packages/f_bulk_archive.py"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "packages-gh",
+            "weight": 4,
+            "markers": [
+              "packages/g_stream.py",
+              "packages/g_audit.py",
+              "packages/h_stream.py",
+              "packages/h_audit.py"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "migration_report.json",
+          "src/sdk/client.py",
+          "tests/test_sdk_migration.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "allowed_changes": [
+        "migration_report.json",
+        "packages/a_create.py",
+        "packages/a_update.py",
+        "packages/b_create.py",
+        "packages/b_update.py",
+        "packages/c_lookup.py",
+        "packages/c_delete.py",
+        "packages/d_lookup.py",
+        "packages/d_delete.py",
+        "packages/e_bulk_create.py",
+        "packages/e_bulk_update.py",
+        "packages/f_bulk_publish.py",
+        "packages/f_bulk_archive.py",
+        "packages/g_stream.py",
+        "packages/g_audit.py",
+        "packages/h_stream.py",
+        "packages/h_audit.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "packages/__init__.py": "",
+        "packages/a_create.py": "def create(client, payload):\n    return client.send('/a/items', payload)\n",
+        "packages/a_update.py": "def update(client, item_id, changes):\n    return client.send(f'/a/items/{item_id}', changes)\n",
+        "packages/b_create.py": "def create(client, record):\n    return client.send('/b/records', record)\n",
+        "packages/b_update.py": "def update(client, record_id, changes):\n    return client.send(f'/b/records/{record_id}', changes)\n",
+        "packages/c_lookup.py": "async def lookup(client, item_id):\n    return await client.send_async(f'/c/items/{item_id}', None)\n",
+        "packages/c_delete.py": "async def delete(client, item_id):\n    return await client.send_async(f'/c/items/{item_id}', None)\n",
+        "packages/d_lookup.py": "async def lookup(client, record_id):\n    return await client.send_async(f'/d/records/{record_id}', None)\n",
+        "packages/d_delete.py": "async def delete(client, record_id, hard=False):\n    return await client.send_async(f'/d/records/{record_id}', {'hard': hard})\n",
+        "packages/e_bulk_create.py": "def bulk_create(client, rows):\n    return client.send_batch('/e/items', rows)\n",
+        "packages/e_bulk_update.py": "def bulk_update(client, rows):\n    return client.send_batch('/e/items', rows)\n",
+        "packages/f_bulk_publish.py": "def bulk_publish(client, rows):\n    return client.send_batch('/f/publish', rows)\n",
+        "packages/f_bulk_archive.py": "def bulk_archive(client, identifiers):\n    return client.send_batch('/f/archive', identifiers)\n",
+        "packages/g_stream.py": "def stream_events(client, events):\n    return client.send_stream('/g/events', events)\n",
+        "packages/g_audit.py": "def record_audit(client, actor, event):\n    return client.send_audit('/g/audit', event, actor)\n",
+        "packages/h_stream.py": "def stream_snapshots(client, chunks):\n    return client.send_stream('/h/snapshots', chunks)\n",
+        "packages/h_audit.py": "def record_audit(client, actor, action, subject):\n    return client.send_audit('/h/audit', {'action': action, 'subject': subject}, actor)\n",
+        "src/__init__.py": "",
+        "src/sdk/__init__.py": "",
+        "src/sdk/client.py": "class Client:\n    def request(self, method, path, payload=None, *, headers=None):\n        return {\n            'transport': 'sync',\n            'method': method,\n            'path': path,\n            'payload': payload,\n            'headers': dict(headers or {}),\n        }\n\n    async def request_async(self, method, path, payload=None):\n        return {\n            'transport': 'async',\n            'method': method,\n            'path': path,\n            'payload': payload,\n        }\n\n    def request_batch(self, method, path, items):\n        values = list(items)\n        return {\n            'transport': 'batch',\n            'method': method,\n            'path': path,\n            'items': values,\n            'count': len(values),\n        }\n\n    def request_stream(self, method, path, items):\n        for index, item in enumerate(items):\n            yield {\n                'transport': 'stream',\n                'method': method,\n                'path': path,\n                'item': item,\n                'index': index,\n            }\n",
+        "tests/test_sdk_migration.py": "import asyncio\nimport json\nimport unittest\nfrom pathlib import Path\n\nfrom packages import (\n    a_create, a_update, b_create, b_update,\n    c_delete, c_lookup, d_delete, d_lookup,\n    e_bulk_create, e_bulk_update, f_bulk_archive, f_bulk_publish,\n    g_audit, g_stream, h_audit, h_stream,\n)\nfrom src.sdk.client import Client\n\nADAPTERS = [\n    'packages/a_create.py', 'packages/a_update.py',\n    'packages/b_create.py', 'packages/b_update.py',\n    'packages/c_lookup.py', 'packages/c_delete.py',\n    'packages/d_lookup.py', 'packages/d_delete.py',\n    'packages/e_bulk_create.py', 'packages/e_bulk_update.py',\n    'packages/f_bulk_publish.py', 'packages/f_bulk_archive.py',\n    'packages/g_stream.py', 'packages/g_audit.py',\n    'packages/h_stream.py', 'packages/h_audit.py',\n]\nPARTITIONS = ['packages-ab', 'packages-cd', 'packages-ef', 'packages-gh']\n\nclass MigrationTests(unittest.TestCase):\n    def sync_result(self, method, path, payload, headers=None):\n        return {'transport': 'sync', 'method': method, 'path': path, 'payload': payload, 'headers': headers or {}}\n\n    def async_result(self, method, path, payload=None):\n        return {'transport': 'async', 'method': method, 'path': path, 'payload': payload}\n\n    def batch_result(self, method, path, items):\n        return {'transport': 'batch', 'method': method, 'path': path, 'items': items, 'count': len(items)}\n\n    def test_packages_ab_sync_create_and_update(self):\n        client = Client()\n        payload = {'name': 'alpha'}\n        changes = {'enabled': True}\n        self.assertEqual(a_create.create(client, payload), self.sync_result('POST', '/a/items', payload))\n        self.assertEqual(a_update.update(client, 'a-7', changes), self.sync_result('PATCH', '/a/items/a-7', changes))\n        self.assertEqual(b_create.create(client, payload), self.sync_result('POST', '/b/records', payload))\n        self.assertEqual(b_update.update(client, 'b-3', changes), self.sync_result('PUT', '/b/records/b-3', changes))\n\n    def test_packages_cd_async_lookup_and_delete(self):\n        client = Client()\n        self.assertEqual(asyncio.run(c_lookup.lookup(client, 'c-1')), self.async_result('GET', '/c/items/c-1'))\n        self.assertEqual(asyncio.run(c_delete.delete(client, 'c-2')), self.async_result('DELETE', '/c/items/c-2'))\n        self.assertEqual(asyncio.run(d_lookup.lookup(client, 'd-1')), self.async_result('GET', '/d/records/d-1'))\n        self.assertEqual(asyncio.run(d_delete.delete(client, 'd-2', hard=True)), self.async_result('DELETE', '/d/records/d-2', {'hard': True}))\n\n    def test_packages_ef_batch_operations(self):\n        client = Client()\n        rows = [{'id': 1}, {'id': 2}]\n        identifiers = ['f-1', 'f-2']\n        self.assertEqual(e_bulk_create.bulk_create(client, rows), self.batch_result('POST', '/e/items', rows))\n        self.assertEqual(e_bulk_update.bulk_update(client, rows), self.batch_result('PATCH', '/e/items', rows))\n        self.assertEqual(f_bulk_publish.bulk_publish(client, rows), self.batch_result('POST', '/f/publish', rows))\n        self.assertEqual(f_bulk_archive.bulk_archive(client, identifiers), self.batch_result('DELETE', '/f/archive', identifiers))\n\n    def test_packages_gh_streaming_and_audit(self):\n        client = Client()\n        events = [{'event': 'opened'}, {'event': 'closed'}]\n        expected = [\n            {'transport': 'stream', 'method': 'POST', 'path': '/g/events', 'item': event, 'index': index}\n            for index, event in enumerate(events)\n        ]\n        self.assertEqual(list(g_stream.stream_events(client, events)), expected)\n        chunks = ['one', 'two']\n        expected = [\n            {'transport': 'stream', 'method': 'PUT', 'path': '/h/snapshots', 'item': chunk, 'index': index}\n            for index, chunk in enumerate(chunks)\n        ]\n        self.assertEqual(list(h_stream.stream_snapshots(client, chunks)), expected)\n        self.assertEqual(\n            g_audit.record_audit(client, 'luiz', {'event': 'deploy'}),\n            self.sync_result('POST', '/g/audit', {'event': 'deploy'}, {'X-Audit-Actor': 'luiz'}),\n        )\n        self.assertEqual(\n            h_audit.record_audit(client, 'luiz', 'archive', 'h-9'),\n            self.sync_result('POST', '/h/audit', {'action': 'archive', 'subject': 'h-9'}, {'X-Audit-Actor': 'luiz'}),\n        )\n\n    def test_report_is_complete(self):\n        report = json.loads(Path('migration_report.json').read_text())\n        self.assertEqual(report, {'migrated_adapters': ADAPTERS, 'partitions': PARTITIONS, 'shared_api': 'request-family'})\n\n    def test_no_compatibility_send_methods(self):\n        client = Client()\n        for name in ('send', 'send_async', 'send_batch', 'send_stream', 'send_audit'):\n            with self.subTest(name=name):\n                self.assertFalse(hasattr(client, name))\n"
+      },
+      "gold_files": {
+        "migration_report.json": "{\n  \"migrated_adapters\": [\n    \"packages/a_create.py\",\n    \"packages/a_update.py\",\n    \"packages/b_create.py\",\n    \"packages/b_update.py\",\n    \"packages/c_lookup.py\",\n    \"packages/c_delete.py\",\n    \"packages/d_lookup.py\",\n    \"packages/d_delete.py\",\n    \"packages/e_bulk_create.py\",\n    \"packages/e_bulk_update.py\",\n    \"packages/f_bulk_publish.py\",\n    \"packages/f_bulk_archive.py\",\n    \"packages/g_stream.py\",\n    \"packages/g_audit.py\",\n    \"packages/h_stream.py\",\n    \"packages/h_audit.py\"\n  ],\n  \"partitions\": [\"packages-ab\", \"packages-cd\", \"packages-ef\", \"packages-gh\"],\n  \"shared_api\": \"request-family\"\n}\n",
+        "packages/a_create.py": "def create(client, payload):\n    return client.request('POST', '/a/items', payload)\n",
+        "packages/a_update.py": "def update(client, item_id, changes):\n    return client.request('PATCH', f'/a/items/{item_id}', changes)\n",
+        "packages/b_create.py": "def create(client, record):\n    return client.request('POST', '/b/records', record)\n",
+        "packages/b_update.py": "def update(client, record_id, changes):\n    return client.request('PUT', f'/b/records/{record_id}', changes)\n",
+        "packages/c_lookup.py": "async def lookup(client, item_id):\n    return await client.request_async('GET', f'/c/items/{item_id}')\n",
+        "packages/c_delete.py": "async def delete(client, item_id):\n    return await client.request_async('DELETE', f'/c/items/{item_id}')\n",
+        "packages/d_lookup.py": "async def lookup(client, record_id):\n    return await client.request_async('GET', f'/d/records/{record_id}')\n",
+        "packages/d_delete.py": "async def delete(client, record_id, hard=False):\n    return await client.request_async('DELETE', f'/d/records/{record_id}', {'hard': hard})\n",
+        "packages/e_bulk_create.py": "def bulk_create(client, rows):\n    return client.request_batch('POST', '/e/items', rows)\n",
+        "packages/e_bulk_update.py": "def bulk_update(client, rows):\n    return client.request_batch('PATCH', '/e/items', rows)\n",
+        "packages/f_bulk_publish.py": "def bulk_publish(client, rows):\n    return client.request_batch('POST', '/f/publish', rows)\n",
+        "packages/f_bulk_archive.py": "def bulk_archive(client, identifiers):\n    return client.request_batch('DELETE', '/f/archive', identifiers)\n",
+        "packages/g_stream.py": "def stream_events(client, events):\n    return client.request_stream('POST', '/g/events', events)\n",
+        "packages/g_audit.py": "def record_audit(client, actor, event):\n    return client.request('POST', '/g/audit', event, headers={'X-Audit-Actor': actor})\n",
+        "packages/h_stream.py": "def stream_snapshots(client, chunks):\n    return client.request_stream('PUT', '/h/snapshots', chunks)\n",
+        "packages/h_audit.py": "def record_audit(client, actor, action, subject):\n    payload = {'action': action, 'subject': subject}\n    return client.request('POST', '/h/audit', payload, headers={'X-Audit-Actor': actor})\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "migration_report.json",
+          "key": "shared_api",
+          "value": "request-family"
+        },
+        {
+          "type": "path_not_contains",
+          "path": "src/sdk/client.py",
+          "text": "def send"
+        }
+      ]
+    },
+    {
+      "id": "offline-advisory-triage",
+      "split": "development",
+      "category": "dependency-security-workflow",
+      "inspired_by": [
+        "TheAgentCompany",
+        "Terminal-Bench 2.0"
+      ],
+      "human_minutes": 35,
+      "prompt": "Triage eight service lockfiles against the bundled offline `advisories.json`; do not use the network. The named nonoverlapping partitions are `services-ab`, `services-cd`, `services-ef`, and `services-gh`. If the exact `spark_worker` role is available, inspect the lockfiles in parallel with one or more useful workers. Maximize parent tokens saved with the fewest workers: group the named partitions into the smallest useful set of concurrent workers, let a worker own one or more named partition IDs, and add another worker only when it materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. Workers are read-only and must return installed version, severity, fixed version, service, and source provenance for each finding. If the role is unavailable, inspect locally without substituting another agent. The parent alone must implement `remediate.py`, integrate all findings, and write `out/remediation.json` plus `out/constraints.txt`. The JSON must contain exact integer counts for critical, high, and medium findings; sorted affected services; and complete finding records with exactly `service`, `package`, `installed`, `fixed_version`, `severity`, and `source`. Constraints must contain every minimum safe version, sorted by package. Do not hardcode the current matrix: `validate.py` independently recomputes every field and exercises the implementation with an added temporary lockfile. Do not edit advisories, lockfiles, or `validate.py`. Run `rtk proxy python3 remediate.py` and `rtk proxy python3 validate.py`, then report changed paths and both results.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {
+            "id": "services-ab",
+            "weight": 2,
+            "markers": [
+              "services/a.lock.json",
+              "services/b.lock.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "services-cd",
+            "weight": 2,
+            "markers": [
+              "services/c.lock.json",
+              "services/d.lock.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "services-ef",
+            "weight": 2,
+            "markers": [
+              "services/e.lock.json",
+              "services/f.lock.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "services-gh",
+            "weight": 2,
+            "markers": [
+              "services/g.lock.json",
+              "services/h.lock.json"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "out/constraints.txt",
+          "out/remediation.json",
+          "remediate.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "validate.py"
+      ],
+      "allowed_changes": [
+        "out/constraints.txt",
+        "out/remediation.json",
+        "remediate.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "advisories.json": "{\n  \"libalpha\": {\"affected_below\": \"2.2\", \"fixed_version\": \"2.2\", \"severity\": \"critical\"},\n  \"libbeta\": {\"affected_below\": \"4.1\", \"fixed_version\": \"4.1\", \"severity\": \"high\"},\n  \"libgamma\": {\"affected_below\": \"1.5\", \"fixed_version\": \"1.5\", \"severity\": \"medium\"}\n}\n",
+        "services/a.lock.json": "{\"service\": \"a\", \"dependencies\": {\"libalpha\": \"1.9\", \"libbeta\": \"4.2\"}}\n",
+        "services/b.lock.json": "{\"service\": \"b\", \"dependencies\": {\"libalpha\": \"2.2\", \"libgamma\": \"1.0\"}}\n",
+        "services/c.lock.json": "{\"service\": \"c\", \"dependencies\": {\"libbeta\": \"3.9\"}}\n",
+        "services/d.lock.json": "{\"service\": \"d\", \"dependencies\": {\"libalpha\": \"2.1\", \"libbeta\": \"4.0\"}}\n",
+        "services/e.lock.json": "{\"service\": \"e\", \"dependencies\": {\"libgamma\": \"1.5\"}}\n",
+        "services/f.lock.json": "{\"service\": \"f\", \"dependencies\": {\"libalpha\": \"2.3\", \"libbeta\": \"3.5\"}}\n",
+        "services/g.lock.json": "{\"service\": \"g\", \"dependencies\": {\"libbeta\": \"4.1\"}}\n",
+        "services/h.lock.json": "{\"service\": \"h\", \"dependencies\": {\"libalpha\": \"1.0\", \"libgamma\": \"1.2\"}}\n",
+        "validate.py": "import json\nimport shutil\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\ndef version_tuple(value):\n    return tuple(int(part) for part in value.split('.'))\n\ndef recompute(root):\n    advisories = json.loads((root / 'advisories.json').read_text())\n    findings = []\n    for source in sorted((root / 'services').glob('*.lock.json')):\n        lock = json.loads(source.read_text())\n        for package, installed in sorted(lock['dependencies'].items()):\n            advisory = advisories.get(package)\n            if advisory and version_tuple(installed) < version_tuple(advisory['affected_below']):\n                findings.append({'service': lock['service'], 'package': package, 'installed': installed, 'fixed_version': advisory['fixed_version'], 'severity': advisory['severity'], 'source': source.relative_to(root).as_posix()})\n    findings.sort(key=lambda item: (item['service'], item['package']))\n    report = {\n        'critical_findings': sum(item['severity'] == 'critical' for item in findings),\n        'high_findings': sum(item['severity'] == 'high' for item in findings),\n        'medium_findings': sum(item['severity'] == 'medium' for item in findings),\n        'affected_services': sorted({item['service'] for item in findings}),\n        'findings': findings,\n    }\n    constraints = ''.join(f\"{package}>={advisory['fixed_version']}\\n\" for package, advisory in sorted(advisories.items()))\n    return report, constraints\n\nexpected_report, expected_constraints = recompute(Path('.'))\nassert json.loads(Path('out/remediation.json').read_text()) == expected_report\nassert Path('out/constraints.txt').read_text() == expected_constraints\nwith tempfile.TemporaryDirectory() as temporary:\n    root = Path(temporary)\n    shutil.copy2('advisories.json', root / 'advisories.json')\n    shutil.copytree('services', root / 'services')\n    shutil.copy2('remediate.py', root / 'remediate.py')\n    (root / 'services/z.lock.json').write_text('{\"service\":\"z\",\"dependencies\":{\"libalpha\":\"0.1\"}}\\n')\n    subprocess.run(['python3', 'remediate.py'], cwd=root, check=True, capture_output=True, text=True)\n    changed_report, changed_constraints = recompute(root)\n    assert changed_report['critical_findings'] == expected_report['critical_findings'] + 1\n    assert any(item['service'] == 'z' and item['source'] == 'services/z.lock.json' for item in changed_report['findings'])\n    assert json.loads((root / 'out/remediation.json').read_text()) == changed_report\n    assert (root / 'out/constraints.txt').read_text() == changed_constraints\nprint('offline advisory: exact source recomputation and mutation probe passed')\n"
+      },
+      "gold_files": {
+        "out/constraints.txt": "libalpha>=2.2\nlibbeta>=4.1\nlibgamma>=1.5\n",
+        "out/remediation.json": "{\n  \"critical_findings\": 3,\n  \"high_findings\": 3,\n  \"medium_findings\": 2,\n  \"affected_services\": [\n    \"a\",\n    \"b\",\n    \"c\",\n    \"d\",\n    \"f\",\n    \"h\"\n  ],\n  \"findings\": [\n    {\n      \"service\": \"a\",\n      \"package\": \"libalpha\",\n      \"installed\": \"1.9\",\n      \"fixed_version\": \"2.2\",\n      \"severity\": \"critical\",\n      \"source\": \"services/a.lock.json\"\n    },\n    {\n      \"service\": \"b\",\n      \"package\": \"libgamma\",\n      \"installed\": \"1.0\",\n      \"fixed_version\": \"1.5\",\n      \"severity\": \"medium\",\n      \"source\": \"services/b.lock.json\"\n    },\n    {\n      \"service\": \"c\",\n      \"package\": \"libbeta\",\n      \"installed\": \"3.9\",\n      \"fixed_version\": \"4.1\",\n      \"severity\": \"high\",\n      \"source\": \"services/c.lock.json\"\n    },\n    {\n      \"service\": \"d\",\n      \"package\": \"libalpha\",\n      \"installed\": \"2.1\",\n      \"fixed_version\": \"2.2\",\n      \"severity\": \"critical\",\n      \"source\": \"services/d.lock.json\"\n    },\n    {\n      \"service\": \"d\",\n      \"package\": \"libbeta\",\n      \"installed\": \"4.0\",\n      \"fixed_version\": \"4.1\",\n      \"severity\": \"high\",\n      \"source\": \"services/d.lock.json\"\n    },\n    {\n      \"service\": \"f\",\n      \"package\": \"libbeta\",\n      \"installed\": \"3.5\",\n      \"fixed_version\": \"4.1\",\n      \"severity\": \"high\",\n      \"source\": \"services/f.lock.json\"\n    },\n    {\n      \"service\": \"h\",\n      \"package\": \"libalpha\",\n      \"installed\": \"1.0\",\n      \"fixed_version\": \"2.2\",\n      \"severity\": \"critical\",\n      \"source\": \"services/h.lock.json\"\n    },\n    {\n      \"service\": \"h\",\n      \"package\": \"libgamma\",\n      \"installed\": \"1.2\",\n      \"fixed_version\": \"1.5\",\n      \"severity\": \"medium\",\n      \"source\": \"services/h.lock.json\"\n    }\n  ]\n}\n",
+        "remediate.py": "import json\nfrom pathlib import Path\n\ndef version_tuple(value):\n    return tuple(int(part) for part in value.split('.'))\n\nadvisories = json.loads(Path('advisories.json').read_text())\nfindings = []\nfor source in sorted(Path('services').glob('*.lock.json')):\n    lock = json.loads(source.read_text())\n    for package, installed in sorted(lock['dependencies'].items()):\n        advisory = advisories.get(package)\n        if advisory and version_tuple(installed) < version_tuple(advisory['affected_below']):\n            findings.append({'service': lock['service'], 'package': package, 'installed': installed, 'fixed_version': advisory['fixed_version'], 'severity': advisory['severity'], 'source': source.as_posix()})\nfindings.sort(key=lambda item: (item['service'], item['package']))\nreport = {\n    'critical_findings': sum(item['severity'] == 'critical' for item in findings),\n    'high_findings': sum(item['severity'] == 'high' for item in findings),\n    'medium_findings': sum(item['severity'] == 'medium' for item in findings),\n    'affected_services': sorted({item['service'] for item in findings}),\n    'findings': findings,\n}\nout = Path('out')\nout.mkdir(exist_ok=True)\n(out / 'remediation.json').write_text(json.dumps(report, indent=2) + '\\n')\nconstraints = ''.join(f\"{package}>={advisory['fixed_version']}\\n\" for package, advisory in sorted(advisories.items()))\n(out / 'constraints.txt').write_text(constraints)\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "remediate.py"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "validate.py"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "out/remediation.json",
+          "key": "critical_findings",
+          "value": 3
+        },
+        {
+          "type": "json_equals",
+          "path": "out/remediation.json",
+          "key": "high_findings",
+          "value": 3
+        },
+        {
+          "type": "path_contains",
+          "path": "out/constraints.txt",
+          "text": "libgamma>=1.5"
+        }
+      ]
+    },
+    {
+      "id": "ci-matrix-root-cause",
+      "split": "held-out",
+      "category": "ci-incident-diagnosis",
+      "inspired_by": [
+        "Terminal-Bench 2.0",
+        "SWE-bench"
+      ],
+      "human_minutes": 35,
+      "prompt": "Resolve the artifact-key failures across an eight-job CI matrix. The named nonoverlapping partitions are `linux`, `macos`, `windows`, and `container`, each covering its two platform logs. If the exact `spark_worker` role is available, inspect the logs concurrently with one or more useful workers. Maximize parent tokens saved with the fewest spawned workers: group partitions into the smallest useful concurrent set, let one worker own multiple partition IDs, and add another only when it materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. Workers are read-only and return job, cause, actual key, expected key, and source provenance. If Spark is unavailable, inspect locally without substituting another agent. The parent alone edits `src/artifact_key.py`, creates `ci_report.json`, integrates evidence, and runs acceptance. Normalize dot prefixes, case, Windows separators, and the CI `/workspace/` prefix, while rejecting parent-directory traversal. `ci_report.json` must be an object with exactly three keys: integer `failed_jobs` equal to 8; object `root_causes` equal to `{\"case_mismatch\": 2, \"dot_prefix\": 2, \"separator_mismatch\": 2, \"workspace_prefix\": 2}`; and lexicographically sorted `jobs` equal to `[\"container-py311\", \"container-py312\", \"linux-py311\", \"linux-py312\", \"macos-py311\", \"macos-py312\", \"windows-py311\", \"windows-py312\"]`. The public tests independently derive that report from the eight logs. Do not edit logs or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths and the exact result.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {
+            "id": "linux",
+            "weight": 2,
+            "markers": [
+              "logs/linux-py311.log",
+              "logs/linux-py312.log"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "macos",
+            "weight": 2,
+            "markers": [
+              "logs/macos-py311.log",
+              "logs/macos-py312.log"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "windows",
+            "weight": 2,
+            "markers": [
+              "logs/windows-py311.log",
+              "logs/windows-py312.log"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "container",
+            "weight": 2,
+            "markers": [
+              "logs/container-py311.log",
+              "logs/container-py312.log"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "ci_report.json",
+          "src/artifact_key.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "allowed_changes": [
+        "ci_report.json",
+        "src/artifact_key.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "logs/linux-py311.log": "job=linux-py311 cause=dot_prefix actual=./dist/App.whl expected=dist/app.whl\n",
+        "logs/linux-py312.log": "job=linux-py312 cause=dot_prefix actual=./dist/CLI.whl expected=dist/cli.whl\n",
+        "logs/macos-py311.log": "job=macos-py311 cause=case_mismatch actual=Dist/App.whl expected=dist/app.whl\n",
+        "logs/macos-py312.log": "job=macos-py312 cause=case_mismatch actual=DIST/CLI.whl expected=dist/cli.whl\n",
+        "logs/windows-py311.log": "job=windows-py311 cause=separator_mismatch actual=dist\\\\App.whl expected=dist/app.whl\n",
+        "logs/windows-py312.log": "job=windows-py312 cause=separator_mismatch actual=dist\\\\CLI.whl expected=dist/cli.whl\n",
+        "logs/container-py311.log": "job=container-py311 cause=workspace_prefix actual=/workspace/dist/App.whl expected=dist/app.whl\n",
+        "logs/container-py312.log": "job=container-py312 cause=workspace_prefix actual=/workspace/dist/CLI.whl expected=dist/cli.whl\n",
+        "src/artifact_key.py": "def artifact_key(path: str) -> str:\n    return path\n",
+        "tests/test_artifact_key.py": "import json\nimport re\nimport unittest\nfrom collections import Counter\nfrom pathlib import Path\nfrom src.artifact_key import artifact_key\n\nROOT = Path(__file__).parents[1]\n\nclass ArtifactKeyTests(unittest.TestCase):\n    def test_platform_variants_are_canonical(self):\n        cases = {\n            './dist/App.whl': 'dist/app.whl',\n            'Dist/CLI.whl': 'dist/cli.whl',\n            'dist\\\\App.whl': 'dist/app.whl',\n            '/workspace/dist/CLI.whl': 'dist/cli.whl',\n            'dist//nested/../bad.whl': None,\n        }\n        for value, expected in cases.items():\n            with self.subTest(value=value):\n                if expected is None:\n                    with self.assertRaises(ValueError):\n                        artifact_key(value)\n                else:\n                    self.assertEqual(artifact_key(value), expected)\n\n    def test_report_matches_all_logs_exactly(self):\n        jobs = []\n        causes = Counter()\n        for source in sorted((ROOT / 'logs').glob('*.log')):\n            line = source.read_text().strip()\n            job = re.search(r'\\bjob=([^ ]+)', line).group(1)\n            cause = re.search(r'\\bcause=([^ ]+)', line).group(1)\n            jobs.append(job)\n            causes[cause] += 1\n        expected = {\n            'failed_jobs': len(jobs),\n            'root_causes': dict(sorted(causes.items())),\n            'jobs': sorted(jobs),\n        }\n        self.assertEqual(json.loads((ROOT / 'ci_report.json').read_text()), expected)\n"
+      },
+      "gold_files": {
+        "ci_report.json": "{\n  \"failed_jobs\": 8,\n  \"root_causes\": {\n    \"case_mismatch\": 2,\n    \"dot_prefix\": 2,\n    \"separator_mismatch\": 2,\n    \"workspace_prefix\": 2\n  },\n  \"jobs\": [\"container-py311\", \"container-py312\", \"linux-py311\", \"linux-py312\", \"macos-py311\", \"macos-py312\", \"windows-py311\", \"windows-py312\"]\n}\n",
+        "src/artifact_key.py": "def artifact_key(path: str) -> str:\n    normalized = path.replace('\\\\', '/')\n    if normalized.startswith('/workspace/'):\n        normalized = normalized[len('/workspace/'):]\n    while normalized.startswith('./'):\n        normalized = normalized[2:]\n    parts = [part for part in normalized.split('/') if part not in ('', '.')]\n    if '..' in parts:\n        raise ValueError('parent traversal is forbidden')\n    return '/'.join(parts).lower()\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "ci_report.json",
+          "key": "failed_jobs",
+          "value": 8
+        },
+        {
+          "type": "json_equals",
+          "path": "ci_report.json",
+          "key": "root_causes",
+          "value": {
+            "case_mismatch": 2,
+            "dot_prefix": 2,
+            "separator_mismatch": 2,
+            "workspace_prefix": 2
+          }
+        },
+        {
+          "type": "json_equals",
+          "path": "ci_report.json",
+          "key": "jobs",
+          "value": [
+            "container-py311",
+            "container-py312",
+            "linux-py311",
+            "linux-py312",
+            "macos-py311",
+            "macos-py312",
+            "windows-py311",
+            "windows-py312"
+          ]
+        },
+        {
+          "type": "path_not_contains",
+          "path": "src/artifact_key.py",
+          "text": "return path"
+        }
+      ]
+    },
+    {
+      "id": "tenant-config-drift",
+      "split": "held-out",
+      "category": "configuration-reconciliation",
+      "inspired_by": [
+        "TheAgentCompany",
+        "WorkArena++"
+      ],
+      "human_minutes": 45,
+      "prompt": "Reconcile twelve tenant configurations with immutable `policy.json` while preserving every tenant ID, plan, and region. The named nonoverlapping partitions are `tenants-01-03`, `tenants-04-06`, `tenants-07-09`, and `tenants-10-12`. If the exact `spark_worker` role is available, repair configs concurrently with one or more useful workers. Maximize parent tokens saved with the fewest spawned workers: group partitions into the smallest useful concurrent set, allow one worker to own multiple partition IDs, and add another only when it materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. Workers may edit only config files named by assigned partitions. If Spark is unavailable, repair locally without substituting another agent. The parent alone writes `drift_report.json` in assignment-contract order and runs acceptance; after accepting worker output, do not reread its configs unless it failed or acceptance identifies a conflict. Do not edit policy or `validate.py`, and never broaden authentication or retention limits. Run `rtk proxy python3 validate.py`, then report changed paths and the result.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "path_disjoint",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {
+            "id": "tenants-01-03",
+            "weight": 3,
+            "markers": [
+              "tenants/t01.json",
+              "tenants/t02.json",
+              "tenants/t03.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tenants-04-06",
+            "weight": 3,
+            "markers": [
+              "tenants/t04.json",
+              "tenants/t05.json",
+              "tenants/t06.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tenants-07-09",
+            "weight": 3,
+            "markers": [
+              "tenants/t07.json",
+              "tenants/t08.json",
+              "tenants/t09.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tenants-10-12",
+            "weight": 3,
+            "markers": [
+              "tenants/t10.json",
+              "tenants/t11.json",
+              "tenants/t12.json"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "drift_report.json",
+          "policy.json",
+          "validate.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "validate.py"
+      ],
+      "allowed_changes": [
+        "drift_report.json",
+        "tenants/t01.json",
+        "tenants/t02.json",
+        "tenants/t03.json",
+        "tenants/t04.json",
+        "tenants/t05.json",
+        "tenants/t06.json",
+        "tenants/t07.json",
+        "tenants/t08.json",
+        "tenants/t09.json",
+        "tenants/t10.json",
+        "tenants/t11.json",
+        "tenants/t12.json"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "policy.json": "{\n  \"plans\": {\n    \"standard\": {\"mfa\": true, \"session_minutes\": 30, \"retention_days\": 30, \"audit_log\": false},\n    \"regulated\": {\"mfa\": true, \"session_minutes\": 15, \"retention_days\": 7, \"audit_log\": true},\n    \"enterprise\": {\"mfa\": true, \"session_minutes\": 45, \"retention_days\": 30, \"audit_log\": true}\n  },\n  \"tenants\": {\n    \"t01\": {\"plan\": \"standard\", \"region\": \"us-east\"},\n    \"t02\": {\"plan\": \"regulated\", \"region\": \"eu-west\"},\n    \"t03\": {\"plan\": \"enterprise\", \"region\": \"ap-south\"},\n    \"t04\": {\"plan\": \"regulated\", \"region\": \"us-west\"},\n    \"t05\": {\"plan\": \"standard\", \"region\": \"eu-central\"},\n    \"t06\": {\"plan\": \"enterprise\", \"region\": \"ca-central\"},\n    \"t07\": {\"plan\": \"standard\", \"region\": \"sa-east\"},\n    \"t08\": {\"plan\": \"regulated\", \"region\": \"eu-north\"},\n    \"t09\": {\"plan\": \"enterprise\", \"region\": \"ap-east\"},\n    \"t10\": {\"plan\": \"regulated\", \"region\": \"af-south\"},\n    \"t11\": {\"plan\": \"standard\", \"region\": \"me-central\"},\n    \"t12\": {\"plan\": \"enterprise\", \"region\": \"us-central\"}\n  }\n}\n",
+        "tenants/t01.json": "{\"tenant_id\":\"t01\",\"plan\":\"standard\",\"region\":\"us-east\",\"mfa\":false,\"session_minutes\":60,\"retention_days\":90,\"audit_log\":false}\n",
+        "tenants/t02.json": "{\"tenant_id\":\"t02\",\"plan\":\"regulated\",\"region\":\"eu-west\",\"mfa\":false,\"session_minutes\":60,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t03.json": "{\"tenant_id\":\"t03\",\"plan\":\"enterprise\",\"region\":\"ap-south\",\"mfa\":false,\"session_minutes\":90,\"retention_days\":60,\"audit_log\":false}\n",
+        "tenants/t04.json": "{\"tenant_id\":\"t04\",\"plan\":\"regulated\",\"region\":\"us-west\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":14,\"audit_log\":false}\n",
+        "tenants/t05.json": "{\"tenant_id\":\"t05\",\"plan\":\"standard\",\"region\":\"eu-central\",\"mfa\":false,\"session_minutes\":30,\"retention_days\":45,\"audit_log\":false}\n",
+        "tenants/t06.json": "{\"tenant_id\":\"t06\",\"plan\":\"enterprise\",\"region\":\"ca-central\",\"mfa\":true,\"session_minutes\":60,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t07.json": "{\"tenant_id\":\"t07\",\"plan\":\"standard\",\"region\":\"sa-east\",\"mfa\":false,\"session_minutes\":120,\"retention_days\":120,\"audit_log\":false}\n",
+        "tenants/t08.json": "{\"tenant_id\":\"t08\",\"plan\":\"regulated\",\"region\":\"eu-north\",\"mfa\":true,\"session_minutes\":20,\"retention_days\":10,\"audit_log\":false}\n",
+        "tenants/t09.json": "{\"tenant_id\":\"t09\",\"plan\":\"enterprise\",\"region\":\"ap-east\",\"mfa\":false,\"session_minutes\":45,\"retention_days\":45,\"audit_log\":true}\n",
+        "tenants/t10.json": "{\"tenant_id\":\"t10\",\"plan\":\"regulated\",\"region\":\"af-south\",\"mfa\":false,\"session_minutes\":15,\"retention_days\":21,\"audit_log\":true}\n",
+        "tenants/t11.json": "{\"tenant_id\":\"t11\",\"plan\":\"standard\",\"region\":\"me-central\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t12.json": "{\"tenant_id\":\"t12\",\"plan\":\"enterprise\",\"region\":\"us-central\",\"mfa\":false,\"session_minutes\":75,\"retention_days\":90,\"audit_log\":false}\n",
+        "validate.py": "import json\nfrom pathlib import Path\n\ndocument = json.loads(Path('policy.json').read_text())\nplans = document['plans']\nidentities = document['tenants']\nsources = sorted(Path('tenants').glob('*.json'))\nassert [source.stem for source in sources] == sorted(identities)\ntenants = []\nfor source in sources:\n    config = json.loads(source.read_text())\n    tenant_id = source.stem\n    identity = identities[tenant_id]\n    assert config['tenant_id'] == tenant_id\n    assert config['plan'] == identity['plan']\n    assert config['region'] == identity['region']\n    expected = plans[identity['plan']]\n    observed = {key: config[key] for key in ('mfa', 'session_minutes', 'retention_days', 'audit_log')}\n    assert observed == expected, (tenant_id, observed, expected)\n    tenants.append(tenant_id)\nreport = json.loads(Path('drift_report.json').read_text())\nassert report == {'corrected_tenants': tenants, 'partitions': ['tenants-01-03', 'tenants-04-06', 'tenants-07-09', 'tenants-10-12']}\nprint('tenant drift: 12 identities, configs, controls, and report valid')\n"
+      },
+      "gold_files": {
+        "drift_report.json": "{\n  \"corrected_tenants\": [\"t01\", \"t02\", \"t03\", \"t04\", \"t05\", \"t06\", \"t07\", \"t08\", \"t09\", \"t10\", \"t11\", \"t12\"],\n  \"partitions\": [\"tenants-01-03\", \"tenants-04-06\", \"tenants-07-09\", \"tenants-10-12\"]\n}\n",
+        "tenants/t01.json": "{\"tenant_id\":\"t01\",\"plan\":\"standard\",\"region\":\"us-east\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t02.json": "{\"tenant_id\":\"t02\",\"plan\":\"regulated\",\"region\":\"eu-west\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t03.json": "{\"tenant_id\":\"t03\",\"plan\":\"enterprise\",\"region\":\"ap-south\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n",
+        "tenants/t04.json": "{\"tenant_id\":\"t04\",\"plan\":\"regulated\",\"region\":\"us-west\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t05.json": "{\"tenant_id\":\"t05\",\"plan\":\"standard\",\"region\":\"eu-central\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t06.json": "{\"tenant_id\":\"t06\",\"plan\":\"enterprise\",\"region\":\"ca-central\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n",
+        "tenants/t07.json": "{\"tenant_id\":\"t07\",\"plan\":\"standard\",\"region\":\"sa-east\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t08.json": "{\"tenant_id\":\"t08\",\"plan\":\"regulated\",\"region\":\"eu-north\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t09.json": "{\"tenant_id\":\"t09\",\"plan\":\"enterprise\",\"region\":\"ap-east\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n",
+        "tenants/t10.json": "{\"tenant_id\":\"t10\",\"plan\":\"regulated\",\"region\":\"af-south\",\"mfa\":true,\"session_minutes\":15,\"retention_days\":7,\"audit_log\":true}\n",
+        "tenants/t11.json": "{\"tenant_id\":\"t11\",\"plan\":\"standard\",\"region\":\"me-central\",\"mfa\":true,\"session_minutes\":30,\"retention_days\":30,\"audit_log\":false}\n",
+        "tenants/t12.json": "{\"tenant_id\":\"t12\",\"plan\":\"enterprise\",\"region\":\"us-central\",\"mfa\":true,\"session_minutes\":45,\"retention_days\":30,\"audit_log\":true}\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "validate.py"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "drift_report.json",
+          "key": "corrected_tenants",
+          "value": [
+            "t01",
+            "t02",
+            "t03",
+            "t04",
+            "t05",
+            "t06",
+            "t07",
+            "t08",
+            "t09",
+            "t10",
+            "t11",
+            "t12"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "support-credit-adjudication",
+      "split": "held-out",
+      "category": "backoffice-policy-workflow",
+      "inspired_by": [
+        "WorkArena++",
+        "TheAgentCompany",
+        "tau3-bench"
+      ],
+      "human_minutes": 45,
+      "prompt": "Adjudicate ten synthetic support tickets under immutable `credit_policy.json`. The named nonoverlapping partitions are `tickets-01-02`, `tickets-03-04`, `tickets-05-06`, `tickets-07-08`, and `tickets-09-10`. If the exact `spark_worker` role is available, inspect evidence concurrently with one or more useful workers. Maximize parent tokens saved with the fewest spawned workers: group partitions into the smallest useful concurrent set, let one worker own multiple partition IDs, and add another only when it materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. Workers are read-only and return ticket ID, eligibility facts, proposed credit, reason, and source provenance. If Spark is unavailable, inspect locally without substituting another agent. The parent alone implements `adjudicate.py`, integrates every decision, writes `out/credits.json` and `out/audit.md`, and runs acceptance. Active verified accounts receive outage credit 20 for premium outages of at least 120 minutes, otherwise 10 for outages of at least 60 minutes; confirmed duplicate billing receives the overcharge capped at 50; all other cases receive zero. Freshly recompute all ten decisions before acceptance. Do not edit tickets, policy, or `validate.py`. Run `rtk proxy python3 adjudicate.py` and `rtk proxy python3 validate.py`, then report changed paths and both results.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0.1,
+        "expected_partitions": [
+          {
+            "id": "tickets-01-02",
+            "weight": 2,
+            "markers": [
+              "tickets/t01.json",
+              "tickets/t02.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tickets-03-04",
+            "weight": 2,
+            "markers": [
+              "tickets/t03.json",
+              "tickets/t04.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tickets-05-06",
+            "weight": 2,
+            "markers": [
+              "tickets/t05.json",
+              "tickets/t06.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tickets-07-08",
+            "weight": 2,
+            "markers": [
+              "tickets/t07.json",
+              "tickets/t08.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "tickets-09-10",
+            "weight": 2,
+            "markers": [
+              "tickets/t09.json",
+              "tickets/t10.json"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "adjudicate.py",
+          "out/credits.json",
+          "out/audit.md"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "validate.py"
+      ],
+      "allowed_changes": [
+        "adjudicate.py",
+        "out/audit.md",
+        "out/credits.json"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "credit_policy.json": "{\"outage_standard_min_minutes\":60,\"outage_standard_credit\":10,\"outage_premium_min_minutes\":120,\"outage_premium_credit\":20,\"duplicate_billing_cap\":50}\n",
+        "tickets/t01.json": "{\"ticket_id\":\"t01\",\"category\":\"outage\",\"plan\":\"standard\",\"minutes\":75,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t02.json": "{\"ticket_id\":\"t02\",\"category\":\"outage\",\"plan\":\"premium\",\"minutes\":130,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t03.json": "{\"ticket_id\":\"t03\",\"category\":\"duplicate_billing\",\"overcharge\":18,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t04.json": "{\"ticket_id\":\"t04\",\"category\":\"outage\",\"plan\":\"standard\",\"minutes\":45,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t05.json": "{\"ticket_id\":\"t05\",\"category\":\"duplicate_billing\",\"overcharge\":75,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t06.json": "{\"ticket_id\":\"t06\",\"category\":\"user_error\",\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t07.json": "{\"ticket_id\":\"t07\",\"category\":\"outage\",\"plan\":\"premium\",\"minutes\":90,\"account_active\":true,\"evidence_verified\":true}\n",
+        "tickets/t08.json": "{\"ticket_id\":\"t08\",\"category\":\"duplicate_billing\",\"overcharge\":12,\"account_active\":true,\"evidence_verified\":false}\n",
+        "tickets/t09.json": "{\"ticket_id\":\"t09\",\"category\":\"outage\",\"plan\":\"premium\",\"minutes\":150,\"account_active\":false,\"evidence_verified\":true}\n",
+        "tickets/t10.json": "{\"ticket_id\":\"t10\",\"category\":\"duplicate_billing\",\"overcharge\":7,\"account_active\":true,\"evidence_verified\":true}\n",
+        "validate.py": "import json\nfrom pathlib import Path\n\nexpected = {\n    't01': (10, 'outage_60'), 't02': (20, 'outage_120_premium'),\n    't03': (18, 'duplicate_billing'), 't04': (0, 'ineligible'),\n    't05': (50, 'duplicate_billing'), 't06': (0, 'ineligible'),\n    't07': (10, 'outage_60'), 't08': (0, 'unverified'),\n    't09': (0, 'inactive'), 't10': (7, 'duplicate_billing'),\n}\nreport = json.loads(Path('out/credits.json').read_text())\ndecisions = report['decisions']\nassert len(decisions) == 10\nassert all(set(item) == {'ticket_id', 'credit', 'reason'} for item in decisions)\nticket_ids = [item['ticket_id'] for item in decisions]\nassert len(set(ticket_ids)) == 10\nassert set(ticket_ids) == set(expected)\nobserved = {item['ticket_id']: (item['credit'], item['reason']) for item in decisions}\nassert observed == expected\nawarded_count = sum(item['credit'] > 0 for item in decisions)\ntotal_credit = sum(item['credit'] for item in decisions)\nassert report['awarded_count'] == awarded_count == 6\nassert report['total_credit'] == total_credit == 115\naudit = Path('out/audit.md').read_text()\nassert 'Awarded tickets: 6' in audit and 'Total credit: 115' in audit\nprint('support credits: exactly 10 unique decisions valid')\n"
+      },
+      "gold_files": {
+        "adjudicate.py": "import json\nfrom pathlib import Path\n\npolicy = json.loads(Path('credit_policy.json').read_text())\n\ndef decide(ticket):\n    if not ticket['account_active']:\n        return 0, 'inactive'\n    if not ticket['evidence_verified']:\n        return 0, 'unverified'\n    if ticket['category'] == 'duplicate_billing':\n        return min(ticket['overcharge'], policy['duplicate_billing_cap']), 'duplicate_billing'\n    if ticket['category'] == 'outage':\n        if ticket['plan'] == 'premium' and ticket['minutes'] >= policy['outage_premium_min_minutes']:\n            return policy['outage_premium_credit'], 'outage_120_premium'\n        if ticket['minutes'] >= policy['outage_standard_min_minutes']:\n            return policy['outage_standard_credit'], 'outage_60'\n    return 0, 'ineligible'\n\ndecisions = []\nfor source in sorted(Path('tickets').glob('*.json')):\n    ticket = json.loads(source.read_text())\n    credit, reason = decide(ticket)\n    decisions.append({'ticket_id': ticket['ticket_id'], 'credit': credit, 'reason': reason})\nreport = {\n    'awarded_count': sum(item['credit'] > 0 for item in decisions),\n    'total_credit': sum(item['credit'] for item in decisions),\n    'decisions': decisions,\n}\nout = Path('out')\nout.mkdir(exist_ok=True)\n(out / 'credits.json').write_text(json.dumps(report, indent=2) + '\\n')\n(out / 'audit.md').write_text(f\"# Credit adjudication\\n\\nAwarded tickets: {report['awarded_count']}\\n\\nTotal credit: {report['total_credit']}\\n\")\n",
+        "out/credits.json": "{\n  \"awarded_count\": 6,\n  \"total_credit\": 115,\n  \"decisions\": [\n    {\"ticket_id\":\"t01\",\"credit\":10,\"reason\":\"outage_60\"},\n    {\"ticket_id\":\"t02\",\"credit\":20,\"reason\":\"outage_120_premium\"},\n    {\"ticket_id\":\"t03\",\"credit\":18,\"reason\":\"duplicate_billing\"},\n    {\"ticket_id\":\"t04\",\"credit\":0,\"reason\":\"ineligible\"},\n    {\"ticket_id\":\"t05\",\"credit\":50,\"reason\":\"duplicate_billing\"},\n    {\"ticket_id\":\"t06\",\"credit\":0,\"reason\":\"ineligible\"},\n    {\"ticket_id\":\"t07\",\"credit\":10,\"reason\":\"outage_60\"},\n    {\"ticket_id\":\"t08\",\"credit\":0,\"reason\":\"unverified\"},\n    {\"ticket_id\":\"t09\",\"credit\":0,\"reason\":\"inactive\"},\n    {\"ticket_id\":\"t10\",\"credit\":7,\"reason\":\"duplicate_billing\"}\n  ]\n}\n",
+        "out/audit.md": "# Credit adjudication\n\nAwarded tickets: 6\n\nTotal credit: 115\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "adjudicate.py"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "validate.py"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "out/credits.json",
+          "key": "total_credit",
+          "value": 115
+        },
+        {
+          "type": "json_equals",
+          "path": "out/credits.json",
+          "key": "awarded_count",
+          "value": 6
+        },
+        {
+          "type": "path_contains",
+          "path": "out/audit.md",
+          "text": "Total credit: 115"
+        }
+      ]
+    },
+    {
+      "id": "permission-scope-regression",
+      "split": "held-out",
+      "category": "sequential-security-control",
+      "inspired_by": [
+        "SWE-bench Verified"
+      ],
+      "human_minutes": 8,
+      "prompt": "Fix the permission-scope boundary regression in `src/permissions.py`. Exact grants authorize only the identical scope. A grant ending in `.*` authorizes descendants under that dotted prefix, but not the prefix itself, unrelated prefixes, or a global wildcard. This is a small security-sensitive one-file fix; do not delegate it. Do not change tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report the changed path, exact result, and residual risk.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 0,
+          "max": 0
+        },
+        "useful_workers": {
+          "min": 0,
+          "max": 0
+        },
+        "peak_concurrency": {
+          "min": 0,
+          "max": 0
+        },
+        "duplicate_work_ratio_max": 0,
+        "expected_partitions": [],
+        "parent_reserved_paths": [
+          "src/permissions.py"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "allowed_changes": [
+        "src/permissions.py"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "src/permissions.py": "def allows(grants: set[str], required: str) -> bool:\n    return any(required.startswith(grant) for grant in grants)\n",
+        "tests/test_permissions.py": "import unittest\nfrom src.permissions import allows\n\nclass PermissionTests(unittest.TestCase):\n    def test_exact_scope(self):\n        self.assertTrue(allows({'billing.read'}, 'billing.read'))\n        self.assertFalse(allows({'billing.read'}, 'billing.reader'))\n        self.assertFalse(allows({'billing'}, 'billing.refund'))\n\n    def test_descendant_wildcard(self):\n        self.assertTrue(allows({'billing.*'}, 'billing.refund'))\n        self.assertTrue(allows({'billing.*'}, 'billing.invoice.read'))\n        self.assertFalse(allows({'billing.*'}, 'billing'))\n        self.assertFalse(allows({'bill.*'}, 'billing.read'))\n\n    def test_global_wildcard_is_not_supported(self):\n        self.assertFalse(allows({'*'}, 'admin.delete'))\n"
+      },
+      "gold_files": {
+        "src/permissions.py": "def allows(grants: set[str], required: str) -> bool:\n    if required in grants:\n        return True\n    for grant in grants:\n        if grant.endswith('.*'):\n            prefix = grant[:-2]\n            if prefix and required.startswith(prefix + '.'):\n                return True\n    return False\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "path_not_contains",
+          "path": "src/permissions.py",
+          "text": "required.startswith(grant)"
+        }
+      ]
+    },
+    {
+      "id": "multi-service-contract-rollout",
+      "split": "held-out",
+      "category": "multi-service-api-migration",
+      "inspired_by": [
+        "SWE-bench",
+        "TheAgentCompany"
+      ],
+      "human_minutes": 40,
+      "prompt": "Roll out API contract v2 across six path-disjoint service configurations. The named nonoverlapping partitions are `commerce` (`services/billing.json`, `services/checkout.json`), `identity-access` (`services/identity.json`, `services/permissions.json`), and `operations` (`services/fulfillment.json`, `services/notifications.json`). If the exact `spark_worker` role is available, use one or more useful read-only workers to inspect exclusive assigned service files and return current-to-target migration evidence with provenance. Use the smallest useful worker set that materially removes parent work. Spawn before inspecting assigned paths. Start each delegation brief with `partition_ids: <assigned IDs>`, then state exclusive paths, the mechanical task, and the result contract. A worker may own multiple named partitions but partitions and paths must not overlap. If Spark is unavailable, inspect and migrate the services locally without substituting another role. Migrate every service to endpoint `/v2/events`, payload fields exactly `[\"event_id\", \"occurred_at\", \"kind\"]` in that order, and header `X-Contract-Version: 2`, preserving each service name. The parent alone edits service configurations, creates reusable `rollout.py`, integrates all changes, writes `rollout_report.json` with exactly `contract_version`, `service_count`, and sorted `services`, and runs acceptance. The implementation must discover services dynamically; `validate.py` adds an unseen service in a temporary copy. Do not change `contract/api_contract.json`, tests, or `validate.py`. Run `rtk proxy python3 rollout.py`, `rtk proxy python3 -m unittest discover -s tests -v`, and `rtk proxy python3 validate.py`; the validator is the acceptance command. Report changed paths and all exact results.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 1,
+          "max": null
+        },
+        "useful_workers": {
+          "min": 1,
+          "max": null
+        },
+        "peak_concurrency": {
+          "min": 1,
+          "max": null
+        },
+        "duplicate_work_ratio_max": 0,
+        "expected_partitions": [
+          {
+            "id": "commerce",
+            "weight": 2,
+            "markers": [
+              "services/billing.json",
+              "services/checkout.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "identity-access",
+            "weight": 2,
+            "markers": [
+              "services/identity.json",
+              "services/permissions.json"
+            ],
+            "allowed_replication": 1
+          },
+          {
+            "id": "operations",
+            "weight": 2,
+            "markers": [
+              "services/fulfillment.json",
+              "services/notifications.json"
+            ],
+            "allowed_replication": 1
+          }
+        ],
+        "parent_reserved_paths": [
+          "rollout.py",
+          "rollout_report.json",
+          "services/billing.json",
+          "services/checkout.json",
+          "services/identity.json",
+          "services/permissions.json",
+          "services/fulfillment.json",
+          "services/notifications.json"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "validate.py"
+      ],
+      "allowed_changes": [
+        "rollout.py",
+        "rollout_report.json",
+        "services/billing.json",
+        "services/checkout.json",
+        "services/identity.json",
+        "services/permissions.json",
+        "services/fulfillment.json",
+        "services/notifications.json"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "contract/api_contract.json": "{\n  \"version\": 2,\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"required_headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n",
+        "services/billing.json": "{\n  \"service\": \"billing\",\n  \"endpoint\": \"/v1/events\",\n  \"payload_fields\": [\n    \"id\",\n    \"timestamp\",\n    \"type\"\n  ],\n  \"headers\": {}\n}\n",
+        "services/checkout.json": "{\n  \"service\": \"checkout\",\n  \"endpoint\": \"/v1/events\",\n  \"payload_fields\": [\n    \"id\",\n    \"timestamp\",\n    \"type\"\n  ],\n  \"headers\": {}\n}\n",
+        "services/identity.json": "{\n  \"service\": \"identity\",\n  \"endpoint\": \"/v1/events\",\n  \"payload_fields\": [\n    \"id\",\n    \"timestamp\",\n    \"type\"\n  ],\n  \"headers\": {}\n}\n",
+        "services/permissions.json": "{\n  \"service\": \"permissions\",\n  \"endpoint\": \"/v1/events\",\n  \"payload_fields\": [\n    \"id\",\n    \"timestamp\",\n    \"type\"\n  ],\n  \"headers\": {}\n}\n",
+        "services/fulfillment.json": "{\n  \"service\": \"fulfillment\",\n  \"endpoint\": \"/v1/events\",\n  \"payload_fields\": [\n    \"id\",\n    \"timestamp\",\n    \"type\"\n  ],\n  \"headers\": {}\n}\n",
+        "services/notifications.json": "{\n  \"service\": \"notifications\",\n  \"endpoint\": \"/v1/events\",\n  \"payload_fields\": [\n    \"id\",\n    \"timestamp\",\n    \"type\"\n  ],\n  \"headers\": {}\n}\n",
+        "tests/test_contract_rollout.py": "import json\nimport unittest\nfrom pathlib import Path\n\nROOT = Path(__file__).parents[1]\n\nclass ContractRolloutTests(unittest.TestCase):\n    def test_every_service_matches_contract(self):\n        contract = json.loads((ROOT / 'contract/api_contract.json').read_text())\n        seen = []\n        for source in sorted((ROOT / 'services').glob('*.json')):\n            config = json.loads(source.read_text())\n            seen.append(config['service'])\n            self.assertEqual(config['endpoint'], contract['endpoint'])\n            self.assertEqual(config['payload_fields'], contract['payload_fields'])\n            self.assertEqual(config['headers'], contract['required_headers'])\n        report = json.loads((ROOT / 'rollout_report.json').read_text())\n        self.assertEqual(report, {'contract_version': 2, 'service_count': len(seen), 'services': sorted(seen)})\n",
+        "validate.py": "import json\nimport shutil\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\ndef expected(root):\n    contract = json.loads((root / 'contract/api_contract.json').read_text())\n    configs = {}\n    names = []\n    for source in sorted((root / 'services').glob('*.json')):\n        current = json.loads(source.read_text())\n        desired = {\n            'service': current['service'],\n            'endpoint': contract['endpoint'],\n            'payload_fields': contract['payload_fields'],\n            'headers': contract['required_headers'],\n        }\n        configs[source.relative_to(root).as_posix()] = desired\n        names.append(current['service'])\n    report = {'contract_version': contract['version'], 'service_count': len(names), 'services': sorted(names)}\n    return configs, report\n\nconfigs, report = expected(Path('.'))\nfor path, desired in configs.items():\n    assert json.loads(Path(path).read_text()) == desired\nassert json.loads(Path('rollout_report.json').read_text()) == report\nwith tempfile.TemporaryDirectory() as temporary:\n    root = Path(temporary)\n    shutil.copytree('contract', root / 'contract')\n    shutil.copytree('services', root / 'services')\n    shutil.copy2('rollout.py', root / 'rollout.py')\n    (root / 'services/warehouse.json').write_text('{\"service\":\"warehouse\",\"endpoint\":\"/v1/events\",\"payload_fields\":[\"id\",\"timestamp\",\"type\"],\"headers\":{}}\\n')\n    subprocess.run(['python3', 'rollout.py'], cwd=root, check=True, capture_output=True, text=True)\n    changed_configs, changed_report = expected(root)\n    assert changed_report['service_count'] == report['service_count'] + 1\n    assert changed_report['services'][-1] == 'warehouse'\n    for path, desired in changed_configs.items():\n        assert json.loads((root / path).read_text()) == desired\n    assert json.loads((root / 'rollout_report.json').read_text()) == changed_report\nprint('contract rollout: exact services and mutation probe passed')\n"
+      },
+      "gold_files": {
+        "rollout.py": "import json\nfrom pathlib import Path\n\ndef rollout(root=Path('.')):\n    contract = json.loads((root / 'contract/api_contract.json').read_text())\n    names = []\n    for source in sorted((root / 'services').glob('*.json')):\n        config = json.loads(source.read_text())\n        migrated = {\n            'service': config['service'],\n            'endpoint': contract['endpoint'],\n            'payload_fields': contract['payload_fields'],\n            'headers': contract['required_headers'],\n        }\n        source.write_text(json.dumps(migrated, indent=2) + '\\n')\n        names.append(config['service'])\n    report = {'contract_version': contract['version'], 'service_count': len(names), 'services': sorted(names)}\n    (root / 'rollout_report.json').write_text(json.dumps(report, indent=2) + '\\n')\n    return report\n\nif __name__ == '__main__':\n    rollout()\n",
+        "rollout_report.json": "{\n  \"contract_version\": 2,\n  \"service_count\": 6,\n  \"services\": [\n    \"billing\",\n    \"checkout\",\n    \"fulfillment\",\n    \"identity\",\n    \"notifications\",\n    \"permissions\"\n  ]\n}\n",
+        "services/billing.json": "{\n  \"service\": \"billing\",\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n",
+        "services/checkout.json": "{\n  \"service\": \"checkout\",\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n",
+        "services/identity.json": "{\n  \"service\": \"identity\",\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n",
+        "services/permissions.json": "{\n  \"service\": \"permissions\",\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n",
+        "services/fulfillment.json": "{\n  \"service\": \"fulfillment\",\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n",
+        "services/notifications.json": "{\n  \"service\": \"notifications\",\n  \"endpoint\": \"/v2/events\",\n  \"payload_fields\": [\n    \"event_id\",\n    \"occurred_at\",\n    \"kind\"\n  ],\n  \"headers\": {\n    \"X-Contract-Version\": \"2\"\n  }\n}\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "rollout.py"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "validate.py"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "rollout_report.json",
+          "key": "contract_version",
+          "value": 2
+        },
+        {
+          "type": "json_equals",
+          "path": "rollout_report.json",
+          "key": "service_count",
+          "value": 6
+        },
+        {
+          "type": "json_equals",
+          "path": "rollout_report.json",
+          "key": "services",
+          "value": [
+            "billing",
+            "checkout",
+            "fulfillment",
+            "identity",
+            "notifications",
+            "permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "policy-bound-batch-update",
+      "split": "held-out",
+      "category": "stateful-policy-workflow",
+      "inspired_by": [
+        "WorkArena++",
+        "OSWorld 2.0"
+      ],
+      "human_minutes": 30,
+      "prompt": "Apply the six account-seat requests in `requests.json` strictly in listed order and produce a complete policy audit. This is a sequential, state-dependent integration task: do not delegate any part. Limits come from `policy.json`; only active accounts may change. An `add` that would exceed the account plan limit is rejected with `plan_limit`; a `remove` that would go below zero is rejected with `negative_seats`; an inactive account is rejected with `account_not_active`; an unknown operation is rejected with `unknown_operation`; every applied request uses reason `applied`. Rejected requests leave state unchanged. Create reusable `apply_batch.py`, `out/accounts.json` with exactly the `accounts` mapping after all requests, and `out/audit.json` with integer `approved`, integer `rejected`, and ordered `entries`. Every entry must contain exactly `request_id`, `account_id`, `operation`, `seats`, `status`, `reason`, `before_seats`, and `after_seats`. The validator independently replays the ordered requests and appends a seventh request in a temporary copy. Do not edit inputs, tests, or `validate.py`. Run `rtk proxy python3 apply_batch.py`, `rtk proxy python3 -m unittest discover -s tests -v`, and `rtk proxy python3 validate.py`; the validator is the acceptance command. Report changed paths and all exact results.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {
+          "min": 0,
+          "max": 0
+        },
+        "useful_workers": {
+          "min": 0,
+          "max": 0
+        },
+        "peak_concurrency": {
+          "min": 0,
+          "max": 0
+        },
+        "duplicate_work_ratio_max": 0,
+        "expected_partitions": [],
+        "parent_reserved_paths": [
+          "apply_batch.py",
+          "out/accounts.json",
+          "out/audit.json"
+        ]
+      },
+      "acceptance_command": [
+        "python3",
+        "validate.py"
+      ],
+      "allowed_changes": [
+        "apply_batch.py",
+        "out/accounts.json",
+        "out/audit.json"
+      ],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "policy.json": "{\n  \"limits_by_plan\": {\n    \"basic\": 5,\n    \"pro\": 10\n  }\n}\n",
+        "accounts.json": "{\n  \"accounts\": {\n    \"acme\": {\n      \"plan\": \"basic\",\n      \"seats\": 4,\n      \"state\": \"active\"\n    },\n    \"beacon\": {\n      \"plan\": \"pro\",\n      \"seats\": 8,\n      \"state\": \"active\"\n    },\n    \"cedar\": {\n      \"plan\": \"basic\",\n      \"seats\": 2,\n      \"state\": \"suspended\"\n    }\n  }\n}\n",
+        "requests.json": "{\n  \"requests\": [\n    {\n      \"request_id\": \"r1\",\n      \"account_id\": \"acme\",\n      \"operation\": \"add\",\n      \"seats\": 1\n    },\n    {\n      \"request_id\": \"r2\",\n      \"account_id\": \"acme\",\n      \"operation\": \"add\",\n      \"seats\": 1\n    },\n    {\n      \"request_id\": \"r3\",\n      \"account_id\": \"beacon\",\n      \"operation\": \"remove\",\n      \"seats\": 3\n    },\n    {\n      \"request_id\": \"r4\",\n      \"account_id\": \"cedar\",\n      \"operation\": \"add\",\n      \"seats\": 1\n    },\n    {\n      \"request_id\": \"r5\",\n      \"account_id\": \"beacon\",\n      \"operation\": \"add\",\n      \"seats\": 5\n    },\n    {\n      \"request_id\": \"r6\",\n      \"account_id\": \"beacon\",\n      \"operation\": \"add\",\n      \"seats\": 1\n    }\n  ]\n}\n",
+        "tests/test_batch_outputs.py": "import json\nimport unittest\nfrom pathlib import Path\n\nROOT = Path(__file__).parents[1]\n\nclass BatchOutputTests(unittest.TestCase):\n    def test_final_state_and_audit_summary(self):\n        accounts = json.loads((ROOT / 'out/accounts.json').read_text())['accounts']\n        audit = json.loads((ROOT / 'out/audit.json').read_text())\n        self.assertEqual(accounts['acme']['seats'], 5)\n        self.assertEqual(accounts['beacon']['seats'], 10)\n        self.assertEqual(accounts['cedar']['seats'], 2)\n        self.assertEqual((audit['approved'], audit['rejected']), (3, 3))\n        self.assertEqual([entry['request_id'] for entry in audit['entries']], ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'])\n        self.assertEqual([entry['reason'] for entry in audit['entries']], ['applied', 'plan_limit', 'applied', 'account_not_active', 'applied', 'plan_limit'])\n",
+        "validate.py": "import json\nimport shutil\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\ndef replay(root):\n    policy = json.loads((root / 'policy.json').read_text())\n    accounts_doc = json.loads((root / 'accounts.json').read_text())\n    requests = json.loads((root / 'requests.json').read_text())['requests']\n    accounts = accounts_doc['accounts']\n    entries = []\n    approved = 0\n    for request in requests:\n        account = accounts[request['account_id']]\n        before = account['seats']\n        status = 'rejected'\n        if account['state'] != 'active':\n            reason = 'account_not_active'\n        elif request['operation'] == 'add':\n            candidate = before + request['seats']\n            if candidate > policy['limits_by_plan'][account['plan']]:\n                reason = 'plan_limit'\n            else:\n                account['seats'] = candidate\n                status, reason = 'approved', 'applied'\n        elif request['operation'] == 'remove':\n            candidate = before - request['seats']\n            if candidate < 0:\n                reason = 'negative_seats'\n            else:\n                account['seats'] = candidate\n                status, reason = 'approved', 'applied'\n        else:\n            reason = 'unknown_operation'\n        approved += status == 'approved'\n        entries.append({'request_id': request['request_id'], 'account_id': request['account_id'], 'operation': request['operation'], 'seats': request['seats'], 'status': status, 'reason': reason, 'before_seats': before, 'after_seats': account['seats']})\n    return accounts_doc, {'approved': approved, 'rejected': len(entries) - approved, 'entries': entries}\n\nexpected_accounts, expected_audit = replay(Path('.'))\nassert json.loads(Path('out/accounts.json').read_text()) == expected_accounts\nassert json.loads(Path('out/audit.json').read_text()) == expected_audit\nwith tempfile.TemporaryDirectory() as temporary:\n    root = Path(temporary)\n    for name in ('policy.json', 'accounts.json', 'requests.json', 'apply_batch.py'):\n        shutil.copy2(name, root / name)\n    requests = json.loads((root / 'requests.json').read_text())\n    requests['requests'].append({'request_id': 'r7', 'account_id': 'acme', 'operation': 'remove', 'seats': 2})\n    (root / 'requests.json').write_text(json.dumps(requests, indent=2) + '\\n')\n    subprocess.run(['python3', 'apply_batch.py'], cwd=root, check=True, capture_output=True, text=True)\n    changed_accounts, changed_audit = replay(root)\n    assert changed_accounts['accounts']['acme']['seats'] == 3\n    assert changed_audit['approved'] == expected_audit['approved'] + 1\n    assert json.loads((root / 'out/accounts.json').read_text()) == changed_accounts\n    assert json.loads((root / 'out/audit.json').read_text()) == changed_audit\nprint('policy batch: exact ordered replay and mutation probe passed')\n"
+      },
+      "gold_files": {
+        "apply_batch.py": "import json\nfrom pathlib import Path\n\ndef apply_batch(root=Path('.')):\n    policy = json.loads((root / 'policy.json').read_text())\n    accounts_doc = json.loads((root / 'accounts.json').read_text())\n    requests = json.loads((root / 'requests.json').read_text())['requests']\n    accounts = accounts_doc['accounts']\n    entries = []\n    approved = 0\n    rejected = 0\n    for request in requests:\n        account = accounts[request['account_id']]\n        before = account['seats']\n        status = 'rejected'\n        if account['state'] != 'active':\n            reason = 'account_not_active'\n        elif request['operation'] == 'add':\n            candidate = before + request['seats']\n            limit = policy['limits_by_plan'][account['plan']]\n            if candidate > limit:\n                reason = 'plan_limit'\n            else:\n                account['seats'] = candidate\n                status = 'approved'\n                reason = 'applied'\n        elif request['operation'] == 'remove':\n            candidate = before - request['seats']\n            if candidate < 0:\n                reason = 'negative_seats'\n            else:\n                account['seats'] = candidate\n                status = 'approved'\n                reason = 'applied'\n        else:\n            reason = 'unknown_operation'\n        approved += status == 'approved'\n        rejected += status == 'rejected'\n        entries.append({\n            'request_id': request['request_id'],\n            'account_id': request['account_id'],\n            'operation': request['operation'],\n            'seats': request['seats'],\n            'status': status,\n            'reason': reason,\n            'before_seats': before,\n            'after_seats': account['seats'],\n        })\n    out = root / 'out'\n    out.mkdir(exist_ok=True)\n    (out / 'accounts.json').write_text(json.dumps(accounts_doc, indent=2) + '\\n')\n    audit = {'approved': approved, 'rejected': rejected, 'entries': entries}\n    (out / 'audit.json').write_text(json.dumps(audit, indent=2) + '\\n')\n    return accounts_doc, audit\n\nif __name__ == '__main__':\n    apply_batch()\n",
+        "out/accounts.json": "{\n  \"accounts\": {\n    \"acme\": {\n      \"plan\": \"basic\",\n      \"seats\": 5,\n      \"state\": \"active\"\n    },\n    \"beacon\": {\n      \"plan\": \"pro\",\n      \"seats\": 10,\n      \"state\": \"active\"\n    },\n    \"cedar\": {\n      \"plan\": \"basic\",\n      \"seats\": 2,\n      \"state\": \"suspended\"\n    }\n  }\n}\n",
+        "out/audit.json": "{\n  \"approved\": 3,\n  \"rejected\": 3,\n  \"entries\": [\n    {\n      \"request_id\": \"r1\",\n      \"account_id\": \"acme\",\n      \"operation\": \"add\",\n      \"seats\": 1,\n      \"status\": \"approved\",\n      \"reason\": \"applied\",\n      \"before_seats\": 4,\n      \"after_seats\": 5\n    },\n    {\n      \"request_id\": \"r2\",\n      \"account_id\": \"acme\",\n      \"operation\": \"add\",\n      \"seats\": 1,\n      \"status\": \"rejected\",\n      \"reason\": \"plan_limit\",\n      \"before_seats\": 5,\n      \"after_seats\": 5\n    },\n    {\n      \"request_id\": \"r3\",\n      \"account_id\": \"beacon\",\n      \"operation\": \"remove\",\n      \"seats\": 3,\n      \"status\": \"approved\",\n      \"reason\": \"applied\",\n      \"before_seats\": 8,\n      \"after_seats\": 5\n    },\n    {\n      \"request_id\": \"r4\",\n      \"account_id\": \"cedar\",\n      \"operation\": \"add\",\n      \"seats\": 1,\n      \"status\": \"rejected\",\n      \"reason\": \"account_not_active\",\n      \"before_seats\": 2,\n      \"after_seats\": 2\n    },\n    {\n      \"request_id\": \"r5\",\n      \"account_id\": \"beacon\",\n      \"operation\": \"add\",\n      \"seats\": 5,\n      \"status\": \"approved\",\n      \"reason\": \"applied\",\n      \"before_seats\": 5,\n      \"after_seats\": 10\n    },\n    {\n      \"request_id\": \"r6\",\n      \"account_id\": \"beacon\",\n      \"operation\": \"add\",\n      \"seats\": 1,\n      \"status\": \"rejected\",\n      \"reason\": \"plan_limit\",\n      \"before_seats\": 10,\n      \"after_seats\": 10\n    }\n  ]\n}\n"
+      },
+      "hidden_checks": [
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "apply_batch.py"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ]
+        },
+        {
+          "type": "command",
+          "argv": [
+            "python3",
+            "validate.py"
+          ]
+        },
+        {
+          "type": "json_equals",
+          "path": "out/audit.json",
+          "key": "approved",
+          "value": 3
+        },
+        {
+          "type": "json_equals",
+          "path": "out/audit.json",
+          "key": "rejected",
+          "value": 3
+        },
+        {
+          "type": "json_equals",
+          "path": "out/accounts.json",
+          "key": "accounts",
+          "value": {
+            "acme": {
+              "plan": "basic",
+              "seats": 5,
+              "state": "active"
+            },
+            "beacon": {
+              "plan": "pro",
+              "seats": 10,
+              "state": "active"
+            },
+            "cedar": {
+              "plan": "basic",
+              "seats": 2,
+              "state": "suspended"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
