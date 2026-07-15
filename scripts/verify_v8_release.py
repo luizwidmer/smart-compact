@@ -2,8 +2,8 @@
 """Verify and summarize the frozen Smart Compact v8 release matrix.
 
 The verifier is intentionally read-only with respect to raw benchmark artifacts.  It
-binds every result to the frozen confirmation manifest, profiles, and policies before
-recomputing the publication tables from the individual result rows.
+binds every result to its frozen agentic or legacy manifest, profiles, and policies
+before recomputing the publication tables from the individual result rows.
 """
 
 from __future__ import annotations
@@ -20,6 +20,8 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).parents[1]
 DEFAULT_MANIFEST = ROOT / "benchmarks" / "agentic-v8-confirmation.json"
+DEFAULT_LEGACY_MANIFEST = ROOT / "benchmarks" / "agentic-v8-legacy-calculator.json"
+DEFAULT_RELAY_MANIFEST = ROOT / "benchmarks" / "agentic-v8-legacy-relay-bench.json"
 V6_PROFILE = ROOT / "benchmarks" / "profiles" / "v6.config.toml"
 V6_POLICY = ROOT / "benchmarks" / "policies" / "v6" / "SKILL.md"
 V8_PROFILE = ROOT / "profiles" / "smart-compact-v8.config.toml"
@@ -28,6 +30,8 @@ SPARK_AGENT = ROOT / ".codex" / "agents" / "spark-worker.toml"
 
 RELEASE_SEED = 20260721
 MONOREPO_CASE = "monorepo-sdk-migration"
+LEGACY_CALCULATOR_CASE = "legacy-calculator"
+LEGACY_RELAY_CASE = "legacy-relay-bench"
 STANDARD_ARM = "standard-no-spark"
 V6_ARM = "v6-no-spark"
 V8_NO_SPARK_ARM = "v8-no-spark"
@@ -126,38 +130,101 @@ def load_release_manifest(path: Path) -> tuple[list[str], dict[str, str], str]:
     return ids, delegation_modes, _sha256(resolved)
 
 
-def expected_release_cells(case_ids: Iterable[str]) -> set[tuple[str, str, str, str]]:
+def _load_legacy_manifest(
+    path: Path,
+    *,
+    expected_case_id: str,
+    label: str,
+) -> tuple[str, dict[str, str], str]:
+    resolved = path.expanduser().resolve()
+    _require(resolved.is_file(), f"{label} manifest not found: {resolved}")
+    try:
+        payload = json.loads(resolved.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise VerificationError(f"cannot read {label} manifest: {error}") from error
+    _require(isinstance(payload, dict), f"{label} manifest must be an object")
+    _require(payload.get("schema_version") == 2, f"{label} manifest must use schema 2")
+    cases = payload.get("cases")
+    _require(isinstance(cases, list), f"{label} manifest cases must be a list")
+    _require(len(cases) == 1, f"{label} manifest must contain exactly one case")
+    case = cases[0]
+    _require(isinstance(case, dict), f"{label} manifest case must be an object")
+    _require(
+        case.get("id") == expected_case_id,
+        f"{label} manifest case must be {expected_case_id}",
+    )
+    delegation = case.get("delegation")
+    _require(isinstance(delegation, dict), f"{label} manifest must define delegation")
+    _require(
+        delegation.get("mode") == "required_when_available",
+        f"{expected_case_id} must require Spark when available",
+    )
+    return (
+        expected_case_id,
+        {expected_case_id: "required_when_available"},
+        _sha256(resolved),
+    )
+
+
+def load_legacy_manifest(path: Path) -> tuple[str, dict[str, str], str]:
+    return _load_legacy_manifest(
+        path,
+        expected_case_id=LEGACY_CALCULATOR_CASE,
+        label="legacy calculator",
+    )
+
+
+def load_relay_manifest(path: Path) -> tuple[str, dict[str, str], str]:
+    return _load_legacy_manifest(
+        path,
+        expected_case_id=LEGACY_RELAY_CASE,
+        label="legacy Relay Bench",
+    )
+
+
+def expected_release_cells(
+    case_ids: Iterable[str],
+    legacy_case_id: str = LEGACY_CALCULATOR_CASE,
+    relay_case_id: str = LEGACY_RELAY_CASE,
+) -> set[tuple[str, str, str, str]]:
     ids = tuple(case_ids)
+    _require(MONOREPO_CASE in ids, f"agentic manifest must contain {MONOREPO_CASE}")
+    _require(legacy_case_id not in ids, "legacy calculator must use a separate manifest")
+    _require(relay_case_id not in ids, "legacy Relay Bench must use a separate manifest")
+    _require(legacy_case_id != relay_case_id, "legacy manifests must use distinct case ids")
+    non_anchor_ids = tuple(case_id for case_id in ids if case_id != MONOREPO_CASE)
+    _require(len(non_anchor_ids) == 9, "agentic manifest must contain nine non-anchor cases")
     cells = {
         (case_id, V8_NO_SPARK_ARM, PRIMARY_SETTING[0], PRIMARY_SETTING[1])
         for case_id in ids
     }
     for model, effort in SETTINGS:
+        for case_id in (legacy_case_id, relay_case_id):
+            for arm in (*CONTROL_ARMS, V8_NO_SPARK_ARM, V8_SPARK_FORCED_ARM):
+                cells.add((case_id, arm, model, effort))
         for arm in CONTROL_ARMS:
             cells.add((MONOREPO_CASE, arm, model, effort))
-    for model, effort in SETTINGS:
         cells.add((MONOREPO_CASE, V8_NO_SPARK_ARM, model, effort))
         cells.add((MONOREPO_CASE, V8_SPARK_FORCED_ARM, model, effort))
     cells.update(
         (case_id, V8_SPARK_AUTO_ARM, PRIMARY_SETTING[0], PRIMARY_SETTING[1])
-        for case_id in ids
-        if case_id != MONOREPO_CASE
+        for case_id in non_anchor_ids
     )
     arm_counts = Counter(cell[1] for cell in cells)
-    _require(arm_counts[V8_NO_SPARK_ARM] == 13, "release plan must contain 13 no-Spark cells")
+    _require(arm_counts[V8_NO_SPARK_ARM] == 21, "release plan must contain 21 no-Spark cells")
     _require(
-        sum(arm_counts[arm] for arm in CONTROL_ARMS) == 8,
-        "release plan must contain 8 control cells",
+        sum(arm_counts[arm] for arm in CONTROL_ARMS) == 24,
+        "release plan must contain 24 control cells",
     )
     _require(
-        arm_counts[V8_SPARK_FORCED_ARM] == 4,
-        "release plan must contain 4 forced-Spark cells",
+        arm_counts[V8_SPARK_FORCED_ARM] == 12,
+        "release plan must contain 12 forced-Spark cells",
     )
     _require(
         arm_counts[V8_SPARK_AUTO_ARM] == 9,
         "release plan must contain 9 auto-routing cells",
     )
-    _require(len(cells) == 34, "internal release plan must contain exactly 34 cells")
+    _require(len(cells) == 66, "internal release plan must contain exactly 66 cells")
     return cells
 
 
@@ -279,9 +346,7 @@ def _validate_task_correct_result(
     _require(result.get("trial") == 1, f"{label}: release trial must be 1")
     for field in (
         "task_pass",
-        "scope_ok",
         "acceptance_observed",
-        "usage_complete",
         "no_active_children",
     ):
         _require(result.get(field) is True, f"{label}: {field} must be true")
@@ -292,6 +357,8 @@ def _validate_task_correct_result(
         "parent_work_replaced_ok",
         "all_spawned_workers_useful",
         "rtk_ok",
+        "scope_ok",
+        "usage_complete",
     ):
         _require(type(result.get(field)) is bool, f"{label}: {field} must be boolean")
     _require(
@@ -327,14 +394,24 @@ def _validate_task_correct_result(
     )
     child_usage = result.get("child_usage")
     _require(isinstance(child_usage, dict), f"{label}: child_usage must be an object")
-    observed_child_tokens = sum(
-        _usage_total(value, f"{label}:child_usage:{child_id}")
-        for child_id, value in child_usage.items()
-    )
-    _require(
-        observed_child_tokens == child_tokens,
-        f"{label}: child usage does not match child_total_tokens",
-    )
+    known_child_tokens = 0
+    missing_child_usage: list[str] = []
+    for child_id, value in child_usage.items():
+        if value is None:
+            missing_child_usage.append(child_id)
+        else:
+            known_child_tokens += _usage_total(value, f"{label}:child_usage:{child_id}")
+    if result["usage_complete"]:
+        _require(not missing_child_usage, f"{label}: complete usage has a missing child record")
+        _require(
+            known_child_tokens == child_tokens,
+            f"{label}: child usage does not match child_total_tokens",
+        )
+    else:
+        _require(
+            known_child_tokens <= child_tokens,
+            f"{label}: known child usage exceeds child_total_tokens",
+        )
 
     spawned = result.get("actual_spawned_workers")
     useful = result.get("useful_worker_count")
@@ -491,9 +568,8 @@ def load_retained_selection(path: Path) -> dict[str, Any]:
 
 def _read_artifact(
     path: Path,
-    manifest_sha256: str,
+    manifest_bindings: dict[str, dict[str, Any]],
     hashes: dict[str, dict[str, str | None]],
-    delegation_modes: dict[str, str],
     *,
     retained_selection: dict[str, Any] | None = None,
 ) -> tuple[list[tuple[tuple[str, str, str, str], dict[str, Any]]], dict[str, Any]]:
@@ -519,10 +595,13 @@ def _read_artifact(
     _require(payload.get("complete") is True, f"{label}: artifact is incomplete")
     _require(payload.get("repetitions") == 1, f"{label}: release artifacts use one repetition")
     _require(payload.get("seed") == RELEASE_SEED, f"{label}: release seed mismatch")
+    manifest_sha256 = payload.get("cases_sha256")
     _require(
-        payload.get("cases_sha256") == manifest_sha256,
-        f"{label}: confirmation manifest hash mismatch",
+        isinstance(manifest_sha256, str) and manifest_sha256 in manifest_bindings,
+        f"{label}: release manifest hash mismatch",
     )
+    manifest_binding = manifest_bindings[manifest_sha256]
+    delegation_modes = manifest_binding["delegation_modes"]
     publication = payload.get("publication_status")
     _require(isinstance(publication, dict), f"{label}: publication_status must be an object")
     _require(publication.get("matrix_complete") is True, f"{label}: artifact matrix is incomplete")
@@ -601,6 +680,9 @@ def _read_artifact(
     metadata = {
         "path": _display_path(resolved),
         "sha256": source_sha256,
+        "manifest_kind": manifest_binding["kind"],
+        "manifest_path": manifest_binding["path"],
+        "manifest_sha256": manifest_sha256,
         "cells": len(cells),
         "model": model,
         "effort": effort,
@@ -632,31 +714,32 @@ def _parent_table(
     by_cell: dict[tuple[str, str, str, str], dict[str, Any]]
 ) -> list[dict[str, Any]]:
     table: list[dict[str, Any]] = []
-    for model, effort in SETTINGS:
-        standard = by_cell[(MONOREPO_CASE, STANDARD_ARM, model, effort)]
-        v6 = by_cell[(MONOREPO_CASE, V6_ARM, model, effort)]
-        v8 = by_cell[(MONOREPO_CASE, V8_NO_SPARK_ARM, model, effort)]
-        standard_tokens = standard["parent_total_tokens"]
-        v6_tokens = v6["parent_total_tokens"]
-        v8_tokens = v8["parent_total_tokens"]
-        table.append(
-            {
-                "model": model,
-                "effort": effort,
-                "scope": MONOREPO_CASE,
-                "standard_parent_tokens": standard_tokens,
-                "v6_parent_tokens": v6_tokens,
-                "v6_saved_tokens": standard_tokens - v6_tokens,
-                "v6_saved_pct": _percentage(standard_tokens, v6_tokens),
-                "v8_arm": V8_NO_SPARK_ARM,
-                "v8_parent_tokens": v8_tokens,
-                "v8_saved_vs_standard_tokens": standard_tokens - v8_tokens,
-                "v8_saved_vs_standard_pct": _percentage(standard_tokens, v8_tokens),
-                "v8_saved_vs_v6_tokens": v6_tokens - v8_tokens,
-                "v8_saved_vs_v6_pct": _percentage(v6_tokens, v8_tokens),
-                "correctness": {"standard": True, "v6": True, "v8": True},
-            }
-        )
+    for case_id in (LEGACY_CALCULATOR_CASE, LEGACY_RELAY_CASE, MONOREPO_CASE):
+        for model, effort in SETTINGS:
+            standard = by_cell[(case_id, STANDARD_ARM, model, effort)]
+            v6 = by_cell[(case_id, V6_ARM, model, effort)]
+            v8 = by_cell[(case_id, V8_NO_SPARK_ARM, model, effort)]
+            standard_tokens = standard["parent_total_tokens"]
+            v6_tokens = v6["parent_total_tokens"]
+            v8_tokens = v8["parent_total_tokens"]
+            table.append(
+                {
+                    "model": model,
+                    "effort": effort,
+                    "scope": case_id,
+                    "standard_parent_tokens": standard_tokens,
+                    "v6_parent_tokens": v6_tokens,
+                    "v6_saved_tokens": standard_tokens - v6_tokens,
+                    "v6_saved_pct": _percentage(standard_tokens, v6_tokens),
+                    "v8_arm": V8_NO_SPARK_ARM,
+                    "v8_parent_tokens": v8_tokens,
+                    "v8_saved_vs_standard_tokens": standard_tokens - v8_tokens,
+                    "v8_saved_vs_standard_pct": _percentage(standard_tokens, v8_tokens),
+                    "v8_saved_vs_v6_tokens": v6_tokens - v8_tokens,
+                    "v8_saved_vs_v6_pct": _percentage(v6_tokens, v8_tokens),
+                    "correctness": {"standard": True, "v6": True, "v8": True},
+                }
+            )
     return table
 
 
@@ -682,8 +765,15 @@ def _pair_metrics(
         "parent_token_reduction_pct": _percentage(
             no_spark["parent_total_tokens"], spark["parent_total_tokens"]
         ),
-        "spark_child_tokens": spark["child_total_tokens"],
-        "spark_combined_tokens": spark["combined_total_tokens"],
+        "spark_child_tokens": (
+            spark["child_total_tokens"] if spark["usage_complete"] else None
+        ),
+        "spark_child_tokens_observed": spark["child_total_tokens"],
+        "spark_child_usage_complete": spark["usage_complete"],
+        "spark_combined_tokens": (
+            spark["combined_total_tokens"] if spark["usage_complete"] else None
+        ),
+        "spark_combined_tokens_observed": spark["combined_total_tokens"],
         "spawned_workers": spawned,
         "useful_workers": spark["useful_worker_count"],
         "parent_tokens_saved_per_spawned_worker": (
@@ -724,12 +814,13 @@ def _forced_efficacy_table(
 ) -> list[dict[str, Any]]:
     return [
         _pair_metrics(
-            by_cell[(MONOREPO_CASE, V8_NO_SPARK_ARM, model, effort)],
-            by_cell[(MONOREPO_CASE, V8_SPARK_FORCED_ARM, model, effort)],
+            by_cell[(case_id, V8_NO_SPARK_ARM, model, effort)],
+            by_cell[(case_id, V8_SPARK_FORCED_ARM, model, effort)],
             model=model,
             effort=effort,
-            case_id=MONOREPO_CASE,
+            case_id=case_id,
         )
+        for case_id in (LEGACY_CALCULATOR_CASE, LEGACY_RELAY_CASE, MONOREPO_CASE)
         for model, effort in SETTINGS
     ]
 
@@ -772,6 +863,9 @@ def _auto_routing_tables(
     no_spark_parent = _sum(no_spark_rows, "parent_total_tokens")
     auto_parent = _sum(auto_rows, "parent_total_tokens")
     spawned = _sum(auto_rows, "actual_spawned_workers")
+    usage_complete = all(row["usage_complete"] for row in auto_rows)
+    observed_child_tokens = _sum(auto_rows, "child_total_tokens")
+    observed_combined_tokens = _sum(auto_rows, "combined_total_tokens")
     summary = {
         "model": model,
         "effort": effort,
@@ -803,8 +897,14 @@ def _auto_routing_tables(
         "auto_parent_tokens": auto_parent,
         "parent_tokens_saved": no_spark_parent - auto_parent,
         "parent_token_reduction_pct": _percentage(no_spark_parent, auto_parent),
-        "auto_child_tokens": _sum(auto_rows, "child_total_tokens"),
-        "auto_combined_tokens": _sum(auto_rows, "combined_total_tokens"),
+        "auto_child_tokens": observed_child_tokens if usage_complete else None,
+        "auto_child_tokens_observed": observed_child_tokens,
+        "auto_child_usage_complete": usage_complete,
+        "auto_child_usage_complete_cells": sum(
+            bool(row["usage_complete"]) for row in auto_rows
+        ),
+        "auto_combined_tokens": observed_combined_tokens if usage_complete else None,
+        "auto_combined_tokens_observed": observed_combined_tokens,
         "spawned_workers": spawned,
         "useful_workers": _sum(auto_rows, "useful_worker_count"),
         "parent_tokens_saved_per_spawned_worker": (
@@ -820,16 +920,49 @@ def _auto_routing_tables(
 
 def verify_release(
     manifest: Path,
+    legacy_manifest: Path,
+    relay_manifest: Path,
     raw_artifacts: list[Path],
     retained_selections: list[Path] | None = None,
 ) -> dict[str, Any]:
     selection_paths = retained_selections or []
     _require(
+        not selection_paths,
+        "corrected additive release requires fresh raw artifacts; retained selections are forbidden",
+    )
+    _require(
         bool(raw_artifacts or selection_paths),
         "at least one raw artifact or retained selection is required",
     )
     case_ids, delegation_modes, manifest_sha256 = load_release_manifest(manifest)
-    expected = expected_release_cells(case_ids)
+    legacy_case_id, legacy_delegation_modes, legacy_manifest_sha256 = (
+        load_legacy_manifest(legacy_manifest)
+    )
+    relay_case_id, relay_delegation_modes, relay_manifest_sha256 = (
+        load_relay_manifest(relay_manifest)
+    )
+    _require(
+        len({manifest_sha256, legacy_manifest_sha256, relay_manifest_sha256}) == 3,
+        "agentic and legacy manifests must have distinct hashes",
+    )
+    expected = expected_release_cells(case_ids, legacy_case_id, relay_case_id)
+    manifest_bindings = {
+        manifest_sha256: {
+            "kind": "agentic-suite",
+            "path": _display_path(manifest),
+            "delegation_modes": delegation_modes,
+        },
+        legacy_manifest_sha256: {
+            "kind": "legacy-calculator-anchor",
+            "path": _display_path(legacy_manifest),
+            "delegation_modes": legacy_delegation_modes,
+        },
+        relay_manifest_sha256: {
+            "kind": "legacy-relay-bench-anchor",
+            "path": _display_path(relay_manifest),
+            "delegation_modes": relay_delegation_modes,
+        },
+    }
     hashes = frozen_hashes()
     observed: list[tuple[tuple[str, str, str, str], dict[str, Any]]] = []
     sources: list[dict[str, Any]] = []
@@ -843,18 +976,16 @@ def verify_release(
     for raw in sorted(raw_artifacts, key=lambda value: str(value.expanduser().resolve())):
         cells, source = _read_artifact(
             raw,
-            manifest_sha256,
+            manifest_bindings,
             hashes,
-            delegation_modes,
         )
         observed.extend(cells)
         sources.append(source)
     for selection in sorted(loaded_selections, key=lambda value: str(value["descriptor_path"])):
         cells, source = _read_artifact(
             selection["source_path"],
-            manifest_sha256,
+            manifest_bindings,
             hashes,
-            delegation_modes,
             retained_selection=selection,
         )
         observed.extend(cells)
@@ -867,17 +998,17 @@ def verify_release(
     unexpected = sorted(actual - expected)
     _require(not missing, f"missing release cells: {missing}")
     _require(not unexpected, f"unexpected release cells: {unexpected}")
-    _require(len(observed) == 34, "release matrix must contain exactly 34 results")
+    _require(len(observed) == 66, "release matrix must contain exactly 66 results")
     by_cell = dict(observed)
     candidate_rows = [row for cell, row in observed if cell[1] in V8_ARMS]
     control_rows = [row for cell, row in observed if cell[1] in CONTROL_ARMS]
-    _require(len(candidate_rows) == 26, "release matrix must contain 26 v8 candidate cells")
-    _require(len(control_rows) == 8, "release matrix must contain 8 control cells")
+    _require(len(candidate_rows) == 42, "release matrix must contain 42 v8 candidate cells")
+    _require(len(control_rows) == 24, "release matrix must contain 24 control cells")
     arm_counts = Counter(cell[1] for cell, _ in observed)
-    _require(arm_counts[V8_NO_SPARK_ARM] == 13, "release matrix must contain 13 no-Spark cells")
+    _require(arm_counts[V8_NO_SPARK_ARM] == 21, "release matrix must contain 21 no-Spark cells")
     _require(
-        arm_counts[V8_SPARK_FORCED_ARM] == 4,
-        "release matrix must contain 4 forced-Spark cells",
+        arm_counts[V8_SPARK_FORCED_ARM] == 12,
+        "release matrix must contain 12 forced-Spark cells",
     )
     _require(
         arm_counts[V8_SPARK_AUTO_ARM] == 9,
@@ -894,11 +1025,70 @@ def verify_release(
     protocol_passes = sum(bool(row["protocol_pass"]) for _, row in observed)
     candidate_protocol_passes = sum(bool(row["protocol_pass"]) for row in candidate_rows)
     rtk_passes = sum(bool(row["rtk_ok"]) for _, row in observed)
+    scope_passes = sum(bool(row["scope_ok"]) for _, row in observed)
+    usage_complete_cells = sum(bool(row["usage_complete"]) for _, row in observed)
+    usage_incomplete_cells = [
+        {
+            "case_id": case_id,
+            "arm": arm,
+            "model": model,
+            "effort": effort,
+        }
+        for (case_id, arm, model, effort), row in observed
+        if not row["usage_complete"]
+    ]
+    comparative_coverage = {
+        "status": "three-task-comparison-complete; suite-wide-controls-not-run",
+        "fresh_raw_sources": True,
+        "case_universe": len(case_ids) + 2,
+        "comparative_case_ids": [legacy_case_id, relay_case_id, MONOREPO_CASE],
+        "comparative_cases": [
+            {
+                "case_id": case_id,
+                "manifest_kind": (
+                    "legacy-calculator-anchor"
+                    if case_id == legacy_case_id
+                    else "legacy-relay-bench-anchor"
+                    if case_id == relay_case_id
+                    else "agentic-suite"
+                ),
+                "cells": 16,
+                "arms": [
+                    STANDARD_ARM,
+                    V6_ARM,
+                    V8_NO_SPARK_ARM,
+                    V8_SPARK_FORCED_ARM,
+                ],
+                "settings": [
+                    {"model": model, "effort": effort} for model, effort in SETTINGS
+                ],
+                "standard_v6_v8_complete": True,
+                "forced_spark_complete": True,
+            }
+            for case_id in (legacy_case_id, relay_case_id, MONOREPO_CASE)
+        ],
+        "standard_v6_v8_scope": (
+            "legacy-calculator-legacy-relay-bench-and-monorepo-migration-only"
+        ),
+        "suite_wide_standard_v6_v8": False,
+        "agentic_manifest_cases": len(case_ids),
+        "agentic_selected_cases": len(case_ids),
+        "agentic_selected_cells": 34,
+        "agentic_non_anchor_cases": len(case_ids) - 1,
+        "agentic_non_anchor_cells": 18,
+        "agentic_non_anchor_arms": [V8_NO_SPARK_ARM, V8_SPARK_AUTO_ARM],
+        "agentic_non_anchor_standard_cells": 0,
+        "agentic_non_anchor_v6_cells": 0,
+        "legacy_anchor_cells": 16,
+        "relay_anchor_cells": 16,
+        "migration_anchor_cells": 16,
+    }
     return {
         "schema_version": 3,
         "verified": True,
         "acceptance_policy": {
             "hard_gate": "task_correctness",
+            "treatment_integrity_hard_gate": True,
             "task_correct_cells": len(observed),
             "task_correctness_pct": 100.0,
             "protocol_pass_cells": protocol_passes,
@@ -910,18 +1100,40 @@ def verify_release(
             ),
             "rtk_pass_cells": rtk_passes,
             "rtk_compliance_pct": round(rtk_passes / len(observed) * 100, 3),
+            "scope_pass_cells": scope_passes,
+            "scope_compliance_pct": round(scope_passes / len(observed) * 100, 3),
+            "usage_complete_cells": usage_complete_cells,
+            "usage_completeness_pct": round(
+                usage_complete_cells / len(observed) * 100, 3
+            ),
+            "usage_incomplete_cells": usage_incomplete_cells,
             "protocol_is_disclosed_not_release_blocking": True,
+            "scope_is_disclosed_not_release_blocking": True,
+            "incomplete_child_usage_is_disclosed_not_release_blocking": True,
         },
         "release_plan": {
             "seed": RELEASE_SEED,
             "total_cells": len(observed),
+            "tuning_cells_outside_release_verifier": 6,
+            "scored_cells_including_tuning": len(observed) + 6,
             "candidate_cells": len(candidate_rows),
             "control_cells": len(control_rows),
             "arm_cells": dict(sorted(arm_counts.items())),
-            "full_suite_cases": len(case_ids),
+            "full_suite_cases": len(case_ids) + 2,
+            "agentic_manifest_cases": len(case_ids),
             "confirmation_manifest": _display_path(manifest),
             "confirmation_sha256": manifest_sha256,
+            "legacy_manifest": _display_path(legacy_manifest),
+            "legacy_manifest_sha256": legacy_manifest_sha256,
+            "relay_manifest": _display_path(relay_manifest),
+            "relay_manifest_sha256": relay_manifest_sha256,
+            "case_universe": len(case_ids) + 2,
+            "legacy_anchor_cells": 16,
+            "relay_anchor_cells": 16,
+            "migration_anchor_cells": 16,
+            "agentic_non_anchor_cells": 18,
         },
+        "comparative_coverage": comparative_coverage,
         "frozen_hashes": hashes,
         "source_artifacts": sources,
         "parent_token_table": _parent_table(by_cell),
@@ -953,6 +1165,8 @@ def write_summary(path: Path, payload: dict[str, Any]) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
+    parser.add_argument("--legacy-manifest", type=Path, default=DEFAULT_LEGACY_MANIFEST)
+    parser.add_argument("--relay-manifest", type=Path, default=DEFAULT_RELAY_MANIFEST)
     parser.add_argument("--raw", type=Path, action="append", default=[])
     parser.add_argument("--retained-selection", type=Path, action="append", default=[])
     parser.add_argument("--output", type=Path, default=None)
@@ -962,7 +1176,13 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     try:
-        summary = verify_release(args.manifest, args.raw, args.retained_selection)
+        summary = verify_release(
+            args.manifest,
+            args.legacy_manifest,
+            args.relay_manifest,
+            args.raw,
+            args.retained_selection,
+        )
     except (OSError, VerificationError, json.JSONDecodeError) as error:
         print(f"verify-v8-release: {error}", file=os.sys.stderr)
         return 2

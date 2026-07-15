@@ -1,0 +1,311 @@
+{
+  "arms": [
+    "v8-no-spark",
+    "v8-spark-forced"
+  ],
+  "complete": false,
+  "completed_arms": 1,
+  "execution_order": [
+    {
+      "arm": "v8-spark-forced",
+      "case_id": "legacy-relay-bench",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "legacy-relay-bench",
+      "index": 1,
+      "trial": 1
+    }
+  ],
+  "generated_at": "2026-07-15T03:23:43Z",
+  "jobs": 1,
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-forced",
+      "case_id": "legacy-relay-bench",
+      "category": "legacy-real-world-web-implementation",
+      "changed_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": true
+      },
+      "child_evidence_markers": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": [
+          "app/globals.css",
+          "app/layout.tsx",
+          "app/page.tsx"
+        ]
+      },
+      "child_final_messages": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": "partition_ids: `relay-page`, `relay-styles`, `relay-metadata`  \nchanged_paths: [`app/globals.css`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-jbpks2ce/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/globals.css), [`app/layout.tsx`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-jbpks2ce/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/layout.tsx), [`app/page.tsx`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-jbpks2ce/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx)  \nacceptance: `python3 validate.py` \u2192 passed (`relay bench: 12/12 checks passed`)  \nblocker: None"
+      },
+      "child_io_ok": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": true
+      },
+      "child_missing_evidence_markers": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": "harness_frozen_config"
+      },
+      "child_roles": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a"
+      ],
+      "child_total_tokens": 123704,
+      "child_turn_errors": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": null
+      },
+      "child_turn_statuses": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": "completed"
+      },
+      "child_usage": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": {
+          "cachedInputTokens": 99328,
+          "inputTokens": 115428,
+          "outputTokens": 8276,
+          "reasoningOutputTokens": 3347,
+          "totalTokens": 123704
+        }
+      },
+      "collection_duration_seconds": 32.216,
+      "combined_total_tokens": 175988,
+      "commands_by_thread": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": [
+          "/bin/zsh -lc \"rtk cat SPEC.md && echo '---app/globals.css---' && cat app/globals.css && echo '---app/layout.tsx---' && cat app/layout.tsx && echo '---app/page.tsx---' && cat app/page.tsx\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ],
+        "019f63cc-c0bb-7bc0-8e38-2d529cb7fc9d": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'while [ \"'! -s \"$1\" ]; do sleep 0.1; done; cat \"$1\"'\"' _ /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-capsule-30rkzetj/worker-result.txt\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short -- app/page.tsx app/layout.tsx app/globals.css'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.33,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "relay-page",
+            "markers": [
+              "app/page.tsx"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "relay-styles",
+            "markers": [
+              "app/globals.css"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "relay-metadata",
+            "markers": [
+              "app/layout.tsx"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 31.886,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-jbpks2ce/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-jbpks2ce/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-jbpks2ce/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx"
+        ]
+      },
+      "final_message": "Implemented the frozen Relay Bench contract.\n\nChanged:\n- [app/page.tsx](.../app/page.tsx)\n- [app/layout.tsx](.../app/layout.tsx)\n- [app/globals.css](.../app/globals.css)\n\nAcceptance: `relay bench: 12/12 checks passed`\n\nBlockers: None.",
+      "first_spawn_seconds": 0.004,
+      "forced_execution_strategy": "concurrent_file_capsule",
+      "forced_handoff_consumed": true,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": true,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.03,
+            "ok": true,
+            "output": "relay bench: 12/12 checks passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "app/page.tsx",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/globals.css",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/layout.tsx",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": {
+          "agentMessage": 5,
+          "commandExecution": 2,
+          "fileChange": 3,
+          "reasoning": 7,
+          "userMessage": 1
+        },
+        "019f63cc-c0bb-7bc0-8e38-2d529cb7fc9d": {
+          "agentMessage": 3,
+          "commandExecution": 3,
+          "reasoning": 4,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 11,
+        "configWarning": 1,
+        "item/agentMessage/delta": 125,
+        "item/commandExecution/outputDelta": 1,
+        "item/completed": 29,
+        "item/started": 29,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 2,
+        "thread/status/changed": 4,
+        "thread/tokenUsage/updated": 11,
+        "turn/completed": 2,
+        "turn/diff/updated": 9,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f63cc-c0bb-7bc0-8e38-2d529cb7fc9d",
+      "parent_total_tokens": 52284,
+      "parent_usage": {
+        "cachedInputTokens": 44032,
+        "inputTokens": 51115,
+        "outputTokens": 1169,
+        "reasoningOutputTokens": 558,
+        "totalTokens": 52284
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": false,
+      "parent_worker_read_overlap_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": [
+          "relay-metadata",
+          "relay-page",
+          "relay-styles"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "relay-metadata": 1,
+        "relay-page": 1,
+        "relay-styles": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "forced",
+      "routing_ok": false,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 0.013,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": {
+          "agent_sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68",
+          "config_sha256": "bbf8264709bff09a67419c579cdef1afed1a6ed7873a6939257e7cc88809fc9e",
+          "effort": "medium",
+          "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": false,
+          "origin": "harness_thread",
+          "prompt": "partition_ids: relay-page, relay-styles, relay-metadata\nmode=edit\nrw=app/globals.css,app/layout.tsx,app/page.tsx\nro=SPEC.md,validate.py\ndeny_write=SPEC.md,validate.py,all_except_rw\ntask=read_SPEC;implement_relay_site;no_dependencies,no_routes,no_images\nkeep=copy,metrics,interactions,semantics,colors,responsive,reduced_motion\nacceptance=rtk proxy python3 validate.py\nreturn=partition_ids,changed_paths,acceptance,blocker",
+          "role": "spark_worker"
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": 5,
+        "019f63cc-c0bb-7bc0-8e38-2d529cb7fc9d": 3
+      },
+      "tool_output_chars_by_thread": {
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a": 4169,
+        "019f63cc-c0bb-7bc0-8e38-2d529cb7fc9d": 779
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f63cc-c0ad-7700-8bb2-93a3f69e0e6a"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "schema_version": 3,
+  "wall_time_contended": true
+}

@@ -49,48 +49,57 @@ Use $smart-compact. Minimize parent-model tokens while preserving all requiremen
 
 ## V8 benchmark snapshot
 
-The release matrix contains 34 single-pass cells over ten hermetic agentic cases. The hard gate is task correctness: all 34 cells passed. A secondary audit recorded 26/34 full-protocol and 33/34 RTK compliance without changing graded outputs. Six earlier tuning cells bring the scored v8 total to 40. V7 was a diagnostic gap and was not rerun.
+The corrected additive release contains 66 fresh single-pass cells over 12 live cases: the official six-language calculator and Relay Bench website, plus ten newer agentic cases. All 66 passed task correctness and treatment integrity. The release has 24 Standard/v6 controls and 42 v8 cells; six earlier tuning cells bring the release evidence total to 72. V7 remains a diagnostic gap and was not rerun.
 
 ### Standard to v6 to v8, no Spark
 
-These rows run the same `monorepo-sdk-migration` task. All 12 arm/settings combinations passed correctness.
+All 36 Standard/v6/v8 no-Spark cells passed. Negative savings mean the newer arm used more parent tokens.
 
-| Parent model / effort | Standard parent tokens | V6 parent tokens | V6 saved vs Standard | V8 no-Spark parent tokens | V8 saved vs Standard | V8 saved vs v6 |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `gpt-5.6-sol` / medium | 125,857 | 193,980 | -68,123 (-54.1%) | 117,286 | 8,571 (6.8%) | 76,694 (39.5%) |
-| `gpt-5.6-sol` / high | 131,074 | 206,214 | -75,140 (-57.3%) | 100,218 | 30,856 (23.5%) | 105,996 (51.4%) |
-| `gpt-5.6-luna` / xhigh | 220,872 | 348,084 | -127,212 (-57.6%) | 251,845 | -30,973 (-14.0%) | 96,239 (27.6%) |
-| `gpt-5.6-luna` / max | 315,109 | 714,788 | -399,679 (-126.8%) | 213,073 | 102,036 (32.4%) | 501,715 (70.2%) |
-| **Token-weighted aggregate** | **792,912** | **1,463,066** | **-670,154 (-84.5%)** | **682,422** | **110,490 (13.9%)** | **780,644 (53.4%)** |
+| Benchmark | Parent / effort | Standard parent | V6 parent | V6 saved vs Standard | V8 no-Spark parent | V8 saved vs Standard | V8 saved vs v6 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Calculator | SOL / medium | 448,551 | 147,287 | 301,264 (67.2%) | 114,812 | 333,739 (74.4%) | 32,475 (22.0%) |
+| Calculator | SOL / high | 293,003 | 173,915 | 119,088 (40.6%) | 271,642 | 21,361 (7.3%) | -97,727 (-56.2%) |
+| Calculator | Luna / xhigh | 420,095 | 336,471 | 83,624 (19.9%) | 409,852 | 10,243 (2.4%) | -73,381 (-21.8%) |
+| Calculator | Luna / max | 559,838 | 655,352 | -95,514 (-17.1%) | 548,078 | 11,760 (2.1%) | 107,274 (16.4%) |
+| Relay Bench | SOL / medium | 156,702 | 163,259 | -6,557 (-4.2%) | 168,563 | -11,861 (-7.6%) | -5,304 (-3.2%) |
+| Relay Bench | SOL / high | 140,322 | 138,970 | 1,352 (1.0%) | 179,239 | -38,917 (-27.7%) | -40,269 (-29.0%) |
+| Relay Bench | Luna / xhigh | 251,921 | 499,673 | -247,752 (-98.3%) | 483,667 | -231,746 (-92.0%) | 16,006 (3.2%) |
+| Relay Bench | Luna / max | 156,912 | 163,112 | -6,200 (-4.0%) | 140,026 | 16,886 (10.8%) | 23,086 (14.2%) |
+| Migration | SOL / medium | 114,900 | 101,684 | 13,216 (11.5%) | 132,155 | -17,255 (-15.0%) | -30,471 (-30.0%) |
+| Migration | SOL / high | 116,482 | 229,494 | -113,012 (-97.0%) | 136,167 | -19,685 (-16.9%) | 93,327 (40.7%) |
+| Migration | Luna / xhigh | 248,170 | 561,434 | -313,264 (-126.2%) | 203,151 | 45,019 (18.1%) | 358,283 (63.8%) |
+| Migration | Luna / max | 231,586 | 190,453 | 41,133 (17.8%) | 217,578 | 14,008 (6.0%) | -27,125 (-14.2%) |
+| **Token-weighted aggregate** | **All 12 rows** | **3,138,482** | **3,361,104** | **-222,622 (-7.1%)** | **3,004,930** | **133,552 (4.3%)** | **356,174 (10.6%)** |
 
-V8 beat frozen v6 in every setting and Standard in three of four. The current v6 controls are fresh same-task controls, not the historical calculator totals.
+Across the three anchors, v8 no-Spark used 4.3% fewer parent tokens than Standard and 10.6% fewer than frozen v6. Results varied materially by task and setting, so the aggregate is not a universal per-task claim.
 
 ### Forced Spark efficacy
 
-Each forced row used one `gpt-5.3-codex-spark` / medium worker. All eight no-Spark/Spark cells passed correctness. Positive savings mean Spark reduced parent use or wall time; combined tokens include the child.
+All 24 paired no-Spark/forced-Spark cells passed task correctness. Each forced cell spawned one useful `gpt-5.3-codex-spark` / medium worker.
 
-| Parent model / effort | No-Spark parent | Spark parent | Parent saved | Spark child | Combined | Spawned / useful | Wall time saved |
+| Benchmark | No-Spark parent | Forced-Spark parent | Parent saved | Spawned / useful | Saved per spawn | Spark child | Combined |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `gpt-5.6-sol` / medium | 117,286 | 91,604 | 25,682 (21.9%) | 192,670 | 284,274 | 1 / 1 | 7.556s (12.6%) |
-| `gpt-5.6-sol` / high | 100,218 | 131,005 | -30,787 (-30.7%) | 512,620 | 643,625 | 1 / 1 | -12.348s (-15.2%) |
-| `gpt-5.6-luna` / xhigh | 251,845 | 95,075 | 156,770 (62.2%) | 368,338 | 463,413 | 1 / 1 | 78.230s (56.3%) |
-| `gpt-5.6-luna` / max | 213,073 | 116,126 | 96,947 (45.5%) | 120,155 | 236,281 | 1 / 1 | 94.247s (57.3%) |
-| **Aggregate** | **682,422** | **433,810** | **248,612 (36.4%)** | **1,193,783** | **1,627,593** | **4 / 4** | **167.685s (37.7%)** |
+| Calculator | 1,344,384 | 1,180,003 | 164,381 (12.2%) | 4 / 4 | 41,095 | 3,140,401 | 4,320,404 |
+| Relay Bench | 971,495 | 287,321 | 684,174 (70.4%) | 4 / 4 | 171,044 | 1,040,196 | 1,327,517 |
+| Migration | 689,051 | 421,558 | 267,493 (38.8%) | 4 / 4 | 66,873 | 1,312,213 | 1,733,771 |
+| **Aggregate** | **3,004,930** | **1,888,882** | **1,116,048 (37.1%)** | **12 / 12** | **93,004** | **5,492,810** | **7,381,692** |
 
-The aggregate parent saving was 62,153 tokens per spawned worker. Combined tokens increased because Spark uses a separate worker allowance. SOL/high regressed, so Spark is not a universal win.
+Forced Spark reduced the parent allowance in aggregate, while combined tokens increased. Child tokens are capacity telemetry, not the primary objective.
 
 ### Native auto-routing
 
-Across nine `gpt-5.6-luna` / xhigh cases, auto-routing reduced parent tokens from 1,675,854 to 1,658,999: 16,855 saved (1.0%). It spawned seven workers, six useful, for 2,407.857 saved parent tokens per spawn; child tokens were 828,230 and combined tokens were 2,487,229. All six delegation-required cases spawned, all three forbidden cases stayed local, and every child drained. Parallel execution makes wall time diagnostic only.
+Across nine Luna/xhigh cases, auto-routing reduced parent tokens from 1,504,871 to 1,348,648: 156,223 saved (10.4%). It spawned six workers, five useful, for 26,037 saved parent tokens per spawn. All six required cases spawned, all three forbidden cases stayed local, and every child drained. One child-usage record was incomplete, so the full child and combined totals are intentionally null; 420,953 child tokens were observed from the other eight cells.
 
 ## Evidence and limitations
 
-The matrix used one observation per cell, seed `20260721`, Codex `0.144.1`, and RTK `0.43.0`. A Luna/xhigh v6 control was selected from an isolated same-seed retry after upstream 503 and stream disconnects exhausted its original 900-second run; the failed attempt is preserved and excluded. Full provenance, hashes, and raw artifacts are in [`RESEARCH.md`](RESEARCH.md).
+The release used one observation per cell, seed `20260721`, Codex `0.144.1`, and RTK `0.43.0`. All 66 cells were fresh; no retained release selection was used. Protocol compliance was 58/66, scope compliance 65/66, usage completeness 65/66, and RTK compliance 66/66. These secondary misses did not change graded task correctness or treatment integrity.
 
 - Single-pass measurements do not estimate variance or statistical confidence.
 - Synthetic local tasks do not represent every production repository or organization.
-- Parallel auto-routing latency is contention-affected and is not a speedup claim.
+- Parallel execution makes release wall time nonpublishable.
 - Parent-token savings are not total-cost savings when combined tokens increase.
+
+A separate 42-cell verbose natural-language sensitivity experiment is documented in [`RESEARCH.md`](RESEARCH.md). It is not pooled into the 66-cell release and does not change the installed terse v8 profile.
 
 ## Validate
 

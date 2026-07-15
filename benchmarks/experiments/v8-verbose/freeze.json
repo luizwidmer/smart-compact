@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-15T03:09:23Z",
+  "experiment": "v8-verbose-parent-instruction-sensitivity",
+  "status": "input_frozen_before_inference",
+  "primary_objective": "parent_total_tokens",
+  "secondary_disclosure": "child_total_tokens_when_complete",
+  "treatment": {
+    "changed_field": "parent_profile.developer_instructions",
+    "description": "Natural-language semantic mirror replaces the terse machine contract.",
+    "skill_input": false,
+    "unchanged": [
+      "model_verbosity",
+      "model_reasoning_summary",
+      "personality",
+      "tool_output_token_limit",
+      "compact_prompt",
+      "automatic_compaction_default",
+      "routing_modes",
+      "multi_agent_flags",
+      "Spark worker profile and instructions",
+      "tasks, fixtures, models, efforts, seed, and repetitions"
+    ]
+  },
+  "matrix": {
+    "seed": 20260721,
+    "repetitions_per_cell": 1,
+    "total_cells": 42,
+    "v8_no_spark_cells": 21,
+    "v8_forced_spark_cells": 12,
+    "v8_auto_spark_cells": 9,
+    "anchor_cells": 24,
+    "non_anchor_cells": 18,
+    "standard_cells": 0,
+    "v6_cells": 0,
+    "settings": [
+      {"model": "gpt-5.6-sol", "effort": "medium"},
+      {"model": "gpt-5.6-sol", "effort": "high"},
+      {"model": "gpt-5.6-luna", "effort": "xhigh"},
+      {"model": "gpt-5.6-luna", "effort": "max"}
+    ]
+  },
+  "artifacts": {
+    "verbose_profile": {"path": "benchmarks/experiments/v8-verbose/profile.config.toml", "sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717"},
+    "verbose_policy": {"path": "benchmarks/experiments/v8-verbose/SKILL.md", "sha256": "ccf2cf696a3c6f8da2b26d66281d240212752c0b072a8f81ae2a6f3f8dde3880"},
+    "verbose_wrapper": {"path": "scripts/benchmark_v8_verbose.py", "sha256": "a158ab20c3dfad95b9b41bb0c8755e5b78c47b46a8a0350c478886081bfffdac"},
+    "mechy_profile": {"path": "profiles/smart-compact-v8.config.toml", "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"},
+    "mechy_policy": {"path": "benchmarks/policies/v8/SKILL.md", "sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327"},
+    "base_runner": {"path": "scripts/benchmark_v8.py", "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea"},
+    "agentic_manifest": {"path": "benchmarks/agentic-v8-confirmation.json", "sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534"},
+    "calculator_manifest": {"path": "benchmarks/agentic-v8-legacy-calculator.json", "sha256": "4ed252fb96a745b7ffca39a66667af470b1d0a003a651f65d0c13a22cd017218"},
+    "relay_manifest": {"path": "benchmarks/agentic-v8-legacy-relay-bench.json", "sha256": "082608b014ee12dbb771ef12d82842b1b3511068c9c51bd684a6e02fdc49e30a"},
+    "spark_agent": {"path": ".codex/agents/spark-worker.toml", "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"},
+    "dependency_lock": {"path": "requirements-benchmark.txt", "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0"},
+    "mechy_release_summary": {"path": "benchmarks/results/v8-release-summary.json", "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"}
+  },
+  "runtime": {
+    "codex": "codex-cli 0.144.1",
+    "rtk": "rtk 0.43.0",
+    "spark_model": "gpt-5.3-codex-spark",
+    "spark_effort": "medium"
+  }
+}

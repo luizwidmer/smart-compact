@@ -1,0 +1,1412 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "standard-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 140322,
+        "median_parent_tokens": 140322,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v6-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 138970,
+        "median_parent_tokens": 138970,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v8-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 179239,
+        "median_parent_tokens": 179239,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v8-spark-forced": {
+        "grade_passes": 1,
+        "median_child_tokens": 280393,
+        "median_combined_tokens": 335471,
+        "median_parent_tokens": 55078,
+        "median_peak_concurrency": 1,
+        "median_spawned_worker_count": 1,
+        "median_useful_worker_count": 1,
+        "median_useful_worker_rate": 1.0,
+        "median_worker_count": 1,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v8-spark-forced",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 55078,
+        "median_spawned_worker_count": 1,
+        "median_worker_count": 1,
+        "rank": 1,
+        "successes": 1
+      },
+      {
+        "arm": "v6-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 138970,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 2,
+        "successes": 1
+      },
+      {
+        "arm": "standard-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 140322,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 3,
+        "successes": 1
+      },
+      {
+        "arm": "v8-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 179239,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 4,
+        "successes": 1
+      }
+    ]
+  },
+  "arm_metadata": {
+    "standard-no-spark": {
+      "multi_agent": false,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": null,
+      "profile_sha256": null,
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v6-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v6/SKILL.md",
+      "policy_sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/benchmarks/profiles/v6.config.toml",
+      "profile_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+      "routing_mode": "none",
+      "skill_input": true,
+      "spark_enabled": false
+    },
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v8-spark-forced": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "forced",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "standard-no-spark",
+    "v6-no-spark",
+    "v8-no-spark",
+    "v8-spark-forced"
+  ],
+  "cases_path": "/private/tmp/smart-compact-legacy-work/benchmarks/agentic-v8-legacy-relay-bench.json",
+  "cases_sha256": "082608b014ee12dbb771ef12d82842b1b3511068c9c51bd684a6e02fdc49e30a",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {
+    "standard_to_v6": {
+      "assigned_pairs": 1,
+      "baseline_arm": "standard-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v6-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 31.045,
+      "median_parent_token_reduction_pct": 0.963,
+      "median_parent_tokens_saved": 1352,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 67.729,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 0.963,
+          "median_parent_tokens_saved": 1352,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 0.963,
+          "median_parent_tokens_saved": 1352,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "standard_to_v8": {
+      "assigned_pairs": 1,
+      "baseline_arm": "standard-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v8-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 23.604,
+      "median_parent_token_reduction_pct": -27.734,
+      "median_parent_tokens_saved": -38917,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 51.496,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": -27.734,
+          "median_parent_tokens_saved": -38917,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": -27.734,
+          "median_parent_tokens_saved": -38917,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "v6_to_v8": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v6-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v8-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": -10.791,
+      "median_parent_token_reduction_pct": -28.977,
+      "median_parent_tokens_saved": -40269,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": -16.233,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": true,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": -28.977,
+          "median_parent_tokens_saved": -40269,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": -28.977,
+          "median_parent_tokens_saved": -40269,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "v8_no_spark_to_forced_spark": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v8-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v8-spark-forced",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 77.304,
+      "median_parent_token_reduction_pct": 69.271,
+      "median_parent_tokens_saved": 124161,
+      "median_primary_efficiency": 124161.0,
+      "median_saved_per_spawned_worker": 124161.0,
+      "median_saved_per_useful_worker": 124161.0,
+      "median_spawned_worker_count": 1,
+      "median_wall_seconds_saved": 128.84,
+      "median_wall_seconds_saved_per_useful_worker": 128.84,
+      "median_worker_count": 1,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 69.271,
+          "median_parent_tokens_saved": 124161,
+          "median_primary_efficiency": 124161.0,
+          "median_saved_per_spawned_worker": 124161.0,
+          "median_saved_per_useful_worker": 124161.0,
+          "median_wall_seconds_saved_per_useful_worker": 128.84,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 69.271,
+          "median_parent_tokens_saved": 124161,
+          "median_primary_efficiency": 124161.0,
+          "median_saved_per_spawned_worker": 124161.0,
+          "median_saved_per_useful_worker": 124161.0,
+          "median_wall_seconds_saved_per_useful_worker": 128.84,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "standard-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v6-no-spark",
+      "candidate_success": true,
+      "case_id": "legacy-relay-bench",
+      "combined_token_reduction_pct": 0.963,
+      "comparison": "standard_to_v6",
+      "complete": true,
+      "latency_reduction_pct": 31.045,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 0.963,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 1352,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "candidate",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 67.729,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "standard-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v8-no-spark",
+      "candidate_success": true,
+      "case_id": "legacy-relay-bench",
+      "combined_token_reduction_pct": -27.734,
+      "comparison": "standard_to_v8",
+      "complete": true,
+      "latency_reduction_pct": 23.604,
+      "parent_allowance_winner": "baseline",
+      "parent_token_reduction_pct": -27.734,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": -38917,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 51.496,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": false,
+      "baseline_arm": "v6-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v8-no-spark",
+      "candidate_success": true,
+      "case_id": "legacy-relay-bench",
+      "combined_token_reduction_pct": -28.977,
+      "comparison": "v6_to_v8",
+      "complete": true,
+      "latency_reduction_pct": -10.791,
+      "parent_allowance_winner": "baseline",
+      "parent_token_reduction_pct": -28.977,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": -40269,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": true,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": -16.233,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "baseline",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "v8-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v8-spark-forced",
+      "candidate_success": true,
+      "case_id": "legacy-relay-bench",
+      "combined_token_reduction_pct": -87.164,
+      "comparison": "v8_no_spark_to_forced_spark",
+      "complete": true,
+      "latency_reduction_pct": 77.304,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 69.271,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 124161,
+      "parent_tokens_saved_per_spawned_worker": 124161.0,
+      "parent_tokens_saved_per_useful_worker": 124161.0,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": 124161.0,
+      "quality_delta_points": 0.0,
+      "selection_winner": "candidate",
+      "spawned_worker_count": 1,
+      "trial": 1,
+      "useful_worker_count": 1,
+      "wall_seconds_saved": 128.84,
+      "wall_seconds_saved_per_useful_worker": 128.84,
+      "wall_time_winner": "candidate",
+      "worker_count": 1
+    }
+  ],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "high",
+  "execution_order": [
+    {
+      "arm": "standard-no-spark",
+      "case_id": "legacy-relay-bench",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "legacy-relay-bench",
+      "index": 1,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-forced",
+      "case_id": "legacy-relay-bench",
+      "index": 2,
+      "trial": 1
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "legacy-relay-bench",
+      "index": 3,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "legacy-relay-bench",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T02:38:26Z",
+  "jobs": 1,
+  "model": "gpt-5.6-sol",
+  "publication_status": {
+    "candidate_all_pass": true,
+    "exploratory_metrics_publishable": true,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": true,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "standard-no-spark",
+      "case_id": "legacy-relay-bench",
+      "category": "legacy-real-world-web-implementation",
+      "changed_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 218.487,
+      "combined_total_tokens": 140322,
+      "commands_by_thread": {
+        "019f639b-0071-78a3-9367-11942520eb38": [
+          "/bin/zsh -lc \"rtk proxy sh -lc 'sed -n \\\"1,260p\\\" SPEC.md; echo \\\"__PAGE__\\\"; sed -n \\\"1,260p\\\" app/page.tsx; echo \\\"__LAYOUT__\\\"; sed -n \\\"1,220p\\\" app/layout.tsx; echo \\\"__CSS__\\\"; sed -n \\\"1,320p\\\" app/globals.css; echo \\\"__FILES__\\\"; rg --files -g \\\"AGENTS.md\\\" -g \\\"package.json\\\" -g \\\"next.config.*\\\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'pwd; find . -maxdepth 3 -type f -print | sort; echo __PACKAGE__; test -f package.json && sed -n \\\"1,220p\\\" package.json || true; echo __CONFIG__; test -f tsconfig.json && sed -n \\\"1,220p\\\" tsconfig.json || true; echo __GIT__; git status --short'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,360p' validate.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'git status --short; git diff --check; git diff --stat; test \"'! -e package.json && echo \"package.json: absent\"'\"'\""
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.325,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 218.162,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f639b-0071-78a3-9367-11942520eb38": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-standard-no-spark/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-standard-no-spark/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-standard-no-spark/legacy-relay-bench/app/page.tsx"
+        ]
+      },
+      "final_message": "Implemented the frozen Relay Bench contract.\n\nChanged:\n\n- [app/page.tsx](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-standard-no-spark/legacy-relay-bench/app/page.tsx)\n- [app/layout.tsx](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-standard-no-spark/legacy-relay-bench/app/layout.tsx)\n- [app/globals.css](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-standard-no-spark/legacy-relay-bench/app/globals.css)\n\nAcceptance command result:\n\n```text\nrelay bench: 12/12 checks passed\n```\n\nBuild: unavailable because the supplied workspace has no `package.json`. Residual risk is limited to an unverified framework build. `git diff --check` passed, and no other files were changed.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.03,
+            "ok": true,
+            "output": "relay bench: 12/12 checks passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "app/page.tsx",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/globals.css",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/layout.tsx",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f639b-0071-78a3-9367-11942520eb38": {
+          "agentMessage": 4,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 7,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 431,
+        "item/completed": 18,
+        "item/started": 18,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f639b-0071-78a3-9367-11942520eb38",
+      "parent_total_tokens": 140322,
+      "parent_usage": {
+        "cachedInputTokens": 103680,
+        "inputTokens": 129858,
+        "outputTokens": 10464,
+        "reasoningOutputTokens": 1120,
+        "totalTokens": 140322
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f639b-0071-78a3-9367-11942520eb38": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f639b-0071-78a3-9367-11942520eb38": 8349
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "legacy-relay-bench",
+      "category": "legacy-real-world-web-implementation",
+      "changed_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 150.754,
+      "combined_total_tokens": 138970,
+      "commands_by_thread": {
+        "019f63a1-7f6c-7a82-95ff-5719a33b47f5": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'sed -n \\\"1,260p\\\" SPEC.md; sed -n \\\"1,240p\\\" app/page.tsx; sed -n \\\"1,200p\\\" app/layout.tsx; sed -n \\\"1,320p\\\" app/globals.css'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short -- app/page.tsx app/layout.tsx app/globals.css'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.321,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 150.433,
+      "execution_order_index": 3,
+      "file_changes_by_thread": {
+        "019f63a1-7f6c-7a82-95ff-5719a33b47f5": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v6-no-spark/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v6-no-spark/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v6-no-spark/legacy-relay-bench/app/page.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v6-no-spark/legacy-relay-bench/app/globals.css"
+        ]
+      },
+      "final_message": "Implemented the Relay Bench contract.\n\nChanged:\n\n- `app/page.tsx`\n- `app/layout.tsx`\n- `app/globals.css`\n\nAcceptance: `rtk proxy python3 validate.py` \u2192 `relay bench: 12/12 checks passed` (exit 0).\n\nStandalone `npm run build` was not separately run. Residual risk is limited to that unverified build step.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.031,
+            "ok": true,
+            "output": "relay bench: 12/12 checks passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "app/page.tsx",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/globals.css",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/layout.tsx",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f63a1-7f6c-7a82-95ff-5719a33b47f5": {
+          "agentMessage": 4,
+          "commandExecution": 4,
+          "fileChange": 2,
+          "reasoning": 6,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 161,
+        "item/completed": 17,
+        "item/started": 17,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 8,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f63a1-7f6c-7a82-95ff-5719a33b47f5",
+      "parent_total_tokens": 138970,
+      "parent_usage": {
+        "cachedInputTokens": 103680,
+        "inputTokens": 131320,
+        "outputTokens": 7650,
+        "reasoningOutputTokens": 1098,
+        "totalTokens": 138970
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 4,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f63a1-7f6c-7a82-95ff-5719a33b47f5": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f63a1-7f6c-7a82-95ff-5719a33b47f5": 4191
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "legacy-relay-bench",
+      "category": "legacy-real-world-web-implementation",
+      "changed_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 166.993,
+      "combined_total_tokens": 179239,
+      "commands_by_thread": {
+        "019f639e-590c-7040-b601-09d48f78ecd4": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' SPEC.md\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' app/page.tsx app/layout.tsx app/globals.css\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' validate.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy npm run build'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.327,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 166.666,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f639e-590c-7040-b601-09d48f78ecd4": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/page.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/globals.css"
+        ]
+      },
+      "final_message": "Implemented the Relay Bench contract.\n\nChanged:\n\n- [app/page.tsx](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/page.tsx)\n- [app/layout.tsx](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/layout.tsx)\n- [app/globals.css](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/globals.css)\n\nAcceptance result, exit code 0:\n\n```text\nrelay bench: 12/12 checks passed\n```\n\nBuild could not run because the starter contains no `package.json`; npm returned `ENOENT`. Residual risk: production compilation remains unverified for that reason.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.033,
+            "ok": true,
+            "output": "relay bench: 12/12 checks passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "app/page.tsx",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/globals.css",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/layout.tsx",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f639e-590c-7040-b601-09d48f78ecd4": {
+          "agentMessage": 2,
+          "commandExecution": 6,
+          "fileChange": 2,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 9,
+        "configWarning": 1,
+        "item/agentMessage/delta": 309,
+        "item/completed": 20,
+        "item/started": 20,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 9,
+        "turn/completed": 1,
+        "turn/diff/updated": 9,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f639e-590c-7040-b601-09d48f78ecd4",
+      "parent_total_tokens": 179239,
+      "parent_usage": {
+        "cachedInputTokens": 134912,
+        "inputTokens": 171182,
+        "outputTokens": 8057,
+        "reasoningOutputTokens": 1149,
+        "totalTokens": 179239
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 6,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f639e-590c-7040-b601-09d48f78ecd4": 8
+      },
+      "tool_output_chars_by_thread": {
+        "019f639e-590c-7040-b601-09d48f78ecd4": 7980
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-forced",
+      "case_id": "legacy-relay-bench",
+      "category": "legacy-real-world-web-implementation",
+      "changed_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": true
+      },
+      "child_evidence_markers": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": [
+          "app/globals.css",
+          "app/layout.tsx",
+          "app/page.tsx"
+        ]
+      },
+      "child_final_messages": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": "Implemented.  \n\npartition_ids: `relay-page`, `relay-styles`, `relay-metadata`  \n\nchanged_paths:\n- [`app/layout.tsx`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/layout.tsx)\n- [`app/page.tsx`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx)\n- [`app/globals.css`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/globals.css)\n\nacceptance:\n- Ran: `rtk proxy python3 validate.py`\n- Result: `relay bench: 12/12 checks passed`\n\nresidual risk:\n- Current implementation matches the provided contract and accepted checks, but I did not run a full runtime browser interaction sweep beyond what validation covered."
+      },
+      "child_io_ok": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": true
+      },
+      "child_missing_evidence_markers": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": "harness_frozen_config"
+      },
+      "child_roles": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f63a0-e7fa-7541-bb30-98b81718dc31"
+      ],
+      "child_total_tokens": 280393,
+      "child_turn_errors": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": null
+      },
+      "child_turn_statuses": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": "completed"
+      },
+      "child_usage": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": {
+          "cachedInputTokens": 248064,
+          "inputTokens": 268552,
+          "outputTokens": 11841,
+          "reasoningOutputTokens": 5071,
+          "totalTokens": 280393
+        }
+      },
+      "collection_duration_seconds": 38.157,
+      "combined_total_tokens": 335471,
+      "commands_by_thread": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": [
+          "/bin/zsh -lc 'rtk cat app/globals.css'",
+          "/bin/zsh -lc 'rtk cat app/layout.tsx'",
+          "/bin/zsh -lc 'rtk cat SPEC.md'",
+          "/bin/zsh -lc 'rtk cat app/page.tsx'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ],
+        "019f63a0-e81c-7402-b429-aec589b8d9a9": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'while [ \"'! -s \"$1\" ]; do sleep 0.1; done; cat \"$1\"'\"' _ /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-capsule-ftm58td0/worker-result.txt\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.33,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "relay-page",
+            "markers": [
+              "app/page.tsx"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "relay-styles",
+            "markers": [
+              "app/globals.css"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "relay-metadata",
+            "markers": [
+              "app/layout.tsx"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 37.826,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-7dcmigk3/legacy-relay-bench-trial-1-v8-spark-forced/legacy-relay-bench/app/page.tsx"
+        ]
+      },
+      "final_message": "Implemented the frozen Relay Bench contract.\n\nChanged paths:\n\n- `app/page.tsx`\n- `app/layout.tsx`\n- `app/globals.css`\n\nAcceptance command: `rtk proxy python3 validate.py`\n\nExact result: `relay bench: 12/12 checks passed`",
+      "first_spawn_seconds": 0.007,
+      "forced_execution_strategy": "concurrent_file_capsule",
+      "forced_handoff_consumed": true,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": true,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.019,
+            "ok": true,
+            "output": "relay bench: 12/12 checks passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "app/page.tsx",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/globals.css",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/layout.tsx",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": {
+          "agentMessage": 8,
+          "commandExecution": 5,
+          "fileChange": 9,
+          "reasoning": 13,
+          "userMessage": 1
+        },
+        "019f63a0-e81c-7402-b429-aec589b8d9a9": {
+          "agentMessage": 3,
+          "commandExecution": 2,
+          "reasoning": 4,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 19,
+        "configWarning": 1,
+        "item/agentMessage/delta": 131,
+        "item/commandExecution/outputDelta": 1,
+        "item/completed": 46,
+        "item/started": 46,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 2,
+        "thread/status/changed": 4,
+        "thread/tokenUsage/updated": 19,
+        "turn/completed": 2,
+        "turn/diff/updated": 21,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f63a0-e81c-7402-b429-aec589b8d9a9",
+      "parent_total_tokens": 55078,
+      "parent_usage": {
+        "cachedInputTokens": 43008,
+        "inputTokens": 54456,
+        "outputTokens": 622,
+        "reasoningOutputTokens": 133,
+        "totalTokens": 55078
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": [
+          "relay-metadata",
+          "relay-page",
+          "relay-styles"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "relay-metadata": 1,
+        "relay-page": 1,
+        "relay-styles": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "forced",
+      "routing_ok": true,
+      "rtk_command_count": 7,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 0.019,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": {
+          "agent_sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68",
+          "config_sha256": "bbf8264709bff09a67419c579cdef1afed1a6ed7873a6939257e7cc88809fc9e",
+          "effort": "medium",
+          "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": false,
+          "origin": "harness_thread",
+          "prompt": "partition_ids: relay-page, relay-styles, relay-metadata\nmode=edit\nrw=app/globals.css,app/layout.tsx,app/page.tsx\nro=SPEC.md,validate.py\ndeny_write=SPEC.md,validate.py,all_except_rw\ntask=read_SPEC;implement_relay_site;no_dependencies,no_routes,no_images\nkeep=copy,metrics,interactions,semantics,colors,responsive,reduced_motion\nacceptance=rtk proxy python3 validate.py\nreturn=partition_ids,changed_paths,acceptance,blocker",
+          "role": "spark_worker"
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": 14,
+        "019f63a0-e81c-7402-b429-aec589b8d9a9": 2
+      },
+      "tool_output_chars_by_thread": {
+        "019f63a0-e7fa-7541-bb30-98b81718dc31": 4107,
+        "019f63a0-e81c-7402-b429-aec589b8d9a9": 929
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f63a0-e7fa-7541-bb30-98b81718dc31"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-legacy-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": true
+}

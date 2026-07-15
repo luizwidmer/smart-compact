@@ -1,0 +1,289 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "v8-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 146078,
+        "median_parent_tokens": 146078,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v8-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 146078,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 1,
+        "successes": 1
+      }
+    ]
+  },
+  "arm_metadata": {
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/experiments/v8-verbose/SKILL.md",
+      "policy_sha256": "ccf2cf696a3c6f8da2b26d66281d240212752c0b072a8f81ae2a6f3f8dde3880",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/benchmarks/experiments/v8-verbose/profile.config.toml",
+      "profile_sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    }
+  },
+  "arms": [
+    "v8-no-spark"
+  ],
+  "cases_path": "/private/tmp/smart-compact-legacy-work/benchmarks/agentic-v8-legacy-relay-bench.json",
+  "cases_sha256": "082608b014ee12dbb771ef12d82842b1b3511068c9c51bd684a6e02fdc49e30a",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {},
+  "comparisons": [],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "max",
+  "execution_order": [
+    {
+      "arm": "v8-no-spark",
+      "case_id": "legacy-relay-bench",
+      "index": 0,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "legacy-relay-bench",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T03:32:45Z",
+  "jobs": 1,
+  "model": "gpt-5.6-luna",
+  "publication_status": {
+    "candidate_all_pass": true,
+    "exploratory_metrics_publishable": true,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": true,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "legacy-relay-bench",
+      "category": "legacy-real-world-web-implementation",
+      "changed_paths": [
+        "app/globals.css",
+        "app/layout.tsx",
+        "app/page.tsx"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 259.59,
+      "combined_total_tokens": 146078,
+      "commands_by_thread": {
+        "019f63d1-8ea1-7b63-9a09-f3100eeb3ce9": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' SPEC.md && rtk proxy printf '\\\\n--- app/page.tsx ---\\\\n' && rtk proxy sed -n '1,240p' app/page.tsx && rtk proxy printf '\\\\n--- app/layout.tsx ---\\\\n' && rtk proxy sed -n '1,200p' app/layout.tsx && rtk proxy printf '\\\\n--- app/globals.css ---\\\\n' && rtk proxy sed -n '1,320p' app/globals.css\"",
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!node_modules'\"' -g '\"'!/.next'\"' && rtk proxy printf '\\\\n--- package.json ---\\\\n' && rtk proxy sed -n '1,220p' package.json && rtk proxy printf '\\\\n--- validate.py ---\\\\n' && rtk proxy sed -n '1,320p' validate.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,360p' validate.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.315,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 259.275,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f63d1-8ea1-7b63-9a09-f3100eeb3ce9": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-aejc4m6s/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/globals.css",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-aejc4m6s/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/layout.tsx",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-aejc4m6s/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/page.tsx"
+        ]
+      },
+      "final_message": "Implemented the Relay Bench contract.\n\nChanged:\n- [app/page.tsx](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-aejc4m6s/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/page.tsx>)\n- [app/layout.tsx](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-aejc4m6s/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/layout.tsx>)\n- [app/globals.css](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-aejc4m6s/legacy-relay-bench-trial-1-v8-no-spark/legacy-relay-bench/app/globals.css>)\n\nAcceptance: `rtk proxy python3 validate.py` \u2192 `relay bench: 12/12 checks passed`\n\nBuild: not run; no `package.json` exists in the workspace.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.031,
+            "ok": true,
+            "output": "relay bench: 12/12 checks passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "app/page.tsx",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/globals.css",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "app/layout.tsx",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f63d1-8ea1-7b63-9a09-f3100eeb3ce9": {
+          "agentMessage": 3,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 14,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 341,
+        "item/completed": 24,
+        "item/started": 24,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f63d1-8ea1-7b63-9a09-f3100eeb3ce9",
+      "parent_total_tokens": 146078,
+      "parent_usage": {
+        "cachedInputTokens": 105728,
+        "inputTokens": 132526,
+        "outputTokens": 13552,
+        "reasoningOutputTokens": 4838,
+        "totalTokens": 146078
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f63d1-8ea1-7b63-9a09-f3100eeb3ce9": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f63d1-8ea1-7b63-9a09-f3100eeb3ce9": 7435
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": null,
+  "wall_time_contended": true
+}

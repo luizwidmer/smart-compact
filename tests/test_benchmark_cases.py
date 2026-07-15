@@ -4,7 +4,7 @@ import json
 import unittest
 from pathlib import Path
 
-from scripts.compact_guard import classify
+from scripts.compact_guard import check, classify
 
 
 class BenchmarkCaseTests(unittest.TestCase):
@@ -21,6 +21,21 @@ class BenchmarkCaseTests(unittest.TestCase):
             if classify(case["source"])["mode"] != case["expected_mode"]
         }
         self.assertEqual(mismatches, {})
+
+    def test_official_candidates_cover_and_preserve_every_case(self) -> None:
+        root = Path(__file__).parents[1]
+        cases = json.loads((root / "benchmarks" / "cases.json").read_text(encoding="utf-8"))
+        candidates = json.loads(
+            (root / "benchmarks" / "candidates.forward.json").read_text(encoding="utf-8")
+        )
+
+        self.assertEqual(set(candidates), {case["id"] for case in cases})
+        failures = {
+            case["id"]: check(case["source"], candidates[case["id"]])["missing"]
+            for case in cases
+            if not check(case["source"], candidates[case["id"]])["ok"]
+        }
+        self.assertEqual(failures, {})
 
 
 if __name__ == "__main__":

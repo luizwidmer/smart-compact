@@ -226,6 +226,104 @@ class ManifestAndArmTests(unittest.TestCase):
             for marker in partition["markers"]:
                 self.assertIn(marker, prompt)
 
+    def test_legacy_calculator_forced_prompt_owns_all_six_paths_without_fanout_cap(self) -> None:
+        paths = (
+            "python/calculator.py",
+            "rust/calculator.rs",
+            "cpp/calculator.cpp",
+            "swift/calculator.swift",
+            "javascript/calculator.js",
+            "typescript/calculator.ts",
+        )
+        case = {
+            "id": benchmark_v8.LEGACY_CALCULATOR_CASE,
+            "acceptance_command": ["python3", "validate.py"],
+            "delegation": {
+                "worker_io": "path_disjoint",
+                "spawned_workers": {"min": 1, "max": None},
+                "expected_partitions": [
+                    {
+                        "id": f"language-{index}",
+                        "markers": [path],
+                    }
+                    for index, path in enumerate(paths, start=1)
+                ],
+            },
+        }
+        prompt = forced_worker_prompt(case)
+        expected_ids = {
+            partition["id"] for partition in case["delegation"]["expected_partitions"]
+        }
+        assigned, syntax_ok = parse_partition_ids(prompt, expected_ids)
+        self.assertTrue(syntax_ok)
+        self.assertEqual(assigned, sorted(expected_ids))
+        self.assertIsNone(case["delegation"]["spawned_workers"]["max"])
+        self.assertIn("ro=SPEC.md,validate.py", prompt)
+        self.assertIn("acceptance=rtk proxy python3 validate.py", prompt)
+        self.assertNotIn("fanout", prompt.lower())
+        self.assertNotIn("worker_count", prompt.lower())
+        for path in paths:
+            self.assertIn(path, prompt)
+
+    def test_legacy_calculator_forced_prompt_rejects_incomplete_path_ownership(self) -> None:
+        case = {
+            "id": benchmark_v8.LEGACY_CALCULATOR_CASE,
+            "acceptance_command": ["python3", "validate.py"],
+            "delegation": {
+                "worker_io": "path_disjoint",
+                "expected_partitions": [
+                    {"id": "python", "markers": ["python/calculator.py"]}
+                ],
+            },
+        }
+        with self.assertRaisesRegex(
+            benchmark_v8.AppTaskError, "exactly the six calculator files"
+        ):
+            forced_worker_prompt(case)
+
+    def test_legacy_relay_forced_prompt_owns_app_paths_without_fanout_cap(self) -> None:
+        paths = ("app/page.tsx", "app/layout.tsx", "app/globals.css")
+        case = {
+            "id": benchmark_v8.LEGACY_RELAY_CASE,
+            "acceptance_command": ["python3", "validate.py"],
+            "delegation": {
+                "worker_io": "path_disjoint",
+                "spawned_workers": {"min": 1, "max": None},
+                "expected_partitions": [
+                    {"id": f"relay-{index}", "markers": [path]}
+                    for index, path in enumerate(paths, start=1)
+                ],
+            },
+        }
+        prompt = forced_worker_prompt(case)
+        expected_ids = {
+            partition["id"] for partition in case["delegation"]["expected_partitions"]
+        }
+        assigned, syntax_ok = parse_partition_ids(prompt, expected_ids)
+        self.assertTrue(syntax_ok)
+        self.assertEqual(assigned, sorted(expected_ids))
+        self.assertIsNone(case["delegation"]["spawned_workers"]["max"])
+        self.assertIn("ro=SPEC.md,validate.py", prompt)
+        self.assertIn("acceptance=rtk proxy python3 validate.py", prompt)
+        for path in paths:
+            self.assertIn(path, prompt)
+
+    def test_legacy_relay_forced_prompt_rejects_incomplete_path_ownership(self) -> None:
+        case = {
+            "id": benchmark_v8.LEGACY_RELAY_CASE,
+            "acceptance_command": ["python3", "validate.py"],
+            "delegation": {
+                "worker_io": "path_disjoint",
+                "expected_partitions": [
+                    {"id": "page", "markers": ["app/page.tsx"]}
+                ],
+            },
+        }
+        with self.assertRaisesRegex(
+            benchmark_v8.AppTaskError, "exactly the three app files"
+        ):
+            forced_worker_prompt(case)
+
     def test_spark_home_uses_frozen_repository_agent(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -542,6 +640,36 @@ class PublicationGateTests(unittest.TestCase):
         status = self.status(self.row(usage=False))
         self.assertTrue(status["candidate_all_pass"])
         self.assertFalse(status["exploratory_metrics_publishable"])
+
+    def test_external_contention_disables_latency_but_not_token_publication(self) -> None:
+        rows = []
+        for trial in range(1, 4):
+            row = self.row()
+            row["trial"] = trial
+            rows.append(row)
+        expected = expected_result_keys([{"id": "case"}], 3, ["v8-no-spark"])
+        status = publication_status(
+            rows,
+            expected,
+            repetitions=3,
+            jobs=1,
+            external_contention=True,
+        )
+        self.assertTrue(status["token_publishable"])
+        self.assertFalse(status["latency_publishable"])
+
+    def test_external_contention_is_recorded_in_checkpoint(self) -> None:
+        args = benchmark_v8.build_parser().parse_args(["--external-contention"])
+        self.assertTrue(args.external_contention)
+        payload = benchmark_v8.checkpoint_payload(
+            results=[],
+            selected_arms=["v8-no-spark"],
+            execution_order=[],
+            repetitions=1,
+            jobs=1,
+            external_contention=args.external_contention,
+        )
+        self.assertTrue(payload["wall_time_contended"])
 
 
 class SparkEfficiencyMetricTests(unittest.TestCase):

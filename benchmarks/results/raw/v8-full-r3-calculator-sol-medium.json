@@ -1,0 +1,1499 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "standard-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 448551,
+        "median_parent_tokens": 448551,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v6-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 147287,
+        "median_parent_tokens": 147287,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v8-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 114812,
+        "median_parent_tokens": 114812,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 0,
+        "usage_complete": 1
+      },
+      "v8-spark-forced": {
+        "grade_passes": 1,
+        "median_child_tokens": 301148,
+        "median_combined_tokens": 508947,
+        "median_parent_tokens": 207799,
+        "median_peak_concurrency": 1,
+        "median_spawned_worker_count": 1,
+        "median_useful_worker_count": 1,
+        "median_useful_worker_rate": 1.0,
+        "median_worker_count": 1,
+        "routing_passes": 0,
+        "runs": 1,
+        "successes": 0,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v6-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 147287,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 1,
+        "successes": 1
+      },
+      {
+        "arm": "standard-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 448551,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 2,
+        "successes": 1
+      },
+      {
+        "arm": "v8-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 114812,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 3,
+        "successes": 0
+      },
+      {
+        "arm": "v8-spark-forced",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 207799,
+        "median_spawned_worker_count": 1,
+        "median_worker_count": 1,
+        "rank": 4,
+        "successes": 0
+      }
+    ]
+  },
+  "arm_metadata": {
+    "standard-no-spark": {
+      "multi_agent": false,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": null,
+      "profile_sha256": null,
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v6-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v6/SKILL.md",
+      "policy_sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/benchmarks/profiles/v6.config.toml",
+      "profile_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+      "routing_mode": "none",
+      "skill_input": true,
+      "spark_enabled": false
+    },
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v8-spark-forced": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "forced",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "standard-no-spark",
+    "v6-no-spark",
+    "v8-no-spark",
+    "v8-spark-forced"
+  ],
+  "cases_path": "/private/tmp/smart-compact-legacy-work/benchmarks/agentic-v8-legacy-calculator.json",
+  "cases_sha256": "4ed252fb96a745b7ffca39a66667af470b1d0a003a651f65d0c13a22cd017218",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {
+    "standard_to_v6": {
+      "assigned_pairs": 1,
+      "baseline_arm": "standard-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v6-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 34.764,
+      "median_parent_token_reduction_pct": 67.164,
+      "median_parent_tokens_saved": 301264,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 94.579,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 67.164,
+          "median_parent_tokens_saved": 301264,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 67.164,
+          "median_parent_tokens_saved": 301264,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "standard_to_v8": {
+      "assigned_pairs": 1,
+      "baseline_arm": "standard-no-spark",
+      "baseline_successes": 1,
+      "both_success": 0,
+      "candidate_arm": "v8-no-spark",
+      "candidate_successes": 0,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 48.622,
+      "median_parent_token_reduction_pct": 74.404,
+      "median_parent_tokens_saved": 333739,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 132.28,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": 74.404,
+          "median_parent_tokens_saved": 333739,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": 74.404,
+          "median_parent_tokens_saved": 333739,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "v6_to_v8": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v6-no-spark",
+      "baseline_successes": 1,
+      "both_success": 0,
+      "candidate_arm": "v8-no-spark",
+      "candidate_successes": 0,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 21.242,
+      "median_parent_token_reduction_pct": 22.049,
+      "median_parent_tokens_saved": 32475,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 37.701,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": true,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": 22.049,
+          "median_parent_tokens_saved": 32475,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": 22.049,
+          "median_parent_tokens_saved": 32475,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "v8_no_spark_to_forced_spark": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v8-no-spark",
+      "baseline_successes": 0,
+      "both_success": 0,
+      "candidate_arm": "v8-spark-forced",
+      "candidate_successes": 0,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 29.235,
+      "median_parent_token_reduction_pct": -80.991,
+      "median_parent_tokens_saved": -92987,
+      "median_primary_efficiency": -92987.0,
+      "median_saved_per_spawned_worker": -92987.0,
+      "median_saved_per_useful_worker": -92987.0,
+      "median_spawned_worker_count": 1,
+      "median_wall_seconds_saved": 40.864,
+      "median_wall_seconds_saved_per_useful_worker": 40.864,
+      "median_worker_count": 1,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": -80.991,
+          "median_parent_tokens_saved": -92987,
+          "median_primary_efficiency": -92987.0,
+          "median_saved_per_spawned_worker": -92987.0,
+          "median_saved_per_useful_worker": -92987.0,
+          "median_wall_seconds_saved_per_useful_worker": 40.864,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 0,
+          "median_parent_token_reduction_pct": -80.991,
+          "median_parent_tokens_saved": -92987,
+          "median_primary_efficiency": -92987.0,
+          "median_saved_per_spawned_worker": -92987.0,
+          "median_saved_per_useful_worker": -92987.0,
+          "median_wall_seconds_saved_per_useful_worker": 40.864,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "standard-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v6-no-spark",
+      "candidate_success": true,
+      "case_id": "legacy-calculator",
+      "combined_token_reduction_pct": 67.164,
+      "comparison": "standard_to_v6",
+      "complete": true,
+      "latency_reduction_pct": 34.764,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 67.164,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 301264,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "candidate",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 94.579,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": false,
+      "baseline_arm": "standard-no-spark",
+      "baseline_success": true,
+      "both_success": false,
+      "candidate_arm": "v8-no-spark",
+      "candidate_success": false,
+      "case_id": "legacy-calculator",
+      "combined_token_reduction_pct": 74.404,
+      "comparison": "standard_to_v8",
+      "complete": true,
+      "latency_reduction_pct": 48.622,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 74.404,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 333739,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 132.28,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": false,
+      "baseline_arm": "v6-no-spark",
+      "baseline_success": true,
+      "both_success": false,
+      "candidate_arm": "v8-no-spark",
+      "candidate_success": false,
+      "case_id": "legacy-calculator",
+      "combined_token_reduction_pct": 22.049,
+      "comparison": "v6_to_v8",
+      "complete": true,
+      "latency_reduction_pct": 21.242,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 22.049,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 32475,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": true,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 37.701,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": false,
+      "baseline_arm": "v8-no-spark",
+      "baseline_success": false,
+      "both_success": false,
+      "candidate_arm": "v8-spark-forced",
+      "candidate_success": false,
+      "case_id": "legacy-calculator",
+      "combined_token_reduction_pct": -343.287,
+      "comparison": "v8_no_spark_to_forced_spark",
+      "complete": true,
+      "latency_reduction_pct": 29.235,
+      "parent_allowance_winner": "baseline",
+      "parent_token_reduction_pct": -80.991,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": -92987,
+      "parent_tokens_saved_per_spawned_worker": -92987.0,
+      "parent_tokens_saved_per_useful_worker": -92987.0,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": -92987.0,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 1,
+      "trial": 1,
+      "useful_worker_count": 1,
+      "wall_seconds_saved": 40.864,
+      "wall_seconds_saved_per_useful_worker": 40.864,
+      "wall_time_winner": "candidate",
+      "worker_count": 1
+    }
+  ],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "medium",
+  "execution_order": [
+    {
+      "arm": "standard-no-spark",
+      "case_id": "legacy-calculator",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "legacy-calculator",
+      "index": 1,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-forced",
+      "case_id": "legacy-calculator",
+      "index": 2,
+      "trial": 1
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "legacy-calculator",
+      "index": 3,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "legacy-calculator",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T01:38:38Z",
+  "jobs": 1,
+  "model": "gpt-5.6-sol",
+  "publication_status": {
+    "candidate_all_pass": false,
+    "exploratory_metrics_publishable": false,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": false,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "standard-no-spark",
+      "case_id": "legacy-calculator",
+      "category": "legacy-cross-language-implementation",
+      "changed_paths": [
+        "cpp/calculator.cpp",
+        "javascript/calculator.js",
+        "python/calculator.py",
+        "rust/calculator.rs",
+        "swift/calculator.swift",
+        "typescript/calculator.ts"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 272.38,
+      "combined_total_tokens": 448551,
+      "commands_by_thread": {
+        "019f6362-1244-7670-98f5-ef04fd92c071": [
+          "/bin/zsh -lc 'rtk proxy cat SPEC.md'",
+          "/bin/zsh -lc 'rtk rg --files python rust cpp swift javascript typescript validate.py'",
+          "/bin/zsh -lc 'rtk mkdir -p python rust cpp swift javascript typescript'",
+          "/bin/zsh -lc 'rtk mkdir -p BUILD'",
+          "/bin/zsh -lc 'rtk proxy rustc -O rust/calculator.rs -o BUILD/calculator-rust'",
+          "/bin/zsh -lc 'rtk proxy g++ -std=c++17 -O2 cpp/calculator.cpp -o BUILD/calculator-cpp'",
+          "/bin/zsh -lc 'rtk mkdir -p BUILD/swift-cache BUILD/clang-cache'",
+          "/bin/zsh -lc 'rtk proxy env CLANG_MODULE_CACHE_PATH=BUILD/clang-cache SWIFT_MODULECACHE_PATH=BUILD/swift-cache swiftc -O swift/calculator.swift -o BUILD/calculator-swift'",
+          "/bin/zsh -lc 'rtk proxy env CLANG_MODULE_CACHE_PATH=BUILD/clang-cache SWIFT_MODULECACHE_PATH=BUILD/swift-cache swiftc -O swift/calculator.swift -o BUILD/calculator-swift'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy node typescript/calculator.ts 2''^3''^2'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk rm -rf BUILD'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.319,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 272.06,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6362-1244-7670-98f5-ef04fd92c071": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/cpp/calculator.cpp",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/javascript/calculator.js",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/python/calculator.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/rust/calculator.rs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/swift/calculator.swift",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/typescript/calculator.ts",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/swift/calculator.swift",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/typescript/calculator.ts"
+        ]
+      },
+      "final_message": "Implemented six independent expression calculators:\n\n- [Python](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/python/calculator.py)\n- [Rust](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/rust/calculator.rs)\n- [C++](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/cpp/calculator.cpp)\n- [Swift](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/swift/calculator.swift)\n- [JavaScript](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/javascript/calculator.js)\n- [TypeScript](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-standard-no-spark/legacy-calculator/typescript/calculator.ts)\n\nValidation:\n\n- Rust, C++, and Swift compiled successfully with the specified toolchains.\n- TypeScript native type-stripping smoke test passed.\n- `rtk proxy python3 validate.py`: **240/240**\n- Generated build artifacts were removed.\n- `SPEC.md` and `validate.py` remain unchanged.\n\nNo material residual risks identified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 6.634,
+            "ok": true,
+            "output": "240/240\n",
+            "returncode": 0,
+            "type": "command"
+          }
+        ],
+        "ok": true,
+        "passed": 1,
+        "score_pct": 100.0,
+        "total": 1
+      },
+      "item_counts_by_thread": {
+        "019f6362-1244-7670-98f5-ef04fd92c071": {
+          "agentMessage": 7,
+          "commandExecution": 15,
+          "fileChange": 3,
+          "reasoning": 13,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 18,
+        "configWarning": 1,
+        "item/agentMessage/delta": 774,
+        "item/commandExecution/outputDelta": 6,
+        "item/completed": 39,
+        "item/started": 39,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 18,
+        "turn/completed": 1,
+        "turn/diff/updated": 18,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6362-1244-7670-98f5-ef04fd92c071",
+      "parent_total_tokens": 448551,
+      "parent_usage": {
+        "cachedInputTokens": 390656,
+        "inputTokens": 437593,
+        "outputTokens": 10958,
+        "reasoningOutputTokens": 1390,
+        "totalTokens": 448551
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 15,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6362-1244-7670-98f5-ef04fd92c071": 18
+      },
+      "tool_output_chars_by_thread": {
+        "019f6362-1244-7670-98f5-ef04fd92c071": 30079
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "legacy-calculator",
+      "category": "legacy-cross-language-implementation",
+      "changed_paths": [
+        "cpp/calculator.cpp",
+        "javascript/calculator.js",
+        "python/calculator.py",
+        "rust/calculator.rs",
+        "swift/calculator.swift",
+        "typescript/calculator.ts"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 177.805,
+      "combined_total_tokens": 147287,
+      "commands_by_thread": {
+        "019f636a-38b6-76f3-8354-de6b5b5c0665": [
+          "/bin/zsh -lc \"rtk proxy sh -lc 'sed -n \\\"1,240p\\\" SPEC.md; for f in python/calculator.py rust/calculator.rs cpp/calculator.cpp swift/calculator.swift javascript/calculator.js typescript/calculator.ts; do echo \\\"FILE:\"'$f\"; if test -f \"$f\"; then sed -n \"1,260p\" \"$f\"; else echo MISSING; fi; done'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short -- python/calculator.py rust/calculator.rs cpp/calculator.cpp swift/calculator.swift javascript/calculator.js typescript/calculator.ts'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.324,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 177.481,
+      "execution_order_index": 3,
+      "file_changes_by_thread": {
+        "019f636a-38b6-76f3-8354-de6b5b5c0665": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/cpp/calculator.cpp",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/javascript/calculator.js",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/python/calculator.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/rust/calculator.rs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/swift/calculator.swift",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/typescript/calculator.ts",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v6-no-spark/legacy-calculator/swift/calculator.swift"
+        ]
+      },
+      "final_message": "Implemented independent calculator parsers in:\n\n- `python/calculator.py`\n- `rust/calculator.rs`\n- `cpp/calculator.cpp`\n- `swift/calculator.swift`\n- `javascript/calculator.js`\n- `typescript/calculator.ts`\n\nValidation:\n\n- Ran `rtk proxy python3 validate.py`\n- Rust, C++, and Swift compiled successfully\n- Full acceptance passed: `240/240`\n\nNo files outside the six required paths were modified. No material residual risks identified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 6.971,
+            "ok": true,
+            "output": "240/240\n",
+            "returncode": 0,
+            "type": "command"
+          }
+        ],
+        "ok": true,
+        "passed": 1,
+        "score_pct": 100.0,
+        "total": 1
+      },
+      "item_counts_by_thread": {
+        "019f636a-38b6-76f3-8354-de6b5b5c0665": {
+          "agentMessage": 6,
+          "commandExecution": 4,
+          "fileChange": 2,
+          "reasoning": 5,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 306,
+        "item/commandExecution/outputDelta": 2,
+        "item/completed": 18,
+        "item/started": 18,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 8,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f636a-38b6-76f3-8354-de6b5b5c0665",
+      "parent_total_tokens": 147287,
+      "parent_usage": {
+        "cachedInputTokens": 122112,
+        "inputTokens": 138857,
+        "outputTokens": 8430,
+        "reasoningOutputTokens": 580,
+        "totalTokens": 147287
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 4,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f636a-38b6-76f3-8354-de6b5b5c0665": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f636a-38b6-76f3-8354-de6b5b5c0665": 3266
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "legacy-calculator",
+      "category": "legacy-cross-language-implementation",
+      "changed_paths": [
+        "BUILD/calculator-cpp",
+        "BUILD/calculator-rust",
+        "BUILD/calculator-swift",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/CFNetwork-1PNPO1ORVQZLS.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/CoreFoundation-16SA8WK3L6MQN.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/CoreServices-39NCTJOEW7PQ2.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/Darwin-1FXX23EKWOBA9.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/DiskArbitration-3LBJF5I58QD8.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/Dispatch-R76HXUP80TVL.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/Foundation-24LYWIP48SHNP.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/IOKit-1IAL9NTK1TABA.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/MachO-20RPYVQSX341K.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/ObjectiveC-1G8H182PQX3QE.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/Security-3QCVXOV25KK54.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/SwiftShims-2IMTS4WWRU7VJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/XPC-T0ZXCAST7PE3.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_AvailabilityInternal-2YSBQADOLX02V.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_float-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_inttypes-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_limits-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_stdarg-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_stdbool-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_stddef-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_Builtin_stdint-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_DarwinFoundation1-2YSBQADOLX02V.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_DarwinFoundation2-3J4ZFA06I5V1P.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_DarwinFoundation3-2NSGASPTSNBVQ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/_SwiftConcurrencyShims-2IMTS4WWRU7VJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/launch-3T3BU4MASLMUM.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/libDER-26DYHF6GC6WWA.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/libkern-2KQ0X67RTM1JF.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/os_object-2MV8OP7R98AN8.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/os_workgroup-2MV8OP7R98AN8.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/ptrauth-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/ptrcheck-2OQWMRBVRD4OJ.pcm",
+        "BUILD/module-cache/3CPHG2CVUV4Y9/sys_types-3J4ZFA06I5V1P.pcm",
+        "BUILD/module-cache/Combine-TQ7GW037BR3K.swiftmodule",
+        "BUILD/module-cache/CoreFoundation-GZAWTX6LES7Q.swiftmodule",
+        "BUILD/module-cache/Darwin-2VBWKEI7UP0QG.swiftmodule",
+        "BUILD/module-cache/Dispatch-2C5VXRWW13N3L.swiftmodule",
+        "BUILD/module-cache/Foundation-1GP6Z5JFK6HHI.swiftmodule",
+        "BUILD/module-cache/IOKit-1T57FLLJSHJAM.swiftmodule",
+        "BUILD/module-cache/ObjectiveC-D8Q9IHMOQ7V7.swiftmodule",
+        "BUILD/module-cache/Observation-19SFV0ZPD2PG5.swiftmodule",
+        "BUILD/module-cache/Swift-1IEYM950OGIQC.swiftmodule",
+        "BUILD/module-cache/System-17638H7ODZJUA.swiftmodule",
+        "BUILD/module-cache/XPC-BA99C1X5LQZY.swiftmodule",
+        "BUILD/module-cache/_Builtin_float-UPN9MR8U16MU.swiftmodule",
+        "BUILD/module-cache/_Concurrency-2ADZMZE46FIUY.swiftmodule",
+        "BUILD/module-cache/_DarwinFoundation1-1JQY4JQ3YL74U.swiftmodule",
+        "BUILD/module-cache/_DarwinFoundation2-3JWUXH4SNJ8U2.swiftmodule",
+        "BUILD/module-cache/_DarwinFoundation3-2ZOYG5DVVKBZP.swiftmodule",
+        "BUILD/module-cache/_StringProcessing-1FL9YJ9FR6ZV0.swiftmodule",
+        "BUILD/module-cache/modules.timestamp",
+        "cpp/calculator.cpp",
+        "javascript/calculator.js",
+        "python/calculator.py",
+        "rust/calculator.rs",
+        "swift/calculator.swift",
+        "typescript/calculator.ts"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 140.104,
+      "combined_total_tokens": 114812,
+      "commands_by_thread": {
+        "019f6366-5692-7af0-8c98-9c1aaa45ce2b": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'sed -n \\\"1,240p\\\" SPEC.md; for f in python/calculator.py rust/calculator.rs cpp/calculator.cpp swift/calculator.swift javascript/calculator.js typescript/calculator.ts; do echo \\\"FILE:\"'$f\"; if test -f \"$f\"; then sed -n \"1,240p\" \"$f\"; else echo MISSING; fi; done'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'mkdir -p BUILD && rustc -O rust/calculator.rs -o BUILD/calculator-rust && g++ -std=c++17 -O2 cpp/calculator.cpp -o BUILD/calculator-cpp && swiftc -O swift/calculator.swift -o BUILD/calculator-swift'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'mkdir -p BUILD/module-cache && CLANG_MODULE_CACHE_PATH=BUILD/module-cache SWIFT_MODULECACHE_PATH=BUILD/module-cache swiftc -O swift/calculator.swift -o BUILD/calculator-swift'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.324,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 139.78,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f6366-5692-7af0-8c98-9c1aaa45ce2b": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-no-spark/legacy-calculator/cpp/calculator.cpp",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-no-spark/legacy-calculator/javascript/calculator.js",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-no-spark/legacy-calculator/python/calculator.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-no-spark/legacy-calculator/rust/calculator.rs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-no-spark/legacy-calculator/swift/calculator.swift",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-no-spark/legacy-calculator/typescript/calculator.ts"
+        ]
+      },
+      "final_message": "Implemented six independent calculator parsers:\n\n- `python/calculator.py`\n- `rust/calculator.rs`\n- `cpp/calculator.cpp`\n- `swift/calculator.swift`\n- `javascript/calculator.js`\n- `typescript/calculator.ts`\n\nVerification:\n\n- Rust, C++, and Swift compiled successfully.\n- Full acceptance: `rtk proxy python3 validate.py`\n- Result: `240/240`\n\nNo material residual risks identified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 6.809,
+            "ok": true,
+            "output": "240/240\n",
+            "returncode": 0,
+            "type": "command"
+          }
+        ],
+        "ok": true,
+        "passed": 1,
+        "score_pct": 100.0,
+        "total": 1
+      },
+      "item_counts_by_thread": {
+        "019f6366-5692-7af0-8c98-9c1aaa45ce2b": {
+          "agentMessage": 3,
+          "commandExecution": 4,
+          "fileChange": 1,
+          "reasoning": 6,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 6,
+        "configWarning": 1,
+        "item/agentMessage/delta": 189,
+        "item/commandExecution/outputDelta": 2,
+        "item/completed": 15,
+        "item/started": 15,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 6,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6366-5692-7af0-8c98-9c1aaa45ce2b",
+      "parent_total_tokens": 114812,
+      "parent_usage": {
+        "cachedInputTokens": 93696,
+        "inputTokens": 108331,
+        "outputTokens": 6481,
+        "reasoningOutputTokens": 667,
+        "totalTokens": 114812
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 4,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": false,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6366-5692-7af0-8c98-9c1aaa45ce2b": 5
+      },
+      "tool_output_chars_by_thread": {
+        "019f6366-5692-7af0-8c98-9c1aaa45ce2b": 2848
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-forced",
+      "case_id": "legacy-calculator",
+      "category": "legacy-cross-language-implementation",
+      "changed_paths": [
+        "cpp/calculator.cpp",
+        "javascript/calculator.js",
+        "python/calculator.py",
+        "rust/calculator.rs",
+        "swift/calculator.swift",
+        "typescript/calculator.ts"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f6368-9707-7172-801b-b08464d3a97f": true
+      },
+      "child_evidence_markers": {
+        "019f6368-9707-7172-801b-b08464d3a97f": [
+          "cpp/calculator.cpp",
+          "javascript/calculator.js",
+          "python/calculator.py",
+          "rust/calculator.rs",
+          "swift/calculator.swift",
+          "typescript/calculator.ts"
+        ]
+      },
+      "child_final_messages": {
+        "019f6368-9707-7172-801b-b08464d3a97f": "partition_ids: python, rust, cpp, swift, javascript, typescript\n\nchanged_paths:\n- /private/tmp/legacy-calculator/python/calculator.py\n- /private/tmp/legacy-calculator/rust/calculator.rs\n- /private/tmp/legacy-calculator/cpp/calculator.cpp\n- /private/tmp/legacy-calculator/swift/calculator.swift\n- /private/tmp/legacy-calculator/javascript/calculator.js\n- /private/tmp/legacy-calculator/typescript/calculator.ts\n\nacceptance: rtk proxy python3 validate.py\n\nblocker: Not run here (per instruction to avoid validation/test execution without explicit request)."
+      },
+      "child_io_ok": {
+        "019f6368-9707-7172-801b-b08464d3a97f": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6368-9707-7172-801b-b08464d3a97f": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {
+        "019f6368-9707-7172-801b-b08464d3a97f": "harness_frozen_config"
+      },
+      "child_roles": {
+        "019f6368-9707-7172-801b-b08464d3a97f": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f6368-9707-7172-801b-b08464d3a97f"
+      ],
+      "child_total_tokens": 301148,
+      "child_turn_errors": {
+        "019f6368-9707-7172-801b-b08464d3a97f": null
+      },
+      "child_turn_statuses": {
+        "019f6368-9707-7172-801b-b08464d3a97f": "completed"
+      },
+      "child_usage": {
+        "019f6368-9707-7172-801b-b08464d3a97f": {
+          "cachedInputTokens": 253952,
+          "inputTokens": 282320,
+          "outputTokens": 18828,
+          "reasoningOutputTokens": 8319,
+          "totalTokens": 301148
+        }
+      },
+      "collection_duration_seconds": 99.238,
+      "combined_total_tokens": 508947,
+      "commands_by_thread": {
+        "019f6368-9707-7172-801b-b08464d3a97f": [
+          "/bin/zsh -lc \"rtk sed -n '1,260p' rust/calculator.rs\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' javascript/calculator.js\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' python/calculator.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' cpp/calculator.cpp\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' SPEC.md\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' typescript/calculator.ts\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' swift/calculator.swift\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' validate.py\"",
+          "/bin/zsh -lc \"rtk rg --files | rg 'calculator\\\\.(cpp|py|rs|swift|js|ts)\"'$|SPEC'\"\\\\.md|validate\\\\.py'\"",
+          "/bin/zsh -lc 'rtk ls -la'",
+          "/bin/zsh -lc 'rtk mkdir -p python rust cpp swift javascript typescript'"
+        ],
+        "019f6368-9718-7541-8ad6-6ed795a62497": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' SPEC.md\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'while [ \"'! -s \"$1\" ]; do sleep 0.1; done; cat \"$1\"'\"' _ /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-capsule-y2baxgap/worker-result.txt\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' python/calculator.py; rtk proxy sed -n '1,240p' rust/calculator.rs; rtk proxy sed -n '1,180p' swift/calculator.swift\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '96,114p' swift/calculator.swift\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '145,170p' python/calculator.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' rust/calculator.rs\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '200,260p' rust/calculator.rs\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.322,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "python",
+            "markers": [
+              "python/calculator.py"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "rust",
+            "markers": [
+              "rust/calculator.rs"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "cpp",
+            "markers": [
+              "cpp/calculator.cpp"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "swift",
+            "markers": [
+              "swift/calculator.swift"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "javascript",
+            "markers": [
+              "javascript/calculator.js"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "typescript",
+            "markers": [
+              "typescript/calculator.ts"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 98.916,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f6368-9707-7172-801b-b08464d3a97f": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/python/calculator.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/cpp/calculator.cpp",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/javascript/calculator.js",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/typescript/calculator.ts",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/rust/calculator.rs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/swift/calculator.swift",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/typescript/calculator.ts",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/typescript/calculator.ts"
+        ],
+        "019f6368-9718-7541-8ad6-6ed795a62497": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/python/calculator.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/rust/calculator.rs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/swift/calculator.swift"
+        ]
+      },
+      "final_message": "Implemented independent calculator versions in:\n\n- `python/calculator.py`\n- `rust/calculator.rs`\n- `cpp/calculator.cpp`\n- `swift/calculator.swift`\n- `javascript/calculator.js`\n- `typescript/calculator.ts`\n\nValidation compiled all applicable implementations and exercised the full test suite:\n\n```text\nrtk proxy python3 validate.py\n240/240\n```\n\nNo material residual risks identified. `SPEC.md` and `validate.py` were not modified.",
+      "first_spawn_seconds": 0.007,
+      "forced_execution_strategy": "concurrent_file_capsule",
+      "forced_handoff_consumed": true,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": true,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 7.07,
+            "ok": true,
+            "output": "240/240\n",
+            "returncode": 0,
+            "type": "command"
+          }
+        ],
+        "ok": true,
+        "passed": 1,
+        "score_pct": 100.0,
+        "total": 1
+      },
+      "item_counts_by_thread": {
+        "019f6368-9707-7172-801b-b08464d3a97f": {
+          "agentMessage": 7,
+          "commandExecution": 11,
+          "fileChange": 8,
+          "reasoning": 14,
+          "userMessage": 1
+        },
+        "019f6368-9718-7541-8ad6-6ed795a62497": {
+          "agentMessage": 4,
+          "commandExecution": 10,
+          "fileChange": 1,
+          "reasoning": 10,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 24,
+        "configWarning": 1,
+        "item/agentMessage/delta": 224,
+        "item/commandExecution/outputDelta": 3,
+        "item/completed": 67,
+        "item/started": 67,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 2,
+        "thread/status/changed": 4,
+        "thread/tokenUsage/updated": 24,
+        "turn/completed": 2,
+        "turn/diff/updated": 22,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6368-9718-7541-8ad6-6ed795a62497",
+      "parent_total_tokens": 207799,
+      "parent_usage": {
+        "cachedInputTokens": 174336,
+        "inputTokens": 205385,
+        "outputTokens": 2414,
+        "reasoningOutputTokens": 696,
+        "totalTokens": 207799
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": false,
+      "parent_worker_overlap_paths": [
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/python/calculator.py",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/rust/calculator.rs",
+        "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-ivxmlqvu/legacy-calculator-trial-1-v8-spark-forced/legacy-calculator/swift/calculator.swift"
+      ],
+      "parent_worker_read_overlap_ok": false,
+      "parent_worker_read_overlap_paths": [
+        "python/calculator.py",
+        "rust/calculator.rs",
+        "swift/calculator.swift"
+      ],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f6368-9707-7172-801b-b08464d3a97f": [
+          "cpp",
+          "javascript",
+          "python",
+          "rust",
+          "swift",
+          "typescript"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "cpp": 1,
+        "javascript": 1,
+        "python": 1,
+        "rust": 1,
+        "swift": 1,
+        "typescript": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "forced",
+      "routing_ok": false,
+      "rtk_command_count": 21,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 0.007,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f6368-9707-7172-801b-b08464d3a97f": {
+          "agent_sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68",
+          "config_sha256": "bbf8264709bff09a67419c579cdef1afed1a6ed7873a6939257e7cc88809fc9e",
+          "effort": "medium",
+          "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": false,
+          "origin": "harness_thread",
+          "prompt": "partition_ids: python, rust, cpp, swift, javascript, typescript\nmode=edit\nrw=cpp/calculator.cpp,javascript/calculator.js,python/calculator.py,rust/calculator.rs,swift/calculator.swift,typescript/calculator.ts\nro=SPEC.md,validate.py\ndeny_write=SPEC.md,validate.py,all_except_rw\ntask=read_SPEC;implement_six_independent_calculators;no_eval,no_subprocess,no_external_packages\nkeep=cli,grammar,precedence,right_assoc_power,float64,error_channel,exit_status\nacceptance=rtk proxy python3 validate.py\nreturn=partition_ids,changed_paths,acceptance,blocker",
+          "role": "spark_worker"
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6368-9707-7172-801b-b08464d3a97f": 19,
+        "019f6368-9718-7541-8ad6-6ed795a62497": 11
+      },
+      "tool_output_chars_by_thread": {
+        "019f6368-9707-7172-801b-b08464d3a97f": 8589,
+        "019f6368-9718-7541-8ad6-6ed795a62497": 37017
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f6368-9707-7172-801b-b08464d3a97f"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-legacy-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": true
+}

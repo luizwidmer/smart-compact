@@ -87,6 +87,8 @@ V8_POLICY = ROOT / "benchmarks" / "policies" / "v8" / "SKILL.md"
 SPARK_AGENT = ROOT / ".codex" / "agents" / "spark-worker.toml"
 SPARK_MODEL = "gpt-5.3-codex-spark"
 SPARK_ROLE = "spark_worker"
+LEGACY_CALCULATOR_CASE = "legacy-calculator"
+LEGACY_RELAY_CASE = "legacy-relay-bench"
 ROUTING_MODES = {"none", "forced", "auto"}
 SPARK_AVAILABLE_INSTRUCTION = """
 spark.available=true
@@ -1158,6 +1160,67 @@ def forced_worker_prompt(case: dict[str, Any]) -> str:
     delegation = case["delegation"]
     partitions = delegation["expected_partitions"]
     partition_ids = [partition["id"] for partition in partitions]
+    if case["id"] == LEGACY_CALCULATOR_CASE:
+        if delegation["worker_io"] != "path_disjoint":
+            raise AppTaskError("legacy calculator forced Spark requires path-disjoint I/O")
+        expected_paths = sorted(
+            marker for partition in partitions for marker in partition["markers"]
+        )
+        calculator_paths = sorted(
+            (
+                "cpp/calculator.cpp",
+                "javascript/calculator.js",
+                "python/calculator.py",
+                "rust/calculator.rs",
+                "swift/calculator.swift",
+                "typescript/calculator.ts",
+            )
+        )
+        if expected_paths != calculator_paths:
+            raise AppTaskError(
+                "legacy calculator partitions must own exactly the six calculator files"
+            )
+        acceptance = "rtk proxy " + shlex.join(case["acceptance_command"])
+        return "\n".join(
+            (
+                f"partition_ids: {', '.join(partition_ids)}",
+                "mode=edit",
+                f"rw={','.join(expected_paths)}",
+                "ro=SPEC.md,validate.py",
+                "deny_write=SPEC.md,validate.py,all_except_rw",
+                "task=read_SPEC;implement_six_independent_calculators;no_eval,no_subprocess,no_external_packages",
+                "keep=cli,grammar,precedence,right_assoc_power,float64,error_channel,exit_status",
+                f"acceptance={acceptance}",
+                "return=partition_ids,changed_paths,acceptance,blocker",
+            )
+        )
+    if case["id"] == LEGACY_RELAY_CASE:
+        if delegation["worker_io"] != "path_disjoint":
+            raise AppTaskError("legacy Relay Bench forced Spark requires path-disjoint I/O")
+        expected_paths = sorted(
+            marker for partition in partitions for marker in partition["markers"]
+        )
+        relay_paths = sorted(
+            ("app/globals.css", "app/layout.tsx", "app/page.tsx")
+        )
+        if expected_paths != relay_paths:
+            raise AppTaskError(
+                "legacy Relay Bench partitions must own exactly the three app files"
+            )
+        acceptance = "rtk proxy " + shlex.join(case["acceptance_command"])
+        return "\n".join(
+            (
+                f"partition_ids: {', '.join(partition_ids)}",
+                "mode=edit",
+                f"rw={','.join(expected_paths)}",
+                "ro=SPEC.md,validate.py",
+                "deny_write=SPEC.md,validate.py,all_except_rw",
+                "task=read_SPEC;implement_relay_site;no_dependencies,no_routes,no_images",
+                "keep=copy,metrics,interactions,semantics,colors,responsive,reduced_motion",
+                f"acceptance={acceptance}",
+                "return=partition_ids,changed_paths,acceptance,blocker",
+            )
+        )
     if case["id"] != "monorepo-sdk-migration" or delegation["worker_io"] != "path_disjoint":
         raise AppTaskError("forced Spark efficacy is frozen to monorepo-sdk-migration")
     expected_paths = sorted(
@@ -1973,7 +2036,11 @@ def expected_result_keys(
 
 
 def publication_status(
-    results: list[dict[str, Any]], expected: set[tuple[str, int, str]], repetitions: int, jobs: int
+    results: list[dict[str, Any]],
+    expected: set[tuple[str, int, str]],
+    repetitions: int,
+    jobs: int,
+    external_contention: bool = False,
 ) -> dict[str, bool]:
     observed = [(row["case_id"], row["trial"], row["arm"]) for row in results]
     matrix = len(observed) == len(set(observed)) and set(observed) == expected
@@ -1996,7 +2063,7 @@ def publication_status(
     repeat_confirmed = repetitions >= 3
     quality = bool(exploratory_metrics and repeat_confirmed)
     tokens = bool(quality and usage)
-    latency = bool(tokens and jobs == 1)
+    latency = bool(tokens and jobs == 1 and not external_contention)
     return {
         "matrix_complete": matrix,
         "task_publishable": task,
@@ -2017,6 +2084,7 @@ def checkpoint_payload(
     execution_order: list[dict[str, Any]],
     repetitions: int,
     jobs: int,
+    external_contention: bool = False,
 ) -> dict[str, Any]:
     return {
         "schema_version": 3,
@@ -2025,7 +2093,7 @@ def checkpoint_payload(
         "arms": selected_arms,
         "repetitions": repetitions,
         "jobs": jobs,
-        "wall_time_contended": jobs > 1,
+        "wall_time_contended": jobs > 1 or external_contention,
         "execution_order": execution_order,
         "completed_arms": len(results),
         "results": results,
@@ -2061,6 +2129,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--arm", action="append", choices=tuple(ARM_SPECS), default=[])
     parser.add_argument("--repetitions", type=int, default=1)
     parser.add_argument("--jobs", type=int, default=3)
+    parser.add_argument(
+        "--external-contention",
+        action="store_true",
+        help="mark wall time contended by benchmark processes outside this runner",
+    )
     parser.add_argument("--seed", type=int, default=20260721)
     parser.add_argument("--model", default="gpt-5.6-luna")
     parser.add_argument("--effort", default="xhigh")
@@ -2178,12 +2251,19 @@ def main() -> int:
                             execution_order=execution_order,
                             repetitions=args.repetitions,
                             jobs=jobs_used,
+                            external_contention=args.external_contention,
                         ),
                     )
 
         results = sort_results(results, case_ids, selected_arms)
         comparisons = comparison_rows(results, selected_arms)
-        publication = publication_status(results, expected, args.repetitions, jobs_used)
+        publication = publication_status(
+            results,
+            expected,
+            args.repetitions,
+            jobs_used,
+            external_contention=args.external_contention,
+        )
         payload = {
             "schema_version": 3,
             "complete": publication["matrix_complete"],
@@ -2203,7 +2283,7 @@ def main() -> int:
             "effort": args.effort,
             "repetitions": args.repetitions,
             "jobs": jobs_used,
-            "wall_time_contended": jobs_used > 1,
+            "wall_time_contended": jobs_used > 1 or args.external_contention,
             "seed": args.seed,
             "execution_order": execution_order,
             "fixture_validation": fixture_validation,

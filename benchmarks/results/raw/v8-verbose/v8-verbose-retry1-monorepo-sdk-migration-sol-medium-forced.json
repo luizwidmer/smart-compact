@@ -1,0 +1,456 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "v8-spark-forced": {
+        "grade_passes": 1,
+        "median_child_tokens": 183490,
+        "median_combined_tokens": 309353,
+        "median_parent_tokens": 125863,
+        "median_peak_concurrency": 1,
+        "median_spawned_worker_count": 1,
+        "median_useful_worker_count": 1,
+        "median_useful_worker_rate": 1.0,
+        "median_worker_count": 1,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v8-spark-forced",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 125863,
+        "median_spawned_worker_count": 1,
+        "median_worker_count": 1,
+        "rank": 1,
+        "successes": 1
+      }
+    ]
+  },
+  "arm_metadata": {
+    "v8-spark-forced": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/experiments/v8-verbose/SKILL.md",
+      "policy_sha256": "ccf2cf696a3c6f8da2b26d66281d240212752c0b072a8f81ae2a6f3f8dde3880",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/benchmarks/experiments/v8-verbose/profile.config.toml",
+      "profile_sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717",
+      "routing_mode": "forced",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "v8-spark-forced"
+  ],
+  "cases_path": "/private/tmp/smart-compact-legacy-work/benchmarks/agentic-v8-confirmation.json",
+  "cases_sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {},
+  "comparisons": [],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "medium",
+  "execution_order": [
+    {
+      "arm": "v8-spark-forced",
+      "case_id": "monorepo-sdk-migration",
+      "index": 0,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "monorepo-sdk-migration",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 33.3
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T03:29:29Z",
+  "jobs": 1,
+  "model": "gpt-5.6-sol",
+  "publication_status": {
+    "candidate_all_pass": true,
+    "exploratory_metrics_publishable": true,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": true,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-forced",
+      "case_id": "monorepo-sdk-migration",
+      "category": "multi-package-code-migration",
+      "changed_paths": [
+        "migration_report.json",
+        "packages/a_create.py",
+        "packages/a_update.py",
+        "packages/b_create.py",
+        "packages/b_update.py",
+        "packages/c_delete.py",
+        "packages/c_lookup.py",
+        "packages/d_delete.py",
+        "packages/d_lookup.py",
+        "packages/e_bulk_create.py",
+        "packages/e_bulk_update.py",
+        "packages/f_bulk_archive.py",
+        "packages/f_bulk_publish.py",
+        "packages/g_audit.py",
+        "packages/g_stream.py",
+        "packages/h_audit.py",
+        "packages/h_stream.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": true
+      },
+      "child_evidence_markers": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": [
+          "packages/a_create.py",
+          "packages/a_update.py",
+          "packages/b_create.py",
+          "packages/b_update.py",
+          "packages/c_delete.py",
+          "packages/c_lookup.py",
+          "packages/d_delete.py",
+          "packages/d_lookup.py",
+          "packages/e_bulk_create.py",
+          "packages/e_bulk_update.py",
+          "packages/f_bulk_archive.py",
+          "packages/f_bulk_publish.py",
+          "packages/g_audit.py",
+          "packages/g_stream.py",
+          "packages/h_audit.py",
+          "packages/h_stream.py"
+        ]
+      },
+      "child_final_messages": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": "partition_ids: `packages-ab`, `packages-cd`, `packages-ef`, `packages-gh`\n\nchanged_paths:\n- [packages/a_create.py](./packages/a_create.py): switched from `client.send` to `client.request('POST', ...)`\n- [packages/a_update.py](./packages/a_update.py): switched to `client.request('PATCH', ...)`\n- [packages/b_create.py](./packages/b_create.py): switched to `client.request('POST', ...)`\n- [packages/b_update.py](./packages/b_update.py): switched to `client.request('PUT', ...)`\n- [packages/c_delete.py](./packages/c_delete.py): switched async delete to `client.request_async('DELETE', ...)`\n- [packages/c_lookup.py](./packages/c_lookup.py): switched async lookup to `client.request_async('GET', ...)`\n- [packages/d_delete.py](./packages/d_delete.py): switched async hard-delete payload call to `client.request_async('DELETE', ..., {'hard': hard})`\n- [packages/d_lookup.py](./packages/d_lookup.py): switched async lookup to `client.request_async('GET', ...)`\n- [packages/e_bulk_create.py](./packages/e_bulk_create.py): switched to `client.request_batch('POST', ...)`\n- [packages/e_bulk_update.py](./packages/e_bulk_update.py): switched to `client.request_batch('PATCH', ...)`\n- [packages/f_bulk_archive.py](./packages/f_bulk_archive.py): switched to `client.request_batch('DELETE', ...)`\n- [packages/f_bulk_publish.py](./packages/f_bulk_publish.py): switched to `client.request_batch('POST', ...)`\n- [packages/g_stream.py](./packages/g_stream.py): switched to `client.request_stream('POST', ...)`\n- [packages/h_stream.py](./packages/h_stream.py): switched to `client.request_stream('PUT', ...)`\n- [packages/g_audit.py](./packages/g_audit.py): switched to `client.request('POST', ..., headers={'X-Audit-Actor': actor})`\n- [packages/h_audit.py](./packages/h_audit.py): switched to `client.request('POST', ..., headers={'X-Audit-Actor': actor})`\n\nacceptance:\n- `compileall`: not run (I did not run validation commands)\n- `adapter_tests_from_ro(exclude=parent_report)`: not run (I did not run validation commands)\n\nblocker: none\n\nNext step:\n1) If you want, I can run `python -m compileall` on the package tree and execute the adapter test slice, or the full suite."
+      },
+      "child_io_ok": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": true
+      },
+      "child_missing_evidence_markers": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": "harness_frozen_config"
+      },
+      "child_roles": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2"
+      ],
+      "child_total_tokens": 183490,
+      "child_turn_errors": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": null
+      },
+      "child_turn_statuses": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": "completed"
+      },
+      "child_usage": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": {
+          "cachedInputTokens": 159104,
+          "inputTokens": 176050,
+          "outputTokens": 7440,
+          "reasoningOutputTokens": 4014,
+          "totalTokens": 183490
+        }
+      },
+      "collection_duration_seconds": 63.609,
+      "combined_total_tokens": 309353,
+      "commands_by_thread": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": [
+          "/bin/zsh -lc \"rtk sed -n '1,260p' src/sdk/client.py; rtk sed -n '1,320p' tests/test_sdk_migration.py; rtk for f in packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_delete.py packages/c_lookup.py packages/d_delete.py packages/d_lookup.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_archive.py packages/f_bulk_publish.py packages/g_audit.py packages/g_stream.py packages/h_audit.py packages/h_stream.py; do echo \\\"=== \"'$f\"; sed -n '\"'1,260p' \\\"\"'$f\"; done'",
+          "/bin/zsh -lc \"rtk bash -lc 'set -e\nsed -n \\\"1,320p\\\" src/sdk/client.py\nsed -n \\\"1,320p\\\" tests/test_sdk_migration.py\nfor f in packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_delete.py packages/c_lookup.py packages/d_delete.py packages/d_lookup.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_archive.py packages/f_bulk_publish.py packages/g_audit.py packages/g_stream.py packages/h_audit.py packages/h_stream.py; do echo \\\"=== \"'$f\"; sed -n \"1,260p\" \"$f\"; done'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,400p' tests/test_sdk_migration.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' src/sdk/client.py\"",
+          "/bin/zsh -lc 'rtk for f in packages/a_update.py packages/b_create.py packages/b_update.py packages/c_delete.py packages/c_lookup.py packages/d_delete.py packages/d_lookup.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_archive.py packages/f_bulk_publish.py packages/g_audit.py packages/g_stream.py packages/h_audit.py packages/h_stream.py; do echo \"=== $f\"; sed -n '\"'1,40p' \\\"\"'$f\"; done'",
+          "/bin/zsh -lc \"rtk bash -lc 'for f in packages/a_update.py packages/b_create.py packages/b_update.py packages/c_delete.py packages/c_lookup.py packages/d_delete.py packages/d_lookup.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_archive.py packages/f_bulk_publish.py packages/g_audit.py packages/g_stream.py packages/h_audit.py packages/h_stream.py; do echo \\\"=== \"'$f\"; sed -n \"1,40p\" \"$f\"; done'\"'\""
+        ],
+        "019f63d1-8fb7-7b13-94ef-f0d460cbd78d": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'while [ \"'! -s \"$1\" ]; do sleep 0.1; done; cat \"$1\"'\"' _ /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-capsule-kpkh0iit/worker-result.txt\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'if [ -f migration_report.json ]; then sed -n \\\"1,200p\\\" migration_report.json; fi; rg -n \\\"migration_report|migrated_adapters|shared_api|packages-ab|packages-cd|packages-ef|packages-gh\\\" tests . --glob \\\"\"'!packages/**\" --glob \"!.git/**\"'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,105p' tests/test_sdk_migration.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short -- packages migration_report.json src/sdk/client.py tests'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.319,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "packages-ab",
+            "markers": [
+              "packages/a_create.py",
+              "packages/a_update.py",
+              "packages/b_create.py",
+              "packages/b_update.py"
+            ],
+            "weight": 4
+          },
+          {
+            "allowed_replication": 1,
+            "id": "packages-cd",
+            "markers": [
+              "packages/c_lookup.py",
+              "packages/c_delete.py",
+              "packages/d_lookup.py",
+              "packages/d_delete.py"
+            ],
+            "weight": 4
+          },
+          {
+            "allowed_replication": 1,
+            "id": "packages-ef",
+            "markers": [
+              "packages/e_bulk_create.py",
+              "packages/e_bulk_update.py",
+              "packages/f_bulk_publish.py",
+              "packages/f_bulk_archive.py"
+            ],
+            "weight": 4
+          },
+          {
+            "allowed_replication": 1,
+            "id": "packages-gh",
+            "markers": [
+              "packages/g_stream.py",
+              "packages/g_audit.py",
+              "packages/h_stream.py",
+              "packages/h_audit.py"
+            ],
+            "weight": 4
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 63.289,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/a_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/a_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_archive.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_publish.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_stream.py"
+        ],
+        "019f63d1-8fb7-7b13-94ef-f0d460cbd78d": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/migration_report.json"
+        ]
+      },
+      "final_message": "Migrated all 16 adapters and added [migration_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-6a9bcpxe/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/migration_report.json).\n\nChanged paths:\n\n- `packages/{a,b}_{create,update}.py`\n- `packages/{c,d}_{lookup,delete}.py`\n- `packages/e_bulk_{create,update}.py`\n- `packages/f_bulk_{publish,archive}.py`\n- `packages/{g,h}_{stream,audit}.py`\n- `migration_report.json`\n\nVerification: `rtk proxy python3 -m unittest discover -s tests -v` \u2014 **6 tests passed, OK**.\n\nShared client and tests were unchanged. Residual risk: none identified by the full acceptance suite.",
+      "first_spawn_seconds": 0.005,
+      "forced_execution_strategy": "concurrent_file_capsule",
+      "forced_handoff_consumed": true,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": true,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.065,
+            "ok": true,
+            "output": "test_no_compatibility_send_methods (test_sdk_migration.MigrationTests.test_no_compatibility_send_methods) ... ok\ntest_packages_ab_sync_create_and_update (test_sdk_migration.MigrationTests.test_packages_ab_sync_create_and_update) ... ok\ntest_packages_cd_async_lookup_and_delete (test_sdk_migration.MigrationTests.test_packages_cd_async_lookup_and_delete) ... ok\ntest_packages_ef_batch_operations (test_sdk_migration.MigrationTests.test_packages_ef_batch_operations) ... ok\ntest_packages_gh_streaming_and_audit (test_sdk_migration.MigrationTests.test_packages_gh_streaming_and_audit) ... ok\ntest_report_is_complete (test_sdk_migration.MigrationTests.test_report_is_complete) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "request-family",
+            "key": "shared_api",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/sdk/client.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": {
+          "agentMessage": 7,
+          "commandExecution": 6,
+          "fileChange": 2,
+          "reasoning": 14,
+          "userMessage": 1
+        },
+        "019f63d1-8fb7-7b13-94ef-f0d460cbd78d": {
+          "agentMessage": 5,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 19,
+        "configWarning": 1,
+        "item/agentMessage/delta": 341,
+        "item/commandExecution/outputDelta": 1,
+        "item/completed": 50,
+        "item/started": 50,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 2,
+        "thread/status/changed": 4,
+        "thread/tokenUsage/updated": 19,
+        "turn/completed": 2,
+        "turn/diff/updated": 14,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f63d1-8fb7-7b13-94ef-f0d460cbd78d",
+      "parent_total_tokens": 125863,
+      "parent_usage": {
+        "cachedInputTokens": 104448,
+        "inputTokens": 124180,
+        "outputTokens": 1683,
+        "reasoningOutputTokens": 263,
+        "totalTokens": 125863
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": [
+          "packages-ab",
+          "packages-cd",
+          "packages-ef",
+          "packages-gh"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "packages-ab": 1,
+        "packages-cd": 1,
+        "packages-ef": 1,
+        "packages-gh": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "forced",
+      "routing_ok": true,
+      "rtk_command_count": 11,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 0.008,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": {
+          "agent_sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68",
+          "config_sha256": "bbf8264709bff09a67419c579cdef1afed1a6ed7873a6939257e7cc88809fc9e",
+          "effort": "medium",
+          "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": false,
+          "origin": "harness_thread",
+          "prompt": "partition_ids: packages-ab, packages-cd, packages-ef, packages-gh\nmode=edit\nrw=packages/a_create.py,packages/a_update.py,packages/b_create.py,packages/b_update.py,packages/c_delete.py,packages/c_lookup.py,packages/d_delete.py,packages/d_lookup.py,packages/e_bulk_create.py,packages/e_bulk_update.py,packages/f_bulk_archive.py,packages/f_bulk_publish.py,packages/g_audit.py,packages/g_stream.py,packages/h_audit.py,packages/h_stream.py\nro=src/sdk/client.py,tests/test_sdk_migration.py\ndeny_write=migration_report.json,src/sdk/client.py,tests/test_sdk_migration.py,all_except_rw\ntask=read_ro_as_spec;send_family->request_family;no_compat\nkeep=function_signature,client_method_signature,keyword_arguments,endpoint,payload,await,batch_order,stream_order,audit_actor\nacceptance=compileall;adapter_tests_from_ro(exclude=parent_report)\nreturn=partition_ids,changed_paths,acceptance,blocker",
+          "role": "spark_worker"
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": 8,
+        "019f63d1-8fb7-7b13-94ef-f0d460cbd78d": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2": 15514,
+        "019f63d1-8fb7-7b13-94ef-f0d460cbd78d": 8899
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f63d1-8fa3-7532-87bb-d0d0c25d90b2"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-legacy-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": true
+}

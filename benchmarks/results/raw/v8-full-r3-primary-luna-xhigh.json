@@ -1,0 +1,1596 @@
+{
+  "arms": [
+    "v8-no-spark",
+    "v8-spark-auto"
+  ],
+  "complete": false,
+  "completed_arms": 6,
+  "execution_order": [
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "permission-scope-regression",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "policy-bound-batch-update",
+      "index": 1,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "tenant-config-drift",
+      "index": 2,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "support-credit-adjudication",
+      "index": 3,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "support-credit-adjudication",
+      "index": 4,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "release-readiness",
+      "index": 5,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "multi-service-contract-rollout",
+      "index": 6,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "tenant-config-drift",
+      "index": 7,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "incident-triage",
+      "index": 8,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "multi-service-contract-rollout",
+      "index": 9,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "incident-triage",
+      "index": 10,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "release-readiness",
+      "index": 11,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "ci-matrix-root-cause",
+      "index": 12,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "offline-advisory-triage",
+      "index": 13,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "ci-matrix-root-cause",
+      "index": 14,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "policy-bound-batch-update",
+      "index": 15,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "permission-scope-regression",
+      "index": 16,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-auto",
+      "case_id": "offline-advisory-triage",
+      "index": 17,
+      "trial": 1
+    }
+  ],
+  "generated_at": "2026-07-15T02:26:21Z",
+  "jobs": 2,
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "release-readiness",
+      "category": "repository-maintenance",
+      "changed_paths": [
+        "CHANGELOG.md",
+        "docs/installation.md",
+        "plugin/manifest.json",
+        "pyproject.toml",
+        "src/acme/__init__.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 66.83,
+      "combined_total_tokens": 83181,
+      "commands_by_thread": {
+        "019f6397-400a-7161-b8fa-c966ee9c2e85": [
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!tests/**'\"' -g '\"'!*~'\"' | sort && rtk git status --short\"",
+          "/bin/zsh -lc \"rtk awk '{printf \\\"%s:%d:%s\\\\n\\\", FILENAME, FNR, \"'$0}'\"' pyproject.toml plugin/manifest.json src/acme/__init__.py CHANGELOG.md docs/installation.md\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk rg -n '2\\\\.4\\\\.0|api_version|2\\\\.3\\\\.' pyproject.toml plugin/manifest.json src/acme/__init__.py CHANGELOG.md docs/installation.md\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk git diff --check'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.328,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 66.502,
+      "execution_order_index": 5,
+      "file_changes_by_thread": {
+        "019f6397-400a-7161-b8fa-c966ee9c2e85": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/release-readiness-trial-1-v8-spark-auto/release-readiness/CHANGELOG.md",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/release-readiness-trial-1-v8-spark-auto/release-readiness/docs/installation.md",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/release-readiness-trial-1-v8-spark-auto/release-readiness/plugin/manifest.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/release-readiness-trial-1-v8-spark-auto/release-readiness/pyproject.toml",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/release-readiness-trial-1-v8-spark-auto/release-readiness/src/acme/__init__.py"
+        ]
+      },
+      "final_message": "Prepared release 2.4.0 across all five surfaces:\n\n- [CHANGELOG.md](.../CHANGELOG.md): added exact heading.\n- [docs/installation.md](.../docs/installation.md)\n- [plugin/manifest.json](.../plugin/manifest.json): preserved `api_version: v2`.\n- [pyproject.toml](.../pyproject.toml)\n- [src/acme/__init__.py](.../src/acme/__init__.py)\n\nExact test result: `Ran 2 tests in 0.000s` \u2014 `OK`.\n\nResidual risk: packaging/publishing was not exercised; no tests were changed.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.051,
+            "ok": true,
+            "output": "test_api_version_is_preserved (test_release.ReleaseTests.test_api_version_is_preserved) ... ok\ntest_versions_match_target (test_release.ReleaseTests.test_versions_match_target) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "CHANGELOG.md",
+            "type": "path_contains"
+          },
+          {
+            "ok": true,
+            "path": "docs/installation.md",
+            "type": "path_contains"
+          },
+          {
+            "actual": "v2",
+            "key": "api_version",
+            "ok": true,
+            "path": "plugin/manifest.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 4,
+        "score_pct": 100.0,
+        "total": 4
+      },
+      "item_counts_by_thread": {
+        "019f6397-400a-7161-b8fa-c966ee9c2e85": {
+          "agentMessage": 4,
+          "commandExecution": 6,
+          "fileChange": 1,
+          "reasoning": 6,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 6,
+        "configWarning": 1,
+        "item/agentMessage/delta": 274,
+        "item/completed": 18,
+        "item/started": 18,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 6,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6397-400a-7161-b8fa-c966ee9c2e85",
+      "parent_total_tokens": 83181,
+      "parent_usage": {
+        "cachedInputTokens": 65024,
+        "inputTokens": 79956,
+        "outputTokens": 3225,
+        "reasoningOutputTokens": 1602,
+        "totalTokens": 83181
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 6,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6397-400a-7161-b8fa-c966ee9c2e85": 7
+      },
+      "tool_output_chars_by_thread": {
+        "019f6397-400a-7161-b8fa-c966ee9c2e85": 1431
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "tenant-config-drift",
+      "category": "configuration-reconciliation",
+      "changed_paths": [
+        "drift_report.json",
+        "tenants/t01.json",
+        "tenants/t02.json",
+        "tenants/t03.json",
+        "tenants/t04.json",
+        "tenants/t05.json",
+        "tenants/t06.json",
+        "tenants/t07.json",
+        "tenants/t08.json",
+        "tenants/t09.json",
+        "tenants/t10.json",
+        "tenants/t11.json",
+        "tenants/t12.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": true
+      },
+      "child_evidence_markers": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": [
+          "tenants/t01.json",
+          "tenants/t02.json",
+          "tenants/t03.json",
+          "tenants/t04.json",
+          "tenants/t05.json",
+          "tenants/t06.json",
+          "tenants/t07.json",
+          "tenants/t08.json",
+          "tenants/t09.json",
+          "tenants/t10.json",
+          "tenants/t11.json",
+          "tenants/t12.json"
+        ]
+      },
+      "child_final_messages": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": "outcome: Reconciled all assigned tenant configs to `policy.json` without changing tenant identity or scope fields (`tenant_id`, `plan`, `region`) and without broadening authentication or retention behavior. Security-sensitive fields were reduced/normalized to policy limits where they were looser.\n\nchanged_paths:\n- `tenants/t01.json`\n- `tenants/t02.json`\n- `tenants/t03.json`\n- `tenants/t04.json`\n- `tenants/t05.json`\n- `tenants/t06.json`\n- `tenants/t07.json`\n- `tenants/t08.json`\n- `tenants/t09.json`\n- `tenants/t10.json`\n- `tenants/t11.json`\n- `tenants/t12.json`\n\ndecisive_verification:\n- Applied patches to all 12 listed files and only those fields in each (`mfa`, `session_minutes`, `retention_days`, `audit_log`) were changed.\n- The target partition set used: `tenants-01-03`, `tenants-04-06`, `tenants-07-09`, `tenants-10-12` mapped exactly to `tenants/t01.json` through `tenants/t12.json` excluding all others.\n\nblockers: None.\n\nmaterial_residual_risk:\n- Configs are aligned to policy values but I did not run validation logic or checks (per constraints), so acceptance depends on parent\u2019s run.\n- If `policy.json` is treated as immutable and authoritative, risk is low; if policy interpretation requires only tightening (not exact normalization) in future runs, a policy change could require small follow-up adjustments."
+      },
+      "child_io_ok": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f6396-1a22-7510-a7ca-6527f2929d9d"
+      ],
+      "child_total_tokens": 121662,
+      "child_turn_errors": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": null
+      },
+      "child_turn_statuses": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": "completed"
+      },
+      "child_usage": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": {
+          "cachedInputTokens": 101888,
+          "inputTokens": 116211,
+          "outputTokens": 5451,
+          "reasoningOutputTokens": 2707,
+          "totalTokens": 121662
+        }
+      },
+      "collection_duration_seconds": 79.09,
+      "combined_total_tokens": 295509,
+      "commands_by_thread": {
+        "019f6395-b252-7400-8290-4a47e83907ea": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' policy.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,280p' validate.py\"",
+          "/bin/zsh -lc 'rtk proxy rg --files'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ],
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": [
+          "/bin/zsh -lc 'rtk rg --files'",
+          "/bin/zsh -lc \"rtk python - <<'PY'\nfrom pathlib import Path\nfiles = ['policy.json','tenants/t01.json','tenants/t02.json','tenants/t03.json','tenants/t04.json','tenants/t05.json','tenants/t06.json','tenants/t07.json','tenants/t08.json','tenants/t10.json','tenants/t11.json','tenants/t12.json']\nfor f in files:\n    print(f'=== {f} ===')\n    print(Path(f).read_text())\nPY\"",
+          "/bin/zsh -lc \"rtk sh -lc 'for f in policy.json tenants/t01.json tenants/t02.json tenants/t03.json tenants/t04.json tenants/t05.json tenants/t06.json tenants/t07.json tenants/t08.json tenants/t10.json tenants/t11.json tenants/t12.json tenants/t10.json tenants/t08.json; do :; done'\"",
+          "/bin/zsh -lc \"rtk sh -lc 'for f in policy.json tenants/t01.json tenants/t02.json tenants/t03.json tenants/t04.json tenants/t05.json tenants/t06.json tenants/t07.json tenants/t08.json tenants/t09.json tenants/t10.json tenants/t11.json tenants/t12.json; do echo \\\"=== \"'$f ===\"; sed -n \"1,220p\" \"$f\"; done'\"'\""
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.333,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "tenants-01-03",
+            "markers": [
+              "tenants/t01.json",
+              "tenants/t02.json",
+              "tenants/t03.json"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tenants-04-06",
+            "markers": [
+              "tenants/t04.json",
+              "tenants/t05.json",
+              "tenants/t06.json"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tenants-07-09",
+            "markers": [
+              "tenants/t07.json",
+              "tenants/t08.json",
+              "tenants/t09.json"
+            ],
+            "weight": 3
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tenants-10-12",
+            "markers": [
+              "tenants/t10.json",
+              "tenants/t11.json",
+              "tenants/t12.json"
+            ],
+            "weight": 3
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 78.757,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f6395-b252-7400-8290-4a47e83907ea": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/drift_report.json"
+        ],
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t01.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t02.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t03.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t04.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t05.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t06.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t07.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t08.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t09.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t10.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t11.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/tenant-config-drift-trial-1-v8-spark-auto/tenant-config-drift/tenants/t12.json"
+        ]
+      },
+      "final_message": "Reconciled all twelve tenant configs to `policy.json`, preserving tenant IDs, plans, and regions. Authentication and retention limits were not broadened.\n\nChanged paths: `tenants/t01.json` through `tenants/t12.json`, plus `drift_report.json`.\n\nAcceptance passed:\n\n```text\ntenant drift: 12 identities, configs, controls, and report valid\n```",
+      "first_spawn_seconds": 26.592,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.034,
+            "ok": true,
+            "output": "tenant drift: 12 identities, configs, controls, and report valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": [
+              "t01",
+              "t02",
+              "t03",
+              "t04",
+              "t05",
+              "t06",
+              "t07",
+              "t08",
+              "t09",
+              "t10",
+              "t11",
+              "t12"
+            ],
+            "key": "corrected_tenants",
+            "ok": true,
+            "path": "drift_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6395-b252-7400-8290-4a47e83907ea": {
+          "agentMessage": 3,
+          "collabAgentToolCall": 3,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 10,
+          "userMessage": 1
+        },
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": {
+          "agentMessage": 4,
+          "commandExecution": 4,
+          "fileChange": 3,
+          "reasoning": 10,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 18,
+        "configWarning": 1,
+        "item/agentMessage/delta": 171,
+        "item/completed": 45,
+        "item/started": 45,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 6,
+        "thread/tokenUsage/updated": 18,
+        "turn/completed": 2,
+        "turn/diff/updated": 13,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6395-b252-7400-8290-4a47e83907ea",
+      "parent_total_tokens": 173847,
+      "parent_usage": {
+        "cachedInputTokens": 144896,
+        "inputTokens": 170825,
+        "outputTokens": 3022,
+        "reasoningOutputTokens": 1474,
+        "totalTokens": 173847
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": [
+          "tenants-01-03",
+          "tenants-04-06",
+          "tenants-07-09",
+          "tenants-10-12"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": false,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "tenants-01-03": 1,
+        "tenants-04-06": 1,
+        "tenants-07-09": 1,
+        "tenants-10-12": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 33.765,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": {
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "partition_ids: tenants-01-03, tenants-04-06, tenants-07-09, tenants-10-12\nexclusive paths: only the tenant config files belonging to those four assigned partition IDs; do not edit policy.json, validate.py, drift_report.json, or any other path\nmechanical task: inspect the immutable policy.json and the twelve assigned tenant configurations, reconcile each config to policy.json while preserving every tenant ID, plan, and region; do not broaden authentication or retention limits. Enumerate the exact config paths yourself after delegation, then make only the necessary config edits.\nresult contract: return outcome, changed_paths, decisive_verification, blockers, and material_residual_risk. Do not create or edit reports. The parent alone writes drift_report.json in assignment-contract order and runs acceptance. You are not alone in the codebase; preserve unrelated edits and do not revert others.\n\nComplete execution constraint: every shell command must start with literal rtk; use rtk proxy when raw output is required and retain rtk in acceptance commands. The task already starts in its exact target working directory: never run cd or chdir in a shell command, and pass any directory through the tool workdir field. If the shell cannot launch rtk itself, stop and report that wrapper failure. If a wrapped command fails, diagnose or retry only with another rtk-prefixed command; never use raw shell or an absolute binary path."
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6395-b252-7400-8290-4a47e83907ea": 9,
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": 7
+      },
+      "tool_output_chars_by_thread": {
+        "019f6395-b252-7400-8290-4a47e83907ea": 2609,
+        "019f6396-1a22-7510-a7ca-6527f2929d9d": 3155
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f6396-1a22-7510-a7ca-6527f2929d9d"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "support-credit-adjudication",
+      "category": "backoffice-policy-workflow",
+      "changed_paths": [
+        "adjudicate.py",
+        "out/audit.md",
+        "out/credits.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 119.122,
+      "combined_total_tokens": 225262,
+      "commands_by_thread": {
+        "019f6396-e9cf-7603-9791-5041400be962": [
+          "/bin/zsh -lc 'rtk rg --files'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t04.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t03.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' credit_policy.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t01.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t06.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t08.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t02.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t09.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t05.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t07.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' tickets/t10.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' validate.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 adjudicate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.329,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 118.793,
+      "execution_order_index": 4,
+      "file_changes_by_thread": {
+        "019f6396-e9cf-7603-9791-5041400be962": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-no-spark/support-credit-adjudication/adjudicate.py"
+        ]
+      },
+      "final_message": "Completed local adjudication; `spark_worker` was unavailable.\n\nChanged paths:\n\n- [adjudicate.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-no-spark/support-credit-adjudication/adjudicate.py)\n- [out/credits.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-no-spark/support-credit-adjudication/out/credits.json)\n- [out/audit.md](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-no-spark/support-credit-adjudication/out/audit.md)\n\nAcceptance:\n\n- `rtk proxy python3 adjudicate.py` \u2014 passed, exit 0.\n- `rtk proxy python3 validate.py` \u2014 passed, exit 0: `support credits: exactly 10 unique decisions valid`\n\nSix tickets awarded, totaling 115 credits.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.037,
+            "ok": true,
+            "output": "",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.022,
+            "ok": true,
+            "output": "support credits: exactly 10 unique decisions valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 115,
+            "key": "total_credit",
+            "ok": true,
+            "path": "out/credits.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": 6,
+            "key": "awarded_count",
+            "ok": true,
+            "path": "out/credits.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "out/audit.md",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 5,
+        "score_pct": 100.0,
+        "total": 5
+      },
+      "item_counts_by_thread": {
+        "019f6396-e9cf-7603-9791-5041400be962": {
+          "agentMessage": 5,
+          "commandExecution": 16,
+          "fileChange": 1,
+          "reasoning": 13,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 12,
+        "configWarning": 1,
+        "item/agentMessage/delta": 492,
+        "item/completed": 36,
+        "item/started": 38,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 12,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6396-e9cf-7603-9791-5041400be962",
+      "parent_total_tokens": 225262,
+      "parent_usage": {
+        "cachedInputTokens": 187392,
+        "inputTokens": 219438,
+        "outputTokens": 5824,
+        "reasoningOutputTokens": 2932,
+        "totalTokens": 225262
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 16,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6396-e9cf-7603-9791-5041400be962": 17
+      },
+      "tool_output_chars_by_thread": {
+        "019f6396-e9cf-7603-9791-5041400be962": 2765
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "support-credit-adjudication",
+      "category": "backoffice-policy-workflow",
+      "changed_paths": [
+        "adjudicate.py",
+        "out/audit.md",
+        "out/credits.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": true
+      },
+      "child_evidence_markers": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": [
+          "tickets/t01.json",
+          "tickets/t02.json",
+          "tickets/t03.json",
+          "tickets/t04.json",
+          "tickets/t05.json",
+          "tickets/t06.json",
+          "tickets/t07.json",
+          "tickets/t08.json",
+          "tickets/t09.json",
+          "tickets/t10.json"
+        ]
+      },
+      "child_final_messages": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": "Here are the adjudication findings from **policy+tickets only** for the assigned partitions.\n\n| Ticket | Partition | Eligibility facts | Proposed credit | Reason | Source provenance |\n|---|---|---|---:|---|---|\n| t01 | tickets-01-02 | `category=outage`, `plan=standard`, `minutes=75`, `account_active=true`, `evidence_verified=true` | 10 | Meets minimum outage threshold for standard (`75 >= 60`) | [`tickets/t01.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t01.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t02 | tickets-01-02 | `category=outage`, `plan=premium`, `minutes=130`, `account_active=true`, `evidence_verified=true` | 20 | Meets minimum outage threshold for premium (`130 >= 120`) | [`tickets/t02.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t02.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t03 | tickets-03-04 | `category=duplicate_billing`, `overcharge=18`, `account_active=true`, `evidence_verified=true` | 18 | Duplicate billing credit is capped by 50, so `min(18,50)=18` | [`tickets/t03.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t03.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t04 | tickets-03-04 | `category=outage`, `plan=standard`, `minutes=45`, `account_active=true`, `evidence_verified=true` | 0 | Standard outage minutes below threshold (`45 < 60`) | [`tickets/t04.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t04.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t05 | tickets-05-06 | `category=duplicate_billing`, `overcharge=75`, `account_active=true`, `evidence_verified=true` | 50 | Duplicate billing credit capped at 50 (`min(75,50)=50`) | [`tickets/t05.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t05.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t06 | tickets-05-06 | `category=user_error`, `account_active=true`, `evidence_verified=true` | 0 | Policy has no rule for `user_error` | [`tickets/t06.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t06.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t07 | tickets-07-08 | `category=outage`, `plan=premium`, `minutes=90`, `account_active=true`, `evidence_verified=true` | 0 | Premium outage threshold not met (`90 < 120`) | [`tickets/t07.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t07.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t08 | tickets-07-08 | `category=duplicate_billing`, `overcharge=12`, `account_active=true`, `evidence_verified=false` | 0* (blocker) | Policy-based amount would be 12, but `evidence_verified=false` prevents adjudication under eligibility gate | [`tickets/t08.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t08.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t09 | tickets-09-10 | `category=outage`, `plan=premium`, `minutes=150`, `account_active=false`, `evidence_verified=true` | 0* (blocker) | Policy amount would be 20, but `account_active=false` blocks eligibility | [`tickets/t09.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t09.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n| t10 | tickets-09-10 | `category=duplicate_billing`, `overcharge=7`, `account_active=true`, `evidence_verified=true` | 7 | Duplicate billing; below cap so full overcharge amount credited | [`tickets/t10.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t10.json), [`credit_policy.json`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json) |\n\nBlockers / ambiguity:\n1. `t06`: unsupported category (`user_error`) has no policy rule, therefore unresolved credit under this policy object.\n2. `t08`: `evidence_verified=false` prevents confident adjudication unless a fallback policy interpretation allows provisional credits.\n3. `t09`: `account_active=false` blocks adjudication unless inactive accounts are still allowed to receive credits.\n\nMaterial residual risk:\n- **Policy incompleteness risk**: The policy JSON defines only credit amounts/caps and no explicit global eligibility predicates; if strict interpretation excludes all non-credit fields, blocker handling for `t08`/`t09` may differ.\n- **Classification coverage gap**: `user_error` cases are not defined and could be handled by external rules outside this file."
+      },
+      "child_io_ok": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f6396-42ae-7921-a706-90c6d39d4e3a"
+      ],
+      "child_total_tokens": 63959,
+      "child_turn_errors": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": null
+      },
+      "child_turn_statuses": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": "completed"
+      },
+      "child_usage": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": {
+          "cachedInputTokens": 44544,
+          "inputTokens": 56879,
+          "outputTokens": 7080,
+          "reasoningOutputTokens": 2336,
+          "totalTokens": 63959
+        }
+      },
+      "collection_duration_seconds": 97.174,
+      "combined_total_tokens": 283147,
+      "commands_by_thread": {
+        "019f6395-c18d-7b72-8e75-548e033c2b01": [
+          "/bin/zsh -lc 'rtk proxy rg --files'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' credit_policy.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' tickets/t01.json tickets/t02.json tickets/t03.json tickets/t04.json tickets/t05.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' validate.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' tickets/t06.json tickets/t07.json tickets/t08.json tickets/t09.json tickets/t10.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 adjudicate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' out/audit.md\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' out/credits.json\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ],
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": [
+          "/bin/zsh -lc 'rtk ls /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets-03-04'",
+          "/bin/zsh -lc 'rtk ls /var/folders/k6/3htkbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets-01-02'",
+          "/bin/zsh -lc 'rtk ls /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets-07-08'",
+          "/bin/zsh -lc 'rtk ls /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets-05-06'",
+          "/bin/zsh -lc 'rtk ls /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets-09-10'",
+          "/bin/zsh -lc 'rtk ls /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t01.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t02.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t04.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t03.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t07.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t05.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t08.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t09.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t06.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets/t10.json'",
+          "/bin/zsh -lc 'rtk cat /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.328,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "tickets-01-02",
+            "markers": [
+              "tickets/t01.json",
+              "tickets/t02.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tickets-03-04",
+            "markers": [
+              "tickets/t03.json",
+              "tickets/t04.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tickets-05-06",
+            "markers": [
+              "tickets/t05.json",
+              "tickets/t06.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tickets-07-08",
+            "markers": [
+              "tickets/t07.json",
+              "tickets/t08.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "tickets-09-10",
+            "markers": [
+              "tickets/t09.json",
+              "tickets/t10.json"
+            ],
+            "weight": 2
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 96.846,
+      "execution_order_index": 3,
+      "file_changes_by_thread": {
+        "019f6395-c18d-7b72-8e75-548e033c2b01": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/adjudicate.py"
+        ]
+      },
+      "final_message": "Implemented and recomputed all ten tickets.\n\nChanged paths:\n\n- [adjudicate.py](.../adjudicate.py)\n- [out/credits.json](.../out/credits.json)\n- [out/audit.md](.../out/audit.md)\n\nAcceptance results:\n\n- `rtk proxy python3 adjudicate.py` \u2014 passed\n- `rtk proxy python3 validate.py` \u2014 `support credits: exactly 10 unique decisions valid`\n\nTotal: 6 awarded tickets, 115 credits.",
+      "first_spawn_seconds": 33.063,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.031,
+            "ok": true,
+            "output": "",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.02,
+            "ok": true,
+            "output": "support credits: exactly 10 unique decisions valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 115,
+            "key": "total_credit",
+            "ok": true,
+            "path": "out/credits.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": 6,
+            "key": "awarded_count",
+            "ok": true,
+            "path": "out/credits.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "out/audit.md",
+            "type": "path_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 5,
+        "score_pct": 100.0,
+        "total": 5
+      },
+      "item_counts_by_thread": {
+        "019f6395-c18d-7b72-8e75-548e033c2b01": {
+          "agentMessage": 5,
+          "collabAgentToolCall": 2,
+          "commandExecution": 10,
+          "fileChange": 1,
+          "reasoning": 12,
+          "userMessage": 1
+        },
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": {
+          "agentMessage": 3,
+          "commandExecution": 17,
+          "reasoning": 5,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 16,
+        "configWarning": 1,
+        "item/agentMessage/delta": 293,
+        "item/completed": 57,
+        "item/started": 57,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 16,
+        "turn/completed": 2,
+        "turn/diff/updated": 6,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6395-c18d-7b72-8e75-548e033c2b01",
+      "parent_total_tokens": 219188,
+      "parent_usage": {
+        "cachedInputTokens": 180224,
+        "inputTokens": 214900,
+        "outputTokens": 4288,
+        "reasoningOutputTokens": 1349,
+        "totalTokens": 219188
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": false,
+      "parent_worker_read_overlap_paths": [
+        "tickets/t01.json",
+        "tickets/t02.json",
+        "tickets/t03.json",
+        "tickets/t04.json",
+        "tickets/t05.json",
+        "tickets/t06.json",
+        "tickets/t07.json",
+        "tickets/t08.json",
+        "tickets/t09.json",
+        "tickets/t10.json"
+      ],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": [
+          "tickets-01-02",
+          "tickets-03-04",
+          "tickets-05-06",
+          "tickets-07-08",
+          "tickets-09-10"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": false,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "tickets-01-02": 1,
+        "tickets-03-04": 1,
+        "tickets-05-06": 1,
+        "tickets-07-08": 1,
+        "tickets-09-10": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 27,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 34.14,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": {
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "partition_ids: tickets-01-02, tickets-03-04, tickets-05-06, tickets-07-08, tickets-09-10\nexclusive paths: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/tickets, /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/support-credit-adjudication-trial-1-v8-spark-auto/support-credit-adjudication/credit_policy.json (read-only; do not edit any files)\nmechanical task: inspect the immutable policy and only the five assigned nonoverlapping ticket partitions covering all ten synthetic support tickets. Determine each ticket's eligibility facts, proposed credit under the policy, concise reason, and source provenance. Do not implement adjudicate.py or write outputs. Return all ten decisions, identifying every ticket ID and partition, and flag any ambiguity or blocker.\nresult contract: return ticket ID, eligibility facts, proposed credit, reason, and source provenance for each ticket, plus blockers and material residual risk.\nComplete shell constraint: every shell command must start with literal rtk; use rtk proxy when raw output is required and retain rtk in acceptance commands. The task already starts in the exact target working directory; never run cd or chdir in a shell command, and pass any directory through the tool workdir field. If the shell cannot launch rtk itself, stop and report that wrapper failure. If a wrapped command fails, diagnose or retry only with another rtk-prefixed command; never use raw shell or an absolute binary path."
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6395-c18d-7b72-8e75-548e033c2b01": 13,
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": 17
+      },
+      "tool_output_chars_by_thread": {
+        "019f6395-c18d-7b72-8e75-548e033c2b01": 4227,
+        "019f6396-42ae-7921-a706-90c6d39d4e3a": 2426
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f6396-42ae-7921-a706-90c6d39d4e3a"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "permission-scope-regression",
+      "category": "sequential-security-control",
+      "changed_paths": [
+        "src/permissions.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 81.81,
+      "combined_total_tokens": 67883,
+      "commands_by_thread": {
+        "019f6394-71e8-7882-bee5-e9150d91a4ed": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' src/permissions.py\"",
+          "/bin/zsh -lc 'rtk proxy rg -n \"allows|scope|wildcard|grant\" tests src'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.326,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 81.484,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6394-71e8-7882-bee5-e9150d91a4ed": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/permission-scope-regression-trial-1-v8-spark-auto/permission-scope-regression/src/permissions.py"
+        ]
+      },
+      "final_message": "Fixed `src/permissions.py`.\n\nVerification: `rtk proxy python3 -m unittest discover -s tests -v` \u2014 3 tests ran, all passed (`OK`).\n\nResidual risk: malformed or untested scope strings remain outside coverage; tests were not modified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.053,
+            "ok": true,
+            "output": "test_descendant_wildcard (test_permissions.PermissionTests.test_descendant_wildcard) ... ok\ntest_exact_scope (test_permissions.PermissionTests.test_exact_scope) ... ok\ntest_global_wildcard_is_not_supported (test_permissions.PermissionTests.test_global_wildcard_is_not_supported) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "ok": true,
+            "path": "src/permissions.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6394-71e8-7882-bee5-e9150d91a4ed": {
+          "agentMessage": 3,
+          "commandExecution": 3,
+          "fileChange": 1,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 5,
+        "configWarning": 1,
+        "item/agentMessage/delta": 120,
+        "item/completed": 17,
+        "item/started": 17,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 5,
+        "turn/completed": 1,
+        "turn/diff/updated": 4,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6394-71e8-7882-bee5-e9150d91a4ed",
+      "parent_total_tokens": 67883,
+      "parent_usage": {
+        "cachedInputTokens": 58112,
+        "inputTokens": 64222,
+        "outputTokens": 3661,
+        "reasoningOutputTokens": 2866,
+        "totalTokens": 67883
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 3,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6394-71e8-7882-bee5-e9150d91a4ed": 4
+      },
+      "tool_output_chars_by_thread": {
+        "019f6394-71e8-7882-bee5-e9150d91a4ed": 1672
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-auto",
+      "case_id": "policy-bound-batch-update",
+      "category": "stateful-policy-workflow",
+      "changed_paths": [
+        "apply_batch.py",
+        "out/accounts.json",
+        "out/audit.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 85.669,
+      "combined_total_tokens": 122914,
+      "commands_by_thread": {
+        "019f6394-71e8-7102-9544-6411f0f8fb36": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!out/**'\"' -g '\"'!__pycache__/**'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' policy.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' accounts.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' requests.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' validate.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' tests/test_batch_outputs.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 apply_batch.py'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' out/accounts.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' out/audit.json\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.322,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 85.347,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f6394-71e8-7102-9544-6411f0f8fb36": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/policy-bound-batch-update-trial-1-v8-spark-auto/policy-bound-batch-update/apply_batch.py"
+        ]
+      },
+      "final_message": "Implemented and validated.\n\nChanged paths:\n\n- [apply_batch.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/policy-bound-batch-update-trial-1-v8-spark-auto/policy-bound-batch-update/apply_batch.py>)\n- [out/accounts.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/policy-bound-batch-update-trial-1-v8-spark-auto/policy-bound-batch-update/out/accounts.json>)\n- [out/audit.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-i4v2wboq/policy-bound-batch-update-trial-1-v8-spark-auto/policy-bound-batch-update/out/audit.json>)\n\nFinal seats: `acme=5`, `beacon=10`, `cedar=2`.\n\nAudit: `approved=3`, `rejected=3`; reasons in order: `applied`, `plan_limit`, `applied`, `account_not_active`, `applied`, `plan_limit`.\n\nExact command results:\n\n- `rtk proxy python3 apply_batch.py` \u2014 exit `0`\n- `rtk proxy python3 -m unittest discover -s tests -v` \u2014 `Ran 1 test ... OK`\n- `rtk proxy python3 validate.py` \u2014 `policy batch: exact ordered replay and mutation probe passed`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.035,
+            "ok": true,
+            "output": "",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.036,
+            "ok": true,
+            "output": "test_final_state_and_audit_summary (test_batch_outputs.BatchOutputTests.test_final_state_and_audit_summary) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "duration_seconds": 0.044,
+            "ok": true,
+            "output": "policy batch: exact ordered replay and mutation probe passed\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "approved",
+            "ok": true,
+            "path": "out/audit.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": 3,
+            "key": "rejected",
+            "ok": true,
+            "path": "out/audit.json",
+            "type": "json_equals"
+          },
+          {
+            "actual": {
+              "acme": {
+                "plan": "basic",
+                "seats": 5,
+                "state": "active"
+              },
+              "beacon": {
+                "plan": "pro",
+                "seats": 10,
+                "state": "active"
+              },
+              "cedar": {
+                "plan": "basic",
+                "seats": 2,
+                "state": "suspended"
+              }
+            },
+            "key": "accounts",
+            "ok": true,
+            "path": "out/accounts.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 6,
+        "score_pct": 100.0,
+        "total": 6
+      },
+      "item_counts_by_thread": {
+        "019f6394-71e8-7102-9544-6411f0f8fb36": {
+          "agentMessage": 5,
+          "commandExecution": 12,
+          "fileChange": 1,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 531,
+        "item/completed": 27,
+        "item/started": 27,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6394-71e8-7102-9544-6411f0f8fb36",
+      "parent_total_tokens": 122914,
+      "parent_usage": {
+        "cachedInputTokens": 99328,
+        "inputTokens": 118761,
+        "outputTokens": 4153,
+        "reasoningOutputTokens": 1765,
+        "totalTokens": 122914
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": true,
+      "rtk_command_count": 12,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6394-71e8-7102-9544-6411f0f8fb36": 13
+      },
+      "tool_output_chars_by_thread": {
+        "019f6394-71e8-7102-9544-6411f0f8fb36": 6769
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "schema_version": 3,
+  "wall_time_contended": true
+}

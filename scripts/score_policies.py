@@ -65,7 +65,7 @@ def projected_calls(text: str, baseline_calls: int = DEFAULT_TRACE_CALLS) -> int
 def safety_score(text: str) -> tuple[int, list[str]]:
     lower = text.lower()
     checks = {
-        "exact literals": "preserve" in lower and "numbers" in lower and "negation" in lower,
+        "exact literals": "preserve" in lower and "number" in lower and "negation" in lower,
         "security escape": "security" in lower,
         "destructive escape": "destructive" in lower,
         "ambiguity escape": "ambiguous" in lower,

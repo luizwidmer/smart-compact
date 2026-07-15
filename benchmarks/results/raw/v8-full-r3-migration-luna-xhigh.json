@@ -1,0 +1,1598 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "standard-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 248170,
+        "median_parent_tokens": 248170,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v6-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 561434,
+        "median_parent_tokens": 561434,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v8-no-spark": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 203151,
+        "median_parent_tokens": 203151,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      },
+      "v8-spark-forced": {
+        "grade_passes": 1,
+        "median_child_tokens": 520296,
+        "median_combined_tokens": 630673,
+        "median_parent_tokens": 110377,
+        "median_peak_concurrency": 1,
+        "median_spawned_worker_count": 1,
+        "median_useful_worker_count": 1,
+        "median_useful_worker_rate": 1.0,
+        "median_worker_count": 1,
+        "routing_passes": 1,
+        "runs": 1,
+        "successes": 1,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v8-spark-forced",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 110377,
+        "median_spawned_worker_count": 1,
+        "median_worker_count": 1,
+        "rank": 1,
+        "successes": 1
+      },
+      {
+        "arm": "v8-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 203151,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 2,
+        "successes": 1
+      },
+      {
+        "arm": "standard-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 248170,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 3,
+        "successes": 1
+      },
+      {
+        "arm": "v6-no-spark",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 561434,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 4,
+        "successes": 1
+      }
+    ]
+  },
+  "arm_metadata": {
+    "standard-no-spark": {
+      "multi_agent": false,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": null,
+      "profile_sha256": null,
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v6-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v6/SKILL.md",
+      "policy_sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/benchmarks/profiles/v6.config.toml",
+      "profile_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+      "routing_mode": "none",
+      "skill_input": true,
+      "spark_enabled": false
+    },
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v8-spark-forced": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-legacy-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-legacy-work/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "forced",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "standard-no-spark",
+    "v6-no-spark",
+    "v8-no-spark",
+    "v8-spark-forced"
+  ],
+  "cases_path": "/private/tmp/smart-compact-legacy-work/benchmarks/agentic-v8-confirmation.json",
+  "cases_sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {
+    "standard_to_v6": {
+      "assigned_pairs": 1,
+      "baseline_arm": "standard-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v6-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": -91.578,
+      "median_parent_token_reduction_pct": -126.23,
+      "median_parent_tokens_saved": -313264,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": -121.086,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": -126.23,
+          "median_parent_tokens_saved": -313264,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": -126.23,
+          "median_parent_tokens_saved": -313264,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "standard_to_v8": {
+      "assigned_pairs": 1,
+      "baseline_arm": "standard-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v8-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 18.022,
+      "median_parent_token_reduction_pct": 18.14,
+      "median_parent_tokens_saved": 45019,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 23.829,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 18.14,
+          "median_parent_tokens_saved": 45019,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 18.14,
+          "median_parent_tokens_saved": 45019,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "v6_to_v8": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v6-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v8-no-spark",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 57.209,
+      "median_parent_token_reduction_pct": 63.816,
+      "median_parent_tokens_saved": 358283,
+      "median_primary_efficiency": null,
+      "median_saved_per_spawned_worker": null,
+      "median_saved_per_useful_worker": null,
+      "median_spawned_worker_count": 0,
+      "median_wall_seconds_saved": 144.915,
+      "median_wall_seconds_saved_per_useful_worker": null,
+      "median_worker_count": 0,
+      "parent_token_pairs": 1,
+      "primary": true,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 63.816,
+          "median_parent_tokens_saved": 358283,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 63.816,
+          "median_parent_tokens_saved": 358283,
+          "median_primary_efficiency": null,
+          "median_saved_per_spawned_worker": null,
+          "median_saved_per_useful_worker": null,
+          "median_wall_seconds_saved_per_useful_worker": null,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 0,
+          "worker_count": 0
+        }
+      ]
+    },
+    "v8_no_spark_to_forced_spark": {
+      "assigned_pairs": 1,
+      "baseline_arm": "v8-no-spark",
+      "baseline_successes": 1,
+      "both_success": 1,
+      "candidate_arm": "v8-spark-forced",
+      "candidate_successes": 1,
+      "complete_pairs": 1,
+      "median_latency_reduction_pct": 10.15,
+      "median_parent_token_reduction_pct": 45.668,
+      "median_parent_tokens_saved": 92774,
+      "median_primary_efficiency": 92774.0,
+      "median_saved_per_spawned_worker": 92774.0,
+      "median_saved_per_useful_worker": 92774.0,
+      "median_spawned_worker_count": 1,
+      "median_wall_seconds_saved": 11.002,
+      "median_wall_seconds_saved_per_useful_worker": 11.002,
+      "median_worker_count": 1,
+      "parent_token_pairs": 1,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "spawned_worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 45.668,
+          "median_parent_tokens_saved": 92774,
+          "median_primary_efficiency": 92774.0,
+          "median_saved_per_spawned_worker": 92774.0,
+          "median_saved_per_useful_worker": 92774.0,
+          "median_wall_seconds_saved_per_useful_worker": 11.002,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ],
+      "worker_count_curve": [
+        {
+          "candidate_successes": 1,
+          "median_parent_token_reduction_pct": 45.668,
+          "median_parent_tokens_saved": 92774,
+          "median_primary_efficiency": 92774.0,
+          "median_saved_per_spawned_worker": 92774.0,
+          "median_saved_per_useful_worker": 92774.0,
+          "median_wall_seconds_saved_per_useful_worker": 11.002,
+          "parent_token_pairs": 1,
+          "runs": 1,
+          "spawned_worker_count": 1,
+          "worker_count": 1
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "allowance_or_wall_time_win": false,
+      "baseline_arm": "standard-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v6-no-spark",
+      "candidate_success": true,
+      "case_id": "monorepo-sdk-migration",
+      "combined_token_reduction_pct": -126.23,
+      "comparison": "standard_to_v6",
+      "complete": true,
+      "latency_reduction_pct": -91.578,
+      "parent_allowance_winner": "baseline",
+      "parent_token_reduction_pct": -126.23,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": -313264,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "baseline",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": -121.086,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "baseline",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "standard-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v8-no-spark",
+      "candidate_success": true,
+      "case_id": "monorepo-sdk-migration",
+      "combined_token_reduction_pct": 18.14,
+      "comparison": "standard_to_v8",
+      "complete": true,
+      "latency_reduction_pct": 18.022,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 18.14,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 45019,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "candidate",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 23.829,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "v6-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v8-no-spark",
+      "candidate_success": true,
+      "case_id": "monorepo-sdk-migration",
+      "combined_token_reduction_pct": 63.816,
+      "comparison": "v6_to_v8",
+      "complete": true,
+      "latency_reduction_pct": 57.209,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 63.816,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 358283,
+      "parent_tokens_saved_per_spawned_worker": null,
+      "parent_tokens_saved_per_useful_worker": null,
+      "primary": true,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": null,
+      "quality_delta_points": 0.0,
+      "selection_winner": "candidate",
+      "spawned_worker_count": 0,
+      "trial": 1,
+      "useful_worker_count": 0,
+      "wall_seconds_saved": 144.915,
+      "wall_seconds_saved_per_useful_worker": null,
+      "wall_time_winner": "candidate",
+      "worker_count": 0
+    },
+    {
+      "allowance_or_wall_time_win": true,
+      "baseline_arm": "v8-no-spark",
+      "baseline_success": true,
+      "both_success": true,
+      "candidate_arm": "v8-spark-forced",
+      "candidate_success": true,
+      "case_id": "monorepo-sdk-migration",
+      "combined_token_reduction_pct": -210.445,
+      "comparison": "v8_no_spark_to_forced_spark",
+      "complete": true,
+      "latency_reduction_pct": 10.15,
+      "parent_allowance_winner": "candidate",
+      "parent_token_reduction_pct": 45.668,
+      "parent_tokens_observed": true,
+      "parent_tokens_saved": 92774,
+      "parent_tokens_saved_per_spawned_worker": 92774.0,
+      "parent_tokens_saved_per_useful_worker": 92774.0,
+      "primary": false,
+      "primary_efficiency_metric": "parent_tokens_saved_per_spawned_worker",
+      "primary_efficiency_value": 92774.0,
+      "quality_delta_points": 0.0,
+      "selection_winner": "candidate",
+      "spawned_worker_count": 1,
+      "trial": 1,
+      "useful_worker_count": 1,
+      "wall_seconds_saved": 11.002,
+      "wall_seconds_saved_per_useful_worker": 11.002,
+      "wall_time_winner": "candidate",
+      "worker_count": 1
+    }
+  ],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "xhigh",
+  "execution_order": [
+    {
+      "arm": "standard-no-spark",
+      "case_id": "monorepo-sdk-migration",
+      "index": 0,
+      "trial": 1
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "monorepo-sdk-migration",
+      "index": 1,
+      "trial": 1
+    },
+    {
+      "arm": "v8-spark-forced",
+      "case_id": "monorepo-sdk-migration",
+      "index": 2,
+      "trial": 1
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "monorepo-sdk-migration",
+      "index": 3,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "monorepo-sdk-migration",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 33.3
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T01:25:48Z",
+  "jobs": 1,
+  "model": "gpt-5.6-luna",
+  "publication_status": {
+    "candidate_all_pass": true,
+    "exploratory_metrics_publishable": true,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": true,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "standard-no-spark",
+      "case_id": "monorepo-sdk-migration",
+      "category": "multi-package-code-migration",
+      "changed_paths": [
+        "migration_report.json",
+        "packages/a_create.py",
+        "packages/a_update.py",
+        "packages/b_create.py",
+        "packages/b_update.py",
+        "packages/c_delete.py",
+        "packages/c_lookup.py",
+        "packages/d_delete.py",
+        "packages/d_lookup.py",
+        "packages/e_bulk_create.py",
+        "packages/e_bulk_update.py",
+        "packages/f_bulk_archive.py",
+        "packages/f_bulk_publish.py",
+        "packages/g_audit.py",
+        "packages/g_stream.py",
+        "packages/h_audit.py",
+        "packages/h_stream.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 132.552,
+      "combined_total_tokens": 248170,
+      "commands_by_thread": {
+        "019f6358-38a5-7fd2-a6cb-845f0274db56": [
+          "/bin/zsh -lc 'rtk rg --files'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' src/sdk/client.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_lookup.py packages/c_delete.py packages/d_lookup.py packages/d_delete.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_publish.py packages/f_bulk_archive.py packages/g_stream.py packages/g_audit.py packages/h_stream.py packages/h_audit.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' tests/test_sdk_migration.py && rtk git status --short && rtk find . -maxdepth 2 -name 'migration_report.json' -print\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy rg -n \\\"client\\\\.send(_async|_batch|_stream|_audit)?\\\\(\\\" packages src/sdk/client.py\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy git diff --check'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.331,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 132.222,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6358-38a5-7fd2-a6cb-845f0274db56": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/a_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/a_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/b_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/b_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/c_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/c_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/d_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/d_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/e_bulk_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/e_bulk_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/f_bulk_archive.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/f_bulk_publish.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/g_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/g_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/h_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-standard-no-spark/monorepo-sdk-migration/packages/h_stream.py"
+        ]
+      },
+      "final_message": "Implemented locally because `spark_worker` was unavailable.\n\nChanged paths: all 16 adapters under `packages/` plus [`migration_report.json`](...).\n\nAcceptance:\n\n`rtk proxy python3 -m unittest discover -s tests -v` \u2014 **6 tests passed (OK)**.\n\n`src/sdk/client.py` and tests were unchanged. Residual risk: no external transport integration coverage.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.072,
+            "ok": true,
+            "output": "test_no_compatibility_send_methods (test_sdk_migration.MigrationTests.test_no_compatibility_send_methods) ... ok\ntest_packages_ab_sync_create_and_update (test_sdk_migration.MigrationTests.test_packages_ab_sync_create_and_update) ... ok\ntest_packages_cd_async_lookup_and_delete (test_sdk_migration.MigrationTests.test_packages_cd_async_lookup_and_delete) ... ok\ntest_packages_ef_batch_operations (test_sdk_migration.MigrationTests.test_packages_ef_batch_operations) ... ok\ntest_packages_gh_streaming_and_audit (test_sdk_migration.MigrationTests.test_packages_gh_streaming_and_audit) ... ok\ntest_report_is_complete (test_sdk_migration.MigrationTests.test_report_is_complete) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "request-family",
+            "key": "shared_api",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/sdk/client.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6358-38a5-7fd2-a6cb-845f0274db56": {
+          "agentMessage": 5,
+          "commandExecution": 8,
+          "fileChange": 1,
+          "reasoning": 11,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 10,
+        "configWarning": 1,
+        "item/agentMessage/delta": 319,
+        "item/completed": 26,
+        "item/started": 27,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 10,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/plan/updated": 2,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6358-38a5-7fd2-a6cb-845f0274db56",
+      "parent_total_tokens": 248170,
+      "parent_usage": {
+        "cachedInputTokens": 197120,
+        "inputTokens": 242170,
+        "outputTokens": 6000,
+        "reasoningOutputTokens": 2145,
+        "totalTokens": 248170
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 8,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6358-38a5-7fd2-a6cb-845f0274db56": 9
+      },
+      "tool_output_chars_by_thread": {
+        "019f6358-38a5-7fd2-a6cb-845f0274db56": 9064
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "monorepo-sdk-migration",
+      "category": "multi-package-code-migration",
+      "changed_paths": [
+        "migration_report.json",
+        "packages/a_create.py",
+        "packages/a_update.py",
+        "packages/b_create.py",
+        "packages/b_update.py",
+        "packages/c_delete.py",
+        "packages/c_lookup.py",
+        "packages/d_delete.py",
+        "packages/d_lookup.py",
+        "packages/e_bulk_create.py",
+        "packages/e_bulk_update.py",
+        "packages/f_bulk_archive.py",
+        "packages/f_bulk_publish.py",
+        "packages/g_audit.py",
+        "packages/g_stream.py",
+        "packages/h_audit.py",
+        "packages/h_stream.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 253.63,
+      "combined_total_tokens": 561434,
+      "commands_by_thread": {
+        "019f635d-6d8c-7741-9850-01201e7c7573": [
+          "/bin/zsh -lc 'rtk rg --files'",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' src/sdk/client.py && rtk sed -n '1,200p' packages/a_create.py && rtk sed -n '1,200p' packages/a_update.py && rtk sed -n '1,200p' packages/b_create.py && rtk sed -n '1,200p' packages/b_update.py && rtk sed -n '1,200p' packages/c_lookup.py && rtk sed -n '1,200p' packages/c_delete.py && rtk sed -n '1,200p' packages/d_lookup.py && rtk sed -n '1,200p' packages/d_delete.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,200p' packages/e_bulk_create.py && rtk sed -n '1,200p' packages/e_bulk_update.py && rtk sed -n '1,200p' packages/f_bulk_publish.py && rtk sed -n '1,200p' packages/f_bulk_archive.py && rtk sed -n '1,200p' packages/g_stream.py && rtk sed -n '1,200p' packages/g_audit.py && rtk sed -n '1,200p' packages/h_stream.py && rtk sed -n '1,200p' packages/h_audit.py\"",
+          "/bin/zsh -lc \"rtk rg -n \\\"send|request|audit|migration_report|shared_api\\\" src packages --glob '*.py'\"",
+          "/bin/zsh -lc \"rtk python3 -c \\\"from pathlib import Path; root=Path('/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration').resolve(); paths=[root/'packages/a_create.py',root/'packages/a_update.py',root/'packages/b_create.py',root/'packages/b_update.py',root/'packages/c_lookup.py',root/'packages/c_delete.py',root/'packages/d_lookup.py',root/'packages/d_delete.py',root/'packages/e_bulk_create.py',root/'packages/e_bulk_update.py',root/'packages/f_bulk_publish.py',root/'packages/f_bulk_archive.py',root/'packages/g_stream.py',root/'packages/g_audit.py',root/'packages/h_stream.py',root/'packages/h_audit.py',root/'migration_report.json']; assert all(str(p).startswith(str(root) + '/') for p in paths); print('verified', len(paths), 'target paths')\\\"\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk python3 -c \\\"from pathlib import Path; root=Path('/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration').resolve(); paths=[root/'packages/b_update.py',root/'packages/f_bulk_archive.py',root/'packages/g_stream.py']; assert all(str(p).startswith(str(root) + '/') for p in paths); print('verified', len(paths), 'reported target paths')\\\"\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk python3 -c \\\"from pathlib import Path; root=Path('/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration').resolve(); path=root/'packages/h_stream.py'; assert str(path).startswith(str(root) + '/'); print('verified', path)\\\"\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk python3 -c \\\"from pathlib import Path; root=Path('/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration').resolve(); path=root/'packages/g_audit.py'; assert str(path).startswith(str(root) + '/'); print('verified', path)\\\"\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk python3 -c \\\"from pathlib import Path; root=Path('/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration').resolve(); path=root/'packages/h_audit.py'; assert str(path).startswith(str(root) + '/'); print('verified', path)\\\"\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.322,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 253.308,
+      "execution_order_index": 3,
+      "file_changes_by_thread": {
+        "019f635d-6d8c-7741-9850-01201e7c7573": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/a_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/a_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/b_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/b_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/c_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/c_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/d_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/d_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/e_bulk_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/e_bulk_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/f_bulk_archive.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/f_bulk_publish.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/g_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/g_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/h_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/h_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/b_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/f_bulk_archive.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/g_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/h_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/g_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v6-no-spark/monorepo-sdk-migration/packages/h_audit.py"
+        ]
+      },
+      "final_message": "Implemented locally because `spark_worker` was unavailable.\n\nChanged:\n\n- All 16 adapter files under `packages/`\n- [migration_report.json](.../migration_report.json)\n\n`src/sdk/client.py` and tests were unchanged.\n\nVerification: `rtk proxy python3 -m unittest discover -s tests -v` \u2014 **6 tests passed**.\n\nResidual risk: none identified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.078,
+            "ok": true,
+            "output": "test_no_compatibility_send_methods (test_sdk_migration.MigrationTests.test_no_compatibility_send_methods) ... ok\ntest_packages_ab_sync_create_and_update (test_sdk_migration.MigrationTests.test_packages_ab_sync_create_and_update) ... ok\ntest_packages_cd_async_lookup_and_delete (test_sdk_migration.MigrationTests.test_packages_cd_async_lookup_and_delete) ... ok\ntest_packages_ef_batch_operations (test_sdk_migration.MigrationTests.test_packages_ef_batch_operations) ... ok\ntest_packages_gh_streaming_and_audit (test_sdk_migration.MigrationTests.test_packages_gh_streaming_and_audit) ... ok\ntest_report_is_complete (test_sdk_migration.MigrationTests.test_report_is_complete) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "request-family",
+            "key": "shared_api",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/sdk/client.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f635d-6d8c-7741-9850-01201e7c7573": {
+          "agentMessage": 9,
+          "commandExecution": 15,
+          "fileChange": 5,
+          "reasoning": 18,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 22,
+        "configWarning": 1,
+        "item/agentMessage/delta": 397,
+        "item/completed": 48,
+        "item/started": 48,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 22,
+        "turn/completed": 1,
+        "turn/diff/updated": 21,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f635d-6d8c-7741-9850-01201e7c7573",
+      "parent_total_tokens": 561434,
+      "parent_usage": {
+        "cachedInputTokens": 514560,
+        "inputTokens": 551646,
+        "outputTokens": 9788,
+        "reasoningOutputTokens": 3603,
+        "totalTokens": 561434
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 15,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f635d-6d8c-7741-9850-01201e7c7573": 20
+      },
+      "tool_output_chars_by_thread": {
+        "019f635d-6d8c-7741-9850-01201e7c7573": 17502
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "monorepo-sdk-migration",
+      "category": "multi-package-code-migration",
+      "changed_paths": [
+        "migration_report.json",
+        "packages/a_create.py",
+        "packages/a_update.py",
+        "packages/b_create.py",
+        "packages/b_update.py",
+        "packages/c_delete.py",
+        "packages/c_lookup.py",
+        "packages/d_delete.py",
+        "packages/d_lookup.py",
+        "packages/e_bulk_create.py",
+        "packages/e_bulk_update.py",
+        "packages/f_bulk_archive.py",
+        "packages/f_bulk_publish.py",
+        "packages/g_audit.py",
+        "packages/g_stream.py",
+        "packages/h_audit.py",
+        "packages/h_stream.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 108.723,
+      "combined_total_tokens": 203151,
+      "commands_by_thread": {
+        "019f635a-4122-7600-81b4-bc0aaff7588f": [
+          "/bin/zsh -lc 'rtk proxy rg --files packages src tests | head -200'",
+          "/bin/zsh -lc 'rtk proxy rg -n \".\" packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_lookup.py packages/c_delete.py packages/d_lookup.py packages/d_delete.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_publish.py packages/f_bulk_archive.py packages/g_stream.py packages/g_audit.py packages/h_stream.py packages/h_audit.py src/sdk/client.py tests/test_sdk_migration.py migration_report.json'",
+          "/bin/zsh -lc 'rtk proxy rg -n \".\" packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_lookup.py packages/c_delete.py packages/d_lookup.py packages/d_delete.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_publish.py packages/f_bulk_archive.py packages/g_stream.py packages/g_audit.py packages/h_stream.py packages/h_audit.py src/sdk/client.py tests/test_sdk_migration.py migration_report.json'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,130p' tests/test_sdk_migration.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.33,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "execution_duration_seconds": 108.393,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f635a-4122-7600-81b4-bc0aaff7588f": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/a_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/a_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/b_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/b_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/c_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/c_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/d_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/d_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/e_bulk_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/e_bulk_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/f_bulk_archive.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/f_bulk_publish.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/g_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/g_stream.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/h_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-no-spark/monorepo-sdk-migration/packages/h_stream.py"
+        ]
+      },
+      "final_message": "Implemented the migration.\n\nChanged paths: all 16 adapter files under `packages/` plus `migration_report.json`. `src/sdk/client.py` and tests were unchanged.\n\nAcceptance command:\n\n`rtk proxy python3 -m unittest discover -s tests -v`\n\nExact result: `Ran 6 tests ... OK`\n\nResidual risk: no external transport behavior was exercised.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.081,
+            "ok": true,
+            "output": "test_no_compatibility_send_methods (test_sdk_migration.MigrationTests.test_no_compatibility_send_methods) ... ok\ntest_packages_ab_sync_create_and_update (test_sdk_migration.MigrationTests.test_packages_ab_sync_create_and_update) ... ok\ntest_packages_cd_async_lookup_and_delete (test_sdk_migration.MigrationTests.test_packages_cd_async_lookup_and_delete) ... ok\ntest_packages_ef_batch_operations (test_sdk_migration.MigrationTests.test_packages_ef_batch_operations) ... ok\ntest_packages_gh_streaming_and_audit (test_sdk_migration.MigrationTests.test_packages_gh_streaming_and_audit) ... ok\ntest_report_is_complete (test_sdk_migration.MigrationTests.test_report_is_complete) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "request-family",
+            "key": "shared_api",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/sdk/client.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f635a-4122-7600-81b4-bc0aaff7588f": {
+          "agentMessage": 6,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 11,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 11,
+        "configWarning": 1,
+        "item/agentMessage/delta": 325,
+        "item/completed": 24,
+        "item/started": 24,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 11,
+        "turn/completed": 1,
+        "turn/diff/updated": 4,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f635a-4122-7600-81b4-bc0aaff7588f",
+      "parent_total_tokens": 203151,
+      "parent_usage": {
+        "cachedInputTokens": 163072,
+        "inputTokens": 198076,
+        "outputTokens": 5075,
+        "reasoningOutputTokens": 1550,
+        "totalTokens": 203151
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f635a-4122-7600-81b4-bc0aaff7588f": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f635a-4122-7600-81b4-bc0aaff7588f": 18693
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-spark-forced",
+      "case_id": "monorepo-sdk-migration",
+      "category": "multi-package-code-migration",
+      "changed_paths": [
+        "migration_report.json",
+        "packages/a_create.py",
+        "packages/a_update.py",
+        "packages/b_create.py",
+        "packages/b_update.py",
+        "packages/c_delete.py",
+        "packages/c_lookup.py",
+        "packages/d_delete.py",
+        "packages/d_lookup.py",
+        "packages/e_bulk_create.py",
+        "packages/e_bulk_update.py",
+        "packages/f_bulk_archive.py",
+        "packages/f_bulk_publish.py",
+        "packages/g_audit.py",
+        "packages/g_stream.py",
+        "packages/h_audit.py",
+        "packages/h_stream.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": true
+      },
+      "child_evidence_markers": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": [
+          "packages/a_create.py",
+          "packages/a_update.py",
+          "packages/b_create.py",
+          "packages/b_update.py",
+          "packages/c_delete.py",
+          "packages/c_lookup.py",
+          "packages/d_delete.py",
+          "packages/d_lookup.py",
+          "packages/e_bulk_create.py",
+          "packages/e_bulk_update.py",
+          "packages/f_bulk_archive.py",
+          "packages/f_bulk_publish.py",
+          "packages/g_audit.py",
+          "packages/g_stream.py",
+          "packages/h_audit.py",
+          "packages/h_stream.py"
+        ]
+      },
+      "child_final_messages": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": "`partition_ids`: `packages-ab`, `packages-cd`, `packages-ef`, `packages-gh`\n\n`changed_paths`:\n- [`packages/a_create.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/a_create.py)\n- [`packages/a_update.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/a_update.py)\n- [`packages/b_create.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_create.py)\n- [`packages/b_update.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_update.py)\n- [`packages/c_delete.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_delete.py)\n- [`packages/c_lookup.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_lookup.py)\n- [`packages/d_delete.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_delete.py)\n- [`packages/d_lookup.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_lookup.py)\n- [`packages/e_bulk_create.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_create.py)\n- [`packages/e_bulk_update.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_update.py)\n- [`packages/f_bulk_archive.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_archive.py)\n- [`packages/f_bulk_publish.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_publish.py)\n- [`packages/g_audit.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_audit.py)\n- [`packages/g_stream.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_stream.py)\n- [`packages/h_audit.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_audit.py)\n- [`packages/h_stream.py`](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_stream.py)\n\n`acceptance`: not run here (per instructions to avoid running validation unless explicitly requested).\n\n`blocker`: none."
+      },
+      "child_io_ok": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": true
+      },
+      "child_missing_evidence_markers": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": "harness_frozen_config"
+      },
+      "child_roles": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b"
+      ],
+      "child_total_tokens": 520296,
+      "child_turn_errors": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": null
+      },
+      "child_turn_statuses": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": "completed"
+      },
+      "child_usage": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": {
+          "cachedInputTokens": 488448,
+          "inputTokens": 510182,
+          "outputTokens": 10114,
+          "reasoningOutputTokens": 3010,
+          "totalTokens": 520296
+        }
+      },
+      "collection_duration_seconds": 97.72,
+      "combined_total_tokens": 630673,
+      "commands_by_thread": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": [
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/a_create.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' src/sdk/client.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/b_create.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/a_update.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/b_update.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/c_delete.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/c_lookup.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/d_lookup.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/d_delete.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/f_bulk_archive.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/e_bulk_update.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/e_bulk_create.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/f_bulk_publish.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/g_audit.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/h_stream.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/h_audit.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' packages/g_stream.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,360p' tests/test_sdk_migration.py\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_bu2.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_update.py\n@@\n def update(client, record_id, changes):\n-    return client.send(f'/b/records/{record_id}', changes)\n+    return client.request('PUT', f'/b/records/{record_id}', changes)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_bu2.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_c.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_delete.py\n@@\n async def delete(client, item_id):\n-    return await client.send_async(f'/c/items/{item_id}', None)\n+    return await client.request_async('DELETE', f'/c/items/{item_id}')\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_c.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_c_lookup.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_lookup.py\n@@\n async def lookup(client, item_id):\n-    return await client.send_async(f'/c/items/{item_id}', None)\n+    return await client.request_async('GET', f'/c/items/{item_id}')\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_c_lookup.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_fa.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_archive.py\n@@\n def bulk_archive(client, identifiers):\n-    return client.send_batch('/f/archive', identifiers)\n+    return client.request_batch('DELETE', '/f/archive', identifiers)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_fa.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_ef.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_create.py\n@@\n def bulk_create(client, rows):\n-    return client.send_batch('/e/items', rows)\n+    return client.request_batch('POST', '/e/items', rows)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_ef.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_efu.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_update.py\n@@\n def bulk_update(client, rows):\n-    return client.send_batch('/e/items', rows)\n+    return client.request_batch('PATCH', '/e/items', rows)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_efu.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_fp.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_publish.py\n@@\n def bulk_publish(client, rows):\n-    return client.send_batch('/f/publish', rows)\n+    return client.request_batch('POST', '/f/publish', rows)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_fp.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_hs.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_stream.py\n@@\n def stream_snapshots(client, chunks):\n-    return client.send_stream('/h/snapshots', chunks)\n+    return client.request_stream('PUT', '/h/snapshots', chunks)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_hs.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_gs.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_stream.py\n@@\n def stream_events(client, events):\n-    return client.send_stream('/g/events', events)\n+    return client.request_stream('POST', '/g/events', events)\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_gs.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_ha.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_audit.py\n@@\n def record_audit(client, actor, action, subject):\n-    return client.send_audit('/h/audit', {'action': action, 'subject': subject}, actor)\n+    return client.request('POST', '/h/audit', {'action': action, 'subject': subject}, headers={'X-Audit-Actor': actor})\n*** End Patch\nEOF\nrtk patch -p0 /tmp/patch_ha.txt\"",
+          "/bin/zsh -lc 'rtk git diff --name-only -- packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_delete.py packages/c_lookup.py packages/d_delete.py packages/d_lookup.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_archive.py packages/f_bulk_publish.py packages/g_audit.py packages/g_stream.py packages/h_audit.py packages/h_stream.py'",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/final_patch1.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_delete.py\n@@\n async def delete(client, record_id, hard=False):\n-    return await client.send_async(f'/d/records/{record_id}', {'hard': hard})\n+    return await client.request_async('DELETE', f'/d/records/{record_id}', {'hard': hard})\n*** End Patch\nEOF\nrtk apply_patch < /tmp/final_patch1.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/final_patch2.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_lookup.py\n@@\n async def lookup(client, record_id):\n-    return await client.send_async(f'/d/records/{record_id}', None)\n+    return await client.request_async('GET', f'/d/records/{record_id}')\n*** End Patch\nEOF\nrtk apply_patch < /tmp/final_patch2.txt\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_remaining2.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_stream.py\n@@\n def stream_events(client, events):\n-    return client.send_stream('/g/events', events)\n+    return client.request_stream('POST', '/g/events', events)\n*** End Patch\nEOF\nrtk apply_patch < /tmp/patch_remaining2.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_remaining1.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_publish.py\n@@\n def bulk_publish(client, rows):\n-    return client.send_batch('/f/publish', rows)\n+    return client.request_batch('POST', '/f/publish', rows)\n*** End Patch\nEOF\nrtk apply_patch < /tmp/patch_remaining1.txt\"",
+          "/bin/zsh -lc \"rtk cat <<'EOF' > /tmp/patch_remaining3.txt\n*** Begin Patch\n*** Update File: /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_audit.py\n@@\n def record_audit(client, actor, action, subject):\n-    return client.send_audit('/h/audit', {'action': action, 'subject': subject}, actor)\n+    return client.request('POST', '/h/audit', {'action': action, 'subject': subject}, headers={'X-Audit-Actor': actor})\n*** End Patch\nEOF\nrtk apply_patch < /tmp/patch_remaining3.txt\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk rg \"send_|send_async|send_batch|send_stream|send_audit\" packages/a_create.py packages/a_update.py packages/b_create.py packages/b_update.py packages/c_delete.py packages/c_lookup.py packages/d_delete.py packages/d_lookup.py packages/e_bulk_create.py packages/e_bulk_update.py packages/f_bulk_archive.py packages/f_bulk_publish.py packages/g_audit.py packages/g_stream.py packages/h_audit.py packages/h_stream.py'"
+        ],
+        "019f635b-ecfc-75f1-be02-08986595b4ab": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' migration_report.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,280p' src/sdk/client.py\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy rg --files tests'",
+          "/bin/zsh -lc 'rtk proxy rg -n \"migration_report|migrated_adapters|shared_api|partitions|request-family\" tests README.md pyproject.toml setup.cfg 2>/dev/null'",
+          "/bin/zsh -lc \"rtk proxy rg --files -g 'migration*' -g '*.json' -g 'README*' -g 'pyproject.toml' -g 'setup.cfg' -g 'Makefile'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,180p' tests/test_sdk_migration.py\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'while [ \"'! -s \"$1\" ]; do sleep 0.1; done; cat \"$1\"'\"' _ /var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-capsule-pu1j7e0f/worker-result.txt\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.329,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "packages-ab",
+            "markers": [
+              "packages/a_create.py",
+              "packages/a_update.py",
+              "packages/b_create.py",
+              "packages/b_update.py"
+            ],
+            "weight": 4
+          },
+          {
+            "allowed_replication": 1,
+            "id": "packages-cd",
+            "markers": [
+              "packages/c_lookup.py",
+              "packages/c_delete.py",
+              "packages/d_lookup.py",
+              "packages/d_delete.py"
+            ],
+            "weight": 4
+          },
+          {
+            "allowed_replication": 1,
+            "id": "packages-ef",
+            "markers": [
+              "packages/e_bulk_create.py",
+              "packages/e_bulk_update.py",
+              "packages/f_bulk_publish.py",
+              "packages/f_bulk_archive.py"
+            ],
+            "weight": 4
+          },
+          {
+            "allowed_replication": 1,
+            "id": "packages-gh",
+            "markers": [
+              "packages/g_stream.py",
+              "packages/g_audit.py",
+              "packages/h_stream.py",
+              "packages/h_audit.py"
+            ],
+            "weight": 4
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 97.391,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/a_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/a_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/d_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/g_audit.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/b_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_delete.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/c_lookup.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_create.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/e_bulk_update.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/f_bulk_archive.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/packages/h_stream.py"
+        ],
+        "019f635b-ecfc-75f1-be02-08986595b4ab": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-8hwvmzan/monorepo-sdk-migration-trial-1-v8-spark-forced/monorepo-sdk-migration/migration_report.json"
+        ]
+      },
+      "final_message": "Migration complete.\n\nChanged paths: `migration_report.json` and all sixteen named adapters across `packages-ab`, `packages-cd`, `packages-ef`, and `packages-gh`. Shared client and tests unchanged.\n\nAcceptance:\n\n```text\nrtk proxy python3 -m unittest discover -s tests -v\nRan 6 tests in 0.001s\nOK\n```\n\nResidual risk: none identified.",
+      "first_spawn_seconds": 0.007,
+      "forced_execution_strategy": "concurrent_file_capsule",
+      "forced_handoff_consumed": true,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": true,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.071,
+            "ok": true,
+            "output": "test_no_compatibility_send_methods (test_sdk_migration.MigrationTests.test_no_compatibility_send_methods) ... ok\ntest_packages_ab_sync_create_and_update (test_sdk_migration.MigrationTests.test_packages_ab_sync_create_and_update) ... ok\ntest_packages_cd_async_lookup_and_delete (test_sdk_migration.MigrationTests.test_packages_cd_async_lookup_and_delete) ... ok\ntest_packages_ef_batch_operations (test_sdk_migration.MigrationTests.test_packages_ef_batch_operations) ... ok\ntest_packages_gh_streaming_and_audit (test_sdk_migration.MigrationTests.test_packages_gh_streaming_and_audit) ... ok\ntest_report_is_complete (test_sdk_migration.MigrationTests.test_report_is_complete) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "request-family",
+            "key": "shared_api",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/sdk/client.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": {
+          "agentMessage": 13,
+          "commandExecution": 38,
+          "fileChange": 13,
+          "reasoning": 16,
+          "userMessage": 1
+        },
+        "019f635b-ecfc-75f1-be02-08986595b4ab": {
+          "agentMessage": 5,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 7,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 34,
+        "configWarning": 1,
+        "item/agentMessage/delta": 278,
+        "item/completed": 104,
+        "item/started": 104,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 2,
+        "thread/status/changed": 4,
+        "thread/tokenUsage/updated": 34,
+        "turn/completed": 2,
+        "turn/diff/updated": 42,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f635b-ecfc-75f1-be02-08986595b4ab",
+      "parent_total_tokens": 110377,
+      "parent_usage": {
+        "cachedInputTokens": 82176,
+        "inputTokens": 107009,
+        "outputTokens": 3368,
+        "reasoningOutputTokens": 1583,
+        "totalTokens": 110377
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": [
+          "packages-ab",
+          "packages-cd",
+          "packages-ef",
+          "packages-gh"
+        ]
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {
+        "packages-ab": 1,
+        "packages-cd": 1,
+        "packages-ef": 1,
+        "packages-gh": 1
+      },
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "forced",
+      "routing_ok": true,
+      "rtk_command_count": 47,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 0.007,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": {
+          "agent_sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68",
+          "config_sha256": "bbf8264709bff09a67419c579cdef1afed1a6ed7873a6939257e7cc88809fc9e",
+          "effort": "medium",
+          "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": false,
+          "origin": "harness_thread",
+          "prompt": "partition_ids: packages-ab, packages-cd, packages-ef, packages-gh\nmode=edit\nrw=packages/a_create.py,packages/a_update.py,packages/b_create.py,packages/b_update.py,packages/c_delete.py,packages/c_lookup.py,packages/d_delete.py,packages/d_lookup.py,packages/e_bulk_create.py,packages/e_bulk_update.py,packages/f_bulk_archive.py,packages/f_bulk_publish.py,packages/g_audit.py,packages/g_stream.py,packages/h_audit.py,packages/h_stream.py\nro=src/sdk/client.py,tests/test_sdk_migration.py\ndeny_write=migration_report.json,src/sdk/client.py,tests/test_sdk_migration.py,all_except_rw\ntask=read_ro_as_spec;send_family->request_family;no_compat\nkeep=function_signature,client_method_signature,keyword_arguments,endpoint,payload,await,batch_order,stream_order,audit_actor\nacceptance=compileall;adapter_tests_from_ro(exclude=parent_report)\nreturn=partition_ids,changed_paths,acceptance,blocker",
+          "role": "spark_worker"
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "development",
+      "success": true,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": 51,
+        "019f635b-ecfc-75f1-be02-08986595b4ab": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b": 9507,
+        "019f635b-ecfc-75f1-be02-08986595b4ab": 10466
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 1,
+      "useful_worker_ids": [
+        "019f635b-ecdd-7ee0-8e96-6728637f7c4b"
+      ],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 1.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-legacy-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": true
+}

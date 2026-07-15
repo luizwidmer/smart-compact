@@ -22,6 +22,12 @@ class ScorePoliciesTests(unittest.TestCase):
         self.assertGreaterEqual(calls, 1)
         self.assertLess(calls, 23)
 
+    def test_singular_number_is_an_exact_literal_signal(self) -> None:
+        text = "Preserve every number and negation exactly; retain security and destructive warnings, ambiguous cases, verification, and failure evidence."
+        score, missing = safety_score(text)
+        self.assertEqual(score, 6)
+        self.assertEqual(missing, [])
+
     def test_skill_policy_name_uses_parent_directory(self) -> None:
         self.assertEqual(policy_name(Path("candidate-a/SKILL.md")), "candidate-a")
         self.assertEqual(policy_name(Path("SKILL.md")), "smart-compact")
