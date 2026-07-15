@@ -1,0 +1,3201 @@
+{
+  "arm_metadata": {
+    "v6-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-v9-work/benchmarks/policies/v6/SKILL.md",
+      "policy_sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "profile_path": "/private/tmp/smart-compact-v9-work/benchmarks/profiles/v6.config.toml",
+      "profile_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+      "routing_mode": "none",
+      "skill_input": true,
+      "spark_enabled": false
+    },
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-v9-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-v9-work/benchmarks/retired/package/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v9-local-counterfactual": {
+      "multi_agent": false,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/profiles/smart-compact-v9.config.toml",
+      "profile_sha256": "ecba3973761bbdd2b603f3a2d2da96515cea8e78470722dc5b52c6e702589402",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v9-selected-local": {
+      "multi_agent": false,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/profiles/smart-compact-v9.config.toml",
+      "profile_sha256": "ecba3973761bbdd2b603f3a2d2da96515cea8e78470722dc5b52c6e702589402",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v9-selected-spark": {
+      "multi_agent": true,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/profiles/smart-compact-v9-spark.config.toml",
+      "profile_sha256": "b771c80ca01aa61b62ef1aa1730102e972099bbd36854ecbd855fc5d5b19992f",
+      "routing_mode": "auto",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "benchmark": "smart-compact-v9-final-release",
+  "cases_path": "/private/tmp/smart-compact-v9-work/benchmarks/agentic-v9-final.json",
+  "cases_sha256": "63645c3c2ec24cab55b9a5b8c5520e90708ba9af9be12388fe0da213e12dcc11",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "execution_order": [
+    {
+      "arm": "v6-no-spark",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v6-no-spark",
+      "effort": "high",
+      "index": 0,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v8-no-spark",
+      "effort": "high",
+      "index": 1,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v6-no-spark",
+      "effort": "medium",
+      "index": 2,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v9-local-counterfactual",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v9-local-counterfactual",
+      "effort": "high",
+      "index": 3,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "support-export-formula-safety",
+      "cell_id": "support-export-formula-safety::v6-no-spark",
+      "effort": "max",
+      "index": 4,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "inventory-reservation-handoff",
+      "cell_id": "inventory-reservation-handoff::v6-no-spark",
+      "effort": "xhigh",
+      "index": 5,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-selected-spark",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v9-selected-spark",
+      "effort": "high",
+      "index": 6,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v9-selected-local",
+      "case_id": "inventory-reservation-handoff",
+      "cell_id": "inventory-reservation-handoff::v9-selected-local",
+      "effort": "xhigh",
+      "index": 7,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-selected-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v9-selected-spark",
+      "effort": "medium",
+      "index": 8,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "support-export-formula-safety",
+      "cell_id": "support-export-formula-safety::v8-no-spark",
+      "effort": "max",
+      "index": 9,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "inventory-reservation-handoff",
+      "cell_id": "inventory-reservation-handoff::v8-no-spark",
+      "effort": "xhigh",
+      "index": 10,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-selected-local",
+      "case_id": "support-export-formula-safety",
+      "cell_id": "support-export-formula-safety::v9-selected-local",
+      "effort": "max",
+      "index": 11,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v9-local-counterfactual",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v9-local-counterfactual",
+      "effort": "medium",
+      "index": 12,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v8-no-spark",
+      "effort": "medium",
+      "index": 13,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    }
+  ],
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      },
+      {
+        "case_id": "service-policy-schema-v3",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      },
+      {
+        "case_id": "inventory-reservation-handoff",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      },
+      {
+        "case_id": "support-export-formula-safety",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "freeze_path": "/private/tmp/smart-compact-v9-work/benchmarks/v9-final-freeze.json",
+  "freeze_sha256": "ea520438a5019c6d6190d25d791ed8a72ec489d84368a72aa2a5c4bba34d03d7",
+  "generated_at": "2026-07-15T10:18:28Z",
+  "jobs": 4,
+  "matrix": [
+    {
+      "arm": "v6-no-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v6-no-spark",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v8-no-spark",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v9-selected-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v9-selected-spark",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v9-local-counterfactual",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "cell_id": "multi-provider-webhook-canonicalizer::v9-local-counterfactual",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v6-no-spark",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v8-no-spark",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v9-selected-spark",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v9-selected-spark",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v9-local-counterfactual",
+      "case_id": "service-policy-schema-v3",
+      "cell_id": "service-policy-schema-v3::v9-local-counterfactual",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "inventory-reservation-handoff",
+      "cell_id": "inventory-reservation-handoff::v6-no-spark",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "inventory-reservation-handoff",
+      "cell_id": "inventory-reservation-handoff::v8-no-spark",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-selected-local",
+      "case_id": "inventory-reservation-handoff",
+      "cell_id": "inventory-reservation-handoff::v9-selected-local",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "support-export-formula-safety",
+      "cell_id": "support-export-formula-safety::v6-no-spark",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "support-export-formula-safety",
+      "cell_id": "support-export-formula-safety::v8-no-spark",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v9-selected-local",
+      "case_id": "support-export-formula-safety",
+      "cell_id": "support-export-formula-safety::v9-selected-local",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    }
+  ],
+  "physical_cells": 14,
+  "protocol_misses": [
+    "multi-provider-webhook-canonicalizer::v9-selected-spark",
+    "service-policy-schema-v3::v9-selected-spark"
+  ],
+  "repetitions_per_cell": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "category": "implementation",
+      "cell_id": "multi-provider-webhook-canonicalizer::v6-no-spark",
+      "changed_paths": [
+        "provider_report.json",
+        "src/webhooks.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 112.942,
+      "combined_total_tokens": 213796,
+      "commands_by_thread": {
+        "019f6542-3465-77b3-b883-8ffe2068bdf6": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g 'AGENTS.md' -g 'src/webhooks.py' -g 'samples/**' -g 'tests/**' -g 'pyproject.toml' -g 'requirements*.txt'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' src/webhooks.py samples/acme.json samples/orbit.json samples/zenith.json\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'realpath src/webhooks.py; realpath provider_report.json 2>/dev/null || realpath . | sed \\\"s#\"'$#/provider_report.json#\"'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'realpath src/webhooks.py; printf \\\"%s/provider_report.json\\\\n\\\" \\\"\"'$(realpath .)\"'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy sed -n '20,40p' tests/test_webhooks.py\"",
+          "/bin/zsh -lc 'rtk proxy realpath provider_report.json'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk git status --short -- src/webhooks.py provider_report.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.317,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 112.624,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f6542-3465-77b3-b883-8ffe2068bdf6": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v6-no-spark/multi-provider-webhook-canonicalizer/provider_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v6-no-spark/multi-provider-webhook-canonicalizer/src/webhooks.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v6-no-spark/multi-provider-webhook-canonicalizer/provider_report.json"
+        ]
+      },
+      "final_message": "Implemented the production-style webhook adapter.\n\nChanged paths:\n\n- `src/webhooks.py`\n- `provider_report.json`\n\nSupports Acme, Orbit, and Zenith with exact canonical fields, snake_case event types, provenance mappings, and `ValueError` validation for unknown providers or missing fields.\n\nAcceptance result:\n\n```text\nRan 3 tests in 0.001s\n\nOK\n```",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.052,
+            "ok": true,
+            "output": "test_all_provider_samples (test_webhooks.WebhookTests.test_all_provider_samples) ... ok\ntest_report_is_exact (test_webhooks.WebhookTests.test_report_is_exact) ... ok\ntest_unknown_and_missing_are_rejected (test_webhooks.WebhookTests.test_unknown_and_missing_are_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": [
+              "acme",
+              "orbit",
+              "zenith"
+            ],
+            "key": "providers",
+            "ok": true,
+            "path": "provider_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/webhooks.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6542-3465-77b3-b883-8ffe2068bdf6": {
+          "agentMessage": 5,
+          "commandExecution": 9,
+          "fileChange": 2,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 13,
+        "configWarning": 1,
+        "item/agentMessage/delta": 184,
+        "item/completed": 29,
+        "item/started": 29,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 13,
+        "turn/completed": 1,
+        "turn/diff/updated": 10,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6542-3465-77b3-b883-8ffe2068bdf6",
+      "parent_total_tokens": 213796,
+      "parent_usage": {
+        "cachedInputTokens": 182016,
+        "inputTokens": 209510,
+        "outputTokens": 4286,
+        "reasoningOutputTokens": 1287,
+        "totalTokens": 213796
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6542-3465-77b3-b883-8ffe2068bdf6": 11
+      },
+      "tool_output_chars_by_thread": {
+        "019f6542-3465-77b3-b883-8ffe2068bdf6": 3279
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "category": "implementation",
+      "cell_id": "multi-provider-webhook-canonicalizer::v8-no-spark",
+      "changed_paths": [
+        "provider_report.json",
+        "src/webhooks.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 66.931,
+      "combined_total_tokens": 125211,
+      "commands_by_thread": {
+        "019f6547-f07a-7881-b469-a9ef0e4ddbc5": [
+          "/bin/zsh -lc \"rtk proxy pwd && rtk proxy rg --files -g 'AGENTS.md' -g 'samples/**' -g 'src/webhooks.py' -g 'tests/**' -g '\"'!**/__pycache__/**'\"' && rtk proxy git status --short\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' src/webhooks.py && rtk proxy sed -n '1,260p' tests/test_webhooks.py && rtk proxy sed -n '1,200p' samples/acme.json && rtk proxy sed -n '1,200p' samples/orbit.json && rtk proxy sed -n '1,200p' samples/zenith.json\"",
+          "/bin/zsh -lc \"rtk proxy rg -n \\\"provider_report|canonical_event|webhook|provenance\\\" . -g '\"'!samples/**'\"' -g '\"'!tests/**'\"' -g '\"'!src/webhooks.py'\"' -g '\"'!*__pycache__*'\"'\"",
+          "/bin/zsh -lc 'rtk proxy git diff -- src/webhooks.py provider_report.json && rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.321,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 66.61,
+      "execution_order_index": 13,
+      "file_changes_by_thread": {
+        "019f6547-f07a-7881-b469-a9ef0e4ddbc5": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v8-no-spark/multi-provider-webhook-canonicalizer/provider_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v8-no-spark/multi-provider-webhook-canonicalizer/src/webhooks.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v8-no-spark/multi-provider-webhook-canonicalizer/src/webhooks.py"
+        ]
+      },
+      "final_message": "Implemented the canonical webhook adapter.\n\nChanged paths:\n\n- `src/webhooks.py`\n- `provider_report.json`\n\nFeatures include provider-specific mappings with provenance, snake-case event normalization, exact four-field output, and `ValueError` validation for unknown providers and missing/empty fields.\n\nAcceptance result:\n\n```text\nRan 3 tests in 0.000s\n\nOK\n```",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.051,
+            "ok": true,
+            "output": "test_all_provider_samples (test_webhooks.WebhookTests.test_all_provider_samples) ... ok\ntest_report_is_exact (test_webhooks.WebhookTests.test_report_is_exact) ... ok\ntest_unknown_and_missing_are_rejected (test_webhooks.WebhookTests.test_unknown_and_missing_are_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": [
+              "acme",
+              "orbit",
+              "zenith"
+            ],
+            "key": "providers",
+            "ok": true,
+            "path": "provider_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/webhooks.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6547-f07a-7881-b469-a9ef0e4ddbc5": {
+          "agentMessage": 2,
+          "commandExecution": 5,
+          "fileChange": 2,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 122,
+        "item/completed": 18,
+        "item/started": 18,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6547-f07a-7881-b469-a9ef0e4ddbc5",
+      "parent_total_tokens": 125211,
+      "parent_usage": {
+        "cachedInputTokens": 101376,
+        "inputTokens": 122271,
+        "outputTokens": 2940,
+        "reasoningOutputTokens": 385,
+        "totalTokens": 125211
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6547-f07a-7881-b469-a9ef0e4ddbc5": 7
+      },
+      "tool_output_chars_by_thread": {
+        "019f6547-f07a-7881-b469-a9ef0e4ddbc5": 5005
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [
+        "019f6545-8f74-7082-a590-11e14f6a2f0f"
+      ],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": false,
+      "arm": "v9-selected-spark",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "category": "implementation",
+      "cell_id": "multi-provider-webhook-canonicalizer::v9-selected-spark",
+      "changed_paths": [
+        "provider_report.json",
+        "src/webhooks.py"
+      ],
+      "child_completion_ok": false,
+      "child_evidence_coverage_ok": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": false
+      },
+      "child_evidence_markers": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": []
+      },
+      "child_final_messages": {},
+      "child_io_ok": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": []
+      },
+      "child_read_errors": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": "thread/read failed: {'code': -32600, 'message': 'ephemeral threads do not support includeTurns'}"
+      },
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [
+        "019f6545-8f74-7082-a590-11e14f6a2f0f"
+      ],
+      "child_total_tokens": 43305,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": {
+          "cachedInputTokens": 37120,
+          "inputTokens": 42467,
+          "outputTokens": 838,
+          "reasoningOutputTokens": 164,
+          "totalTokens": 43305
+        }
+      },
+      "collection_duration_seconds": 136.447,
+      "combined_total_tokens": 162994,
+      "commands_by_thread": {
+        "019f6545-4b4a-7142-bdc0-4bad420243e1": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!samples/**'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' src/webhooks.py && rtk proxy sed -n '1,280p' tests/test_webhooks.py && rtk proxy git status --short\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"
+        ],
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": [
+          "/bin/zsh -lc \"rtk rg --files samples | rtk rg '\"'^samples/(acme|orbit|zenith)'\"'\"",
+          "/bin/zsh -lc 'rtk cat samples/acme.json samples/orbit.json samples/zenith.json'"
+        ]
+      },
+      "delegation_brief_ok": false,
+      "drain_duration_seconds": 60.005,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "acme-sample",
+            "markers": [
+              "samples/acme.json"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "orbit-sample",
+            "markers": [
+              "samples/orbit.json"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "zenith-sample",
+            "markers": [
+              "samples/zenith.json"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 76.443,
+      "execution_order_index": 8,
+      "file_changes_by_thread": {
+        "019f6545-4b4a-7142-bdc0-4bad420243e1": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-selected-spark/multi-provider-webhook-canonicalizer/provider_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-selected-spark/multi-provider-webhook-canonicalizer/src/webhooks.py"
+        ]
+      },
+      "final_message": "Implemented the production-style webhook canonicalizer.\n\nChanged paths:\n\n- [src/webhooks.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-selected-spark/multi-provider-webhook-canonicalizer/src/webhooks.py)\n- [provider_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-selected-spark/multi-provider-webhook-canonicalizer/provider_report.json)\n\nAcceptance command:\n\n`rtk proxy python3 -m unittest discover -s tests -v`\n\nExact result: `Ran 3 tests in 0.000s` \u2014 `OK`.\n\nNo failures, blockers, or known material risks. Samples and tests were not edited.",
+      "first_spawn_seconds": 17.433,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.056,
+            "ok": true,
+            "output": "test_all_provider_samples (test_webhooks.WebhookTests.test_all_provider_samples) ... ok\ntest_report_is_exact (test_webhooks.WebhookTests.test_report_is_exact) ... ok\ntest_unknown_and_missing_are_rejected (test_webhooks.WebhookTests.test_unknown_and_missing_are_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": [
+              "acme",
+              "orbit",
+              "zenith"
+            ],
+            "key": "providers",
+            "ok": true,
+            "path": "provider_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/webhooks.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6545-4b4a-7142-bdc0-4bad420243e1": {
+          "agentMessage": 6,
+          "collabAgentToolCall": 1,
+          "commandExecution": 3,
+          "fileChange": 1,
+          "reasoning": 7,
+          "subAgentActivity": 1,
+          "userMessage": 1
+        },
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": {
+          "agentMessage": 2,
+          "commandExecution": 2,
+          "reasoning": 3
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": false,
+      "notification_counts": {
+        "account/rateLimits/updated": 11,
+        "configWarning": 1,
+        "item/agentMessage/delta": 827,
+        "item/completed": 27,
+        "item/started": 26,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 11,
+        "turn/completed": 2,
+        "turn/diff/updated": 4,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6545-4b4a-7142-bdc0-4bad420243e1",
+      "parent_total_tokens": 119689,
+      "parent_usage": {
+        "cachedInputTokens": 99328,
+        "inputTokens": 116699,
+        "outputTokens": 2990,
+        "reasoningOutputTokens": 553,
+        "totalTokens": 119689
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": false,
+      "partition_assignments": {
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": []
+      },
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": false,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": false,
+      "role_ok": false,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": false,
+      "spawn_delay_pct": 22.805,
+      "spawn_origin_ok": false,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": false,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6545-4b4a-7142-bdc0-4bad420243e1": 5,
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": 2
+      },
+      "tool_output_chars_by_thread": {
+        "019f6545-4b4a-7142-bdc0-4bad420243e1": 1793,
+        "019f6545-8f74-7082-a590-11e14f6a2f0f": 399
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-local-counterfactual",
+      "case_id": "multi-provider-webhook-canonicalizer",
+      "category": "implementation",
+      "cell_id": "multi-provider-webhook-canonicalizer::v9-local-counterfactual",
+      "changed_paths": [
+        "provider_report.json",
+        "src/webhooks.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 63.094,
+      "combined_total_tokens": 136189,
+      "commands_by_thread": {
+        "019f6547-75e5-74f1-8fdd-69e9f9400afc": [
+          "/bin/zsh -lc \"rtk proxy sh -lc 'pwd && rg --files -g \\\"AGENTS.md\\\" -g \\\".agents/**\\\" -g \\\"src/**\\\" -g \\\"tests/**\\\" -g \\\"pyproject.toml\\\" -g \\\"README*\\\" | sort'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'find .agents -maxdepth 3 -type f -print 2>/dev/null; find . -name AGENTS.md -print'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'sed -n \\\"1,240p\\\" src/webhooks.py; sed -n \\\"1,300p\\\" tests/test_webhooks.py; for f in samples/acme-sample* samples/orbit-sample* samples/zenith-sample*; do test -f \\\"\"'$f\" && { echo \"FILE:$f\"; sed -n \"1,240p\" \"$f\"; }; done'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'rg --files samples | sort | xargs -n1 sh -c '\\\\''echo FILE:\"'$0; sed -n \"1,240p\" \"$0\"'\"'\\\\'''\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy git diff -- src/webhooks.py provider_report.json'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.313,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 62.78,
+      "execution_order_index": 12,
+      "file_changes_by_thread": {
+        "019f6547-75e5-74f1-8fdd-69e9f9400afc": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-local-counterfactual/multi-provider-webhook-canonicalizer/provider_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-local-counterfactual/multi-provider-webhook-canonicalizer/src/webhooks.py"
+        ]
+      },
+      "final_message": "Implemented the canonical webhook adapter.\n\nChanged paths:\n\n- [src/webhooks.py](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-local-counterfactual/multi-provider-webhook-canonicalizer/src/webhooks.py)\n- [provider_report.json](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/multi-provider-webhook-canonicalizer-trial-1-v9-local-counterfactual/multi-provider-webhook-canonicalizer/provider_report.json)\n\nThe adapter supports Acme, Orbit, and Zenith; returns exactly `id`, `type`, `account_id`, and `occurred_at`; normalizes event types to lowercase snake case; and raises `ValueError` for unknown providers or missing/invalid required fields.\n\nThe exact `spark_worker` role was unavailable, so sample inspection was performed locally.\n\nAcceptance result:\n\n```text\nRan 3 tests in 0.000s\n\nOK\n```\n\nCommand exited with status `0`. Samples and tests were not modified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.052,
+            "ok": true,
+            "output": "test_all_provider_samples (test_webhooks.WebhookTests.test_all_provider_samples) ... ok\ntest_report_is_exact (test_webhooks.WebhookTests.test_report_is_exact) ... ok\ntest_unknown_and_missing_are_rejected (test_webhooks.WebhookTests.test_unknown_and_missing_are_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": [
+              "acme",
+              "orbit",
+              "zenith"
+            ],
+            "key": "providers",
+            "ok": true,
+            "path": "provider_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/webhooks.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6547-75e5-74f1-8fdd-69e9f9400afc": {
+          "agentMessage": 5,
+          "commandExecution": 8,
+          "fileChange": 1,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 9,
+        "configWarning": 1,
+        "item/agentMessage/delta": 477,
+        "item/completed": 23,
+        "item/started": 23,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 9,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6547-75e5-74f1-8fdd-69e9f9400afc",
+      "parent_total_tokens": 136189,
+      "parent_usage": {
+        "cachedInputTokens": 117504,
+        "inputTokens": 133502,
+        "outputTokens": 2687,
+        "reasoningOutputTokens": 438,
+        "totalTokens": 136189
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 8,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6547-75e5-74f1-8fdd-69e9f9400afc": 9
+      },
+      "tool_output_chars_by_thread": {
+        "019f6547-75e5-74f1-8fdd-69e9f9400afc": 4987
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "service-policy-schema-v3",
+      "category": "migration",
+      "cell_id": "service-policy-schema-v3::v6-no-spark",
+      "changed_paths": [
+        "migration_report.json",
+        "src/migrate_policy.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 167.501,
+      "combined_total_tokens": 297185,
+      "commands_by_thread": {
+        "019f6542-3465-7742-a875-888f0dd93385": [
+          "/bin/zsh -lc \"rtk proxy pwd && rtk proxy rg --files -g 'AGENTS.md' -g '\"'!manifests/**'\"' -g '\"'!tests/**'\"' -g 'src/migrate_policy.py' -g '*spec*' -g 'README*' -g 'pyproject.toml' -g 'setup.cfg'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'rg --files | sort && sed -n \\\"1,240p\\\" src/migrate_policy.py'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'for f in manifests/auth.json manifests/billing.json manifests/search.json manifests/worker.json; do printf \\\"FILE %s\\\\n\\\" \\\"\"'$f\"; sed -n \"1,240p\" \"$f\"; done'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'root=\\\"\"'$PWD/\"; for path in \"$PWD/src/migrate_policy.py\" \"$PWD/migration_report.json\"; do case \"$path\" in \"$root\"*) printf \"verified %s'\"\\\\n\\\" \\\"\"'$path\";; *) exit 1;; esac; done'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'root=\\\"/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/\\\"; for path in \\\"\"'${root}src/migrate_policy.py\" \"${root}migration_report.json\"; do case \"$path\" in \"$root\"*) printf \"verified %s'\"\\\\n\\\" \\\"\"'$path\";; *) exit 1;; esac; done'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'root=\\\"/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/\\\"; path=\\\"\"'${root}migration_report.json\"; case \"$path\" in \"$root\"*) printf \"verified %s'\"\\\\n\\\" \\\"\"'$path\";; *) exit 1;; esac'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'root=\\\"/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/\\\"; path=\\\"\"'${root}migration_report.json\"; case \"$path\" in \"$root\"*) printf \"verified %s'\"\\\\n\\\" \\\"\"'$path\";; *) exit 1;; esac'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short -- src/migrate_policy.py migration_report.json manifests tests'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.324,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 167.177,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6542-3465-7742-a875-888f0dd93385": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/src/migrate_policy.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/migration_report.json"
+        ]
+      },
+      "final_message": "Implemented the v3 service-policy migration.\n\nChanged:\n\n- [src/migrate_policy.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/src/migrate_policy.py)\n- [migration_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v6-no-spark/service-policy-schema-v3/migration_report.json)\n\nManifests and tests were unchanged.\n\nAcceptance command:\n\n`rtk proxy python3 -m unittest discover -s tests -v`\n\nExact result: `Ran 3 tests in 0.000s \u2014 OK`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.034,
+            "ok": true,
+            "output": "test_bad_versions_and_values_fail (test_migrate_policy.MigrationTests.test_bad_versions_and_values_fail) ... ok\ntest_every_manifest_migrates (test_migrate_policy.MigrationTests.test_every_manifest_migrates) ... ok\ntest_report_is_exact (test_migrate_policy.MigrationTests.test_report_is_exact) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "target_version",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/migrate_policy.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6542-3465-7742-a875-888f0dd93385": {
+          "agentMessage": 7,
+          "commandExecution": 11,
+          "fileChange": 3,
+          "reasoning": 11,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 16,
+        "configWarning": 1,
+        "item/agentMessage/delta": 478,
+        "item/completed": 33,
+        "item/started": 33,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 16,
+        "turn/completed": 1,
+        "turn/diff/updated": 13,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6542-3465-7742-a875-888f0dd93385",
+      "parent_total_tokens": 297185,
+      "parent_usage": {
+        "cachedInputTokens": 256000,
+        "inputTokens": 289758,
+        "outputTokens": 7427,
+        "reasoningOutputTokens": 1679,
+        "totalTokens": 297185
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 11,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6542-3465-7742-a875-888f0dd93385": 14
+      },
+      "tool_output_chars_by_thread": {
+        "019f6542-3465-7742-a875-888f0dd93385": 4558
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "service-policy-schema-v3",
+      "category": "migration",
+      "cell_id": "service-policy-schema-v3::v8-no-spark",
+      "changed_paths": [
+        "migration_report.json",
+        "src/migrate_policy.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 73.6,
+      "combined_total_tokens": 106822,
+      "commands_by_thread": {
+        "019f6542-3465-76c1-a868-2911c442755d": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g 'AGENTS.md' -g 'manifests/**' -g 'src/migrate_policy.py' -g 'tests/**'\"",
+          "/bin/zsh -lc \"rtk proxy rg -n '\"'^'\"' manifests/auth.json manifests/billing.json manifests/search.json manifests/worker.json src/migrate_policy.py tests/test_migrate_policy.py\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.33,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 73.27,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f6542-3465-76c1-a868-2911c442755d": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v8-no-spark/service-policy-schema-v3/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v8-no-spark/service-policy-schema-v3/src/migrate_policy.py"
+        ]
+      },
+      "final_message": "Implemented the v3 service-policy migration.\n\nChanged paths:\n\n- [src/migrate_policy.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v8-no-spark/service-policy-schema-v3/src/migrate_policy.py)\n- [migration_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v8-no-spark/service-policy-schema-v3/migration_report.json)\n\nNo manifests or tests were edited. The `spark_worker` collaboration thread was unavailable, so manifest inspection was completed locally.\n\nAcceptance:\n\n```text\nrtk proxy python3 -m unittest discover -s tests -v\n\nRan 3 tests in 0.001s\n\nOK\n```",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.035,
+            "ok": true,
+            "output": "test_bad_versions_and_values_fail (test_migrate_policy.MigrationTests.test_bad_versions_and_values_fail) ... ok\ntest_every_manifest_migrates (test_migrate_policy.MigrationTests.test_every_manifest_migrates) ... ok\ntest_report_is_exact (test_migrate_policy.MigrationTests.test_report_is_exact) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "target_version",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/migrate_policy.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6542-3465-76c1-a868-2911c442755d": {
+          "agentMessage": 4,
+          "commandExecution": 4,
+          "fileChange": 1,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 335,
+        "item/completed": 18,
+        "item/started": 18,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 4,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6542-3465-76c1-a868-2911c442755d",
+      "parent_total_tokens": 106822,
+      "parent_usage": {
+        "cachedInputTokens": 92416,
+        "inputTokens": 103801,
+        "outputTokens": 3021,
+        "reasoningOutputTokens": 1230,
+        "totalTokens": 106822
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 4,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6542-3465-76c1-a868-2911c442755d": 5
+      },
+      "tool_output_chars_by_thread": {
+        "019f6542-3465-76c1-a868-2911c442755d": 3278
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c"
+      ],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": false,
+      "arm": "v9-selected-spark",
+      "case_id": "service-policy-schema-v3",
+      "category": "migration",
+      "cell_id": "service-policy-schema-v3::v9-selected-spark",
+      "changed_paths": [
+        "migration_report.json",
+        "src/migrate_policy.py"
+      ],
+      "child_completion_ok": false,
+      "child_evidence_coverage_ok": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": false
+      },
+      "child_evidence_markers": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": []
+      },
+      "child_final_messages": {},
+      "child_io_ok": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": []
+      },
+      "child_read_errors": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": "thread/read failed: {'code': -32600, 'message': 'ephemeral threads do not support includeTurns'}"
+      },
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c"
+      ],
+      "child_total_tokens": 42807,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": {
+          "cachedInputTokens": 30976,
+          "inputTokens": 42130,
+          "outputTokens": 677,
+          "reasoningOutputTokens": 124,
+          "totalTokens": 42807
+        }
+      },
+      "collection_duration_seconds": 157.656,
+      "combined_total_tokens": 181881,
+      "commands_by_thread": {
+        "019f6543-eec2-7662-bd54-0b86e4495808": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' src/migrate_policy.py\"",
+          "/bin/zsh -lc 'rtk proxy rg --files src tests'",
+          "/bin/zsh -lc 'rtk proxy rg -n \"migrate_policy|migration_report|schema_version|timeout|max_attempts|access\" tests'",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' tests/test_migrate_policy.py\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy git diff --check'",
+          "/bin/zsh -lc 'rtk proxy git diff -- src/migrate_policy.py migration_report.json'"
+        ],
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": [
+          "/bin/zsh -lc 'rtk rg --files manifests'",
+          "/bin/zsh -lc 'rtk rg -n \".\" manifests/auth.json manifests/billing.json manifests/search.json manifests/worker.json'"
+        ]
+      },
+      "delegation_brief_ok": false,
+      "drain_duration_seconds": 60.011,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "auth-manifest",
+            "markers": [
+              "manifests/auth.json"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "billing-manifest",
+            "markers": [
+              "manifests/billing.json"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "search-manifest",
+            "markers": [
+              "manifests/search.json"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "worker-manifest",
+            "markers": [
+              "manifests/worker.json"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 97.646,
+      "execution_order_index": 6,
+      "file_changes_by_thread": {
+        "019f6543-eec2-7662-bd54-0b86e4495808": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-selected-spark/service-policy-schema-v3/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-selected-spark/service-policy-schema-v3/src/migrate_policy.py"
+        ]
+      },
+      "final_message": "Implemented the v3 service-policy migration.\n\nChanged:\n\n- [src/migrate_policy.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-selected-spark/service-policy-schema-v3/src/migrate_policy.py)\n- [migration_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-selected-spark/service-policy-schema-v3/migration_report.json)\n\nThe migration now:\n\n- Accepts v1 and v2 policies.\n- Converts retry counts to `max_attempts` by adding 1.\n- Emits exactly the required v3 structure.\n- Raises `ValueError` for unsupported versions, missing fields, invalid types, and invalid ranges.\n\nAcceptance:\n\n```text\nrtk proxy python3 -m unittest discover -s tests -v\nRan 3 tests in 0.000s\n\nOK\n```\n\nExit code: `0`. `git diff --check` also passed. No manifests or tests were edited; no failures or blockers remain. Residual risk is low.",
+      "first_spawn_seconds": 19.029,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.052,
+            "ok": true,
+            "output": "test_bad_versions_and_values_fail (test_migrate_policy.MigrationTests.test_bad_versions_and_values_fail) ... ok\ntest_every_manifest_migrates (test_migrate_policy.MigrationTests.test_every_manifest_migrates) ... ok\ntest_report_is_exact (test_migrate_policy.MigrationTests.test_report_is_exact) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "target_version",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/migrate_policy.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6543-eec2-7662-bd54-0b86e4495808": {
+          "agentMessage": 6,
+          "collabAgentToolCall": 1,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 9,
+          "subAgentActivity": 1,
+          "userMessage": 1
+        },
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": {
+          "agentMessage": 2,
+          "commandExecution": 2,
+          "reasoning": 3
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": false,
+      "notification_counts": {
+        "account/rateLimits/updated": 12,
+        "configWarning": 1,
+        "item/agentMessage/delta": 761,
+        "item/completed": 35,
+        "item/started": 34,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 12,
+        "turn/completed": 2,
+        "turn/diff/updated": 5,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6543-eec2-7662-bd54-0b86e4495808",
+      "parent_total_tokens": 139074,
+      "parent_usage": {
+        "cachedInputTokens": 115456,
+        "inputTokens": 135861,
+        "outputTokens": 3213,
+        "reasoningOutputTokens": 1025,
+        "totalTokens": 139074
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": false,
+      "partition_assignments": {
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": []
+      },
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": false,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 11,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": false,
+      "spawn_delay_pct": 19.488,
+      "spawn_origin_ok": false,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": false,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6543-eec2-7662-bd54-0b86e4495808": 11,
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": 2
+      },
+      "tool_output_chars_by_thread": {
+        "019f6543-eec2-7662-bd54-0b86e4495808": 4944,
+        "019f6544-3917-74d3-918e-6b3bcb6ead5c": 543
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-local-counterfactual",
+      "case_id": "service-policy-schema-v3",
+      "category": "migration",
+      "cell_id": "service-policy-schema-v3::v9-local-counterfactual",
+      "changed_paths": [
+        "migration_report.json",
+        "src/migrate_policy.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 64.444,
+      "combined_total_tokens": 107047,
+      "commands_by_thread": {
+        "019f6542-3465-7792-9809-40cd0c851237": [
+          "/bin/zsh -lc \"rtk proxy sh -lc 'pwd; rg --files -g \\\"AGENTS.md\\\" -g \\\"\"'!**/.git/**\"; rg --files manifests src tests | sort; git status --short'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'for f in manifests/auth.json manifests/billing.json manifests/search.json manifests/worker.json src/migrate_policy.py tests/test_migrate_policy.py; do echo \\\"### \"'$f\"; sed -n \"1,240p\" \"$f\"; done'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'rg -n \\\"migration_report|migrate_policy|partition_ids|schema_version|max_attempts|retry_count\\\" . -g \\\"\"'!**/.git/**\"'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy sh -lc 'git status --short; git diff -- src/migrate_policy.py migration_report.json; git diff --exit-code -- manifests tests'\""
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.329,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 64.115,
+      "execution_order_index": 3,
+      "file_changes_by_thread": {
+        "019f6542-3465-7792-9809-40cd0c851237": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-local-counterfactual/service-policy-schema-v3/migration_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-local-counterfactual/service-policy-schema-v3/src/migrate_policy.py"
+        ]
+      },
+      "final_message": "Implemented the v3 service-policy migration.\n\nChanged:\n\n- [src/migrate_policy.py](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-local-counterfactual/service-policy-schema-v3/src/migrate_policy.py)\n- [migration_report.json](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/service-policy-schema-v3-trial-1-v9-local-counterfactual/service-policy-schema-v3/migration_report.json)\n\nSupports v1/v2, emits exact v3 structure, converts retries to attempts, and raises `ValueError` for unsupported versions or malformed values. Manifests and tests remain unchanged.\n\nAcceptance result:\n\n```text\nRan 3 tests in 0.001s\n\nOK\n```\n\nCommand exited `0`. No failures or blockers.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.052,
+            "ok": true,
+            "output": "test_bad_versions_and_values_fail (test_migrate_policy.MigrationTests.test_bad_versions_and_values_fail) ... ok\ntest_every_manifest_migrates (test_migrate_policy.MigrationTests.test_every_manifest_migrates) ... ok\ntest_report_is_exact (test_migrate_policy.MigrationTests.test_report_is_exact) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "target_version",
+            "ok": true,
+            "path": "migration_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/migrate_policy.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6542-3465-7792-9809-40cd0c851237": {
+          "agentMessage": 5,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 403,
+        "item/completed": 20,
+        "item/started": 20,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6542-3465-7792-9809-40cd0c851237",
+      "parent_total_tokens": 107047,
+      "parent_usage": {
+        "cachedInputTokens": 92416,
+        "inputTokens": 104238,
+        "outputTokens": 2809,
+        "reasoningOutputTokens": 807,
+        "totalTokens": 107047
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6542-3465-7792-9809-40cd0c851237": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f6542-3465-7792-9809-40cd0c851237": 6099
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "inventory-reservation-handoff",
+      "category": "handoff",
+      "cell_id": "inventory-reservation-handoff::v6-no-spark",
+      "changed_paths": [
+        "incident_summary.json",
+        "src/inventory.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 128.076,
+      "combined_total_tokens": 122235,
+      "commands_by_thread": {
+        "019f6543-54dc-72a0-9340-fcc7171afbf6": [
+          "/bin/zsh -lc 'rtk pwd'",
+          "/bin/zsh -lc \"rtk rg --files -g 'AGENTS.md' -g 'handoff/incident.md' -g 'data/events.jsonl' -g 'src/inventory.py' -g 'tests/**' -g 'incident_summary.json'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' src/inventory.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' handoff/incident.md\"",
+          "/bin/zsh -lc \"rtk sed -n '1,320p' tests/test_inventory.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' data/events.jsonl\"",
+          "/bin/zsh -lc \"rtk python3 -c \\\"from pathlib import Path; root=Path('/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v6-no-spark/inventory-reservation-handoff'); paths=[root/'src/inventory.py', root/'incident_summary.json']; assert all(str(path).startswith(str(root) + '/') for path in paths); print('verified', *paths, sep='\\\\n')\\\"\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk git status --short -- src/inventory.py incident_summary.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.315,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 127.761,
+      "execution_order_index": 5,
+      "file_changes_by_thread": {
+        "019f6543-54dc-72a0-9340-fcc7171afbf6": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v6-no-spark/inventory-reservation-handoff/incident_summary.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v6-no-spark/inventory-reservation-handoff/src/inventory.py"
+        ]
+      },
+      "final_message": "Implemented the inventory incident fix.\n\nChanged paths:\n\n- [src/inventory.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v6-no-spark/inventory-reservation-handoff/src/inventory.py)\n- [incident_summary.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v6-no-spark/inventory-reservation-handoff/incident_summary.json)\n\nExact verification: `rtk proxy python3 -m unittest discover -s tests -v` \u2014 Ran 3 tests, **OK**.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.052,
+            "ok": true,
+            "output": "test_incident_events (test_inventory.InventoryTests.test_incident_events) ... ok\ntest_invalid_sequence_is_rejected (test_inventory.InventoryTests.test_invalid_sequence_is_rejected) ... ok\ntest_written_summary (test_inventory.InventoryTests.test_written_summary) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 1,
+            "key": "duplicates",
+            "ok": true,
+            "path": "incident_summary.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/inventory.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6543-54dc-72a0-9340-fcc7171afbf6": {
+          "agentMessage": 4,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 302,
+        "item/completed": 27,
+        "item/started": 27,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6543-54dc-72a0-9340-fcc7171afbf6",
+      "parent_total_tokens": 122235,
+      "parent_usage": {
+        "cachedInputTokens": 98304,
+        "inputTokens": 117127,
+        "outputTokens": 5108,
+        "reasoningOutputTokens": 2863,
+        "totalTokens": 122235
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6543-54dc-72a0-9340-fcc7171afbf6": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f6543-54dc-72a0-9340-fcc7171afbf6": 2624
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "inventory-reservation-handoff",
+      "category": "handoff",
+      "cell_id": "inventory-reservation-handoff::v8-no-spark",
+      "changed_paths": [
+        "incident_summary.json",
+        "src/inventory.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 97.585,
+      "combined_total_tokens": 92349,
+      "commands_by_thread": {
+        "019f6546-70e2-7fb3-ae3b-6c7ec7c1715d": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' data/events.jsonl\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' handoff/incident.md\"",
+          "/bin/zsh -lc 'rtk proxy find . -maxdepth 3 -type f -print'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' src/inventory.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' tests/test_inventory.py\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git diff --check'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.33,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 97.255,
+      "execution_order_index": 10,
+      "file_changes_by_thread": {
+        "019f6546-70e2-7fb3-ae3b-6c7ec7c1715d": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v8-no-spark/inventory-reservation-handoff/incident_summary.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v8-no-spark/inventory-reservation-handoff/src/inventory.py"
+        ]
+      },
+      "final_message": "Implemented `summarize_inventory` and generated [incident_summary.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v8-no-spark/inventory-reservation-handoff/incident_summary.json).\n\nChanged paths:\n\n- [src/inventory.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v8-no-spark/inventory-reservation-handoff/src/inventory.py)\n- [incident_summary.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v8-no-spark/inventory-reservation-handoff/incident_summary.json)\n\nExact result from `rtk proxy python3 -m unittest discover -s tests -v`:\n\n```text\nRan 3 tests in 0.000s\n\nOK\n```",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.048,
+            "ok": true,
+            "output": "test_incident_events (test_inventory.InventoryTests.test_incident_events) ... ok\ntest_invalid_sequence_is_rejected (test_inventory.InventoryTests.test_invalid_sequence_is_rejected) ... ok\ntest_written_summary (test_inventory.InventoryTests.test_written_summary) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 1,
+            "key": "duplicates",
+            "ok": true,
+            "path": "incident_summary.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/inventory.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6546-70e2-7fb3-ae3b-6c7ec7c1715d": {
+          "agentMessage": 4,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 6,
+        "configWarning": 1,
+        "item/agentMessage/delta": 381,
+        "item/completed": 24,
+        "item/started": 24,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 6,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6546-70e2-7fb3-ae3b-6c7ec7c1715d",
+      "parent_total_tokens": 92349,
+      "parent_usage": {
+        "cachedInputTokens": 72192,
+        "inputTokens": 87299,
+        "outputTokens": 5050,
+        "reasoningOutputTokens": 2615,
+        "totalTokens": 92349
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6546-70e2-7fb3-ae3b-6c7ec7c1715d": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f6546-70e2-7fb3-ae3b-6c7ec7c1715d": 2698
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-selected-local",
+      "case_id": "inventory-reservation-handoff",
+      "category": "handoff",
+      "cell_id": "inventory-reservation-handoff::v9-selected-local",
+      "changed_paths": [
+        "incident_summary.json",
+        "src/inventory.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 108.993,
+      "combined_total_tokens": 123285,
+      "commands_by_thread": {
+        "019f6544-c515-7091-8fe7-ec689640fc52": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!incident_summary.json'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' src/inventory.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' tests/test_inventory.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' handoff/incident.md\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' data/events.jsonl\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,120p' incident_summary.json\"",
+          "/bin/zsh -lc 'rtk proxy git diff --check'",
+          "/bin/zsh -lc 'rtk proxy git diff -- src/inventory.py incident_summary.json'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.321,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 108.672,
+      "execution_order_index": 7,
+      "file_changes_by_thread": {
+        "019f6544-c515-7091-8fe7-ec689640fc52": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v9-selected-local/inventory-reservation-handoff/incident_summary.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v9-selected-local/inventory-reservation-handoff/src/inventory.py"
+        ]
+      },
+      "final_message": "Completed.\n\nChanged paths:\n\n- [src/inventory.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v9-selected-local/inventory-reservation-handoff/src/inventory.py)\n- [incident_summary.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/inventory-reservation-handoff-trial-1-v9-selected-local/inventory-reservation-handoff/incident_summary.json)\n\nExact acceptance result:\n\n```text\nRan 3 tests in 0.000s\n\nOK\n```\n\nNo failures or blockers.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.048,
+            "ok": true,
+            "output": "test_incident_events (test_inventory.InventoryTests.test_incident_events) ... ok\ntest_invalid_sequence_is_rejected (test_inventory.InventoryTests.test_invalid_sequence_is_rejected) ... ok\ntest_written_summary (test_inventory.InventoryTests.test_written_summary) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 1,
+            "key": "duplicates",
+            "ok": true,
+            "path": "incident_summary.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/inventory.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6544-c515-7091-8fe7-ec689640fc52": {
+          "agentMessage": 4,
+          "commandExecution": 11,
+          "fileChange": 1,
+          "reasoning": 11,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 328,
+        "item/completed": 28,
+        "item/started": 28,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/plan/updated": 2,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6544-c515-7091-8fe7-ec689640fc52",
+      "parent_total_tokens": 123285,
+      "parent_usage": {
+        "cachedInputTokens": 96256,
+        "inputTokens": 117689,
+        "outputTokens": 5596,
+        "reasoningOutputTokens": 3309,
+        "totalTokens": 123285
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 11,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6544-c515-7091-8fe7-ec689640fc52": 12
+      },
+      "tool_output_chars_by_thread": {
+        "019f6544-c515-7091-8fe7-ec689640fc52": 4816
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "support-export-formula-safety",
+      "category": "general",
+      "cell_id": "support-export-formula-safety::v6-no-spark",
+      "changed_paths": [
+        "export_report.json",
+        "src/exporter.py",
+        "tickets.csv"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 279.155,
+      "combined_total_tokens": 396708,
+      "commands_by_thread": {
+        "019f6543-3157-7a03-903b-e1f2831e0405": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' schema.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,320p' src/exporter.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' data/tickets.json\"",
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!tests/**'\"'\"",
+          "/bin/zsh -lc 'rtk proxy pwd'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy perl -pi -e 's/\\\\r?\\\\n/\\\\r\\\\n/g' tickets.csv\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short -- src/exporter.py tickets.csv export_report.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.327,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 278.829,
+      "execution_order_index": 4,
+      "file_changes_by_thread": {
+        "019f6543-3157-7a03-903b-e1f2831e0405": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/export_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/src/exporter.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/tickets.csv",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/src/exporter.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/src/exporter.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/tickets.csv",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/export_report.json"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [src/exporter.py](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/src/exporter.py)\n- [tickets.csv](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/tickets.csv)\n- [export_report.json](/private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v6-no-spark/support-export-formula-safety/export_report.json)\n\nAcceptance command:\n\n`rtk proxy python3 -m unittest discover -s tests -v`\n\nExact result: `Ran 2 tests in 0.000s` \u2014 `OK`.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.033,
+            "ok": true,
+            "output": "test_exact_export_and_report (test_exporter.ExportTests.test_exact_export_and_report) ... ok\ntest_wrong_types_and_missing_fields_fail (test_exporter.ExportTests.test_wrong_types_and_missing_fields_fail) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "sanitized_cells",
+            "ok": true,
+            "path": "export_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/exporter.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6543-3157-7a03-903b-e1f2831e0405": {
+          "agentMessage": 8,
+          "commandExecution": 13,
+          "fileChange": 5,
+          "reasoning": 33,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 17,
+        "configWarning": 1,
+        "item/agentMessage/delta": 522,
+        "item/completed": 60,
+        "item/started": 60,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 17,
+        "turn/completed": 1,
+        "turn/diff/updated": 19,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6543-3157-7a03-903b-e1f2831e0405",
+      "parent_total_tokens": 396708,
+      "parent_usage": {
+        "cachedInputTokens": 334592,
+        "inputTokens": 382873,
+        "outputTokens": 13835,
+        "reasoningOutputTokens": 10195,
+        "totalTokens": 396708
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 13,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6543-3157-7a03-903b-e1f2831e0405": 18
+      },
+      "tool_output_chars_by_thread": {
+        "019f6543-3157-7a03-903b-e1f2831e0405": 8327
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "support-export-formula-safety",
+      "category": "general",
+      "cell_id": "support-export-formula-safety::v8-no-spark",
+      "changed_paths": [
+        "export_report.json",
+        "src/exporter.py",
+        "tickets.csv"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 108.771,
+      "combined_total_tokens": 144199,
+      "commands_by_thread": {
+        "019f6546-58b7-77f3-978e-e4cc7477ab9d": [
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' schema.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' data/tickets.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,300p' src/exporter.py\"",
+          "/bin/zsh -lc \"rtk proxy rg -n -S 'safe_csv_rows|tickets\\\\.csv|export_report|sanit|schema|export' tests || true\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,220p' tests/test_exporter.py\"",
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!*.pyc'\"' -g '\"'!__pycache__'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk proxy perl -pi -e 's/\\\\n/\\\\r\\\\n/g' tickets.csv\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.324,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 108.447,
+      "execution_order_index": 9,
+      "file_changes_by_thread": {
+        "019f6546-58b7-77f3-978e-e4cc7477ab9d": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v8-no-spark/support-export-formula-safety/export_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v8-no-spark/support-export-formula-safety/src/exporter.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v8-no-spark/support-export-formula-safety/tickets.csv"
+        ]
+      },
+      "final_message": "Implemented CSV formula sanitization and strict validation.\n\nChanged paths:\n\n- `src/exporter.py`\n- `tickets.csv`\n- `export_report.json`\n\nExact test result:\n\n```text\nRan 2 tests in 0.001s\n\nOK\n```\n\nInputs and tests were not modified.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.05,
+            "ok": true,
+            "output": "test_exact_export_and_report (test_exporter.ExportTests.test_exact_export_and_report) ... ok\ntest_wrong_types_and_missing_fields_fail (test_exporter.ExportTests.test_wrong_types_and_missing_fields_fail) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "sanitized_cells",
+            "ok": true,
+            "path": "export_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/exporter.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6546-58b7-77f3-978e-e4cc7477ab9d": {
+          "agentMessage": 5,
+          "commandExecution": 10,
+          "fileChange": 1,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 9,
+        "configWarning": 1,
+        "item/agentMessage/delta": 239,
+        "item/completed": 29,
+        "item/started": 29,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 9,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6546-58b7-77f3-978e-e4cc7477ab9d",
+      "parent_total_tokens": 144199,
+      "parent_usage": {
+        "cachedInputTokens": 114432,
+        "inputTokens": 138872,
+        "outputTokens": 5327,
+        "reasoningOutputTokens": 3498,
+        "totalTokens": 144199
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 10,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6546-58b7-77f3-978e-e4cc7477ab9d": 11
+      },
+      "tool_output_chars_by_thread": {
+        "019f6546-58b7-77f3-978e-e4cc7477ab9d": 4672
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-selected-local",
+      "case_id": "support-export-formula-safety",
+      "category": "general",
+      "cell_id": "support-export-formula-safety::v9-selected-local",
+      "changed_paths": [
+        "export_report.json",
+        "src/exporter.py",
+        "tickets.csv"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 86.628,
+      "combined_total_tokens": 107583,
+      "commands_by_thread": {
+        "019f6547-63f3-7722-abbb-e6117e72db3e": [
+          "/bin/zsh -lc \"rtk rg --files && rtk sed -n '1,240p' schema.json && rtk sed -n '1,260p' data/tickets.json && rtk sed -n '1,320p' src/exporter.py && rtk rg -n \\\"safe_csv_rows|tickets\\\\.csv|export_report|csv|sanit\\\" tests src . --glob '\"'!tickets.csv'\"' --glob '\"'!export_report.json'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' tests/test_exporter.py && rtk find . -maxdepth 2 -type f -not -path './.git/*' -print\"",
+          "/bin/zsh -lc \"rtk sed -n '1,280p' src/exporter.py && rtk git status --short\"",
+          "/bin/zsh -lc 'rtk proxy python3 -m unittest discover -s tests -v'",
+          "/bin/zsh -lc \"rtk git status --short && rtk git diff --stat && rtk sed -n '1,20p' tickets.csv && rtk sed -n '1,20p' export_report.json\""
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.319,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 86.309,
+      "execution_order_index": 11,
+      "file_changes_by_thread": {
+        "019f6547-63f3-7722-abbb-e6117e72db3e": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v9-selected-local/support-export-formula-safety/src/exporter.py"
+        ]
+      },
+      "final_message": "Implemented CSV formula sanitization and validation.\n\nChanged/generated paths:\n\n- [src/exporter.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v9-selected-local/support-export-formula-safety/src/exporter.py>)\n- [tickets.csv](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v9-selected-local/support-export-formula-safety/tickets.csv>)\n- [export_report.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-final-4cj9m9rb/support-export-formula-safety-trial-1-v9-selected-local/support-export-formula-safety/export_report.json>)\n\nExact verification result:\n\n```text\nRan 2 tests in 0.000s\n\nOK\n```\n\nNo failures or blockers.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.054,
+            "ok": true,
+            "output": "test_exact_export_and_report (test_exporter.ExportTests.test_exact_export_and_report) ... ok\ntest_wrong_types_and_missing_fields_fail (test_exporter.ExportTests.test_wrong_types_and_missing_fields_fail) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 3,
+            "key": "sanitized_cells",
+            "ok": true,
+            "path": "export_report.json",
+            "type": "json_equals"
+          },
+          {
+            "ok": true,
+            "path": "src/exporter.py",
+            "type": "path_not_contains"
+          }
+        ],
+        "ok": true,
+        "passed": 3,
+        "score_pct": 100.0,
+        "total": 3
+      },
+      "item_counts_by_thread": {
+        "019f6547-63f3-7722-abbb-e6117e72db3e": {
+          "agentMessage": 4,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 7,
+        "configWarning": 1,
+        "item/agentMessage/delta": 381,
+        "item/completed": 20,
+        "item/started": 20,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 7,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6547-63f3-7722-abbb-e6117e72db3e",
+      "parent_total_tokens": 107583,
+      "parent_usage": {
+        "cachedInputTokens": 80384,
+        "inputTokens": 103186,
+        "outputTokens": 4397,
+        "reasoningOutputTokens": 2287,
+        "totalTokens": 107583
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6547-63f3-7722-abbb-e6117e72db3e": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f6547-63f3-7722-abbb-e6117e72db3e": 7001
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "runner_status": "matrix_complete_not_release_verdict",
+  "schema_version": 1,
+  "seed": 20260715,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-v9-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "task_gate_passes": 12,
+  "treatment": {
+    "availability_prompt_injected": false,
+    "fixed_worker_cap": null,
+    "local_counterfactual_shapes": [
+      "implementation",
+      "migration"
+    ],
+    "local_shapes": [
+      "general",
+      "handoff"
+    ],
+    "selected_local_multi_agent_config": false,
+    "selected_spark_multi_agent_config": true,
+    "spark_shapes": [
+      "implementation",
+      "migration"
+    ]
+  },
+  "wall_time_contended": true
+}

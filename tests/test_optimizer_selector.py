@@ -7,7 +7,6 @@ import os
 import subprocess
 import sys
 import tempfile
-import tomllib
 import unittest
 from pathlib import Path
 
@@ -26,15 +25,36 @@ class OptimizerSelectorTests(unittest.TestCase):
     def test_plugin_and_package_tables_match(self) -> None:
         self.assertEqual(DEFAULT_TABLE.read_bytes(), PLUGIN_TABLE.read_bytes())
 
-    def test_all_8_input_combinations_select_a_profile_and_treatment(self) -> None:
+    def test_all_120_input_combinations_select_only_native_or_v9_lanes(self) -> None:
         dimensions = self.table["dimensions"]
         combinations = itertools.product(
             dimensions["routing_mode"],
             dimensions["task_shape"],
+            dimensions["model_family"],
+            dimensions["effort"],
         )
         results = [recommend(*values, table=self.table) for values in combinations]
-        self.assertEqual(len(results), 8)
-        self.assertTrue(all(result["profile"].startswith("smart-compact-") for result in results))
+        self.assertEqual(len(results), 120)
+        self.assertTrue(
+            all(
+                result["profile"] is None
+                or result["profile"].startswith("smart-compact-v9")
+                for result in results
+            )
+        )
+        self.assertEqual(
+            {result["skill"] for result in results},
+            {None, "smart-compact-v9"},
+        )
+        self.assertEqual(
+            {result["profile"] for result in results},
+            {
+                None,
+                "smart-compact-v9",
+                "smart-compact-v9-spark",
+                "smart-compact-v9-v8",
+            },
+        )
         self.assertTrue(
             all(
                 result["routingTreatment"]["enforcement"] == "config_before_inference"
@@ -44,39 +64,65 @@ class OptimizerSelectorTests(unittest.TestCase):
 
     def test_representative_measured_rules(self) -> None:
         cases = {
-            ("auto_spark", "general"): "smart-compact-v8",
-            ("auto_spark", "implementation"): "smart-compact-v8",
-            ("no_spark", "implementation"): "smart-compact-v6",
-            ("no_spark", "migration"): "smart-compact-v8-natural",
-            ("no_spark", "handoff"): "smart-compact-v8-natural",
-            ("no_spark", "general"): "smart-compact-v8-natural",
+            ("auto_spark", "implementation", "luna", "max"): "smart-compact-v9-spark",
+            ("no_spark", "implementation", "luna", "max"): "smart-compact-v9-v8",
+            ("auto_spark", "implementation", "sol", "medium"): "smart-compact-v9-v8",
+            ("auto_spark", "migration", "sol", "medium"): None,
+            ("auto_spark", "migration", "sol", "high"): "smart-compact-v9-v8",
+            ("auto_spark", "handoff", "luna", "xhigh"): "smart-compact-v9",
+            ("auto_spark", "handoff", "luna", "max"): "smart-compact-v9-v8",
+            ("auto_spark", "general", "luna", "max"): "smart-compact-v9",
         }
         for inputs, expected in cases.items():
             with self.subTest(inputs=inputs):
                 self.assertEqual(recommend(*inputs, table=self.table)["profile"], expected)
 
-    def test_natural_profile_is_exact_frozen_treatment(self) -> None:
-        installed = ROOT / "profiles" / "smart-compact-v8-natural.config.toml"
-        frozen = ROOT / "benchmarks" / "experiments" / "v8-verbose" / "profile.config.toml"
-        self.assertEqual(installed.read_bytes(), frozen.read_bytes())
+    def test_rejects_a_legacy_profile_in_the_v9_table(self) -> None:
+        drifted = json.loads(json.dumps(self.table))
+        drifted["profiles"]["v9"]["profile"] = "smart-compact-v8"
+        with self.assertRaisesRegex(ValueError, "native or Smart Compact v9 IDs"):
+            recommend("auto_spark", "general", table=drifted)
+
+    def test_v9_profiles_bind_minimal_local_and_explicit_spark_treatments(self) -> None:
         self.assertEqual(
-            tomllib.loads(installed.read_text(encoding="utf-8")),
-            json.loads(
-                (ROOT / "plugin" / "profiles" / "smart-compact-v8-natural.config.json").read_text(
-                    encoding="utf-8"
+            (ROOT / "profiles" / "smart-compact.config.toml").read_bytes(),
+            (ROOT / "profiles" / "smart-compact-v9.config.toml").read_bytes(),
+        )
+        canonical = (ROOT / "profiles" / "smart-compact-v9.config.toml").read_bytes()
+        retired_v8 = (
+            ROOT
+            / "benchmarks"
+            / "retired"
+            / "package"
+            / "profiles"
+            / "smart-compact-v8.config.toml"
+        ).read_bytes()
+        self.assertNotEqual(canonical, retired_v8)
+        self.assertLess(len(canonical), len(retired_v8))
+        self.assertEqual(
+            (ROOT / "profiles" / "smart-compact-v9-v8.config.toml").read_bytes(),
+            retired_v8,
+        )
+        spark = (ROOT / "profiles" / "smart-compact-v9-spark.config.toml").read_bytes()
+        self.assertGreater(len(spark), len(canonical))
+        self.assertLessEqual(len(spark), 1_000)
+
+    def test_retired_profiles_are_provenance_only(self) -> None:
+        selected = {profile["profile"] for profile in self.table["profiles"].values()}
+        for profile_id in self.table["retired_profiles"]:
+            with self.subTest(profile=profile_id):
+                self.assertNotIn(profile_id, selected)
+                self.assertEqual(
+                    (ROOT / "profiles" / f"{profile_id}.config.toml").read_bytes(),
+                    (
+                        ROOT
+                        / "benchmarks"
+                        / "retired"
+                        / "package"
+                        / "profiles"
+                        / f"{profile_id}.config.toml"
+                    ).read_bytes(),
                 )
-            ),
-        )
-        packaged_skill = (ROOT / "versions" / "v8-natural" / "SKILL.md").read_text(
-            encoding="utf-8"
-        )
-        frozen_skill = (
-            ROOT / "benchmarks" / "experiments" / "v8-verbose" / "SKILL.md"
-        ).read_text(encoding="utf-8")
-        self.assertEqual(
-            packaged_skill.split("## Instructions\n", 1)[1],
-            frozen_skill.split("## Instructions\n", 1)[1],
-        )
 
     def test_source_hashes_are_bound(self) -> None:
         for source in self.table["sources"]:
@@ -108,9 +154,9 @@ class OptimizerSelectorTests(unittest.TestCase):
         )
         with tempfile.TemporaryDirectory() as directory:
             codex_home = Path(directory)
-            installed = codex_home / "smart-compact-v8.config.toml"
+            installed = codex_home / "smart-compact-v9.config.toml"
             installed.write_bytes(
-                (ROOT / "profiles" / "smart-compact-v8.config.toml").read_bytes()
+                (ROOT / "profiles" / "smart-compact-v9.config.toml").read_bytes()
             )
             environment = {**os.environ, "CODEX_HOME": str(codex_home)}
             command = subprocess.run(
@@ -130,14 +176,46 @@ class OptimizerSelectorTests(unittest.TestCase):
                 capture_output=True,
                 check=False,
             )
-        self.assertEqual(profile.stdout.strip(), "smart-compact-v8")
+        self.assertEqual(profile.stdout.strip(), "smart-compact-v9")
         self.assertEqual(
             command.stdout.strip(),
-            "codex --profile smart-compact-v8 --enable multi_agent",
+            "codex --profile smart-compact-v9 --disable multi_agent",
         )
         self.assertEqual(drifted.returncode, 2)
         self.assertIn("differs from the bound profile", drifted.stderr)
-        self.assertEqual(json.loads(payload.stdout)["reasonCode"], "auto_aggregate_terse")
+        decoded = json.loads(payload.stdout)
+        self.assertEqual(decoded["reasonCode"], "minimal_local_general")
+        self.assertEqual(decoded["routingTreatmentName"], "no_spark")
+
+    def test_native_cli_formats_do_not_require_an_installed_profile(self) -> None:
+        base = [
+            sys.executable,
+            str(SCRIPT),
+            "--routing-mode",
+            "auto_spark",
+            "--task-shape",
+            "migration",
+            "--model-family",
+            "sol",
+            "--effort",
+            "medium",
+        ]
+        profile = subprocess.run(
+            [*base, "--format", "profile"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        command = subprocess.run(
+            [*base, "--format", "command"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        self.assertEqual(profile.stdout.strip(), "codex-default")
+        self.assertEqual(command.stdout.strip(), "codex --disable multi_agent")
 
 
 if __name__ == "__main__":

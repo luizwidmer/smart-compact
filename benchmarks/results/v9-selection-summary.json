@@ -1,0 +1,44 @@
+{
+  "developmentEvidence": {
+    "case": "polyglot-record-normalizer",
+    "parentTokens": 147086,
+    "releaseMetric": false,
+    "spawnedWorkers": 1,
+    "taskPass": true
+  },
+  "historicalReplayStatus": "retired_in_sample_selector_evidence_not_current_v9_metric",
+  "localInstructionBytes": 259,
+  "product": "smart-compact-v9",
+  "selectableProfiles": [
+    "smart-compact-v9",
+    "smart-compact-v9-spark"
+  ],
+  "selectionEvidence": {
+    "frozenReleaseGate": "rejected",
+    "implementationSpark": {
+      "childTokens": 43305,
+      "localParentTokens": 136189,
+      "parentTokenReductionPct": 12.116,
+      "parentTokensSaved": 16500,
+      "sparkParentTokens": 119689,
+      "spawnedWorkers": 1,
+      "workerCompletionTelemetry": "not_proven_ephemeral_thread_read_limitation"
+    },
+    "parentTokenReductionPctVsV8": 2.343,
+    "parentTokensSavedVsV8": 10977,
+    "physicalCells": 14,
+    "selectedArms": {
+      "general": "v9-selected-local",
+      "handoff": "v9-selected-local",
+      "implementation": "v9-selected-spark",
+      "migration": "v9-local-counterfactual"
+    },
+    "selectedV9ParentTokens": 457604,
+    "status": "package_selected_from_one_pass_matrix_not_blinded_confirmation",
+    "taskCorrectCells": 14,
+    "v6ParentTokens": 1029924,
+    "v8ParentTokens": 468581
+  },
+  "sparkInstructionBytes": 769,
+  "verified": true
+}

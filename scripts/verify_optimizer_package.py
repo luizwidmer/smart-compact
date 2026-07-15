@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Verify optimizer provenance and replay its decision table over recorded cells."""
+"""Verify Smart Compact v9 provenance and replay its selector over recorded cells."""
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
-from collections import defaultdict
+import tomllib
 from pathlib import Path
 from typing import Any
 
 if __package__:
-    from .select_optimizer_profile import load_table, recommend
+    from .select_optimizer_profile import load_table
+    from .benchmark_agentic import write_json_payload
 else:
-    from select_optimizer_profile import load_table, recommend
+    from select_optimizer_profile import load_table
+    from benchmark_agentic import write_json_payload
 
 
 ROOT = Path(__file__).parents[1]
@@ -33,94 +36,230 @@ def _load_json(path: Path) -> dict[str, Any]:
     return value
 
 
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _machine_contract(path: Path) -> str:
+    text = path.read_text(encoding="utf-8")
+    marker = "```text\n"
+    _require(marker in text, f"{path} has no machine contract")
+    contract = text.split(marker, 1)[1]
+    _require("\n```" in contract, f"{path} has an unterminated machine contract")
+    return contract.split("\n```", 1)[0]
+
+
 def verify(root: Path = ROOT) -> dict[str, Any]:
     table = load_table(root / "optimizer" / "selection.json")
+    _require(
+        (root / "optimizer" / "selection.json").read_bytes()
+        == (root / "plugin" / "optimizer" / "selection.json").read_bytes(),
+        "package and plugin selection tables differ",
+    )
     for source in table["sources"]:
         path = root / source["path"]
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        digest = _sha256(path)
         _require(digest == source["sha256"], f"source hash mismatch: {source['path']}")
 
-    natural = root / "profiles" / "smart-compact-v8-natural.config.toml"
-    frozen_natural = root / "benchmarks" / "experiments" / "v8-verbose" / "profile.config.toml"
-    _require(natural.read_bytes() == frozen_natural.read_bytes(), "natural profile drifted")
-
-    release = _load_json(root / "benchmarks" / "results" / "v8-release-summary.json")
-    verbose = _load_json(root / "benchmarks" / "results" / "v8-verbose-comparison.json")
-    _require(release.get("verified") is True, "v8 release summary is not verified")
-    _require(verbose.get("verified") is True, "verbose comparison is not verified")
-
-    v6_tokens = {
-        (row["scope"], row["model"], row["effort"]): row["v6_parent_tokens"]
-        for row in release["parent_token_table"]
+    profiles = table.get("profiles")
+    _require(isinstance(profiles, dict) and profiles, "v9 profile table is empty")
+    selected_profile_ids = {
+        profile["profile"] for profile in profiles.values() if isinstance(profile.get("profile"), str)
     }
-    arm_modes = {
-        "v8-no-spark": "no_spark",
+    selected_skill_ids = {
+        profile["skill"] for profile in profiles.values() if isinstance(profile.get("skill"), str)
     }
-    selected_total = 0
-    terse_total = 0
-    cells = 0
-    by_mode: dict[str, dict[str, int]] = defaultdict(
-        lambda: {"cells": 0, "all_terse_parent_tokens": 0, "selected_parent_tokens": 0}
-    )
-    lane_cells: dict[str, int] = defaultdict(int)
-
-    for row in verbose["comparisons"]:
-        if row["arm"] not in arm_modes:
-            continue
-        routing_mode = arm_modes[row["arm"]]
-        task_shape = table["replay_case_shapes"].get(row["case_id"], "general")
-        result = recommend(
-            routing_mode,
-            task_shape,
-            table=table,
-        )
-        if result["lane"] == "v8-terse":
-            selected = row["mechy_parent_tokens"]
-        elif result["lane"] == "v8-natural":
-            selected = row["verbose_parent_tokens"]
-        elif result["lane"] == "v6":
-            key = (row["case_id"], row["model"], row["effort"])
-            _require(key in v6_tokens, f"missing v6 replay cell: {key}")
-            selected = v6_tokens[key]
-        else:
-            raise VerificationError(f"unknown replay lane: {result['lane']}")
-
-        terse = row["mechy_parent_tokens"]
-        cells += 1
-        selected_total += selected
-        terse_total += terse
-        lane_cells[result["lane"]] += 1
-        by_mode[routing_mode]["cells"] += 1
-        by_mode[routing_mode]["all_terse_parent_tokens"] += terse
-        by_mode[routing_mode]["selected_parent_tokens"] += selected
-
-    expected = table["counterfactual_replay"]
-    _require(cells == expected["cells"], "replay cell count mismatch")
-    _require(terse_total == expected["all_terse_parent_tokens"], "terse replay total mismatch")
-    _require(selected_total == expected["selected_parent_tokens"], "selected replay total mismatch")
-    _require(dict(by_mode) == expected["by_routing_mode"], "routing replay totals mismatch")
-    saved = terse_total - selected_total
-    _require(saved == expected["parent_tokens_saved_vs_all_terse"], "replay savings mismatch")
-    reduction = round(saved / terse_total * 100, 3)
     _require(
-        reduction == expected["parent_token_reduction_pct_vs_all_terse"],
-        "replay percentage mismatch",
+        selected_profile_ids
+        == {
+            "smart-compact-v9",
+            "smart-compact-v9-spark",
+            "smart-compact-v9-v8",
+        },
+        "selector exposes a non-v9 profile or omits a v9 lane",
+    )
+    _require(selected_skill_ids == {"smart-compact-v9"}, "selector exposes a non-v9 skill")
+    _require(
+        profiles["v9"].get("visibility") == "public"
+        and profiles["v9-spark"].get("visibility") == "internal"
+        and profiles["v9-v8"].get("visibility") == "internal"
+        and profiles["native"].get("profile") is None
+        and profiles["native"].get("skill") is None,
+        "v9 lane visibility contract drifted",
+    )
+
+    versions = sorted(path.parent.name for path in (root / "versions").glob("*/SKILL.md"))
+    _require(versions == ["v9"], "only the public v9 version may remain installable")
+    _require(
+        _machine_contract(root / "SKILL.md")
+        == _machine_contract(root / "versions" / "v9" / "SKILL.md"),
+        "public smart-compact and smart-compact-v9 skill contracts differ",
+    )
+
+    canonical = root / "profiles" / "smart-compact-v9.config.toml"
+    unversioned = root / "profiles" / "smart-compact.config.toml"
+    spark = root / "profiles" / "smart-compact-v9-spark.config.toml"
+    v8_lane = root / "profiles" / "smart-compact-v9-v8.config.toml"
+    frozen_canonical = (
+        root
+        / "benchmarks"
+        / "retired"
+        / "package"
+        / "profiles"
+        / "smart-compact-v8.config.toml"
+    )
+    _require(canonical.read_bytes() == unversioned.read_bytes(), "unversioned v9 alias drifted")
+    canonical_config = tomllib.loads(canonical.read_text(encoding="utf-8"))
+    canonical_instructions = canonical_config.get("developer_instructions", "")
+    _require(
+        isinstance(canonical_instructions, str)
+        and len(canonical_instructions.encode("utf-8")) <= 300,
+        "canonical v9 local contract is not minimal",
+    )
+    _require("compact_prompt" not in canonical_config, "canonical v9 enforces compact state")
+    _require("routing=local;delegation=forbidden" in canonical_instructions, "local route drifted")
+    _require(
+        canonical.read_bytes() != frozen_canonical.read_bytes(),
+        "canonical v9 unexpectedly aliases retired v8",
+    )
+    _require(
+        v8_lane.read_bytes() == frozen_canonical.read_bytes(),
+        "internal v9-v8 lane does not preserve the measured frozen profile",
+    )
+    skill_contract = _machine_contract(root / "versions" / "v9" / "SKILL.md").strip()
+    _require(
+        "escalate=security,destructive,ambiguous" in skill_contract,
+        "v9 skill lost its safety escape line",
+    )
+    profile_contract = "\n".join(
+        line for line in skill_contract.splitlines() if not line.startswith("escalate=")
+    )
+    _require(
+        profile_contract == canonical_instructions.strip(),
+        "v9 skill and canonical profile execution contracts differ",
+    )
+    spark_config = tomllib.loads(spark.read_text(encoding="utf-8"))
+    spark_instructions = spark_config.get("developer_instructions", "")
+    _require(
+        isinstance(spark_instructions, str)
+        and len(spark_instructions.encode("utf-8")) <= 800,
+        "v9 Spark route is not bounded",
+    )
+    _require("routing=spark_required" in spark_instructions, "Spark route drifted")
+    _require("wait_agent" in spark_instructions, "Spark route does not drain workers")
+    _require(spark_config.get("agents", {}).get("interrupt_message") is True, "Spark result delivery disabled")
+
+    retired = table.get("retired_profiles")
+    _require(isinstance(retired, list) and retired, "retired profile registry is empty")
+    for profile_id in retired:
+        _require(profile_id not in selected_profile_ids, f"retired profile is selectable: {profile_id}")
+        legacy = root / "profiles" / f"{profile_id}.config.toml"
+        archived = (
+            root
+            / "benchmarks"
+            / "retired"
+            / "package"
+            / "profiles"
+            / f"{profile_id}.config.toml"
+        )
+        _require(legacy.read_bytes() == archived.read_bytes(), f"retired profile drifted: {profile_id}")
+
+    definitive = _load_json(root / "benchmarks" / "results" / "v9-definitive-summary.json")
+    _require(
+        definitive.get("status") == "v9_definitive_selection_verified"
+        and definitive.get("task_correct_cells") == 16,
+        "definitive v9 selection evidence is incomplete",
+    )
+    official = definitive.get("official", {}).get("totals", {})
+    fresh = definitive.get("fresh_additions", {}).get("totals", {})
+    combined = definitive.get("combined", {})
+    uniform = definitive.get("uniform_state_candidate", {})
+    _require(
+        official.get("v9_parent_tokens") == 2607766
+        and official.get("v9_saved_vs_standard") == 530716
+        and official.get("v9_saved_vs_v6") == 753338
+        and official.get("v9_saved_vs_v8") == 397164
+        and official.get("v9_spawned_workers") == 1,
+        "official definitive metrics drifted",
+    )
+    _require(
+        fresh.get("v9_parent_tokens") == 462901
+        and fresh.get("v9_saved_vs_v8") == 5680,
+        "fresh definitive metrics drifted",
+    )
+    _require(
+        combined.get("v9_parent_tokens") == 3070667
+        and combined.get("v9_saved_vs_v8") == 402844,
+        "combined definitive metrics drifted",
+    )
+    _require(
+        uniform.get("status") == "rejected"
+        and uniform.get("parent_tokens") == 3817102
+        and uniform.get("state_aware_parent_tokens") == 2607766
+        and uniform.get("state_aware_saved_tokens") == 1209336
+        and uniform.get("state_aware_reduction_pct") == 31.682,
+        "uniform-state cost metrics drifted",
+    )
+    rejected = _load_json(
+        root
+        / "benchmarks"
+        / "experiments"
+        / "v9-official-state-routed-rejected"
+        / "result.json"
+    )
+    _require(
+        rejected.get("status") == "rejected_uniform_v9_state_routing"
+        and rejected.get("task_correct_cells") == 12,
+        "failed uniform-state selection is not disclosed",
+    )
+    snapshot = rejected.get("frozen_preselection_snapshot", {})
+    snapshot_path = snapshot.get("path")
+    snapshot_sha = snapshot.get("sha256")
+    _require(
+        isinstance(snapshot_path, str)
+        and isinstance(snapshot_sha, str)
+        and _sha256(root / snapshot_path) == snapshot_sha,
+        "rejected preselection snapshot is missing or drifted",
+    )
+    official_freeze = _load_json(root / "benchmarks" / "v9-official-freeze.json")
+    _require(
+        official_freeze.get("artifacts", {})
+        .get("optimizer_selection", {})
+        .get("sha256")
+        == snapshot_sha,
+        "archived preselection does not match the official freeze",
     )
     return {
         "verified": True,
-        "kind": expected["kind"],
-        "cells": cells,
-        "allTerseParentTokens": terse_total,
-        "selectedParentTokens": selected_total,
-        "parentTokensSaved": saved,
-        "parentTokenReductionPct": reduction,
-        "selectedCellsByLane": dict(sorted(lane_cells.items())),
-        "byRoutingMode": dict(by_mode),
+        "product": table["product"],
+        "selectableProfiles": sorted(selected_profile_ids),
+        "localInstructionBytes": len(canonical_instructions.encode("utf-8")),
+        "sparkInstructionBytes": len(spark_instructions.encode("utf-8")),
+        "selectionEvidence": {
+            "status": definitive["evidence_status"],
+            "taskCorrectCells": definitive["task_correct_cells"],
+            "official": official,
+            "fresh": fresh,
+            "combined": combined,
+            "selectedOfficialSpawnedWorkers": definitive["selected_official_spawned_workers"],
+        },
+        "uniformStateCandidate": "rejected",
+        "uniformStateCost": uniform,
     }
 
 
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=None)
+    return parser
+
+
 def main() -> int:
-    print(json.dumps(verify(), indent=2, sort_keys=True))
+    args = build_parser().parse_args()
+    report = verify()
+    if args.output is not None:
+        write_json_payload(args.output, report)
+    print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 
 

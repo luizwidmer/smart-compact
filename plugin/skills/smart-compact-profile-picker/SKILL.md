@@ -5,12 +5,21 @@ description: Use when the user wants to list or optimize Codex profiles or creat
 
 # Smart Compact Profile Picker
 
-Use `smart_compact_list_profiles` when the user only wants to inspect available profiles.
+Use `smart_compact_list_profiles` when the user only wants to inspect public profiles.
 
-Use `smart_compact_recommend_profile` when the user wants a read-only token-saving recommendation. Supply `no_spark` or `auto_spark` plus the closest task shape; use `general` rather than guessing.
+Use `smart_compact_recommend_profile` for a read-only V9 recommendation. Supply all four optimizer inputs:
 
-Use `smart_compact_start_optimized_task` when the user wants the recommendation enacted in a new task. Pass the current absolute workspace path unless the user supplied another one. This tool uses the bundled frozen profile and enables or disables multi-agent support through task configuration before inference; it does not add routing instructions to the prompt.
+- `routingMode`: `auto_spark` or `no_spark`
+- `taskShape`: `implementation`, `migration`, `handoff`, or `general`
+- `modelFamily`: `sol`, `luna`, or `other`
+- `effort`: `medium`, `high`, `xhigh`, `max`, or `other`
 
-Use `smart_compact_start_task` for manual profile selection. Pass `profileId` to create the empty task directly, including on clients without the in-app form. Without `profileId`, the tool opens the form. Both start tools return a `codex://threads/...` link.
+Use `general`, `other`, or both when the corresponding fact is unknown; do not invent a measured match. The optimizer may return native Codex, the internal frozen v8-compatible lane, minimal V9, or V9 Spark. V6 and V8 are retired as manual product choices, and internal lanes must not be offered as standalone public profiles.
+
+Use `smart_compact_start_optimized_task` when the user wants the recommendation enacted in a new task. Pass the current absolute workspace path unless the user supplied another one, plus the same four optimizer inputs. Only `auto_spark` + implementation + Luna/max enables the Spark lane. Every other selected lane disables multi-agent support before inference. Native means no profile instructions; it is still a valid optimized selection.
+
+Native adds no optimizer-selected profile, but user-owned global Codex configuration still applies. Do not claim that the tool erased global instructions or reproduced an isolated benchmark environment.
+
+Use `smart_compact_start_task` for manual public-profile selection. Pass `profileId` to create the empty task directly, including on clients without the in-app form. Without `profileId`, the tool opens the form. Both start tools return a `codex://threads/...` link.
 
 Never claim the current task's profile changed. A profile is selected only when the new task is created. Do not copy or start the current prompt in the new task unless a future tool explicitly supports that behavior.

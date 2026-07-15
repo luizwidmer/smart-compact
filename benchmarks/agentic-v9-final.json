@@ -1,0 +1,166 @@
+{
+  "schema_version": 2,
+  "cases": [
+    {
+      "id": "multi-provider-webhook-canonicalizer",
+      "split": "held-out",
+      "category": "implementation",
+      "inspired_by": ["SWE-bench", "Terminal-Bench 2.0"],
+      "human_minutes": 40,
+      "prompt": "Implement a production-style canonical webhook event adapter for three providers. The disjoint read-only partitions are `acme-sample`, `orbit-sample`, and `zenith-sample`, covering the correspondingly named files under `samples/`. When the exact `spark_worker` role is available, delegate all sample inspection before the parent reads those paths. Start every brief with `partition_ids: <actual IDs>`, give exclusive paths, and request the provider name plus exact source-to-canonical field mapping with provenance. Use the fewest useful workers; one worker may own several partitions and there is no fixed cap. The parent alone edits `src/webhooks.py`, writes `provider_report.json`, integrates evidence once, and runs acceptance. Canonical events must have exactly `id`, `type`, `account_id`, and `occurred_at`; normalize event types to lowercase snake case and reject unknown providers or missing fields with `ValueError`. Do not edit samples or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths and the exact result.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 1, "max": null},
+        "useful_workers": {"min": 1, "max": null},
+        "peak_concurrency": {"min": 1, "max": null},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [
+          {"id": "acme-sample", "weight": 1, "markers": ["samples/acme.json"], "allowed_replication": 1},
+          {"id": "orbit-sample", "weight": 1, "markers": ["samples/orbit.json"], "allowed_replication": 1},
+          {"id": "zenith-sample", "weight": 1, "markers": ["samples/zenith.json"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["src/webhooks.py", "provider_report.json"]
+      },
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["src/webhooks.py", "provider_report.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "samples/acme.json": "{\"event_id\":\"evt-a1\",\"event_name\":\"Invoice.Paid\",\"meta\":{\"account\":\"acct-7\"},\"created_at\":\"2026-04-01T10:00:00Z\"}\n",
+        "samples/orbit.json": "{\"id\":\"evt-o2\",\"topic\":\"subscription-cancelled\",\"tenant_id\":\"acct-8\",\"timestamp\":\"2026-04-02T11:30:00Z\"}\n",
+        "samples/zenith.json": "{\"delivery\":{\"uuid\":\"evt-z3\",\"kind\":\"USER CREATED\",\"sent_at\":\"2026-04-03T09:15:00Z\"},\"organization\":{\"id\":\"acct-9\"}}\n",
+        "src/webhooks.py": "def canonical_event(provider: str, payload: dict) -> dict:\n    return {}\n",
+        "tests/test_webhooks.py": "import json\nimport unittest\nfrom pathlib import Path\nfrom src.webhooks import canonical_event\n\nROOT = Path(__file__).parents[1]\n\nclass WebhookTests(unittest.TestCase):\n    def test_all_provider_samples(self):\n        expected = {\n            'acme': {'id':'evt-a1','type':'invoice_paid','account_id':'acct-7','occurred_at':'2026-04-01T10:00:00Z'},\n            'orbit': {'id':'evt-o2','type':'subscription_cancelled','account_id':'acct-8','occurred_at':'2026-04-02T11:30:00Z'},\n            'zenith': {'id':'evt-z3','type':'user_created','account_id':'acct-9','occurred_at':'2026-04-03T09:15:00Z'},\n        }\n        for provider, value in expected.items():\n            payload = json.loads((ROOT / 'samples' / f'{provider}.json').read_text())\n            self.assertEqual(canonical_event(provider, payload), value)\n\n    def test_unknown_and_missing_are_rejected(self):\n        with self.assertRaises(ValueError): canonical_event('other', {})\n        with self.assertRaises(ValueError): canonical_event('acme', {'event_id':'x'})\n\n    def test_report_is_exact(self):\n        report = json.loads((ROOT / 'provider_report.json').read_text())\n        self.assertEqual(report['providers'], ['acme','orbit','zenith'])\n        self.assertEqual(report['canonical_fields'], ['account_id','id','occurred_at','type'])\n"
+      },
+      "gold_files": {
+        "src/webhooks.py": "import re\n\ndef _event_type(value: str) -> str:\n    return re.sub(r'_+', '_', re.sub(r'[^a-z0-9]+', '_', value.lower())).strip('_')\n\ndef canonical_event(provider: str, payload: dict) -> dict:\n    try:\n        if provider == 'acme':\n            values = (payload['event_id'], payload['event_name'], payload['meta']['account'], payload['created_at'])\n        elif provider == 'orbit':\n            values = (payload['id'], payload['topic'], payload['tenant_id'], payload['timestamp'])\n        elif provider == 'zenith':\n            values = (payload['delivery']['uuid'], payload['delivery']['kind'], payload['organization']['id'], payload['delivery']['sent_at'])\n        else:\n            raise ValueError(f'unknown provider: {provider}')\n    except (KeyError, TypeError) as error:\n        raise ValueError(f'missing webhook field for {provider}') from error\n    event_id, event_type, account_id, occurred_at = values\n    if not all(isinstance(value, str) and value for value in values):\n        raise ValueError(f'invalid webhook field for {provider}')\n    return {'id': event_id, 'type': _event_type(event_type), 'account_id': account_id, 'occurred_at': occurred_at}\n",
+        "provider_report.json": "{\n  \"canonical_fields\": [\"account_id\", \"id\", \"occurred_at\", \"type\"],\n  \"providers\": [\"acme\", \"orbit\", \"zenith\"]\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "json_equals", "path": "provider_report.json", "key": "providers", "value": ["acme", "orbit", "zenith"]},
+        {"type": "path_not_contains", "path": "src/webhooks.py", "text": "return {}"}
+      ]
+    },
+    {
+      "id": "service-policy-schema-v3",
+      "split": "held-out",
+      "category": "migration",
+      "inspired_by": ["TheAgentCompany", "SWE-bench"],
+      "human_minutes": 45,
+      "prompt": "Build the v3 service-policy migration used by a deployment controller. The disjoint read-only partitions are `auth-manifest`, `billing-manifest`, `search-manifest`, and `worker-manifest`, each owning its matching file under `manifests/`. When the exact `spark_worker` role is available, delegate manifest inspection before the parent reads those files. Every brief begins `partition_ids: <actual IDs>` and asks for service, source version, exact old field paths, and values with provenance. Use the fewest useful workers; one may own multiple partitions and no fixed cap applies. The parent alone edits `src/migrate_policy.py`, writes `migration_report.json`, integrates evidence once, and runs acceptance. `migrate_policy` must accept v1 and v2 documents and emit exactly schema version 3 with `service`, `execution.timeout_seconds`, `execution.max_attempts`, and `access.enabled`; reject unsupported versions or malformed values with `ValueError`. Do not edit manifests or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths and the exact result.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 1, "max": null},
+        "useful_workers": {"min": 1, "max": null},
+        "peak_concurrency": {"min": 1, "max": null},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [
+          {"id": "auth-manifest", "weight": 1, "markers": ["manifests/auth.json"], "allowed_replication": 1},
+          {"id": "billing-manifest", "weight": 1, "markers": ["manifests/billing.json"], "allowed_replication": 1},
+          {"id": "search-manifest", "weight": 1, "markers": ["manifests/search.json"], "allowed_replication": 1},
+          {"id": "worker-manifest", "weight": 1, "markers": ["manifests/worker.json"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["src/migrate_policy.py", "migration_report.json"]
+      },
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["src/migrate_policy.py", "migration_report.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "manifests/auth.json": "{\"schema_version\":1,\"service\":\"auth\",\"timeout\":12,\"retries\":2,\"allow\":true}\n",
+        "manifests/billing.json": "{\"schema_version\":2,\"service\":\"billing\",\"limits\":{\"timeout_seconds\":25,\"retry_count\":4},\"enabled\":true}\n",
+        "manifests/search.json": "{\"schema_version\":1,\"service\":\"search\",\"timeout\":8,\"retries\":0,\"allow\":false}\n",
+        "manifests/worker.json": "{\"schema_version\":2,\"service\":\"worker\",\"limits\":{\"timeout_seconds\":60,\"retry_count\":1},\"enabled\":true}\n",
+        "src/migrate_policy.py": "def migrate_policy(document: dict) -> dict:\n    return document\n",
+        "tests/test_migrate_policy.py": "import json\nimport unittest\nfrom pathlib import Path\nfrom src.migrate_policy import migrate_policy\n\nROOT = Path(__file__).parents[1]\n\nclass MigrationTests(unittest.TestCase):\n    def test_every_manifest_migrates(self):\n        expected = {\n            'auth': (12, 3, True), 'billing': (25, 5, True),\n            'search': (8, 1, False), 'worker': (60, 2, True),\n        }\n        for service, values in expected.items():\n            document = json.loads((ROOT / 'manifests' / f'{service}.json').read_text())\n            migrated = migrate_policy(document)\n            timeout, attempts, enabled = values\n            self.assertEqual(migrated, {'schema_version':3,'service':service,'execution':{'timeout_seconds':timeout,'max_attempts':attempts},'access':{'enabled':enabled}})\n\n    def test_bad_versions_and_values_fail(self):\n        with self.assertRaises(ValueError): migrate_policy({'schema_version':9})\n        with self.assertRaises(ValueError): migrate_policy({'schema_version':1,'service':'x','timeout':0,'retries':0,'allow':True})\n\n    def test_report_is_exact(self):\n        report = json.loads((ROOT / 'migration_report.json').read_text())\n        self.assertEqual(report['services_by_source_version'], {'1':['auth','search'],'2':['billing','worker']})\n        self.assertEqual(report['target_version'], 3)\n"
+      },
+      "gold_files": {
+        "src/migrate_policy.py": "def migrate_policy(document: dict) -> dict:\n    try:\n        version = document['schema_version']\n        service = document['service']\n        if version == 1:\n            timeout = document['timeout']\n            attempts = document['retries'] + 1\n            enabled = document['allow']\n        elif version == 2:\n            timeout = document['limits']['timeout_seconds']\n            attempts = document['limits']['retry_count'] + 1\n            enabled = document['enabled']\n        else:\n            raise ValueError(f'unsupported schema version: {version}')\n    except (KeyError, TypeError) as error:\n        raise ValueError('malformed service policy') from error\n    if not isinstance(service, str) or not service or type(timeout) is not int or timeout <= 0 or type(attempts) is not int or attempts <= 0 or type(enabled) is not bool:\n        raise ValueError('malformed service policy values')\n    return {'schema_version': 3, 'service': service, 'execution': {'timeout_seconds': timeout, 'max_attempts': attempts}, 'access': {'enabled': enabled}}\n",
+        "migration_report.json": "{\n  \"services_by_source_version\": {\n    \"1\": [\"auth\", \"search\"],\n    \"2\": [\"billing\", \"worker\"]\n  },\n  \"target_version\": 3\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "json_equals", "path": "migration_report.json", "key": "target_version", "value": 3},
+        {"type": "path_not_contains", "path": "src/migrate_policy.py", "text": "return document"}
+      ]
+    },
+    {
+      "id": "inventory-reservation-handoff",
+      "split": "held-out",
+      "category": "handoff",
+      "inspired_by": ["WorkArena++", "TheAgentCompany"],
+      "human_minutes": 35,
+      "prompt": "Complete the inventory incident fix from the supplied on-call handoff. Work locally and do not delegate: the incident rules, event order, implementation, and report are tightly coupled. Read `handoff/incident.md` and `data/events.jsonl`, implement `summarize_inventory` in `src/inventory.py`, and write `incident_summary.json`. Duplicate event IDs must be ignored, shipments consume both on-hand and reserved units, releases only reduce reserved units, and no intermediate count may become negative. The summary must be deterministic by SKU and include on-hand, reserved, available, and duplicate-event count. Reject invalid event sequences with `ValueError`. Do not edit the handoff, events, or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths and the exact result.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 0, "max": 0},
+        "useful_workers": {"min": 0, "max": 0},
+        "peak_concurrency": {"min": 0, "max": 0},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [],
+        "parent_reserved_paths": ["src/inventory.py", "incident_summary.json"]
+      },
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["src/inventory.py", "incident_summary.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "handoff/incident.md": "Process events in file order. Duplicate IDs are audit noise and never mutate state. receive adds on_hand; reserve adds reserved; release subtracts reserved; ship subtracts both on_hand and reserved. available is on_hand minus reserved. Any negative intermediate value is invalid.\n",
+        "data/events.jsonl": "{\"id\":\"e1\",\"op\":\"receive\",\"sku\":\"A\",\"qty\":10}\n{\"id\":\"e2\",\"op\":\"reserve\",\"sku\":\"A\",\"qty\":4}\n{\"id\":\"e2\",\"op\":\"reserve\",\"sku\":\"A\",\"qty\":4}\n{\"id\":\"e3\",\"op\":\"ship\",\"sku\":\"A\",\"qty\":2}\n{\"id\":\"e4\",\"op\":\"release\",\"sku\":\"A\",\"qty\":1}\n{\"id\":\"e5\",\"op\":\"receive\",\"sku\":\"B\",\"qty\":7}\n{\"id\":\"e6\",\"op\":\"reserve\",\"sku\":\"B\",\"qty\":3}\n",
+        "src/inventory.py": "def summarize_inventory(events: list[dict]) -> dict:\n    return {}\n",
+        "tests/test_inventory.py": "import json\nimport unittest\nfrom pathlib import Path\nfrom src.inventory import summarize_inventory\n\nROOT = Path(__file__).parents[1]\n\nclass InventoryTests(unittest.TestCase):\n    def events(self):\n        return [json.loads(line) for line in (ROOT / 'data/events.jsonl').read_text().splitlines()]\n\n    def test_incident_events(self):\n        self.assertEqual(summarize_inventory(self.events()), {'duplicates':1,'skus':{'A':{'on_hand':8,'reserved':1,'available':7},'B':{'on_hand':7,'reserved':3,'available':4}}})\n\n    def test_invalid_sequence_is_rejected(self):\n        with self.assertRaises(ValueError): summarize_inventory([{'id':'x','op':'ship','sku':'A','qty':1}])\n        with self.assertRaises(ValueError): summarize_inventory([{'id':'x','op':'other','sku':'A','qty':1}])\n\n    def test_written_summary(self):\n        self.assertEqual(json.loads((ROOT / 'incident_summary.json').read_text()), summarize_inventory(self.events()))\n"
+      },
+      "gold_files": {
+        "src/inventory.py": "def summarize_inventory(events: list[dict]) -> dict:\n    seen = set()\n    duplicates = 0\n    state = {}\n    for event in events:\n        try:\n            event_id, op, sku, qty = event['id'], event['op'], event['sku'], event['qty']\n        except (KeyError, TypeError) as error:\n            raise ValueError('malformed inventory event') from error\n        if event_id in seen:\n            duplicates += 1\n            continue\n        seen.add(event_id)\n        if type(qty) is not int or qty <= 0 or not isinstance(sku, str) or not sku:\n            raise ValueError('invalid inventory event values')\n        row = state.setdefault(sku, {'on_hand': 0, 'reserved': 0})\n        if op == 'receive': row['on_hand'] += qty\n        elif op == 'reserve': row['reserved'] += qty\n        elif op == 'release': row['reserved'] -= qty\n        elif op == 'ship':\n            row['on_hand'] -= qty\n            row['reserved'] -= qty\n        else: raise ValueError(f'unknown operation: {op}')\n        if row['on_hand'] < 0 or row['reserved'] < 0 or row['reserved'] > row['on_hand']:\n            raise ValueError('invalid negative inventory state')\n    skus = {sku: {**row, 'available': row['on_hand'] - row['reserved']} for sku, row in sorted(state.items())}\n    return {'duplicates': duplicates, 'skus': skus}\n",
+        "incident_summary.json": "{\n  \"duplicates\": 1,\n  \"skus\": {\n    \"A\": {\"available\": 7, \"on_hand\": 8, \"reserved\": 1},\n    \"B\": {\"available\": 4, \"on_hand\": 7, \"reserved\": 3}\n  }\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "json_equals", "path": "incident_summary.json", "key": "duplicates", "value": 1},
+        {"type": "path_not_contains", "path": "src/inventory.py", "text": "return {}"}
+      ]
+    },
+    {
+      "id": "support-export-formula-safety",
+      "split": "held-out",
+      "category": "general",
+      "inspired_by": ["WorkArena++", "Terminal-Bench 2.0"],
+      "human_minutes": 30,
+      "prompt": "Fix the support-ticket CSV export safety defect. Work locally and do not delegate because schema interpretation, sanitization, output generation, and audit accounting are tightly coupled. Read `schema.json` and `data/tickets.json`, implement `safe_csv_rows` in `src/exporter.py`, and write both `tickets.csv` and `export_report.json`. Preserve column order from the schema and row order from the input. For text cells whose first non-whitespace character is `=`, `+`, `-`, or `@`, prefix the original cell with one apostrophe; do not alter integer fields or safe text. Use Python's CSV quoting rules. The report must contain row count, exact sanitized-cell count, and columns. Reject missing fields or wrong primitive types with `ValueError`. Do not edit inputs or tests. Run `rtk proxy python3 -m unittest discover -s tests -v`, then report changed paths and the exact result.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 0, "max": 0},
+        "useful_workers": {"min": 0, "max": 0},
+        "peak_concurrency": {"min": 0, "max": 0},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [],
+        "parent_reserved_paths": ["src/exporter.py", "tickets.csv", "export_report.json"]
+      },
+      "acceptance_command": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "allowed_changes": ["src/exporter.py", "tickets.csv", "export_report.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "schema.json": "{\"columns\":[{\"name\":\"ticket_id\",\"type\":\"integer\"},{\"name\":\"requester\",\"type\":\"text\"},{\"name\":\"subject\",\"type\":\"text\"},{\"name\":\"priority\",\"type\":\"integer\"}]}\n",
+        "data/tickets.json": "[{\"ticket_id\":101,\"requester\":\"Ana\",\"subject\":\"=IMPORTXML(A1)\",\"priority\":2},{\"ticket_id\":102,\"requester\":\" +cmd\",\"subject\":\"Login issue\",\"priority\":1},{\"ticket_id\":103,\"requester\":\"Mo\",\"subject\":\"@SUM(1,1)\",\"priority\":3}]\n",
+        "src/exporter.py": "def safe_csv_rows(schema: dict, tickets: list[dict]) -> tuple[str, dict]:\n    return '', {}\n",
+        "tests/test_exporter.py": "import json\nimport unittest\nfrom pathlib import Path\nfrom src.exporter import safe_csv_rows\n\nROOT = Path(__file__).parents[1]\n\nclass ExportTests(unittest.TestCase):\n    def inputs(self):\n        return json.loads((ROOT/'schema.json').read_text()), json.loads((ROOT/'data/tickets.json').read_text())\n\n    def test_exact_export_and_report(self):\n        csv_text, report = safe_csv_rows(*self.inputs())\n        expected = '''ticket_id,requester,subject,priority\\r\\n101,Ana,'=IMPORTXML(A1),2\\r\\n102,' +cmd,Login issue,1\\r\\n103,Mo,\"'@SUM(1,1)\",3\\r\\n'''\n        self.assertEqual(csv_text, expected)\n        self.assertEqual(report, {'rows':3,'sanitized_cells':3,'columns':['ticket_id','requester','subject','priority']})\n        self.assertEqual((ROOT/'tickets.csv').read_text(newline=''), expected)\n        self.assertEqual(json.loads((ROOT/'export_report.json').read_text()), report)\n\n    def test_wrong_types_and_missing_fields_fail(self):\n        schema, tickets = self.inputs()\n        bad = [dict(tickets[0], priority='high')]\n        with self.assertRaises(ValueError): safe_csv_rows(schema, bad)\n        with self.assertRaises(ValueError): safe_csv_rows(schema, [{'ticket_id':1}])\n"
+      },
+      "gold_files": {
+        "src/exporter.py": "import csv\nimport io\n\ndef safe_csv_rows(schema: dict, tickets: list[dict]) -> tuple[str, dict]:\n    columns = schema.get('columns')\n    if not isinstance(columns, list) or not columns:\n        raise ValueError('invalid schema')\n    names = [column.get('name') for column in columns]\n    types = [column.get('type') for column in columns]\n    if any(not isinstance(name, str) or kind not in {'integer','text'} for name, kind in zip(names, types)):\n        raise ValueError('invalid schema columns')\n    output = io.StringIO(newline='')\n    writer = csv.writer(output, lineterminator='\\r\\n')\n    writer.writerow(names)\n    sanitized = 0\n    for ticket in tickets:\n        row = []\n        for name, kind in zip(names, types):\n            if name not in ticket:\n                raise ValueError(f'missing field: {name}')\n            value = ticket[name]\n            if kind == 'integer':\n                if type(value) is not int: raise ValueError(f'wrong type: {name}')\n            else:\n                if not isinstance(value, str): raise ValueError(f'wrong type: {name}')\n                if value.lstrip().startswith(('=', '+', '-', '@')):\n                    value = \"'\" + value\n                    sanitized += 1\n            row.append(value)\n        writer.writerow(row)\n    report = {'rows': len(tickets), 'sanitized_cells': sanitized, 'columns': names}\n    return output.getvalue(), report\n",
+        "tickets.csv": "ticket_id,requester,subject,priority\r\n101,Ana,'=IMPORTXML(A1),2\r\n102,' +cmd,Login issue,1\r\n103,Mo,\"'@SUM(1,1)\",3\r\n",
+        "export_report.json": "{\n  \"columns\": [\"ticket_id\", \"requester\", \"subject\", \"priority\"],\n  \"rows\": 3,\n  \"sanitized_cells\": 3\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["python3", "-m", "unittest", "discover", "-s", "tests", "-v"]},
+        {"type": "json_equals", "path": "export_report.json", "key": "sanitized_cells", "value": 3},
+        {"type": "path_not_contains", "path": "src/exporter.py", "text": "return '', {}"}
+      ]
+    }
+  ]
+}

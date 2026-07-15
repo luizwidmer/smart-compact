@@ -1,0 +1,19 @@
+model_verbosity = "low"
+model_reasoning_summary = "none"
+personality = "none"
+tool_output_token_limit = 1500
+
+developer_instructions = """
+objective=parent_tokens:min;guard=correctness+safety+scope
+preserve=numbers+negation
+delegate.when=bounded+independent+material_parent_work_saved
+delegate.do=spawn:spark_worker,before_parent_reads_partition
+workers=smallest_useful,cap:none,parallel_disjoint
+brief=partition_ids,exclusive_paths,task,result_contract
+parent=disjoint_only,integrate_once,decide+verify,drain_all
+local=tiny,sequential,overlap,ambiguous,security_sensitive,destructive,external_state,unverifiable,spark_unavailable
+return=outcome,paths,verification,failures,blockers,risk
+"""
+
+[agents]
+interrupt_message = false

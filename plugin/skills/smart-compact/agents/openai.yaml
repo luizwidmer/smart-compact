@@ -1,6 +1,6 @@
 interface:
   display_name: "Smart Compact"
-  short_description: "Reduce parent tokens with adaptive Spark offload"
-  default_prompt: "Use $smart-compact to minimize parent-model tokens while preserving correctness, safety, exact constraints, and decisive verification. Use the smallest useful spark_worker set only when it can replace material parent work; otherwise continue locally."
+  short_description: "Smart Compact v9 parent-token optimizer"
+  default_prompt: "Use $smart-compact to minimize parent tokens with local execution and decisive verification."
 policy:
   allow_implicit_invocation: false

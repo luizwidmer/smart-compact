@@ -1,0 +1,3371 @@
+{
+  "arm_metadata": {
+    "v6-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-v9-work/benchmarks/policies/v6/SKILL.md",
+      "policy_sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f",
+      "profile_path": "/private/tmp/smart-compact-v9-work/benchmarks/profiles/v6.config.toml",
+      "profile_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+      "routing_mode": "none",
+      "skill_input": true,
+      "spark_enabled": false
+    },
+    "v8-no-spark": {
+      "multi_agent": false,
+      "policy_path": "/private/tmp/smart-compact-v9-work/benchmarks/policies/v8/SKILL.md",
+      "policy_sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327",
+      "profile_path": "/private/tmp/smart-compact-v9-work/benchmarks/retired/package/profiles/smart-compact-v8.config.toml",
+      "profile_sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v9-natural-no-spark": {
+      "multi_agent": false,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/profiles/smart-compact-v9-natural.config.toml",
+      "profile_sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": false
+    },
+    "v9-spark-auto": {
+      "multi_agent": true,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/profiles/smart-compact-v9.config.toml",
+      "profile_sha256": "9f9a376f7616b13c9cc77e8d5520c4a1930667a502dab29b2a797768f77396eb",
+      "routing_mode": "auto",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "benchmark": "smart-compact-v9-heldout-release",
+  "cases_path": "/private/tmp/smart-compact-v9-work/benchmarks/agentic-v9-heldout.json",
+  "cases_sha256": "177848307cd1351bb9b307b820a9d358ba15030e6f34e99d75e54035c0e971d9",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "execution_order": [
+    {
+      "arm": "v6-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v6-no-spark",
+      "effort": "max",
+      "index": 0,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v8-no-spark",
+      "effort": "high",
+      "index": 1,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v6-no-spark",
+      "effort": "xhigh",
+      "index": 2,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-natural-no-spark",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v9-natural-no-spark",
+      "effort": "high",
+      "index": 3,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "polyglot-record-normalizer",
+      "cell_id": "polyglot-record-normalizer::v6-no-spark",
+      "effort": "medium",
+      "index": 4,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v8-no-spark",
+      "effort": "xhigh",
+      "index": 5,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v8-no-spark",
+      "effort": "max",
+      "index": 6,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v9-spark-auto",
+      "effort": "high",
+      "index": 7,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v9-natural-no-spark",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v9-natural-no-spark",
+      "effort": "xhigh",
+      "index": 8,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "polyglot-record-normalizer",
+      "cell_id": "polyglot-record-normalizer::v9-spark-auto",
+      "effort": "medium",
+      "index": 9,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v9-spark-auto",
+      "effort": "max",
+      "index": 10,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v9-spark-auto",
+      "effort": "xhigh",
+      "index": 11,
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-natural-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v9-natural-no-spark",
+      "effort": "max",
+      "index": 12,
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v6-no-spark",
+      "effort": "high",
+      "index": 13,
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "polyglot-record-normalizer",
+      "cell_id": "polyglot-record-normalizer::v8-no-spark",
+      "effort": "medium",
+      "index": 14,
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    }
+  ],
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "polyglot-record-normalizer",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      },
+      {
+        "case_id": "workspace-permission-migration",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      },
+      {
+        "case_id": "incident-window-correlation",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      },
+      {
+        "case_id": "ordered-entitlement-ledger",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "freeze_path": "/private/tmp/smart-compact-v9-work/benchmarks/v9-freeze.json",
+  "freeze_sha256": "2c3f4b96372c1b3e995b04c85b5bf8375d2028f4b8f74ba3505f61f44bebbe27",
+  "generated_at": "2026-07-15T09:10:05Z",
+  "implementation_reuse_binding": {
+    "additional_inference_cells": 0,
+    "bound_arm": "v9-selected-implementation",
+    "bound_profile": "profiles/smart-compact-v9-implementation.config.toml",
+    "case_id": "polyglot-record-normalizer",
+    "equivalence": "byte_identical_profile",
+    "source_arm": "v6-no-spark",
+    "source_profile": "benchmarks/profiles/v6.config.toml",
+    "v6_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7",
+    "v9_implementation_sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
+  },
+  "jobs": 4,
+  "logical_product_cells": 16,
+  "matrix": [
+    {
+      "arm": "v6-no-spark",
+      "case_id": "polyglot-record-normalizer",
+      "cell_id": "polyglot-record-normalizer::v6-no-spark",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "polyglot-record-normalizer",
+      "cell_id": "polyglot-record-normalizer::v8-no-spark",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "polyglot-record-normalizer",
+      "cell_id": "polyglot-record-normalizer::v9-spark-auto",
+      "effort": "medium",
+      "model": "gpt-5.6-sol",
+      "task_shape": "implementation"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v6-no-spark",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v8-no-spark",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v9-spark-auto",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v9-natural-no-spark",
+      "case_id": "workspace-permission-migration",
+      "cell_id": "workspace-permission-migration::v9-natural-no-spark",
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "task_shape": "migration"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v6-no-spark",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v8-no-spark",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v9-spark-auto",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v9-natural-no-spark",
+      "case_id": "incident-window-correlation",
+      "cell_id": "incident-window-correlation::v9-natural-no-spark",
+      "effort": "xhigh",
+      "model": "gpt-5.6-luna",
+      "task_shape": "handoff"
+    },
+    {
+      "arm": "v6-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v6-no-spark",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v8-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v8-no-spark",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v9-spark-auto",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v9-spark-auto",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    },
+    {
+      "arm": "v9-natural-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "cell_id": "ordered-entitlement-ledger::v9-natural-no-spark",
+      "effort": "max",
+      "model": "gpt-5.6-luna",
+      "task_shape": "general"
+    }
+  ],
+  "physical_cells": 15,
+  "protocol_misses": [
+    "polyglot-record-normalizer::v9-spark-auto",
+    "workspace-permission-migration::v9-spark-auto",
+    "incident-window-correlation::v9-spark-auto",
+    "ordered-entitlement-ledger::v8-no-spark",
+    "ordered-entitlement-ledger::v9-spark-auto"
+  ],
+  "repetitions_per_cell": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "polyglot-record-normalizer",
+      "category": "implementation",
+      "cell_id": "polyglot-record-normalizer::v6-no-spark",
+      "changed_paths": [
+        "javascript/normalizer.mjs",
+        "normalization_report.json",
+        "python/normalizer.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 145.887,
+      "combined_total_tokens": 245783,
+      "commands_by_thread": {
+        "019f6503-10aa-7da3-9137-2737fbb45d3f": [
+          "/bin/zsh -lc \"rtk proxy pwd && rtk proxy rg --files -g 'AGENTS.md' -g '\"'!validate.py'\"' -g '\"'!**/validate.py'\"' -g '*normaliz*' -g '*.py' -g '*.js' -g 'package.json'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' javascript/normalizer.mjs\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' python/normalizer.py\"",
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!validate.py'\"' -g '\"'!**/validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' fixtures/public.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' javascript/run.mjs\"",
+          "/bin/zsh -lc 'rtk proxy realpath python/normalizer.py javascript/normalizer.mjs normalization_report.json'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy python3 -c \\\"import json,sys;sys.path.insert(0,'python');from normalizer import normalize_record; rows=json.load(open('fixtures/public.json')); print([(r.get('active'), normalize_record(r)) for r in rows])\\\"\"",
+          "/bin/zsh -lc 'rtk proxy realpath python/normalizer.py javascript/normalizer.mjs'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short -- python/normalizer.py javascript/normalizer.mjs normalization_report.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.316,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 145.571,
+      "execution_order_index": 4,
+      "file_changes_by_thread": {
+        "019f6503-10aa-7da3-9137-2737fbb45d3f": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/normalization_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/python/normalizer.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/python/normalizer.py"
+        ]
+      },
+      "final_message": "Implemented:\n\n- [python/normalizer.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/python/normalizer.py)\n- [javascript/normalizer.mjs](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs)\n- [normalization_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v6-no-spark/polyglot-record-normalizer/normalization_report.json)\n\nAcceptance command passed:\n\n```text\npolyglot normalizer: 52 exact parity cases valid\n```",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.072,
+            "ok": true,
+            "output": "polyglot normalizer: 52 exact parity cases valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "parity",
+            "key": "status",
+            "ok": true,
+            "path": "normalization_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6503-10aa-7da3-9137-2737fbb45d3f": {
+          "agentMessage": 5,
+          "commandExecution": 12,
+          "fileChange": 2,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 14,
+        "configWarning": 1,
+        "item/agentMessage/delta": 417,
+        "item/completed": 32,
+        "item/started": 32,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 14,
+        "turn/completed": 1,
+        "turn/diff/updated": 10,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6503-10aa-7da3-9137-2737fbb45d3f",
+      "parent_total_tokens": 245783,
+      "parent_usage": {
+        "cachedInputTokens": 215552,
+        "inputTokens": 239086,
+        "outputTokens": 6697,
+        "reasoningOutputTokens": 1205,
+        "totalTokens": 245783
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 12,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6503-10aa-7da3-9137-2737fbb45d3f": 14
+      },
+      "tool_output_chars_by_thread": {
+        "019f6503-10aa-7da3-9137-2737fbb45d3f": 3459
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "polyglot-record-normalizer",
+      "category": "implementation",
+      "cell_id": "polyglot-record-normalizer::v8-no-spark",
+      "changed_paths": [
+        "javascript/normalizer.mjs",
+        "normalization_report.json",
+        "python/normalizer.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 136.655,
+      "combined_total_tokens": 264569,
+      "commands_by_thread": {
+        "019f6508-45e5-7c03-bb87-d3492548080a": [
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"' -g 'AGENTS.md' -g '.agents/**' -g '*.py' -g '*.js' -g '*.json' -g 'README*'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'printf \\\"%s\\\\n\\\" \\\"--- python/normalizer.py\\\"; sed -n \\\"1,240p\\\" python/normalizer.py; printf \\\"%s\\\\n\\\" \\\"--- fixtures/public.json\\\"; sed -n \\\"1,240p\\\" fixtures/public.json; printf \\\"%s\\\\n\\\" \\\"--- files\\\"; rg --files -g \\\"\"'!validate.py\"'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'printf \\\"%s\\\\n\\\" \\\"--- javascript/normalizer.mjs\\\"; sed -n \\\"1,240p\\\" javascript/normalizer.mjs; printf \\\"%s\\\\n\\\" \\\"--- javascript/run.mjs\\\"; sed -n \\\"1,240p\\\" javascript/run.mjs'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy python3 -c 'import json; from python.normalizer import normalize_record; rows=json.load(open(\\\"fixtures/public.json\\\")); print([normalize_record(row) for row in rows])'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.318,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 136.337,
+      "execution_order_index": 14,
+      "file_changes_by_thread": {
+        "019f6508-45e5-7c03-bb87-d3492548080a": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/normalization_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/python/normalizer.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/python/normalizer.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/python/normalizer.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/python/normalizer.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/python/normalizer.py"
+        ]
+      },
+      "final_message": "Implemented both record normalizers and the exact report:\n\n- [python/normalizer.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/python/normalizer.py)\n- [javascript/normalizer.mjs](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/javascript/normalizer.mjs)\n- [normalization_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v8-no-spark/polyglot-record-normalizer/normalization_report.json)\n\nAcceptance passed:\n\n```text\npolyglot normalizer: 52 exact parity cases valid\n```\n\n`validate.py` was not inspected.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.072,
+            "ok": true,
+            "output": "polyglot normalizer: 52 exact parity cases valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "parity",
+            "key": "status",
+            "ok": true,
+            "path": "normalization_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6508-45e5-7c03-bb87-d3492548080a": {
+          "agentMessage": 7,
+          "commandExecution": 9,
+          "fileChange": 5,
+          "reasoning": 13,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 15,
+        "configWarning": 1,
+        "item/agentMessage/delta": 549,
+        "item/completed": 35,
+        "item/started": 35,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 15,
+        "turn/completed": 1,
+        "turn/diff/updated": 17,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6508-45e5-7c03-bb87-d3492548080a",
+      "parent_total_tokens": 264569,
+      "parent_usage": {
+        "cachedInputTokens": 230656,
+        "inputTokens": 258539,
+        "outputTokens": 6030,
+        "reasoningOutputTokens": 1820,
+        "totalTokens": 264569
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6508-45e5-7c03-bb87-d3492548080a": 14
+      },
+      "tool_output_chars_by_thread": {
+        "019f6508-45e5-7c03-bb87-d3492548080a": 18193
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-spark-auto",
+      "case_id": "polyglot-record-normalizer",
+      "category": "implementation",
+      "cell_id": "polyglot-record-normalizer::v9-spark-auto",
+      "changed_paths": [
+        "javascript/normalizer.mjs",
+        "normalization_report.json",
+        "python/normalizer.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 124.294,
+      "combined_total_tokens": 188435,
+      "commands_by_thread": {
+        "019f6505-153b-7861-88ef-6c5c1133aa11": [
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"' -g '\"'!**/validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' python/normalizer.py javascript/normalizer.mjs javascript/run.mjs fixtures/public.json\"",
+          "/bin/zsh -lc \"rtk rg --files -uu -g '\"'!validate.py'\"' -g '\"'!**/validate.py'\"'\"",
+          "/bin/zsh -lc 'rtk proxy git diff -- python/normalizer.py javascript/normalizer.mjs normalization_report.json'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy python3 -c 'import json,sys; sys.path.insert(0,\\\"python\\\"); from normalizer import normalize_record; rows=json.load(open(\\\"fixtures/public.json\\\")); print([normalize_record(row) for row in rows])'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.32,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "python-engine",
+            "markers": [
+              "python/normalizer.py"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "javascript-engine",
+            "markers": [
+              "javascript/normalizer.mjs"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "effort": "medium",
+      "execution_duration_seconds": 123.974,
+      "execution_order_index": 9,
+      "file_changes_by_thread": {
+        "019f6505-153b-7861-88ef-6c5c1133aa11": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/normalization_report.json",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/python/normalizer.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/javascript/normalizer.mjs",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/python/normalizer.py"
+        ]
+      },
+      "final_message": "Implemented:\n\n- [Python normalizer](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/python/normalizer.py)\n- [JavaScript normalizer](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/javascript/normalizer.mjs)\n- [normalization_report.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/polyglot-record-normalizer-trial-1-v9-spark-auto/polyglot-record-normalizer/normalization_report.json)\n\nAcceptance passed:\n\n```text\npolyglot normalizer: 52 exact parity cases valid\n```\n\n`validate.py` was not inspected.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.081,
+            "ok": true,
+            "output": "polyglot normalizer: 52 exact parity cases valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": "parity",
+            "key": "status",
+            "ok": true,
+            "path": "normalization_report.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6505-153b-7861-88ef-6c5c1133aa11": {
+          "agentMessage": 6,
+          "commandExecution": 8,
+          "fileChange": 2,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 11,
+        "configWarning": 1,
+        "item/agentMessage/delta": 465,
+        "item/completed": 29,
+        "item/started": 29,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 11,
+        "turn/completed": 1,
+        "turn/diff/updated": 10,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6505-153b-7861-88ef-6c5c1133aa11",
+      "parent_total_tokens": 188435,
+      "parent_usage": {
+        "cachedInputTokens": 155904,
+        "inputTokens": 183538,
+        "outputTokens": 4897,
+        "reasoningOutputTokens": 1898,
+        "totalTokens": 188435
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 8,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": false,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "implementation",
+      "tool_calls_by_thread": {
+        "019f6505-153b-7861-88ef-6c5c1133aa11": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f6505-153b-7861-88ef-6c5c1133aa11": 7439
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "workspace-permission-migration",
+      "category": "migration",
+      "cell_id": "workspace-permission-migration::v6-no-spark",
+      "changed_paths": [
+        "migrate_permissions.py",
+        "migration-plan.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 80.057,
+      "combined_total_tokens": 202663,
+      "commands_by_thread": {
+        "019f6507-e8fd-7b50-bfe7-143283467785": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'pwd; rg --files -g \\\"workspaces.json\\\" -g \\\"migrate_permissions.py\\\" -g \\\"AGENTS.md\\\" -g \\\"migration-plan.json\\\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'sed -n \\\"1,240p\\\" workspaces.json; sed -n \\\"1,240p\\\" migrate_permissions.py'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'case \\\"\"'$PWD/migrate_permissions.py\" in \"$PWD\"/*) ;; *) exit 1;; esac; case \"$PWD/migration-plan.json\" in \"$PWD\"/*) ;; *) exit 1;; esac'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'case \\\"\"'$PWD/migration-plan.json\" in \"$PWD\"/*) ;; *) exit 1;; esac; python3 migrate_permissions.py'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk proxy sh -c 'sed -n \\\"1,260p\\\" migration-plan.json; sed -n \\\"1,260p\\\" migrate_permissions.py'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'case \\\"\"'$PWD/migrate_permissions.py\" in \"$PWD\"/*) ;; *) exit 1;; esac'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'case \\\"\"'$PWD/migration-plan.json\" in \"$PWD\"/*) ;; *) exit 1;; esac; python3 migrate_permissions.py'\"'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short -- migrate_permissions.py migration-plan.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.315,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 79.742,
+      "execution_order_index": 13,
+      "file_changes_by_thread": {
+        "019f6507-e8fd-7b50-bfe7-143283467785": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v6-no-spark/workspace-permission-migration/migrate_permissions.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v6-no-spark/workspace-permission-migration/migrate_permissions.py"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [migrate_permissions.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v6-no-spark/workspace-permission-migration/migrate_permissions.py)\n- [migration-plan.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v6-no-spark/workspace-permission-migration/migration-plan.json)\n\nAcceptance passed:\n\n```text\nworkspace permission migration: public plan and 36 unseen datasets valid\n```",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.039,
+            "ok": true,
+            "output": "workspace permission migration: public plan and 36 unseen datasets valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "members": 6,
+              "suspended": 1
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "migration-plan.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6507-e8fd-7b50-bfe7-143283467785": {
+          "agentMessage": 4,
+          "commandExecution": 10,
+          "fileChange": 2,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 13,
+        "configWarning": 1,
+        "item/agentMessage/delta": 257,
+        "item/completed": 26,
+        "item/started": 26,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 13,
+        "turn/completed": 1,
+        "turn/diff/updated": 12,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6507-e8fd-7b50-bfe7-143283467785",
+      "parent_total_tokens": 202663,
+      "parent_usage": {
+        "cachedInputTokens": 173824,
+        "inputTokens": 199609,
+        "outputTokens": 3054,
+        "reasoningOutputTokens": 493,
+        "totalTokens": 202663
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 10,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6507-e8fd-7b50-bfe7-143283467785": 12
+      },
+      "tool_output_chars_by_thread": {
+        "019f6507-e8fd-7b50-bfe7-143283467785": 4651
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "workspace-permission-migration",
+      "category": "migration",
+      "cell_id": "workspace-permission-migration::v8-no-spark",
+      "changed_paths": [
+        "migrate_permissions.py",
+        "migration-plan.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 69.619,
+      "combined_total_tokens": 115350,
+      "commands_by_thread": {
+        "019f6502-011d-7293-8dce-76471a9e76b3": [
+          "/bin/zsh -lc \"rtk rg --files -g 'AGENTS.md' -g '\"'!validate.py'\"' -g 'workspaces.json' -g 'migrate_permissions.py' -g 'migration-plan.json'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' migrate_permissions.py workspaces.json\"",
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' migration-rules.md\"",
+          "/bin/zsh -lc 'rtk python3 migrate_permissions.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.329,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 69.291,
+      "execution_order_index": 1,
+      "file_changes_by_thread": {
+        "019f6502-011d-7293-8dce-76471a9e76b3": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v8-no-spark/workspace-permission-migration/migrate_permissions.py"
+        ]
+      },
+      "final_message": "Implemented permission migration and generated the plan.\n\nChanged:\n\n- [migrate_permissions.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v8-no-spark/workspace-permission-migration/migrate_permissions.py)\n- [migration-plan.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v8-no-spark/workspace-permission-migration/migration-plan.json)\n\nAcceptance passed:\n\n```text\nworkspace permission migration: public plan and 36 unseen datasets valid\n```\n\nNo blockers or known residual risks.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.041,
+            "ok": true,
+            "output": "workspace permission migration: public plan and 36 unseen datasets valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "members": 6,
+              "suspended": 1
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "migration-plan.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6502-011d-7293-8dce-76471a9e76b3": {
+          "agentMessage": 3,
+          "commandExecution": 6,
+          "fileChange": 1,
+          "reasoning": 7,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 260,
+        "item/completed": 18,
+        "item/started": 18,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 5,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6502-011d-7293-8dce-76471a9e76b3",
+      "parent_total_tokens": 115350,
+      "parent_usage": {
+        "cachedInputTokens": 97280,
+        "inputTokens": 112868,
+        "outputTokens": 2482,
+        "reasoningOutputTokens": 504,
+        "totalTokens": 115350
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 6,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6502-011d-7293-8dce-76471a9e76b3": 7
+      },
+      "tool_output_chars_by_thread": {
+        "019f6502-011d-7293-8dce-76471a9e76b3": 942
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-spark-auto",
+      "case_id": "workspace-permission-migration",
+      "category": "migration",
+      "cell_id": "workspace-permission-migration::v9-spark-auto",
+      "changed_paths": [
+        "migrate_permissions.py",
+        "migration-plan.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 70.817,
+      "combined_total_tokens": 126307,
+      "commands_by_thread": {
+        "019f6503-fe5f-73b1-bc12-8c85c4cb5027": [
+          "/bin/zsh -lc \"rtk ls -la && rtk rg --files -g '\"'!validate.py'\"' -g 'AGENTS.md' -g 'workspaces.json' -g 'migrate_permissions.py' -g 'migration-plan.json'\"",
+          "/bin/zsh -lc 'rtk cat migrate_permissions.py'",
+          "/bin/zsh -lc 'rtk cat workspaces.json'",
+          "/bin/zsh -lc 'rtk cat migration-rules.md'",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk python3 migrate_permissions.py'",
+          "/bin/zsh -lc 'rtk cat migration-plan.json'",
+          "/bin/zsh -lc 'rtk git diff -- migrate_permissions.py migration-plan.json'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.33,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "workspace-data",
+            "markers": [
+              "workspaces.json"
+            ],
+            "weight": 1
+          },
+          {
+            "allowed_replication": 1,
+            "id": "migration-contract",
+            "markers": [
+              "migration-rules.md"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 70.487,
+      "execution_order_index": 7,
+      "file_changes_by_thread": {
+        "019f6503-fe5f-73b1-bc12-8c85c4cb5027": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v9-spark-auto/workspace-permission-migration/migrate_permissions.py"
+        ]
+      },
+      "final_message": "Implemented:\n\n- [migrate_permissions.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v9-spark-auto/workspace-permission-migration/migrate_permissions.py)\n- [migration-plan.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v9-spark-auto/workspace-permission-migration/migration-plan.json)\n\nAcceptance passed:\n\n```text\nworkspace permission migration: public plan and 36 unseen datasets valid\n```\n\n`validate.py` was not inspected.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.051,
+            "ok": true,
+            "output": "workspace permission migration: public plan and 36 unseen datasets valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "members": 6,
+              "suspended": 1
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "migration-plan.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6503-fe5f-73b1-bc12-8c85c4cb5027": {
+          "agentMessage": 4,
+          "commandExecution": 10,
+          "fileChange": 1,
+          "reasoning": 7,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 280,
+        "item/completed": 23,
+        "item/started": 23,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6503-fe5f-73b1-bc12-8c85c4cb5027",
+      "parent_total_tokens": 126307,
+      "parent_usage": {
+        "cachedInputTokens": 109568,
+        "inputTokens": 123043,
+        "outputTokens": 3264,
+        "reasoningOutputTokens": 690,
+        "totalTokens": 126307
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 10,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": false,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6503-fe5f-73b1-bc12-8c85c4cb5027": 11
+      },
+      "tool_output_chars_by_thread": {
+        "019f6503-fe5f-73b1-bc12-8c85c4cb5027": 6019
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-natural-no-spark",
+      "case_id": "workspace-permission-migration",
+      "category": "migration",
+      "cell_id": "workspace-permission-migration::v9-natural-no-spark",
+      "changed_paths": [
+        "migrate_permissions.py",
+        "migration-plan.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 68.876,
+      "combined_total_tokens": 134380,
+      "commands_by_thread": {
+        "019f6502-011d-7c70-b705-edcb4ef740b8": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'pwd; rg --files -g \\\"AGENTS.md\\\" -g \\\"workspaces.json\\\" -g \\\"migrate_permissions.py\\\" -g \\\"migration-plan.json\\\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'sed -n \\\"1,240p\\\" migrate_permissions.py; sed -n \\\"1,260p\\\" workspaces.json'\"",
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,260p' migration-rules.md\"",
+          "/bin/zsh -lc 'rtk python3 migrate_permissions.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.31,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "high",
+      "execution_duration_seconds": 68.566,
+      "execution_order_index": 3,
+      "file_changes_by_thread": {
+        "019f6502-011d-7c70-b705-edcb4ef740b8": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v9-natural-no-spark/workspace-permission-migration/migrate_permissions.py"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [migrate_permissions.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v9-natural-no-spark/workspace-permission-migration/migrate_permissions.py)\n- [migration-plan.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/workspace-permission-migration-trial-1-v9-natural-no-spark/workspace-permission-migration/migration-plan.json)\n\nAcceptance passed:\n\n`workspace permission migration: public plan and 36 unseen datasets valid`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.049,
+            "ok": true,
+            "output": "workspace permission migration: public plan and 36 unseen datasets valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "members": 6,
+              "suspended": 1
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "migration-plan.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6502-011d-7c70-b705-edcb4ef740b8": {
+          "agentMessage": 3,
+          "commandExecution": 7,
+          "fileChange": 1,
+          "reasoning": 10,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-sol",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 9,
+        "configWarning": 1,
+        "item/agentMessage/delta": 227,
+        "item/completed": 22,
+        "item/started": 22,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 9,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6502-011d-7c70-b705-edcb4ef740b8",
+      "parent_total_tokens": 134380,
+      "parent_usage": {
+        "cachedInputTokens": 118528,
+        "inputTokens": 131519,
+        "outputTokens": 2861,
+        "reasoningOutputTokens": 666,
+        "totalTokens": 134380
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 7,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "migration",
+      "tool_calls_by_thread": {
+        "019f6502-011d-7c70-b705-edcb4ef740b8": 8
+      },
+      "tool_output_chars_by_thread": {
+        "019f6502-011d-7c70-b705-edcb4ef740b8": 1163
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "incident-window-correlation",
+      "category": "handoff",
+      "cell_id": "incident-window-correlation::v6-no-spark",
+      "changed_paths": [
+        "correlate.py",
+        "handoff.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 79.589,
+      "combined_total_tokens": 120196,
+      "commands_by_thread": {
+        "019f6502-011d-7370-839b-82a174f9cbe2": [
+          "/bin/zsh -lc \"rtk pwd && rtk rg --files -g 'events.json' -g 'correlate.py' -g 'AGENTS.md' -g '\"'!validate.py'\"' && rtk sed -n '1,240p' events.json && if [ -f correlate.py ]; then rtk sed -n '1,260p' correlate.py; fi && if [ -f AGENTS.md ]; then rtk sed -n '1,240p' AGENTS.md; fi\"",
+          "/bin/zsh -lc 'rtk python3 correlate.py'",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' handoff.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short -- correlate.py handoff.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.327,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 79.262,
+      "execution_order_index": 2,
+      "file_changes_by_thread": {
+        "019f6502-011d-7370-839b-82a174f9cbe2": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v6-no-spark/incident-window-correlation/correlate.py"
+        ]
+      },
+      "final_message": "Implemented:\n\n- [correlate.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v6-no-spark/incident-window-correlation/correlate.py>)\n- [handoff.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v6-no-spark/incident-window-correlation/handoff.json>)\n\nAcceptance passed:\n\n`incident correlation: public handoff and 40 unseen event streams valid`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.041,
+            "ok": true,
+            "output": "incident correlation: public handoff and 40 unseen event streams valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "customer_impact_windows": 2,
+              "events": 6,
+              "windows": 4
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "handoff.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6502-011d-7370-839b-82a174f9cbe2": {
+          "agentMessage": 5,
+          "commandExecution": 5,
+          "fileChange": 1,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 302,
+        "item/completed": 21,
+        "item/started": 21,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6502-011d-7370-839b-82a174f9cbe2",
+      "parent_total_tokens": 120196,
+      "parent_usage": {
+        "cachedInputTokens": 98304,
+        "inputTokens": 116243,
+        "outputTokens": 3953,
+        "reasoningOutputTokens": 1470,
+        "totalTokens": 120196
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 5,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6502-011d-7370-839b-82a174f9cbe2": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f6502-011d-7370-839b-82a174f9cbe2": 2133
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v8-no-spark",
+      "case_id": "incident-window-correlation",
+      "category": "handoff",
+      "cell_id": "incident-window-correlation::v8-no-spark",
+      "changed_paths": [
+        "correlate.py",
+        "handoff.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 59.525,
+      "combined_total_tokens": 109582,
+      "commands_by_thread": {
+        "019f6503-1365-7b41-8bd4-bccfe63e616b": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!validate.py'\"' -g '\"'!handoff.json'\"' -g '\"'!correlate.py'\"' && rtk proxy printf '\\\\n--- events.json ---\\\\n' && rtk proxy sed -n '1,240p' events.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' runbook.md\"",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 correlate.py'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' handoff.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.319,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 59.206,
+      "execution_order_index": 5,
+      "file_changes_by_thread": {
+        "019f6503-1365-7b41-8bd4-bccfe63e616b": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v8-no-spark/incident-window-correlation/correlate.py"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [correlate.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v8-no-spark/incident-window-correlation/correlate.py>)\n- [handoff.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v8-no-spark/incident-window-correlation/handoff.json>)\n\nAcceptance passed:\n\n`rtk proxy python3 validate.py`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.042,
+            "ok": true,
+            "output": "incident correlation: public handoff and 40 unseen event streams valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "customer_impact_windows": 2,
+              "events": 6,
+              "windows": 4
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "handoff.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6503-1365-7b41-8bd4-bccfe63e616b": {
+          "agentMessage": 4,
+          "commandExecution": 6,
+          "fileChange": 1,
+          "reasoning": 8,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 8,
+        "configWarning": 1,
+        "item/agentMessage/delta": 286,
+        "item/completed": 20,
+        "item/started": 20,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 8,
+        "turn/completed": 1,
+        "turn/diff/updated": 6,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6503-1365-7b41-8bd4-bccfe63e616b",
+      "parent_total_tokens": 109582,
+      "parent_usage": {
+        "cachedInputTokens": 89088,
+        "inputTokens": 106832,
+        "outputTokens": 2750,
+        "reasoningOutputTokens": 1002,
+        "totalTokens": 109582
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 6,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6503-1365-7b41-8bd4-bccfe63e616b": 7
+      },
+      "tool_output_chars_by_thread": {
+        "019f6503-1365-7b41-8bd4-bccfe63e616b": 2074
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-spark-auto",
+      "case_id": "incident-window-correlation",
+      "category": "handoff",
+      "cell_id": "incident-window-correlation::v9-spark-auto",
+      "changed_paths": [
+        "correlate.py",
+        "handoff.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 170.356,
+      "combined_total_tokens": 227811,
+      "commands_by_thread": {
+        "019f6505-4caf-7f21-852f-53a3786ceea1": [
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"' -g '\"'!handoff.json'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' correlate.py && rtk sed -n '1,260p' events.json && rtk sed -n '1,240p' runbook.md\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc \"rtk python3 correlate.py && rtk sed -n '1,260p' handoff.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk rg -n --hidden -g '\"'!validate.py'\"' -g '\"'!.git/**'\"' 'customer_impact|root_cause|correlate\\\\(' .\"",
+          "/bin/zsh -lc 'rtk python3 correlate.py && rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git diff --check && rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.324,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "event-stream",
+            "markers": [
+              "events.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "handoff-contract",
+            "markers": [
+              "runbook.md"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 170.032,
+      "execution_order_index": 11,
+      "file_changes_by_thread": {
+        "019f6505-4caf-7f21-852f-53a3786ceea1": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-spark-auto/incident-window-correlation/correlate.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-spark-auto/incident-window-correlation/correlate.py"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [correlate.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-spark-auto/incident-window-correlation/correlate.py)\n- [handoff.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-spark-auto/incident-window-correlation/handoff.json)\n\nAcceptance passed:\n\n`rtk proxy python3 validate.py`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.047,
+            "ok": true,
+            "output": "incident correlation: public handoff and 40 unseen event streams valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "customer_impact_windows": 2,
+              "events": 6,
+              "windows": 4
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "handoff.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6505-4caf-7f21-852f-53a3786ceea1": {
+          "agentMessage": 5,
+          "commandExecution": 8,
+          "fileChange": 2,
+          "reasoning": 13,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 15,
+        "configWarning": 1,
+        "item/agentMessage/delta": 343,
+        "item/completed": 29,
+        "item/started": 29,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 15,
+        "turn/completed": 1,
+        "turn/diff/updated": 13,
+        "turn/plan/updated": 4,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6505-4caf-7f21-852f-53a3786ceea1",
+      "parent_total_tokens": 227811,
+      "parent_usage": {
+        "cachedInputTokens": 186624,
+        "inputTokens": 222045,
+        "outputTokens": 5766,
+        "reasoningOutputTokens": 2831,
+        "totalTokens": 227811
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 8,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": false,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6505-4caf-7f21-852f-53a3786ceea1": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f6505-4caf-7f21-852f-53a3786ceea1": 3382
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-natural-no-spark",
+      "case_id": "incident-window-correlation",
+      "category": "handoff",
+      "cell_id": "incident-window-correlation::v9-natural-no-spark",
+      "changed_paths": [
+        "correlate.py",
+        "handoff.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 66.524,
+      "combined_total_tokens": 127452,
+      "commands_by_thread": {
+        "019f6504-2512-7730-a0db-bb54f3613cdc": [
+          "/bin/zsh -lc \"rtk proxy sh -c 'ls -l events.json correlate.py 2>/dev/null; sed -n \\\"1,240p\\\" correlate.py; sed -n \\\"1,240p\\\" events.json'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'ls -la; rg --files -g \\\"\"'!validate.py\" -g \"!*.pyc\"'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sh -c 'sed -n \\\"1,240p\\\" runbook.md'\"",
+          "/bin/zsh -lc \"rtk proxy python3 -c 'import json; from correlate import correlate; print(json.dumps(correlate(json.load(open(\\\"events.json\\\"))), indent=2, sort_keys=False))'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.326,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "xhigh",
+      "execution_duration_seconds": 66.198,
+      "execution_order_index": 8,
+      "file_changes_by_thread": {
+        "019f6504-2512-7730-a0db-bb54f3613cdc": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-natural-no-spark/incident-window-correlation/correlate.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-natural-no-spark/incident-window-correlation/handoff.json"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [correlate.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-natural-no-spark/incident-window-correlation/correlate.py>)\n- [handoff.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/incident-window-correlation-trial-1-v9-natural-no-spark/incident-window-correlation/handoff.json>)\n\nVerification passed:\n\n`rtk proxy python3 validate.py`  \n`incident correlation: public handoff and 40 unseen event streams valid`",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.038,
+            "ok": true,
+            "output": "incident correlation: public handoff and 40 unseen event streams valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "customer_impact_windows": 2,
+              "events": 6,
+              "windows": 4
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "handoff.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6504-2512-7730-a0db-bb54f3613cdc": {
+          "agentMessage": 4,
+          "commandExecution": 6,
+          "fileChange": 2,
+          "reasoning": 9,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 9,
+        "configWarning": 1,
+        "item/agentMessage/delta": 298,
+        "item/completed": 22,
+        "item/started": 22,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 9,
+        "turn/completed": 1,
+        "turn/diff/updated": 8,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6504-2512-7730-a0db-bb54f3613cdc",
+      "parent_total_tokens": 127452,
+      "parent_usage": {
+        "cachedInputTokens": 108288,
+        "inputTokens": 124373,
+        "outputTokens": 3079,
+        "reasoningOutputTokens": 777,
+        "totalTokens": 127452
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 6,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "handoff",
+      "tool_calls_by_thread": {
+        "019f6504-2512-7730-a0db-bb54f3613cdc": 8
+      },
+      "tool_output_chars_by_thread": {
+        "019f6504-2512-7730-a0db-bb54f3613cdc": 2743
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v6-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "category": "general",
+      "cell_id": "ordered-entitlement-ledger::v6-no-spark",
+      "changed_paths": [
+        "entitlements.json",
+        "ledger.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 139.668,
+      "combined_total_tokens": 171535,
+      "commands_by_thread": {
+        "019f6502-011d-74f3-b443-f002efc39482": [
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"' -g '\"'!**/validate.py'\"' && rtk git status --short --untracked-files=all\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' ledger-contract.md\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' events.json\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' ledger.py\"",
+          "/bin/zsh -lc 'rtk realpath ledger.py events.json'",
+          "/bin/zsh -lc \"rtk proxy python3 -c 'import json; from ledger import project; events = json.load(open(\\\"events.json\\\", encoding=\\\"utf-8\\\")); print(json.dumps(project(events), sort_keys=True, indent=2))'\"",
+          "/bin/zsh -lc 'rtk realpath .'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short --untracked-files=all'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.313,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 139.355,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6502-011d-74f3-b443-f002efc39482": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v6-no-spark/ordered-entitlement-ledger/ledger.py",
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v6-no-spark/ordered-entitlement-ledger/entitlements.json"
+        ]
+      },
+      "final_message": "Implemented:\n\n- [ledger.py](</private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v6-no-spark/ordered-entitlement-ledger/ledger.py>)\n- [entitlements.json](</private/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v6-no-spark/ordered-entitlement-ledger/entitlements.json>)\n\nAcceptance passed: `ordered entitlement ledger: public projection and 45 unseen ledgers valid`.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.045,
+            "ok": true,
+            "output": "ordered entitlement ledger: public projection and 45 unseen ledgers valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 8,
+            "key": "events_applied",
+            "ok": true,
+            "path": "entitlements.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6502-011d-74f3-b443-f002efc39482": {
+          "agentMessage": 3,
+          "commandExecution": 9,
+          "fileChange": 2,
+          "reasoning": 17,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 10,
+        "configWarning": 1,
+        "item/agentMessage/delta": 215,
+        "item/completed": 32,
+        "item/started": 32,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 10,
+        "turn/completed": 1,
+        "turn/diff/updated": 9,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6502-011d-74f3-b443-f002efc39482",
+      "parent_total_tokens": 171535,
+      "parent_usage": {
+        "cachedInputTokens": 135936,
+        "inputTokens": 164407,
+        "outputTokens": 7128,
+        "reasoningOutputTokens": 5087,
+        "totalTokens": 171535
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6502-011d-74f3-b443-f002efc39482": 11
+      },
+      "tool_output_chars_by_thread": {
+        "019f6502-011d-74f3-b443-f002efc39482": 1946
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8"
+      ],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": false,
+      "arm": "v8-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "category": "general",
+      "cell_id": "ordered-entitlement-ledger::v8-no-spark",
+      "changed_paths": [
+        "entitlements.json",
+        "ledger.py"
+      ],
+      "child_completion_ok": false,
+      "child_evidence_coverage_ok": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": false
+      },
+      "child_evidence_markers": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": []
+      },
+      "child_final_messages": {},
+      "child_io_ok": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": false
+      },
+      "child_missing_evidence_markers": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": []
+      },
+      "child_read_errors": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": "thread/read failed: {'code': -32600, 'message': 'ephemeral threads do not support includeTurns'}"
+      },
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8"
+      ],
+      "child_total_tokens": 267231,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": {
+          "cachedInputTokens": 235008,
+          "inputTokens": 258470,
+          "outputTokens": 8761,
+          "reasoningOutputTokens": 5265,
+          "totalTokens": 267231
+        }
+      },
+      "collection_duration_seconds": 330.136,
+      "combined_total_tokens": 723266,
+      "commands_by_thread": {
+        "019f6503-3a5a-7943-a3e3-d36ba1213fc3": [
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' events.json\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' ledger.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' ledger-contract.md\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' ledger.py\"",
+          "/bin/zsh -lc \"rtk proxy python3 -c 'import json; from ledger import project; events=json.load(open(\\\"events.json\\\")); actual=project(events); expected=json.load(open(\\\"entitlements.json\\\")); assert actual == expected, (actual, expected); print(json.dumps(actual, separators=(\\\",\\\", \\\":\\\")))'\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk git diff --check'"
+        ],
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": [
+          "/bin/zsh -lc \"rtk rg --files -g 'ledger.py' -g '\"'!validate.py'\"' -g '*test*' -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' ledger.py\"",
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' ledger-contract.md\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' events.json\"",
+          "/bin/zsh -lc 'rtk git status --short -- ledger.py entitlements.json validate.py ledger-contract.md events.json'",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' ledger.py\"",
+          "/bin/zsh -lc \"rtk python - <<'PY'\nimport copy\nimport json\n\nfrom ledger import project\n\nwith open(\\\"events.json\\\", encoding=\\\"utf-8\\\") as handle:\n    events = json.load(handle)\noriginal = copy.deepcopy(events)\nassert project(events) == {\n    \\\"accounts\\\": [\n        {\\\"account\\\": \\\"a1\\\", \\\"last_seq\\\": 3, \\\"active\\\": [\\\"export\\\"]},\n        {\\\"account\\\": \\\"a2\\\", \\\"last_seq\\\": 3, \\\"active\\\": [\\\"audit\\\"]},\n        {\\\"account\\\": \\\"a3\\\", \\\"last_seq\\\": 2, \\\"active\\\": [\\\"gamma\\\"]},\n    ],\n    \\\"events_applied\\\": 8,\n}\nassert events == original\n\nsame_id_different_key_order = [\n    {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 1, \\\"op\\\": \\\"grant\\\", \\\"entitlement\\\": \\\"z\\\"},\n    {\\\"entitlement\\\": \\\"z\\\", \\\"op\\\": \\\"grant\\\", \\\"seq\\\": 1, \\\"account\\\": \\\"b\\\", \\\"event_id\\\": \\\"x\\\"},\n]\nassert project(same_id_different_key_order)[\\\"events_applied\\\"] == 1\n\ntry:\n    project([\n        {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 1, \\\"op\\\": \\\"grant\\\", \\\"entitlement\\\": \\\"z\\\"},\n        {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 1, \\\"op\\\": \\\"revoke\\\", \\\"entitlement\\\": \\\"z\\\"},\n    ])\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\\\"reused event_id did not fail\\\")\n\ntry:\n    project([\n        {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 2, \\\"op\\\": \\\"grant\\\", \\\"entitlement\\\": \\\"z\\\"},\n    ])\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\\\"non-contiguous sequence did not fail\\\")\n\nprint(\\\"focused ledger checks passed\\\")\nPY\"",
+          "/bin/zsh -lc 'rtk --help'",
+          "/bin/zsh -lc 'rtk python3 -V'",
+          "/bin/zsh -lc 'rtk ruby -v'",
+          "/bin/zsh -lc \"rtk python3 - <<'PY'\nimport copy\nimport json\n\nfrom ledger import project\n\nwith open(\\\"events.json\\\", encoding=\\\"utf-8\\\") as handle:\n    events = json.load(handle)\noriginal = copy.deepcopy(events)\nassert project(events) == {\n    \\\"accounts\\\": [\n        {\\\"account\\\": \\\"a1\\\", \\\"last_seq\\\": 3, \\\"active\\\": [\\\"export\\\"]},\n        {\\\"account\\\": \\\"a2\\\", \\\"last_seq\\\": 3, \\\"active\\\": [\\\"audit\\\"]},\n        {\\\"account\\\": \\\"a3\\\", \\\"last_seq\\\": 2, \\\"active\\\": [\\\"gamma\\\"]},\n    ],\n    \\\"events_applied\\\": 8,\n}\nassert events == original\n\nsame_id_different_key_order = [\n    {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 1, \\\"op\\\": \\\"grant\\\", \\\"entitlement\\\": \\\"z\\\"},\n    {\\\"entitlement\\\": \\\"z\\\", \\\"op\\\": \\\"grant\\\", \\\"seq\\\": 1, \\\"account\\\": \\\"b\\\", \\\"event_id\\\": \\\"x\\\"},\n]\nassert project(same_id_different_key_order)[\\\"events_applied\\\"] == 1\n\ntry:\n    project([\n        {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 1, \\\"op\\\": \\\"grant\\\", \\\"entitlement\\\": \\\"z\\\"},\n        {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 1, \\\"op\\\": \\\"revoke\\\", \\\"entitlement\\\": \\\"z\\\"},\n    ])\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\\\"reused event_id did not fail\\\")\n\ntry:\n    project([\n        {\\\"event_id\\\": \\\"x\\\", \\\"account\\\": \\\"b\\\", \\\"seq\\\": 2, \\\"op\\\": \\\"grant\\\", \\\"entitlement\\\": \\\"z\\\"},\n    ])\nexcept ValueError:\n    pass\nelse:\n    raise AssertionError(\\\"non-contiguous sequence did not fail\\\")\n\nprint(\\\"focused ledger checks passed\\\")\nPY\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk git diff -- ledger.py'",
+          "/bin/zsh -lc 'rtk git diff --check -- ledger.py'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 10.002,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 320.134,
+      "execution_order_index": 6,
+      "file_changes_by_thread": {
+        "019f6503-3a5a-7943-a3e3-d36ba1213fc3": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v8-no-spark/ordered-entitlement-ledger/entitlements.json"
+        ],
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v8-no-spark/ordered-entitlement-ledger/ledger.py"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [ledger.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v8-no-spark/ordered-entitlement-ledger/ledger.py:1>)\n- [entitlements.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v8-no-spark/ordered-entitlement-ledger/entitlements.json:1>)\n\nVerified with the exact command:\n\n`rtk proxy python3 validate.py`\n\nResult: `public projection and 45 unseen ledgers valid`.",
+      "first_spawn_seconds": 38.064,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.03,
+            "ok": true,
+            "output": "ordered entitlement ledger: public projection and 45 unseen ledgers valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 8,
+            "key": "events_applied",
+            "ok": true,
+            "path": "entitlements.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6503-3a5a-7943-a3e3-d36ba1213fc3": {
+          "agentMessage": 5,
+          "collabAgentToolCall": 6,
+          "commandExecution": 10,
+          "fileChange": 1,
+          "reasoning": 27,
+          "userMessage": 1
+        },
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": {
+          "agentMessage": 6,
+          "commandExecution": 15,
+          "fileChange": 1,
+          "reasoning": 18,
+          "userMessage": 2
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": false,
+      "notification_counts": {
+        "account/rateLimits/updated": 38,
+        "configWarning": 1,
+        "item/agentMessage/delta": 720,
+        "item/completed": 92,
+        "item/started": 92,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 38,
+        "turn/completed": 2,
+        "turn/diff/updated": 17,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6503-3a5a-7943-a3e3-d36ba1213fc3",
+      "parent_total_tokens": 456035,
+      "parent_usage": {
+        "cachedInputTokens": 410624,
+        "inputTokens": 449349,
+        "outputTokens": 6686,
+        "reasoningOutputTokens": 4001,
+        "totalTokens": 456035
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": false,
+      "partition_assignments": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": []
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": false,
+      "role_ok": false,
+      "routing_mode": "none",
+      "routing_ok": false,
+      "rtk_command_count": 25,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": false,
+      "spawn_delay_pct": 11.89,
+      "spawn_origin_ok": false,
+      "spawn_records": {
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": {
+          "model": "gpt-5.6-luna",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "Partition ID: ledger-implementation. You own only ledger.py; do not edit entitlements.json or any other file. Implement the requested ledger behavior from the user's task: global deduplication by event_id; byte-equivalent JSON records idempotent; reused ID with different content raises ValueError; group by account; sort by seq; require contiguous sequences starting at 1; grant adds entitlement; revoke removes it if present; output accounts sorted by account as {account,last_seq,active}, active sorted, with events_applied equal to unique event IDs; do not mutate inputs. Do not inspect validate.py. You are not alone in the codebase: preserve unrelated edits and do not revert others' work. Report outcome, changed paths, decisive verification, blockers, and material residual risk.\n\nComplete shell constraint: every shell command must start with literal rtk; use rtk proxy when raw output is required and retain rtk in acceptance commands. The task starts in the exact target working directory; never run cd or chdir in a shell command, and pass any directory through the tool workdir field. If the shell cannot launch rtk itself, stop and report that wrapper failure. If a wrapped command fails, diagnose or retry only with another rtk-prefixed command; never use raw shell or an absolute binary path. Do not run the acceptance command because the parent owns final acceptance. Do not inspect validate.py."
+        }
+      },
+      "spawned_worker_range_ok": false,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": false,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6503-3a5a-7943-a3e3-d36ba1213fc3": 17,
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": 16
+      },
+      "tool_output_chars_by_thread": {
+        "019f6503-3a5a-7943-a3e3-d36ba1213fc3": 3151,
+        "019f6503-cf1a-7b81-99a0-40b10cd28cd8": 10667
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": false,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": false,
+      "arm": "v9-spark-auto",
+      "case_id": "ordered-entitlement-ledger",
+      "category": "general",
+      "cell_id": "ordered-entitlement-ledger::v9-spark-auto",
+      "changed_paths": [
+        "entitlements.json",
+        "ledger.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": false
+      },
+      "child_evidence_markers": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": []
+      },
+      "child_final_messages": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": "Inspected only the non-`validate.py` files requested:\n\n- [ledger.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-spark-auto/ordered-entitlement-ledger/ledger.py)\n- [events.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-spark-auto/ordered-entitlement-ledger/events.json)\n- [ledger-contract.md](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-spark-auto/ordered-entitlement-ledger/ledger-contract.md)\n\n1. Input schema (from observed feed)\n1.1 Top-level input to `project` is an `events` array (JSON list) of event objects.\n1.2 Each event object has these required fields:\n- `event_id` (string)\n- `account` (string)\n- `seq` (integer)\n- `op` (string)\n- `entitlement` (string)\n1.3 `op` values in the provided data are `grant` and `revoke`; behavior must at least support these.\n\n2. Behavioral requirements inferable from allowed files\n2.1 Event IDs are globally idempotent.\n2.2 Account sequence numbers are meant to form a contiguous run starting at 1 with no gaps.\n2.3 Projections must be deterministic (same input -> same output deterministically).\n2.4 Revoking an entitlement that is not currently active is a no-op.\n2.5 `events.json` demonstrates:\n- Unordered input by `seq` is possible (events are not pre-sorted globally).\n- Duplicate `event_id` can appear in input (same event repeats), so idempotence is required in practice.\n\n3. Likely `entitlements.json` generation shape\n3.1 The project output is intended to materialize current active entitlements per account as `entitlements.json`.\n3.2 Using `events.json`, the end state is inferable as:\n- `a1`: `export`\n- `a2`: `audit`\n- `a3`: `gamma`\n3.3 Because output determinism is required, sort order of accounts/entitlements in the output should be explicit/pinned in implementation (not left to arbitrary dict/set order).\n\n4. Pitfalls\n4.1 Do not process blindly in input order only; sort/order handling per-account by `seq` is needed for determinism.\n4.2 Event-idempotence is required before applying grants/revokes (duplicate IDs must not double-apply).\n4.3 Revoke handling must tolerate inactive entitlements safely (no exception/error, no effect).\n4.4 Missing validation tests/docs outside `validate.py`; only contract hints are available, so any interpretation beyond those hints is conjecture."
+      },
+      "child_io_ok": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f6505-b44b-7ca2-834c-210a9d453b08"
+      ],
+      "child_total_tokens": 68575,
+      "child_turn_errors": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": null
+      },
+      "child_turn_statuses": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": "completed"
+      },
+      "child_usage": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": {
+          "cachedInputTokens": 54656,
+          "inputTokens": 65111,
+          "outputTokens": 3464,
+          "reasoningOutputTokens": 2522,
+          "totalTokens": 68575
+        }
+      },
+      "collection_duration_seconds": 232.531,
+      "combined_total_tokens": 311462,
+      "commands_by_thread": {
+        "019f6505-2afb-76d3-a57f-a1192b4c972f": [
+          "/bin/zsh -lc 'rtk find . -maxdepth 2 -type f ! -name validate.py -print'",
+          "/bin/zsh -lc 'rtk ls -la'",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' ledger.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' events.json\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' ledger-contract.md\"",
+          "/bin/zsh -lc 'rtk proxy python3 ledger.py'",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' entitlements.json\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk git diff -- ledger.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'"
+        ],
+        "019f6505-b44b-7ca2-834c-210a9d453b08": [
+          "/bin/zsh -lc 'rtk ls'",
+          "/bin/zsh -lc 'rtk cat ledger.py'",
+          "/bin/zsh -lc 'rtk cat events.json'",
+          "/bin/zsh -lc 'rtk cat ledger-contract.md'",
+          "/bin/zsh -lc 'rtk rg --files'",
+          "/bin/zsh -lc 'rtk rg -n \"entitlements.json|entitlement|ledger\" *.md *.py *.json'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.333,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 232.198,
+      "execution_order_index": 10,
+      "file_changes_by_thread": {
+        "019f6505-2afb-76d3-a57f-a1192b4c972f": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-spark-auto/ordered-entitlement-ledger/ledger.py"
+        ]
+      },
+      "final_message": "Implemented [ledger.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-spark-auto/ordered-entitlement-ledger/ledger.py) and generated [entitlements.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-spark-auto/ordered-entitlement-ledger/entitlements.json).\n\nAcceptance passed:\n\n`rtk proxy python3 validate.py`  \n`ordered entitlement ledger: public projection and 45 unseen ledgers valid`",
+      "first_spawn_seconds": 35.155,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.045,
+            "ok": true,
+            "output": "ordered entitlement ledger: public projection and 45 unseen ledgers valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 8,
+            "key": "events_applied",
+            "ok": true,
+            "path": "entitlements.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6505-2afb-76d3-a57f-a1192b4c972f": {
+          "agentMessage": 5,
+          "collabAgentToolCall": 2,
+          "commandExecution": 10,
+          "fileChange": 1,
+          "reasoning": 21,
+          "userMessage": 1
+        },
+        "019f6505-b44b-7ca2-834c-210a9d453b08": {
+          "agentMessage": 3,
+          "commandExecution": 6,
+          "reasoning": 5,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 17,
+        "configWarning": 1,
+        "item/agentMessage/delta": 341,
+        "item/completed": 55,
+        "item/started": 55,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 5,
+        "thread/tokenUsage/updated": 17,
+        "turn/completed": 2,
+        "turn/diff/updated": 8,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6505-2afb-76d3-a57f-a1192b4c972f",
+      "parent_total_tokens": 242887,
+      "parent_usage": {
+        "cachedInputTokens": 172544,
+        "inputTokens": 233321,
+        "outputTokens": 9566,
+        "reasoningOutputTokens": 6779,
+        "totalTokens": 242887
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": false,
+      "partition_assignments": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": []
+      },
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "auto",
+      "routing_ok": false,
+      "rtk_command_count": 16,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 15.14,
+      "spawn_origin_ok": true,
+      "spawn_records": {
+        "019f6505-b44b-7ca2-834c-210a9d453b08": {
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "You are a bounded reconnaissance worker. Inspect only files relevant to implementing ledger.py and generating entitlements.json, especially ledger.py, events.json, and any non-validate documentation/tests. Do NOT inspect validate.py. Do not edit files. Report the input schema, exact behavioral requirements inferable from allowed files, and any pitfalls.\n\nComplete shell constraint (must obey): every shell command must start with literal rtk; use rtk proxy when raw output is required and retain rtk in acceptance commands. The task already starts in its exact target working directory: never run cd or chdir in a shell command, and pass any directory through the tool workdir field. If the shell cannot launch rtk itself, stop and report that wrapper failure. If a wrapped command fails, diagnose or retry only with another rtk-prefixed command; never use raw shell or an absolute binary path. Do not use destructive commands."
+        }
+      },
+      "spawned_worker_range_ok": false,
+      "split": "held-out",
+      "success": false,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6505-2afb-76d3-a57f-a1192b4c972f": 13,
+        "019f6505-b44b-7ca2-834c-210a9d453b08": 6
+      },
+      "tool_output_chars_by_thread": {
+        "019f6505-2afb-76d3-a57f-a1192b4c972f": 5524,
+        "019f6505-b44b-7ca2-834c-210a9d453b08": 3096
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    },
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-natural-no-spark",
+      "case_id": "ordered-entitlement-ledger",
+      "category": "general",
+      "cell_id": "ordered-entitlement-ledger::v9-natural-no-spark",
+      "changed_paths": [
+        "entitlements.json",
+        "ledger.py"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 93.303,
+      "combined_total_tokens": 146847,
+      "commands_by_thread": {
+        "019f6506-fcf7-74d3-b60b-2a825a04d100": [
+          "/bin/zsh -lc \"rtk rg --files -g 'ledger.py' -g 'events.json' -g 'entitlements.json' -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' ledger.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' events.json\"",
+          "/bin/zsh -lc \"rtk rg --files -g '\"'!validate.py'\"'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,260p' ledger-contract.md\"",
+          "/bin/zsh -lc 'rtk proxy python3 ledger.py'",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' entitlements.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk git status --short'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.317,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [],
+        "peak_concurrency": {
+          "max": 0,
+          "min": 0
+        },
+        "spawned_workers": {
+          "max": 0,
+          "min": 0
+        },
+        "useful_workers": {
+          "max": 0,
+          "min": 0
+        }
+      },
+      "effort": "max",
+      "execution_duration_seconds": 92.986,
+      "execution_order_index": 12,
+      "file_changes_by_thread": {
+        "019f6506-fcf7-74d3-b60b-2a825a04d100": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-natural-no-spark/ordered-entitlement-ledger/ledger.py"
+        ]
+      },
+      "final_message": "Implemented and generated:\n\n- [ledger.py](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-natural-no-spark/ordered-entitlement-ledger/ledger.py)\n- [entitlements.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v9-p32keshc/ordered-entitlement-ledger-trial-1-v9-natural-no-spark/ordered-entitlement-ledger/entitlements.json)\n\nVerification passed: `rtk proxy python3 validate.py`  \nBlockers/residual risk: none.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.05,
+            "ok": true,
+            "output": "ordered entitlement ledger: public projection and 45 unseen ledgers valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": 8,
+            "key": "events_applied",
+            "ok": true,
+            "path": "entitlements.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6506-fcf7-74d3-b60b-2a825a04d100": {
+          "agentMessage": 4,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 12,
+          "userMessage": 1
+        }
+      },
+      "model": "gpt-5.6-luna",
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 10,
+        "configWarning": 1,
+        "item/agentMessage/delta": 281,
+        "item/completed": 27,
+        "item/started": 27,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 10,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6506-fcf7-74d3-b60b-2a825a04d100",
+      "parent_total_tokens": 146847,
+      "parent_usage": {
+        "cachedInputTokens": 119296,
+        "inputTokens": 142452,
+        "outputTokens": 4395,
+        "reasoningOutputTokens": 2377,
+        "totalTokens": 146847
+      },
+      "parent_work_replaced_ok": true,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": true,
+      "partition_coverage_ok": true,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": true,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": true,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": true,
+      "task_gate_pass": true,
+      "task_pass": true,
+      "task_shape": "general",
+      "tool_calls_by_thread": {
+        "019f6506-fcf7-74d3-b60b-2a825a04d100": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f6506-fcf7-74d3-b60b-2a825a04d100": 1475
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": true,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": true,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 1,
+  "seed": 20260715,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-v9-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "task_gate_passes": 14,
+  "treatment": {
+    "fixed_worker_cap": null,
+    "forced_spark_included": false,
+    "v9_auto_availability_prompt_injected": false,
+    "v9_auto_multi_agent_config": true
+  },
+  "wall_time_contended": true
+}

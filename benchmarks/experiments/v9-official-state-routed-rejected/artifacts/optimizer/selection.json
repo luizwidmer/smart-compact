@@ -1,0 +1,166 @@
+{
+  "schema_version": 3,
+  "product": "smart-compact-v9",
+  "objective": "minimize_parent_model_tokens",
+  "selection_stage": "before_task_creation",
+  "dimensions": {
+    "routing_mode": ["no_spark", "auto_spark"],
+    "task_shape": ["implementation", "migration", "handoff", "general"]
+  },
+  "task_shape_help": {
+    "implementation": "Path-disjoint implementations of the same contract.",
+    "migration": "Repetitive path-disjoint edits under one shared migration contract.",
+    "handoff": "Tightly coupled parent work with at most one externally supplied handoff.",
+    "general": "Any task not known to match a measured shape."
+  },
+  "replay_case_shapes": {
+    "legacy-calculator": "implementation",
+    "monorepo-sdk-migration": "migration",
+    "legacy-relay-bench": "handoff"
+  },
+  "routing_treatments": {
+    "no_spark": {
+      "enforcement": "config_before_inference",
+      "cli_args": ["--disable", "multi_agent"],
+      "thread_config": {"features": {"multi_agent": false}}
+    },
+    "auto_spark": {
+      "enforcement": "config_before_inference",
+      "cli_args": ["--enable", "multi_agent"],
+      "thread_config": {"features": {"multi_agent": true}}
+    }
+  },
+  "profiles": {
+    "v9": {
+      "profile": "smart-compact-v9",
+      "skill": "smart-compact-v9",
+      "visibility": "public",
+      "role": "canonical_local_default"
+    },
+    "v9-spark": {
+      "profile": "smart-compact-v9-spark",
+      "skill": "smart-compact-v9",
+      "visibility": "internal",
+      "role": "preselected_spark_route"
+    }
+  },
+  "rules": [
+    {
+      "when": {"routing_mode": "auto_spark", "task_shape": "implementation"},
+      "lane": "v9-spark",
+      "reason_code": "spark_implementation_probe",
+      "evidence_tier": "single_pass_development"
+    },
+    {
+      "when": {"routing_mode": "auto_spark", "task_shape": "migration"},
+      "lane": "v9",
+      "routing_treatment": "no_spark",
+      "reason_code": "local_migration_final",
+      "evidence_tier": "single_pass_final_selection"
+    },
+    {
+      "when": {"routing_mode": "auto_spark"},
+      "lane": "v9",
+      "routing_treatment": "no_spark",
+      "reason_code": "local_handoff_general",
+      "evidence_tier": "single_pass_development"
+    },
+    {
+      "when": {"routing_mode": "no_spark"},
+      "lane": "v9",
+      "reason_code": "local_explicit",
+      "evidence_tier": "configuration_contract"
+    }
+  ],
+  "evidence": {
+    "spark_implementation_probe": "One task-correct Sol-medium implementation probe used one Spark worker and reduced parent tokens from 188,435 to 147,086 (21.9%) while wall time increased from 124.0s to 132.3s; worker-drain and handoff protocol misses keep this directional until the final release gate.",
+    "local_migration_final": "On the frozen one-pass Sol-high migration pair, Spark used one worker but increased parent tokens from 107,047 local to 139,074 and was slower, so migration stays local.",
+    "local_handoff_general": "Spark increased both parent tokens and wall time on the Luna-xhigh handoff probe, so handoff and general tasks stay on the 259-byte local contract.",
+    "local_explicit": "No-Spark is enforced before inference and reinforced by the minimal local contract because the live runtime exposed a child tool in one disabled-control observation."
+  },
+  "retired_profiles": [
+    "smart-compact-v6",
+    "smart-compact-v7",
+    "smart-compact-v8",
+    "smart-compact-v8-natural",
+    "smart-compact-v9-implementation",
+    "smart-compact-v9-natural"
+  ],
+  "historical_counterfactual_replay": {
+    "status": "retired_in_sample_selector_evidence_not_current_v9_metric",
+    "kind": "v9_selector_replay_over_single_pass_historical_observations_not_fresh_inference",
+    "scope": "no_spark_only",
+    "baseline_profile": "retired-smart-compact-v8",
+    "excluded_treatment": "auto_spark_used_a_harness_availability_prompt_and_forced_spark_used_a_harness_handoff",
+    "cells": 21,
+    "baseline_parent_tokens": 4509801,
+    "optimized_parent_tokens": 3430364,
+    "parent_tokens_saved_vs_baseline": 1079437,
+    "parent_token_reduction_pct_vs_baseline": 23.935,
+    "by_routing_mode": {
+      "no_spark": {"cells": 21, "baseline_parent_tokens": 4509801, "optimized_parent_tokens": 3430364}
+    }
+  },
+  "sources": [
+    {
+      "path": "benchmarks/results/v8-release-summary.json",
+      "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"
+    },
+    {
+      "path": "benchmarks/results/v8-verbose-comparison.json",
+      "sha256": "c8ff91cb7afca507d35d2d8783973fbc55bcfe42c91f6e02da0110421f250c86"
+    },
+    {
+      "path": "profiles/smart-compact-v9.config.toml",
+      "sha256": "ecba3973761bbdd2b603f3a2d2da96515cea8e78470722dc5b52c6e702589402"
+    },
+    {
+      "path": "profiles/smart-compact-v9-spark.config.toml",
+      "sha256": "b771c80ca01aa61b62ef1aa1730102e972099bbd36854ecbd855fc5d5b19992f"
+    },
+    {
+      "path": "versions/v9/SKILL.md",
+      "sha256": "a69afa7ea829d6bb697d54295307213836becd95c620c4c5bf4cfdd87953fcf3"
+    },
+    {
+      "path": "benchmarks/results/raw/v9-heldout-release.json",
+      "sha256": "dc384ca21179ea74d87b24b7b8c33cc4efc4a7bb553057d949201f3ba9231a87"
+    },
+    {
+      "path": "benchmarks/results/raw/v9-routing-probe.json",
+      "sha256": "102a9aed871e379f587e96ececb526335d052725beeca98de68c07bf7b54c622"
+    },
+    {
+      "path": "benchmarks/results/raw/v9-routing-probe-r2.json",
+      "sha256": "552cc14b4676c80a533df8c543a83a1ba8c6641e2ef4dca840ddae95478c537d"
+    },
+    {
+      "path": "benchmarks/results/raw/v9-routing-probe-r3.json",
+      "sha256": "aba853d8898812fdeb1f36036bf91c0a13c36a0ac0a39d6aa66a8fda1bacbb90"
+    },
+    {
+      "path": "benchmarks/v9-final-freeze.json",
+      "sha256": "ea520438a5019c6d6190d25d791ed8a72ec489d84368a72aa2a5c4bba34d03d7"
+    },
+    {
+      "path": "benchmarks/results/raw/v9-final-release.json",
+      "sha256": "72729e6f2fc2ca9154a6691fc71cadc35905a56218f509c2cd548ada88d1b431"
+    },
+    {
+      "path": "benchmarks/experiments/v9-final-rejected/result.json",
+      "sha256": "1809acec77e8ffd5d7083407acaffa562deabb706d33f2d9dac3ede50748b505"
+    },
+    {
+      "path": "benchmarks/profiles/v6.config.toml",
+      "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
+    },
+    {
+      "path": "benchmarks/experiments/v8-verbose/profile.config.toml",
+      "sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717"
+    },
+    {
+      "path": "benchmarks/retired/package/profiles/smart-compact-v8.config.toml",
+      "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    }
+  ]
+}

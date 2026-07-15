@@ -1,28 +1,53 @@
-# Smart Compact optimizer
+# Smart Compact V9 optimizer
 
-The experimental optimizer selects one tested instruction lane before a Codex task is created. It does not blend prompts at runtime and cannot change an active task's profile.
+The optimizer selects one deployable state before task creation. It never changes an active task or blends prompts at runtime.
+
+## Inputs
+
+Every selection uses:
+
+- routing mode: `auto_spark` or `no_spark`
+- task shape: `implementation`, `migration`, `handoff`, or `general`
+- model family: `sol`, `luna`, or `other`
+- effort: `medium`, `high`, `xhigh`, `max`, or `other`
+
+```bash
+python3 scripts/select_optimizer_profile.py \
+  --routing-mode auto_spark \
+  --task-shape implementation \
+  --model-family luna \
+  --effort max \
+  --format command
+```
 
 ## Lanes
 
-| Lane | Use |
-| --- | --- |
-| `smart-compact-v8` | Automatic Spark routing |
-| `smart-compact-v8-natural` | No-Spark migration, handoff, and general work |
-| `smart-compact-v6` | No-Spark path-disjoint implementation work |
+| Lane | Profile | Behavior |
+| --- | --- | --- |
+| `native` | None | Default Codex with multi-agent disabled; zero added instruction state |
+| `v9-v8` | `smart-compact-v9-v8` | Exact frozen v8-compatible internal treatment with multi-agent disabled |
+| `v9` | `smart-compact-v9` | Minimal local V9 contract with multi-agent disabled |
+| `v9-spark` | `smart-compact-v9-spark` | Explicit offload contract with multi-agent enabled |
 
-The first-match rules are machine-readable in [`selection.json`](selection.json). Task shapes are:
+Only `auto_spark` + implementation + Luna/max selects `v9-spark`. `no_spark` selects `v9-v8` for that setting.
 
-- `implementation`: path-disjoint implementations of the same contract.
-- `migration`: repetitive path-disjoint edits under one shared migration contract.
-- `handoff`: tightly coupled parent work with at most one externally supplied handoff.
-- `general`: use when the task does not clearly match a measured shape.
+| Shape | Measured setting | Lane |
+| --- | --- | --- |
+| Implementation | Sol/medium, Sol/high, Luna/xhigh | `v9-v8` |
+| Implementation | Luna/max | `v9-spark` under `auto_spark`; otherwise `v9-v8` |
+| Migration | Sol/medium | `native` |
+| Migration | Sol/high, Luna/xhigh, Luna/max | `v9-v8` |
+| Handoff | Luna/max | `v9-v8` |
+| Handoff | Every other setting | `v9` |
+| General | Every setting | `v9` |
+| Implementation or migration | Unmeasured setting | `v9` |
 
-Automatic routing selects terse v8. This direction is informed by the harness result, but production auto-routing intentionally omits the harness's Spark-availability prompt and is not included in the replay metric. No-Spark implementation selects frozen v6 on the four-setting aggregate; other no-Spark work selects natural v8. The command and plugin apply `multi_agent` as configuration before inference, so enforcement consumes no model tokens. Forced Spark remains an evaluation-only harness treatment because reproducing it with prompt instructions would add tokens and would not match the measured arm.
+For the native lane, command output is `codex --disable multi_agent`; profile-only output is `codex-default`. All non-Spark lanes disable multi-agent before inference. The Spark lane has no fixed worker cap and asks for the smallest useful set.
 
-Command output is refused when the installed named profile is missing or differs from its bound hash. Optimized plugin starts use the bundled frozen profile directly, so a same-named custom file cannot silently replace the measured treatment.
+Native means the optimizer adds no profile instructions. It still inherits the user's global Codex config, so `--make-default` is intentionally not benchmark-equivalent to the isolated Standard control.
 
-## Evidence boundary
+## Evidence
 
-Replaying the no-Spark rules over 21 already observed cells chooses 3,430,364 parent tokens versus 4,509,801 for all-terse v8, a counterfactual reduction of 1,079,437 tokens (23.935%). This is a development replay, not fresh inference, not a variance estimate, and not a release metric. It can be optimistic because measured task shapes informed the rules.
+Uniform V9 state enforcement used 3,817,102 official parent tokens. State-aware selection used 2,607,766, saving 1,209,336 (31.682%). The definitive official selection also saved 397,164 parent tokens (13.217%) versus V8 while selecting one Spark worker in total.
 
-The natural profile is byte-identical to the frozen verbose treatment. The decision table binds the release summary, verbose comparison, and all three profile hashes. Fresh validation should compare the selector package against all-terse v8 on a smaller held-out matrix before making it the default or publishing the replay as a release metric.
+The rules are a post-matrix deployable hybrid selection, not blinded confirmation. Machine-readable first-match rules, evidence labels, and bound hashes are in [`selection.json`](selection.json). Command output is refused when an installed profile differs from its bound hash.

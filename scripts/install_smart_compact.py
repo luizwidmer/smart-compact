@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import shutil
@@ -24,9 +25,39 @@ else:
 SOURCE_ROOT = Path(__file__).parents[1]
 SKILL_NAME = "smart-compact"
 PROFILE_FILENAME = "smart-compact.config.toml"
-SUPPORTED_VERSIONS = ("v6", "v8")
-OPTIMIZER_LANES = ("v8-natural",)
-INSTALLABLE_VARIANTS = SUPPORTED_VERSIONS + OPTIMIZER_LANES
+CURRENT_VERSION = "v9"
+SUPPORTED_VERSIONS = (CURRENT_VERSION,)
+INSTALLABLE_SKILL_VARIANTS = (CURRENT_VERSION,)
+OPTIMIZER_LANES = ("v9-spark", "v9-v8")
+INSTALLABLE_PROFILE_VARIANTS = SUPPORTED_VERSIONS + OPTIMIZER_LANES
+RETIRED_SKILL_VARIANTS = ("v6", "v8", "v8-natural")
+RETIRED_PROFILE_VARIANTS = (
+    "v6",
+    "v7",
+    "v8",
+    "v8-natural",
+    "v9-implementation",
+    "v9-natural",
+)
+RETIRED_PLUGIN_PROFILE_VARIANTS = RETIRED_SKILL_VARIANTS + (
+    "v9-implementation",
+    "v9-natural",
+)
+RETIRED_PACKAGE_ROOT = Path("benchmarks/retired/package")
+RETIRED_PLUGIN_BLOB_IDS = {
+    Path(".codex-plugin/plugin.json"): ("1d874b10f6e197a70dd26bfac0ab96fb4ccf5eae",),
+    Path("mcp/server.mjs"): ("105310581e3cec16d13db610d2a1b058f07ef811",),
+    Path("optimizer/selection.json"): ("bffdf0a86858e904cf6a6f9cc0090884b9053065",),
+    Path("skills/smart-compact-profile-picker/SKILL.md"): (
+        "2caaf992dff658006aedefb6c8e7d1ca3f28b103",
+    ),
+    Path("skills/smart-compact/SKILL.md"): (
+        "cee3d672c0fe5a483eb07d381eeea4719cf8af00",
+    ),
+    Path("skills/smart-compact/agents/openai.yaml"): (
+        "2b16009b9e06bfee6ec2f8a87a17333fff32a3fb",
+    ),
+}
 AGENT_FILENAME = "spark-worker.toml"
 PLUGIN_NAME = "smart-compact"
 MARKETPLACE_NAME = "personal"
@@ -78,6 +109,11 @@ def managed_file_state(
     return "managed" if existing in managed_contents else state
 
 
+def git_blob_id(content: bytes) -> str:
+    header = f"blob {len(content)}\0".encode("ascii")
+    return hashlib.sha1(header + content).hexdigest()
+
+
 def install_file(
     component: str,
     content: str,
@@ -112,6 +148,13 @@ def skill_contents(source: Path) -> dict[Path, str]:
 
 def compatibility_skill_contents(source_root: Path, version: str) -> dict[Path, str]:
     contents = skill_contents(source_root / "versions" / version)
+    return compatibility_skill_from_contents(contents, version)
+
+
+def compatibility_skill_from_contents(
+    contents: Mapping[Path, str], version: str
+) -> dict[Path, str]:
+    contents = dict(contents)
     versioned_name = f"name: smart-compact-{version}"
     skill = contents[Path("SKILL.md")]
     if skill.count(versioned_name) != 1:
@@ -178,6 +221,7 @@ def install_tree(
     dry_run: bool,
     overlays: Mapping[Path, str] | None = None,
     managed_overlays: Sequence[Mapping[Path, str]] = (),
+    managed_blob_ids: Mapping[Path, Sequence[str]] | None = None,
 ) -> InstallResult:
     files = sorted(path for path in source.rglob("*") if path.is_file())
     if not files:
@@ -188,8 +232,9 @@ def install_tree(
     contents = dict(base_contents)
     if overlays:
         contents.update(overlays)
-    states = {
-        relative: managed_file_state(
+    states: dict[Path, str] = {}
+    for relative, content in contents.items():
+        state = managed_file_state(
             content,
             target / relative,
             (
@@ -201,8 +246,15 @@ def install_tree(
                 if candidate is not None
             ),
         )
-        for relative, content in contents.items()
-    }
+        target_file = target / relative
+        if (
+            state == "conflict"
+            and target_file.is_file()
+            and git_blob_id(target_file.read_bytes())
+            in (managed_blob_ids or {}).get(relative, ())
+        ):
+            state = "managed"
+        states[relative] = state
     conflicts = [str(relative) for relative, state in states.items() if state == "conflict"]
     if conflicts and not force:
         return InstallResult(
@@ -234,8 +286,21 @@ def profile_contents(source_root: Path) -> dict[str, str]:
         version: (
             source_root / "profiles" / f"smart-compact-{version}.config.toml"
         ).read_text(encoding="utf-8")
-        for version in INSTALLABLE_VARIANTS
+        for version in INSTALLABLE_PROFILE_VARIANTS
     }
+
+
+def retired_skill_contents(source_root: Path, version: str) -> dict[Path, str]:
+    return skill_contents(source_root / RETIRED_PACKAGE_ROOT / "versions" / version)
+
+
+def retired_profile_content(source_root: Path, version: str) -> str:
+    return (
+        source_root
+        / RETIRED_PACKAGE_ROOT
+        / "profiles"
+        / f"smart-compact-{version}.config.toml"
+    ).read_text(encoding="utf-8")
 
 
 def plugin_alias_overlays(source_root: Path, version: str) -> dict[Path, str]:
@@ -251,6 +316,93 @@ def plugin_alias_overlays(source_root: Path, version: str) -> dict[Path, str]:
             / f"smart-compact-{version}.config.json"
         ).read_text(encoding="utf-8")
     }
+
+
+def retired_plugin_alias_overlays(
+    source_root: Path, version: str
+) -> dict[Path, str]:
+    selected_skill = compatibility_skill_from_contents(
+        retired_skill_contents(source_root, version), version
+    )
+    return {
+        Path("skills/smart-compact") / relative: content
+        for relative, content in selected_skill.items()
+    } | {
+        Path("profiles/smart-compact.config.json"): (
+            source_root
+            / RETIRED_PACKAGE_ROOT
+            / "plugin"
+            / "profiles"
+            / f"smart-compact-{version}.config.json"
+        ).read_text(encoding="utf-8")
+    }
+
+
+def retire_content_tree(
+    component: str,
+    expected_source: Path,
+    target: Path,
+    *,
+    dry_run: bool,
+) -> InstallResult | None:
+    if not target.exists():
+        return None
+    if not target.is_dir() or not expected_source.is_dir():
+        return InstallResult(component, "preserved", target, "not an exact managed tree")
+    expected = {
+        path.relative_to(expected_source): path.read_bytes()
+        for path in sorted(expected_source.rglob("*"))
+        if path.is_file()
+    }
+    expected_directories = {
+        path.relative_to(expected_source)
+        for path in sorted(expected_source.rglob("*"))
+        if path.is_dir()
+    }
+    actual = {
+        path.relative_to(target): path.read_bytes()
+        for path in sorted(target.rglob("*"))
+        if path.is_file()
+    }
+    actual_directories = {
+        path.relative_to(target)
+        for path in sorted(target.rglob("*"))
+        if path.is_dir()
+    }
+    if actual != expected or actual_directories != expected_directories:
+        return InstallResult(component, "preserved", target, "files differ from retired release")
+    if dry_run:
+        return InstallResult(component, "would-retire", target)
+    shutil.rmtree(target)
+    return InstallResult(component, "retired", target)
+
+
+def retire_file(
+    component: str,
+    expected_source: Path,
+    target: Path,
+    *,
+    dry_run: bool,
+) -> InstallResult | None:
+    if not target.exists():
+        return None
+    if (
+        not target.is_file()
+        or not expected_source.is_file()
+        or target.read_bytes() != expected_source.read_bytes()
+    ):
+        return InstallResult(component, "preserved", target, "file differs from retired release")
+    if dry_run:
+        return InstallResult(component, "would-retire", target)
+    target.unlink()
+    return InstallResult(component, "retired", target)
+
+
+def append_retirement(
+    results: list[InstallResult], result: InstallResult | None
+) -> None:
+    if result is not None:
+        results.append(result)
 
 
 def marketplace_entry() -> dict[str, object]:
@@ -389,7 +541,7 @@ def install_package(
     skill_root: Path,
     codex_home: Path,
     *,
-    version: str = "v8",
+    version: str = CURRENT_VERSION,
     force: bool = False,
     dry_run: bool = False,
     include_profile: bool = True,
@@ -409,12 +561,18 @@ def install_package(
         personal_root = skill_root.parent.parent
     versioned_skills = {
         candidate: skill_contents(source_root / "versions" / candidate)
-        for candidate in INSTALLABLE_VARIANTS
+        for candidate in INSTALLABLE_SKILL_VARIANTS
     }
     compatibility_skills = {
         candidate: compatibility_skill_contents(source_root, candidate)
         for candidate in SUPPORTED_VERSIONS
     }
+    retired_compatibility_skills = tuple(
+        compatibility_skill_from_contents(
+            retired_skill_contents(source_root, candidate), candidate
+        )
+        for candidate in RETIRED_SKILL_VARIANTS
+    )
     profiles = profile_contents(source_root)
     results = [
         install_content_tree(
@@ -424,7 +582,7 @@ def install_package(
             force=force,
             dry_run=dry_run,
         )
-        for candidate in INSTALLABLE_VARIANTS
+        for candidate in INSTALLABLE_SKILL_VARIANTS
     ]
     results.append(
         install_content_tree(
@@ -433,12 +591,26 @@ def install_package(
             skill_root / SKILL_NAME,
             force=force,
             dry_run=dry_run,
-            managed_variants=tuple(compatibility_skills.values()),
+            managed_variants=(
+                *tuple(compatibility_skills.values()),
+                *retired_compatibility_skills,
+            ),
         )
     )
 
+    for candidate in RETIRED_SKILL_VARIANTS:
+        append_retirement(
+            results,
+            retire_content_tree(
+                f"retired-skill-{candidate}",
+                source_root / RETIRED_PACKAGE_ROOT / "versions" / candidate,
+                skill_root / f"{SKILL_NAME}-{candidate}",
+                dry_run=dry_run,
+            ),
+        )
+
     if include_profile:
-        for candidate in INSTALLABLE_VARIANTS:
+        for candidate in INSTALLABLE_PROFILE_VARIANTS:
             results.append(
                 install_file(
                     f"profile-{candidate}",
@@ -457,9 +629,28 @@ def install_package(
                 mode=0o600,
                 force=force,
                 dry_run=dry_run,
-                managed_contents=profiles.values(),
+                managed_contents=(
+                    *tuple(profiles.values()),
+                    *(
+                        retired_profile_content(source_root, candidate)
+                        for candidate in RETIRED_PROFILE_VARIANTS
+                    ),
+                ),
             )
         )
+        for candidate in RETIRED_PROFILE_VARIANTS:
+            append_retirement(
+                results,
+                retire_file(
+                    f"retired-profile-{candidate}",
+                    source_root
+                    / RETIRED_PACKAGE_ROOT
+                    / "profiles"
+                    / f"smart-compact-{candidate}.config.toml",
+                    codex_home / f"smart-compact-{candidate}.config.toml",
+                    dry_run=dry_run,
+                ),
+            )
     else:
         results.append(InstallResult("profiles", "skipped", None, "disabled by --no-profile"))
 
@@ -490,12 +681,14 @@ def install_package(
 
     if include_plugin:
         selected_plugin_overlay = plugin_alias_overlays(source_root, version)
-        all_plugin_overlays = tuple(
-            plugin_alias_overlays(source_root, candidate)
-            for candidate in SUPPORTED_VERSIONS
+        all_plugin_overlays = (
+            *(plugin_alias_overlays(source_root, candidate) for candidate in SUPPORTED_VERSIONS),
+            *(
+                retired_plugin_alias_overlays(source_root, candidate)
+                for candidate in RETIRED_SKILL_VARIANTS
+            ),
         )
-        results.append(
-            install_tree(
+        plugin_result = install_tree(
                 "plugin-source",
                 source_root / "plugin",
                 personal_root / "plugins" / PLUGIN_NAME,
@@ -503,8 +696,40 @@ def install_package(
                 dry_run=dry_run,
                 overlays=selected_plugin_overlay,
                 managed_overlays=all_plugin_overlays,
+                managed_blob_ids=RETIRED_PLUGIN_BLOB_IDS,
             )
-        )
+        results.append(plugin_result)
+        if plugin_result.status != "conflict":
+            installed_plugin = personal_root / "plugins" / PLUGIN_NAME
+            for candidate in RETIRED_SKILL_VARIANTS:
+                append_retirement(
+                    results,
+                    retire_content_tree(
+                        f"retired-plugin-skill-{candidate}",
+                        source_root
+                        / RETIRED_PACKAGE_ROOT
+                        / "versions"
+                        / candidate,
+                        installed_plugin / "skills" / f"smart-compact-{candidate}",
+                        dry_run=dry_run,
+                    ),
+                )
+            for candidate in RETIRED_PLUGIN_PROFILE_VARIANTS:
+                append_retirement(
+                    results,
+                    retire_file(
+                        f"retired-plugin-profile-{candidate}",
+                        source_root
+                        / RETIRED_PACKAGE_ROOT
+                        / "plugin"
+                        / "profiles"
+                        / f"smart-compact-{candidate}.config.json",
+                        installed_plugin
+                        / "profiles"
+                        / f"smart-compact-{candidate}.config.json",
+                        dry_run=dry_run,
+                    ),
+                )
         results.append(
             install_marketplace(
                 personal_root / ".agents" / "plugins" / "marketplace.json",
@@ -556,8 +781,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--version",
         choices=SUPPORTED_VERSIONS,
-        default="v8",
-        help="compatibility alias version (default: v8; both versions are installed)",
+        default=CURRENT_VERSION,
+        help="current release alias (v9 is the only supported product version)",
     )
     parser.add_argument("--force", action="store_true", help="replace differing managed files")
     parser.add_argument("--dry-run", action="store_true", help="report changes without writing")
@@ -655,8 +880,8 @@ def main() -> int:
         if not args.no_profile:
             print(
                 f"CLI profiles: codex --profile smart-compact "
-                f"or codex --profile smart-compact-{args.version}; "
-                "optimizer lane: codex --profile smart-compact-v8-natural"
+                f"or codex --profile smart-compact-{args.version}. "
+                "The optimizer selects internal v9 lanes before task creation."
             )
         if args.make_default:
             print("Default profile: Smart Compact settings are active in new CLI and app tasks")

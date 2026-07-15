@@ -27,11 +27,14 @@ class AppTaskError(RuntimeError):
 
 
 def app_server_command(codex: str, config_overrides: list[str] | None = None) -> list[str]:
-    override_args = [
-        argument
-        for value in (config_overrides or [])
-        for argument in ("-c", value)
-    ]
+    override_args: list[str] = []
+    for value in config_overrides or []:
+        if value == "features.multi_agent=false":
+            override_args.extend(("--disable", "multi_agent"))
+        elif value == "features.multi_agent=true":
+            override_args.extend(("--enable", "multi_agent"))
+        else:
+            override_args.extend(("-c", value))
     return [codex, *override_args, "app-server", "--listen", "stdio://"]
 
 

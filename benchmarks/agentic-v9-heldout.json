@@ -1,0 +1,160 @@
+{
+  "schema_version": 2,
+  "cases": [
+    {
+      "id": "polyglot-record-normalizer",
+      "split": "held-out",
+      "category": "implementation",
+      "inspired_by": ["SWE-bench Pro", "Terminal-Bench 2", "TheAgentCompany"],
+      "human_minutes": 40,
+      "prompt": "Implement the Python and JavaScript record normalizers and write normalization_report.json. Do not inspect validate.py. Both engines must return exactly {id, email, active, tags, score, locale}: id and email are trimmed lowercase strings; active accepts booleans, 0/1, and case-insensitive true/false, yes/no, on/off strings and rejects anything else; tags are trimmed lowercase, empty tags removed, unique, and sorted; score is numeric, truncated toward zero, and clamped to 0..100; locale is a trimmed non-empty string or en-US. Preserve input objects. The report must be exactly {\"engines\":[\"javascript\",\"python\"],\"public_cases\":4,\"status\":\"parity\"}. Run the exact acceptance command `rtk proxy python3 validate.py`.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 1, "max": null},
+        "useful_workers": {"min": 1, "max": null},
+        "peak_concurrency": {"min": 1, "max": null},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [
+          {"id": "python-engine", "weight": 1, "markers": ["python/normalizer.py"], "allowed_replication": 1},
+          {"id": "javascript-engine", "weight": 1, "markers": ["javascript/normalizer.mjs"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["normalization_report.json", "validate.py"]
+      },
+      "acceptance_command": ["rtk", "proxy", "python3", "validate.py"],
+      "allowed_changes": ["python/normalizer.py", "javascript/normalizer.mjs", "normalization_report.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "python/normalizer.py": "def normalize_record(record):\n    raise NotImplementedError('implement normalize_record')\n",
+        "javascript/normalizer.mjs": "export function normalizeRecord(record) {\n  throw new Error('implement normalizeRecord');\n}\n",
+        "javascript/run.mjs": "import fs from 'node:fs';\nimport { normalizeRecord } from './normalizer.mjs';\nconst rows = JSON.parse(fs.readFileSync(0, 'utf8'));\nprocess.stdout.write(JSON.stringify(rows.map(normalizeRecord)));\n",
+        "fixtures/public.json": "[{\"id\":\" User-01 \",\"email\":\" ADA@Example.COM \",\"active\":\"YES\",\"tags\":[\"Beta\",\" alpha \",\"beta\",\"\"],\"score\":\"98.9\",\"locale\":\" pt-BR \"},{\"id\":42,\"email\":\"bob@example.com\",\"active\":0,\"tags\":[],\"score\":-5.2},{\"id\":\"C\",\"email\":\" C@EXAMPLE.COM\",\"active\":true,\"tags\":[\"Ops\"],\"score\":101},{\"id\":\"d\",\"email\":\"d@example.com\",\"active\":\"off\",\"tags\":[\" Z \",\"a\"],\"score\":44.7,\"locale\":\"\"}]\n",
+        "validate.py": "import copy\nimport importlib.util\nimport json\nimport random\nimport subprocess\nfrom pathlib import Path\n\nspec = importlib.util.spec_from_file_location('normalizer', 'python/normalizer.py')\nmodule = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(module)\n\ndef active(value):\n    if isinstance(value, bool): return value\n    if type(value) in (int, float) and value in (0, 1): return bool(value)\n    if isinstance(value, str):\n        lowered = value.strip().lower()\n        if lowered in {'true', 'yes', 'on', '1'}: return True\n        if lowered in {'false', 'no', 'off', '0'}: return False\n    raise ValueError('invalid active')\n\ndef reference(row):\n    locale = str(row.get('locale', '')).strip() or 'en-US'\n    return {'id': str(row['id']).strip().lower(), 'email': str(row['email']).strip().lower(), 'active': active(row['active']), 'tags': sorted({str(tag).strip().lower() for tag in row.get('tags', []) if str(tag).strip()}), 'score': max(0, min(100, int(float(row.get('score', 0))))), 'locale': locale}\n\ndef javascript(rows):\n    completed = subprocess.run(['node', 'javascript/run.mjs'], input=json.dumps(rows), text=True, capture_output=True, check=True)\n    return json.loads(completed.stdout)\n\npublic = json.loads(Path('fixtures/public.json').read_text())\nrng = random.Random(90210)\ntruthy = [True, 1, ' TRUE ', 'yes', 'On', '1']\nfalsy = [False, 0, ' FALSE ', 'no', 'Off', '0']\nunseen = []\nfor index in range(48):\n    enabled = bool(index % 2)\n    unseen.append({'id': f' ID-{index:03d} ', 'email': f' USER{index}@Example.COM ', 'active': rng.choice(truthy if enabled else falsy), 'tags': [rng.choice([' Alpha ', 'BETA', 'ops', '']), rng.choice(['beta', 'Ops', 'gamma'])], 'score': rng.uniform(-30, 140), 'locale': rng.choice(['', ' en-GB ', 'pt-BR'])})\nrows = public + unseen\noriginal = copy.deepcopy(rows)\nexpected = [reference(row) for row in rows]\nassert [module.normalize_record(row) for row in rows] == expected\nassert rows == original\nassert javascript(rows) == expected\nassert rows == original\nreport = json.loads(Path('normalization_report.json').read_text())\nassert report == {'engines': ['javascript', 'python'], 'public_cases': 4, 'status': 'parity'}\nfor invalid in ('maybe', 2, None):\n    row = {'id': 'x', 'email': 'x@y', 'active': invalid, 'tags': [], 'score': 0}\n    try: module.normalize_record(row)\n    except (TypeError, ValueError): pass\n    else: raise AssertionError(f'invalid active accepted: {invalid!r}')\nprint('polyglot normalizer: 52 exact parity cases valid')\n"
+      },
+      "gold_files": {
+        "python/normalizer.py": "_TRUE = {'true', 'yes', 'on', '1'}\n_FALSE = {'false', 'no', 'off', '0'}\n\ndef _active(value):\n    if isinstance(value, bool):\n        return value\n    if type(value) in (int, float) and value in (0, 1):\n        return bool(value)\n    if isinstance(value, str):\n        lowered = value.strip().lower()\n        if lowered in _TRUE:\n            return True\n        if lowered in _FALSE:\n            return False\n    raise ValueError('invalid active')\n\ndef normalize_record(record):\n    locale = str(record.get('locale', '')).strip() or 'en-US'\n    tags = sorted({str(tag).strip().lower() for tag in record.get('tags', []) if str(tag).strip()})\n    score = max(0, min(100, int(float(record.get('score', 0)))))\n    return {'id': str(record['id']).strip().lower(), 'email': str(record['email']).strip().lower(), 'active': _active(record['active']), 'tags': tags, 'score': score, 'locale': locale}\n",
+        "javascript/normalizer.mjs": "const TRUE = new Set(['true', 'yes', 'on', '1']);\nconst FALSE = new Set(['false', 'no', 'off', '0']);\n\nfunction active(value) {\n  if (typeof value === 'boolean') return value;\n  if (typeof value === 'number' && (value === 0 || value === 1)) return Boolean(value);\n  if (typeof value === 'string') {\n    const lowered = value.trim().toLowerCase();\n    if (TRUE.has(lowered)) return true;\n    if (FALSE.has(lowered)) return false;\n  }\n  throw new Error('invalid active');\n}\n\nexport function normalizeRecord(record) {\n  const locale = String(record.locale ?? '').trim() || 'en-US';\n  const tags = [...new Set((record.tags ?? []).map((tag) => String(tag).trim().toLowerCase()).filter(Boolean))].sort();\n  const score = Math.max(0, Math.min(100, Math.trunc(Number(record.score ?? 0))));\n  return {id: String(record.id).trim().toLowerCase(), email: String(record.email).trim().toLowerCase(), active: active(record.active), tags, score, locale};\n}\n",
+        "normalization_report.json": "{\n  \"engines\": [\"javascript\", \"python\"],\n  \"public_cases\": 4,\n  \"status\": \"parity\"\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["rtk", "proxy", "python3", "validate.py"]},
+        {"type": "json_equals", "path": "normalization_report.json", "key": "status", "value": "parity"}
+      ]
+    },
+    {
+      "id": "workspace-permission-migration",
+      "split": "held-out",
+      "category": "migration",
+      "inspired_by": ["SWE-bench Pro", "WorkArena++", "Terminal-Bench 2"],
+      "human_minutes": 45,
+      "prompt": "Implement migrate_permissions.py and generate migration-plan.json from workspaces.json. Do not inspect validate.py. Normalize users to trimmed lowercase and deduplicate per workspace. A suspended record wins; otherwise keep the highest legacy permission owner > admin > write > read > guest. Map owner to admin with [billing,members,write], admin to admin with [members,write], write to editor with [write], read to viewer with [read], guest to guest with [], and suspended to suspended with []. Sort workspaces by id, members by user, and capabilities exactly as listed. Output {workspaces:[...],summary:{members,suspended}}. Run the exact acceptance command `rtk proxy python3 validate.py`.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 1, "max": null},
+        "useful_workers": {"min": 1, "max": null},
+        "peak_concurrency": {"min": 1, "max": null},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [
+          {"id": "workspace-data", "weight": 1, "markers": ["workspaces.json"], "allowed_replication": 1},
+          {"id": "migration-contract", "weight": 1, "markers": ["migration-rules.md"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["migrate_permissions.py", "migration-plan.json", "validate.py"]
+      },
+      "acceptance_command": ["rtk", "proxy", "python3", "validate.py"],
+      "allowed_changes": ["migrate_permissions.py", "migration-plan.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "migration-rules.md": "# Permission migration\n\nPrecedence: owner, admin, write, read, guest. Suspended always wins. User identity is case-insensitive. Output order is deterministic.\n",
+        "workspaces.json": "{\"workspaces\":[{\"id\":\"alpha\",\"region\":\"us-east\",\"members\":[{\"user\":\" Ana \",\"permission\":\"read\"},{\"user\":\"BOB\",\"permission\":\"owner\"},{\"user\":\"ana\",\"permission\":\"write\"}]},{\"id\":\"beta\",\"region\":\"eu-west\",\"members\":[{\"user\":\"cai\",\"permission\":\"admin\"},{\"user\":\"dia\",\"permission\":\"guest\",\"suspended\":true}]},{\"id\":\"gamma\",\"region\":\"ap-south\",\"members\":[{\"user\":\"eve\",\"permission\":\"guest\"},{\"user\":\"FAY\",\"permission\":\"write\"},{\"user\":\"Eve\",\"permission\":\"read\"}]}]}\n",
+        "migrate_permissions.py": "def migrate(document):\n    raise NotImplementedError('implement permission migration')\n\nif __name__ == '__main__':\n    raise SystemExit('implement CLI')\n",
+        "validate.py": "import copy\nimport importlib.util\nimport json\nimport random\nfrom pathlib import Path\n\nspec = importlib.util.spec_from_file_location('migration', 'migrate_permissions.py')\nmodule = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(module)\nRANK = {'guest': 0, 'read': 1, 'write': 2, 'admin': 3, 'owner': 4}\nMAPPING = {'owner': ('admin', ['billing', 'members', 'write']), 'admin': ('admin', ['members', 'write']), 'write': ('editor', ['write']), 'read': ('viewer', ['read']), 'guest': ('guest', [])}\n\ndef reference(document):\n    output = []\n    suspended_count = 0\n    for workspace in sorted(document['workspaces'], key=lambda row: row['id']):\n        grouped = {}\n        for member in workspace['members']:\n            user = member['user'].strip().lower()\n            current = grouped.get(user)\n            if current is None or member.get('suspended', False) or (not current.get('suspended', False) and RANK[member['permission']] > RANK[current['permission']]):\n                grouped[user] = member\n        members = []\n        for user, member in sorted(grouped.items()):\n            if member.get('suspended', False):\n                role, capabilities = 'suspended', []\n                suspended_count += 1\n            else:\n                role, capabilities = MAPPING[member['permission']]\n            members.append({'user': user, 'role': role, 'capabilities': capabilities})\n        output.append({'id': workspace['id'], 'region': workspace['region'], 'members': members})\n    return {'workspaces': output, 'summary': {'members': sum(len(row['members']) for row in output), 'suspended': suspended_count}}\n\npublic = json.loads(Path('workspaces.json').read_text())\nexpected_public = reference(public)\nassert module.migrate(copy.deepcopy(public)) == expected_public\nassert json.loads(Path('migration-plan.json').read_text()) == expected_public\nrng = random.Random(6102026)\npermissions = list(RANK)\nfor trial in range(36):\n    document = {'workspaces': []}\n    for workspace_index in range(3):\n        members = []\n        for member_index in range(8):\n            members.append({'user': f' User-{rng.randrange(5)} ', 'permission': rng.choice(permissions), 'suspended': rng.randrange(17) == 0})\n        document['workspaces'].append({'id': f'w-{2-workspace_index}', 'region': rng.choice(['us', 'eu', 'ap']), 'members': members})\n    original = copy.deepcopy(document)\n    assert module.migrate(document) == reference(document)\n    assert document == original\nprint('workspace permission migration: public plan and 36 unseen datasets valid')\n"
+      },
+      "gold_files": {
+        "migrate_permissions.py": "import json\nimport sys\nfrom pathlib import Path\n\nRANK = {'guest': 0, 'read': 1, 'write': 2, 'admin': 3, 'owner': 4}\nMAPPING = {'owner': ('admin', ['billing', 'members', 'write']), 'admin': ('admin', ['members', 'write']), 'write': ('editor', ['write']), 'read': ('viewer', ['read']), 'guest': ('guest', [])}\n\ndef migrate(document):\n    output = []\n    suspended_count = 0\n    for workspace in sorted(document['workspaces'], key=lambda row: row['id']):\n        grouped = {}\n        for member in workspace['members']:\n            user = member['user'].strip().lower()\n            current = grouped.get(user)\n            if current is None or member.get('suspended', False) or (not current.get('suspended', False) and RANK[member['permission']] > RANK[current['permission']]):\n                grouped[user] = member\n        members = []\n        for user, member in sorted(grouped.items()):\n            if member.get('suspended', False):\n                role, capabilities = 'suspended', []\n                suspended_count += 1\n            else:\n                role, capabilities = MAPPING[member['permission']]\n            members.append({'user': user, 'role': role, 'capabilities': capabilities})\n        output.append({'id': workspace['id'], 'region': workspace['region'], 'members': members})\n    return {'workspaces': output, 'summary': {'members': sum(len(row['members']) for row in output), 'suspended': suspended_count}}\n\nif __name__ == '__main__':\n    source = Path(sys.argv[1] if len(sys.argv) > 1 else 'workspaces.json')\n    target = Path(sys.argv[2] if len(sys.argv) > 2 else 'migration-plan.json')\n    target.write_text(json.dumps(migrate(json.loads(source.read_text())), indent=2, sort_keys=True) + '\\n')\n",
+        "migration-plan.json": "{\n  \"summary\": {\"members\": 6, \"suspended\": 1},\n  \"workspaces\": [\n    {\"id\": \"alpha\", \"region\": \"us-east\", \"members\": [{\"user\": \"ana\", \"role\": \"editor\", \"capabilities\": [\"write\"]}, {\"user\": \"bob\", \"role\": \"admin\", \"capabilities\": [\"billing\", \"members\", \"write\"]}]},\n    {\"id\": \"beta\", \"region\": \"eu-west\", \"members\": [{\"user\": \"cai\", \"role\": \"admin\", \"capabilities\": [\"members\", \"write\"]}, {\"user\": \"dia\", \"role\": \"suspended\", \"capabilities\": []}]},\n    {\"id\": \"gamma\", \"region\": \"ap-south\", \"members\": [{\"user\": \"eve\", \"role\": \"viewer\", \"capabilities\": [\"read\"]}, {\"user\": \"fay\", \"role\": \"editor\", \"capabilities\": [\"write\"]}]}\n  ]\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["rtk", "proxy", "python3", "validate.py"]},
+        {"type": "json_equals", "path": "migration-plan.json", "key": "summary", "value": {"members": 6, "suspended": 1}}
+      ]
+    },
+    {
+      "id": "incident-window-correlation",
+      "split": "held-out",
+      "category": "handoff",
+      "inspired_by": ["TheAgentCompany", "SWE-bench Pro", "WorkArena++"],
+      "human_minutes": 50,
+      "prompt": "Implement correlate.py and generate handoff.json from events.json. Do not inspect validate.py. Group events independently by trace after sorting by timestamp then service; split a trace when the gap from its previous event exceeds 300 seconds. Each window is {trace,start,end,services,severity,root_cause,customer_impact}, where services are sorted unique, severity is the maximum info < warning < error < critical, root_cause is the earliest event as {service,message}, and customer_impact is true for error or critical. Sort windows by start then trace. Output {windows,summary:{events,windows,customer_impact_windows}}. Run the exact acceptance command `rtk proxy python3 validate.py`.",
+      "delegation": {
+        "mode": "required_when_available",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 1, "max": null},
+        "useful_workers": {"min": 1, "max": null},
+        "peak_concurrency": {"min": 1, "max": null},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [
+          {"id": "event-stream", "weight": 2, "markers": ["events.json"], "allowed_replication": 1},
+          {"id": "handoff-contract", "weight": 1, "markers": ["runbook.md"], "allowed_replication": 1}
+        ],
+        "parent_reserved_paths": ["correlate.py", "handoff.json", "validate.py"]
+      },
+      "acceptance_command": ["rtk", "proxy", "python3", "validate.py"],
+      "allowed_changes": ["correlate.py", "handoff.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "runbook.md": "# Incident handoff\n\nA trace is continuous while adjacent events are no more than 300 seconds apart. Severity order is info, warning, error, critical. Error and critical windows have customer impact.\n",
+        "events.json": "[{\"ts\":100,\"service\":\"api\",\"severity\":\"warning\",\"trace\":\"trace-a\",\"message\":\"latency\"},{\"ts\":180,\"service\":\"db\",\"severity\":\"error\",\"trace\":\"trace-a\",\"message\":\"pool exhausted\"},{\"ts\":520,\"service\":\"api\",\"severity\":\"info\",\"trace\":\"trace-a\",\"message\":\"recovered\"},{\"ts\":120,\"service\":\"auth\",\"severity\":\"critical\",\"trace\":\"trace-b\",\"message\":\"tokens rejected\"},{\"ts\":200,\"service\":\"api\",\"severity\":\"error\",\"trace\":\"trace-b\",\"message\":\"login failures\"},{\"ts\":900,\"service\":\"worker\",\"severity\":\"info\",\"trace\":\"trace-c\",\"message\":\"queue drained\"}]\n",
+        "correlate.py": "def correlate(events):\n    raise NotImplementedError('implement incident correlation')\n",
+        "validate.py": "import copy\nimport importlib.util\nimport json\nimport random\nfrom pathlib import Path\n\nspec = importlib.util.spec_from_file_location('correlation', 'correlate.py')\nmodule = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(module)\nRANK = {'info': 0, 'warning': 1, 'error': 2, 'critical': 3}\n\ndef reference(events):\n    by_trace = {}\n    for event in events: by_trace.setdefault(event['trace'], []).append(event)\n    windows = []\n    for trace, assigned in by_trace.items():\n        assigned = sorted(assigned, key=lambda row: (row['ts'], row['service']))\n        groups = []\n        for event in assigned:\n            if not groups or event['ts'] - groups[-1][-1]['ts'] > 300: groups.append([])\n            groups[-1].append(event)\n        for group in groups:\n            severity = max((row['severity'] for row in group), key=RANK.get)\n            root = group[0]\n            windows.append({'trace': trace, 'start': group[0]['ts'], 'end': group[-1]['ts'], 'services': sorted({row['service'] for row in group}), 'severity': severity, 'root_cause': {'service': root['service'], 'message': root['message']}, 'customer_impact': RANK[severity] >= RANK['error']})\n    windows.sort(key=lambda row: (row['start'], row['trace']))\n    return {'windows': windows, 'summary': {'events': len(events), 'windows': len(windows), 'customer_impact_windows': sum(row['customer_impact'] for row in windows)}}\n\npublic = json.loads(Path('events.json').read_text())\nexpected = reference(public)\nassert module.correlate(copy.deepcopy(public)) == expected\nassert json.loads(Path('handoff.json').read_text()) == expected\nrng = random.Random(7719)\nfor trial in range(40):\n    events = []\n    for trace_index in range(4):\n        current = rng.randrange(0, 100)\n        for event_index in range(7):\n            current += rng.choice([10, 60, 299, 301, 600])\n            events.append({'ts': current, 'service': rng.choice(['api', 'auth', 'db', 'worker']), 'severity': rng.choice(list(RANK)), 'trace': f'trace-{trace_index}', 'message': f'event-{event_index}'})\n    rng.shuffle(events)\n    original = copy.deepcopy(events)\n    assert module.correlate(events) == reference(events)\n    assert events == original\nprint('incident correlation: public handoff and 40 unseen event streams valid')\n"
+      },
+      "gold_files": {
+        "correlate.py": "RANK = {'info': 0, 'warning': 1, 'error': 2, 'critical': 3}\n\ndef correlate(events):\n    by_trace = {}\n    for event in events:\n        by_trace.setdefault(event['trace'], []).append(event)\n    windows = []\n    for trace, assigned in by_trace.items():\n        assigned = sorted(assigned, key=lambda row: (row['ts'], row['service']))\n        groups = []\n        for event in assigned:\n            if not groups or event['ts'] - groups[-1][-1]['ts'] > 300:\n                groups.append([])\n            groups[-1].append(event)\n        for group in groups:\n            severity = max((row['severity'] for row in group), key=RANK.get)\n            root = group[0]\n            windows.append({'trace': trace, 'start': group[0]['ts'], 'end': group[-1]['ts'], 'services': sorted({row['service'] for row in group}), 'severity': severity, 'root_cause': {'service': root['service'], 'message': root['message']}, 'customer_impact': RANK[severity] >= RANK['error']})\n    windows.sort(key=lambda row: (row['start'], row['trace']))\n    return {'windows': windows, 'summary': {'events': len(events), 'windows': len(windows), 'customer_impact_windows': sum(row['customer_impact'] for row in windows)}}\n",
+        "handoff.json": "{\n  \"windows\": [\n    {\"trace\": \"trace-a\", \"start\": 100, \"end\": 180, \"services\": [\"api\", \"db\"], \"severity\": \"error\", \"root_cause\": {\"service\": \"api\", \"message\": \"latency\"}, \"customer_impact\": true},\n    {\"trace\": \"trace-b\", \"start\": 120, \"end\": 200, \"services\": [\"api\", \"auth\"], \"severity\": \"critical\", \"root_cause\": {\"service\": \"auth\", \"message\": \"tokens rejected\"}, \"customer_impact\": true},\n    {\"trace\": \"trace-a\", \"start\": 520, \"end\": 520, \"services\": [\"api\"], \"severity\": \"info\", \"root_cause\": {\"service\": \"api\", \"message\": \"recovered\"}, \"customer_impact\": false},\n    {\"trace\": \"trace-c\", \"start\": 900, \"end\": 900, \"services\": [\"worker\"], \"severity\": \"info\", \"root_cause\": {\"service\": \"worker\", \"message\": \"queue drained\"}, \"customer_impact\": false}\n  ],\n  \"summary\": {\"events\": 6, \"windows\": 4, \"customer_impact_windows\": 2}\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["rtk", "proxy", "python3", "validate.py"]},
+        {"type": "json_equals", "path": "handoff.json", "key": "summary", "value": {"events": 6, "windows": 4, "customer_impact_windows": 2}}
+      ]
+    },
+    {
+      "id": "ordered-entitlement-ledger",
+      "split": "held-out",
+      "category": "general",
+      "inspired_by": ["Terminal-Bench 2", "SWE-bench Pro", "tau3-bench"],
+      "human_minutes": 45,
+      "prompt": "Implement ledger.py and generate entitlements.json from events.json. Do not inspect validate.py. Deduplicate globally by event_id: byte-equivalent JSON records are idempotent, but a reused id with different content raises ValueError. Group by account, sort by seq, and require contiguous sequences starting at 1. grant adds an entitlement and revoke removes it if present. Output accounts sorted by account as {account,last_seq,active}, with active sorted, plus events_applied equal to unique event ids. Do not mutate inputs. Run the exact acceptance command `rtk proxy python3 validate.py`.",
+      "delegation": {
+        "mode": "forbidden",
+        "worker_role": "spark_worker",
+        "worker_io": "read_only",
+        "spawned_workers": {"min": 0, "max": 0},
+        "useful_workers": {"min": 0, "max": 0},
+        "peak_concurrency": {"min": 0, "max": 0},
+        "duplicate_work_ratio_max": 0.0,
+        "expected_partitions": [],
+        "parent_reserved_paths": ["ledger.py", "entitlements.json", "validate.py"]
+      },
+      "acceptance_command": ["rtk", "proxy", "python3", "validate.py"],
+      "allowed_changes": ["ledger.py", "entitlements.json"],
+      "seed_files": {
+        ".gitignore": "__pycache__/\n*.pyc\n",
+        "ledger-contract.md": "# Ordered entitlement ledger\n\nEvent ids are globally idempotent, account sequences start at 1 without gaps, and projections are deterministic. A revoke of an inactive entitlement is a no-op.\n",
+        "events.json": "[{\"event_id\":\"e2\",\"account\":\"a1\",\"seq\":2,\"op\":\"grant\",\"entitlement\":\"export\"},{\"event_id\":\"e1\",\"account\":\"a1\",\"seq\":1,\"op\":\"grant\",\"entitlement\":\"read\"},{\"event_id\":\"e3\",\"account\":\"a1\",\"seq\":3,\"op\":\"revoke\",\"entitlement\":\"read\"},{\"event_id\":\"e2\",\"account\":\"a1\",\"seq\":2,\"op\":\"grant\",\"entitlement\":\"export\"},{\"event_id\":\"f3\",\"account\":\"a2\",\"seq\":3,\"op\":\"grant\",\"entitlement\":\"audit\"},{\"event_id\":\"f1\",\"account\":\"a2\",\"seq\":1,\"op\":\"grant\",\"entitlement\":\"admin\"},{\"event_id\":\"f2\",\"account\":\"a2\",\"seq\":2,\"op\":\"revoke\",\"entitlement\":\"admin\"},{\"event_id\":\"g1\",\"account\":\"a3\",\"seq\":1,\"op\":\"revoke\",\"entitlement\":\"beta\"},{\"event_id\":\"g2\",\"account\":\"a3\",\"seq\":2,\"op\":\"grant\",\"entitlement\":\"gamma\"}]\n",
+        "ledger.py": "def project(events):\n    raise NotImplementedError('implement ledger projection')\n",
+        "validate.py": "import copy\nimport importlib.util\nimport json\nimport random\nfrom pathlib import Path\n\nspec = importlib.util.spec_from_file_location('ledger', 'ledger.py')\nmodule = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(module)\n\ndef reference(events):\n    unique = {}\n    for event in events:\n        event_id = event['event_id']\n        if event_id in unique and unique[event_id] != event: raise ValueError('conflicting event id')\n        unique[event_id] = event\n    grouped = {}\n    for event in unique.values(): grouped.setdefault(event['account'], []).append(event)\n    accounts = []\n    for account, assigned in sorted(grouped.items()):\n        assigned.sort(key=lambda row: row['seq'])\n        assert [row['seq'] for row in assigned] == list(range(1, len(assigned) + 1))\n        active = set()\n        for event in assigned:\n            if event['op'] == 'grant': active.add(event['entitlement'])\n            elif event['op'] == 'revoke': active.discard(event['entitlement'])\n            else: raise ValueError('invalid op')\n        accounts.append({'account': account, 'last_seq': assigned[-1]['seq'], 'active': sorted(active)})\n    return {'accounts': accounts, 'events_applied': len(unique)}\n\npublic = json.loads(Path('events.json').read_text())\nexpected = reference(copy.deepcopy(public))\nassert module.project(copy.deepcopy(public)) == expected\nassert json.loads(Path('entitlements.json').read_text()) == expected\nrng = random.Random(440044)\nfor trial in range(45):\n    events = []\n    for account_index in range(4):\n        for seq in range(1, 9):\n            events.append({'event_id': f'{trial}-{account_index}-{seq}', 'account': f'a-{account_index}', 'seq': seq, 'op': rng.choice(['grant', 'revoke']), 'entitlement': rng.choice(['read', 'write', 'audit', 'export'])})\n    events.append(copy.deepcopy(rng.choice(events)))\n    rng.shuffle(events)\n    original = copy.deepcopy(events)\n    assert module.project(events) == reference(events)\n    assert events == original\nconflict = [{'event_id': 'x', 'account': 'a', 'seq': 1, 'op': 'grant', 'entitlement': 'read'}, {'event_id': 'x', 'account': 'a', 'seq': 1, 'op': 'grant', 'entitlement': 'write'}]\ntry: module.project(conflict)\nexcept ValueError: pass\nelse: raise AssertionError('conflicting event id accepted')\ngap = [{'event_id': 'y', 'account': 'a', 'seq': 2, 'op': 'grant', 'entitlement': 'read'}]\ntry: module.project(gap)\nexcept (AssertionError, ValueError): pass\nelse: raise AssertionError('sequence gap accepted')\nprint('ordered entitlement ledger: public projection and 45 unseen ledgers valid')\n"
+      },
+      "gold_files": {
+        "ledger.py": "def project(events):\n    unique = {}\n    for event in events:\n        event_id = event['event_id']\n        if event_id in unique and unique[event_id] != event:\n            raise ValueError('conflicting event id')\n        unique[event_id] = event\n    grouped = {}\n    for event in unique.values():\n        grouped.setdefault(event['account'], []).append(event)\n    accounts = []\n    for account, assigned in sorted(grouped.items()):\n        assigned = sorted(assigned, key=lambda row: row['seq'])\n        if [row['seq'] for row in assigned] != list(range(1, len(assigned) + 1)):\n            raise ValueError('non-contiguous account sequence')\n        active = set()\n        for event in assigned:\n            if event['op'] == 'grant':\n                active.add(event['entitlement'])\n            elif event['op'] == 'revoke':\n                active.discard(event['entitlement'])\n            else:\n                raise ValueError('invalid op')\n        accounts.append({'account': account, 'last_seq': assigned[-1]['seq'], 'active': sorted(active)})\n    return {'accounts': accounts, 'events_applied': len(unique)}\n",
+        "entitlements.json": "{\n  \"accounts\": [\n    {\"account\": \"a1\", \"last_seq\": 3, \"active\": [\"export\"]},\n    {\"account\": \"a2\", \"last_seq\": 3, \"active\": [\"audit\"]},\n    {\"account\": \"a3\", \"last_seq\": 2, \"active\": [\"gamma\"]}\n  ],\n  \"events_applied\": 8\n}\n"
+      },
+      "hidden_checks": [
+        {"type": "command", "argv": ["rtk", "proxy", "python3", "validate.py"]},
+        {"type": "json_equals", "path": "entitlements.json", "key": "events_applied", "value": 8}
+      ]
+    }
+  ]
+}

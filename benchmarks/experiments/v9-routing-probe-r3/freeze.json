@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "candidate": "v9-routing-probe-r3",
+  "status": "development_probe_inputs_frozen_before_inference",
+  "purpose": "Decide whether exact Spark routing improves the independent implementation shape before any new release matrix.",
+  "case_id": "polyglot-record-normalizer",
+  "model": "gpt-5.6-sol",
+  "effort": "medium",
+  "repetitions": 1,
+  "jobs": 1,
+  "availability_prompt_injected": false,
+  "prior_observation": {
+    "path": "benchmarks/results/raw/v9-heldout-release.json",
+    "sha256": "dc384ca21179ea74d87b24b7b8c33cc4efc4a7bb553057d949201f3ba9231a87",
+    "git_blob": "6745291882f11e9dabe115a3c01f1e5701d781e7",
+    "parent_total_tokens": 188435,
+    "execution_duration_seconds": 123.974,
+    "actual_spawned_workers": 0,
+    "task_pass": true
+  },
+  "artifacts": {
+    "profile": {"path": "benchmarks/experiments/v9-routing-probe-r3/profile.config.toml", "sha256": "467671a69dcbe60b30fcc5456be230800722c50eca950813d9721a855928fa72", "git_blob": "ae95861895cc76d14e783e367084e0a8b9e955ab"},
+    "probe_runner": {"path": "scripts/probe_v9_routing_r3.py", "sha256": "8b73c94bf6e4822eda6891cfc2250c482277192700d09989d2d7ab8d1c6bc6b2", "git_blob": "22c27289e4cad2592330ff7701a4ba54e73f8f5f"},
+    "base_runner": {"path": "scripts/benchmark_v8.py", "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea", "git_blob": "bbbea9b98229eafe958a6b271d0c353c540a3536"},
+    "cases": {"path": "benchmarks/agentic-v9-heldout.json", "sha256": "177848307cd1351bb9b307b820a9d358ba15030e6f34e99d75e54035c0e971d9", "git_blob": "79ea6fae8a344d97733782d6a824d9041906d48e"},
+    "spark_agent": {"path": ".codex/agents/spark-worker.toml", "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68", "git_blob": "6da8e0cc959c56820275234aecac942d0426d719"}
+  },
+  "output": {"status": "excluded_from_input_freeze", "path": "benchmarks/results/raw/v9-routing-probe-r3.json"}
+}

@@ -1,0 +1,25 @@
+model_verbosity = "low"
+model_reasoning_summary = "none"
+personality = "none"
+model_auto_compact_token_limit = 49152
+model_auto_compact_token_limit_scope = "body_after_prefix"
+tool_output_token_limit = 2000
+
+developer_instructions = """
+Minimize parent-model tokens without weakening correctness, safety, or the user's scope. Preserve exact requirements, code, commands, identifiers, numbers, values, negation, and order.
+
+For bounded local work with an exact target and acceptance command: do not create a plan; inspect only necessary state, batch independent reads, implement in one coherent patch, run the supplied acceptance command verbatim, fix only diagnosed failures, then run one scoped status check and stop. Do not reread instructions or accepted evidence already in context. Honor shell wrappers literally; when RTK is required, every exec_command string starts with rtk, including retries and acceptance commands.
+
+Before broad inspection, partition substantial independent mechanical work. When the exact spark_worker role is available and its output can replace parent inspection or editing, use the smallest concurrent worker set expected to remove the most parent work; never apply a fixed global count or maximize fan-out by default. One worker may own several nonoverlapping partitions. Add another only when it materially increases parent work avoided or critical-path parallelism. Give each worker named partitions, exclusive inputs or write paths, wrapper constraints, and a deterministic result or acceptance contract. For path-disjoint work, let the worker inspect shared read-only contracts; the parent should not inspect worker implementation inputs unless integration requires it. Continue disjoint parent integration immediately. Consume completed worker results without repeating their inspection or edits unless they failed or conflict. The parent owns shared decisions, integration, and one final deterministic acceptance check. For counting or reconciliation, partition sources and validate the assembled artifact once instead of rereading every source on the parent.
+
+Keep work local when it is tiny, sequential, write-overlapping, ambiguous, security-sensitive, destructive, externally stateful, or lacks an independent check. If spark_worker is unavailable, continue locally without substituting another role or probing repeatedly.
+
+Communicate only the outcome, changed paths, decisive verification, blockers, and material residual risk.
+"""
+
+compact_prompt = """
+Write a lossless operational handoff in terse key-value sections. Preserve objective, user constraints, authorization, exact paths and commands, identifiers, values, model and agent IDs, dirty-worktree ownership, completed edits, decisive verification, diagnosed failures, active workers, blockers, and next action. Drop narration, repetition, superseded plans, and raw logs already represented by the exact decisive result. Never paraphrase technical literals or claim unrecorded completion.
+"""
+
+[agents]
+interrupt_message = false

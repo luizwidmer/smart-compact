@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "candidate": "v9-routing-probe",
+  "status": "development_probe_inputs_frozen_before_inference",
+  "purpose": "Test one explicit routing-only contract on the worst task-correct no-offload cell from the rejected v9 state-minimal run.",
+  "case_id": "incident-window-correlation",
+  "model": "gpt-5.6-luna",
+  "effort": "xhigh",
+  "repetitions": 1,
+  "jobs": 1,
+  "availability_prompt_injected": false,
+  "prior_observation": {
+    "path": "benchmarks/results/raw/v9-heldout-release.json",
+    "sha256": "dc384ca21179ea74d87b24b7b8c33cc4efc4a7bb553057d949201f3ba9231a87",
+    "git_blob": "6745291882f11e9dabe115a3c01f1e5701d781e7",
+    "parent_total_tokens": 227811,
+    "execution_duration_seconds": 170.032,
+    "actual_spawned_workers": 0,
+    "task_pass": true
+  },
+  "artifacts": {
+    "profile": {"path": "benchmarks/experiments/v9-routing-probe/profile.config.toml", "sha256": "32a6d7ee93083816caf439d9e75fd4a03e3d8cde8f3d75d9dec2b4e33cc7719f", "git_blob": "eb0bbe8e5a72a880fe778bb0749d13a96f1e2e7a"},
+    "probe_runner": {"path": "scripts/probe_v9_routing.py", "sha256": "b907ad291af4642e9e9e5862924f098f4370b05ba42b09f71c411a9704954841", "git_blob": "11a8ffa48f2840d0d3c4a4a22837be7936aa190e"},
+    "base_runner": {"path": "scripts/benchmark_v8.py", "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea", "git_blob": "bbbea9b98229eafe958a6b271d0c353c540a3536"},
+    "cases": {"path": "benchmarks/agentic-v9-heldout.json", "sha256": "177848307cd1351bb9b307b820a9d358ba15030e6f34e99d75e54035c0e971d9", "git_blob": "79ea6fae8a344d97733782d6a824d9041906d48e"},
+    "spark_agent": {"path": ".codex/agents/spark-worker.toml", "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68", "git_blob": "6da8e0cc959c56820275234aecac942d0426d719"}
+  },
+  "output": {"status": "excluded_from_input_freeze", "path": "benchmarks/results/raw/v9-routing-probe.json"}
+}

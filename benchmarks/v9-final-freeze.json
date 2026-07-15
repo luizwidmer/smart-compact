@@ -1,0 +1,368 @@
+{
+  "artifacts": {
+    "base_runner": {
+      "git_blob": "bbbea9b98229eafe958a6b271d0c353c540a3536",
+      "path": "scripts/benchmark_v8.py",
+      "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea"
+    },
+    "dependency_lock": {
+      "git_blob": "77778b95ac65bf4c7fdd65c86b85fb921fde7ce6",
+      "path": "requirements-benchmark.txt",
+      "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0"
+    },
+    "final_cases": {
+      "git_blob": "5e98cbc42ca5c579999b13f09bef4bad581881bf",
+      "path": "benchmarks/agentic-v9-final.json",
+      "sha256": "63645c3c2ec24cab55b9a5b8c5520e90708ba9af9be12388fe0da213e12dcc11"
+    },
+    "grader": {
+      "git_blob": "62783a4551a23ce1d10b9ecb15a932798d5186c6",
+      "path": "scripts/benchmark_agentic.py",
+      "sha256": "0c4234b095cf86cfe602ea878d76f57ea62f80bca43d8abadc41d2980973843e"
+    },
+    "optimizer_selection": {
+      "git_blob": "3b086c2b10dc84c58839df6722502d2ebc21b2e4",
+      "path": "optimizer/selection.json",
+      "sha256": "1f1066d477203bad42cec8b1171febe810b9473a1203f5659ad5c8915360276b"
+    },
+    "release_verifier": {
+      "git_blob": "5d06424f7293c56036fd60cb9ae4b49501f4e9c4",
+      "path": "scripts/verify_v9_final_release.py",
+      "sha256": "d97f24f2616f90c7819a5e93b0e068095ca5d6224cd60fec0c39365b2da1c6ad"
+    },
+    "runner": {
+      "git_blob": "db5ed32d1d97dd6f3e50f8114d89e77764f65cf9",
+      "path": "scripts/benchmark_v9_final.py",
+      "sha256": "b2683c4d3c3020b4bceb56f932fdf8b66c24835ed800cd29413d12b2d3eb5eb2"
+    },
+    "spark_agent": {
+      "git_blob": "6da8e0cc959c56820275234aecac942d0426d719",
+      "path": ".codex/agents/spark-worker.toml",
+      "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+    },
+    "task_client": {
+      "git_blob": "f30245ae1b8be47b464f07348de4423034c4a55e",
+      "path": "scripts/open_app_task.py",
+      "sha256": "4f981277c7221cd437cc2fc534d54539cbcc35bd6a9b19af2cc749265f9e49fb"
+    },
+    "v6_policy": {
+      "git_blob": "47f91b8340685e87825aca2552d4ada2b61890e2",
+      "path": "benchmarks/policies/v6/SKILL.md",
+      "sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f"
+    },
+    "v6_profile": {
+      "git_blob": "4d3e8166f6ea746ad191543ebeb9e9b66142c7ba",
+      "path": "benchmarks/profiles/v6.config.toml",
+      "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
+    },
+    "v8_policy": {
+      "git_blob": "85444acd58d4e5e18efcd34f17cec7b098b73c49",
+      "path": "benchmarks/policies/v8/SKILL.md",
+      "sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327"
+    },
+    "v8_profile": {
+      "git_blob": "3a876307533cd9c11def10602c794e23bf3556ac",
+      "path": "benchmarks/retired/package/profiles/smart-compact-v8.config.toml",
+      "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
+    },
+    "v9_local_profile": {
+      "git_blob": "d0cd86a9fec4e26488164382f567830d1c8e6d6d",
+      "path": "profiles/smart-compact-v9.config.toml",
+      "sha256": "ecba3973761bbdd2b603f3a2d2da96515cea8e78470722dc5b52c6e702589402"
+    },
+    "v9_skill": {
+      "git_blob": "d3cac0e3301c628b5d9809b1c0ab5dd392310076",
+      "path": "versions/v9/SKILL.md",
+      "sha256": "a69afa7ea829d6bb697d54295307213836becd95c620c4c5bf4cfdd87953fcf3"
+    },
+    "v9_spark_profile": {
+      "git_blob": "19d4b681a067c5d269d49be353b39a3663a7e2d7",
+      "path": "profiles/smart-compact-v9-spark.config.toml",
+      "sha256": "b771c80ca01aa61b62ef1aa1730102e972099bbd36854ecbd855fc5d5b19992f"
+    }
+  },
+  "candidate": "v9-definitive",
+  "primary_objective": "parent_total_tokens",
+  "release_evidence": {
+    "raw_artifacts": [],
+    "status": "outputs_excluded_from_input_freeze",
+    "verified_cells": 0
+  },
+  "release_plan": {
+    "case_universe": 4,
+    "execution_order": [
+      {
+        "arm": "v6-no-spark",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v6-no-spark",
+        "effort": "high",
+        "index": 0,
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v8-no-spark",
+        "effort": "high",
+        "index": 1,
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v6-no-spark",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v6-no-spark",
+        "effort": "medium",
+        "index": 2,
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-local-counterfactual",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v9-local-counterfactual",
+        "effort": "high",
+        "index": 3,
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v6-no-spark",
+        "case_id": "support-export-formula-safety",
+        "cell_id": "support-export-formula-safety::v6-no-spark",
+        "effort": "max",
+        "index": 4,
+        "model": "gpt-5.6-luna",
+        "task_shape": "general"
+      },
+      {
+        "arm": "v6-no-spark",
+        "case_id": "inventory-reservation-handoff",
+        "cell_id": "inventory-reservation-handoff::v6-no-spark",
+        "effort": "xhigh",
+        "index": 5,
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v9-selected-spark",
+        "effort": "high",
+        "index": 6,
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "inventory-reservation-handoff",
+        "cell_id": "inventory-reservation-handoff::v9-selected-local",
+        "effort": "xhigh",
+        "index": 7,
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v9-selected-spark",
+        "effort": "medium",
+        "index": 8,
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "support-export-formula-safety",
+        "cell_id": "support-export-formula-safety::v8-no-spark",
+        "effort": "max",
+        "index": 9,
+        "model": "gpt-5.6-luna",
+        "task_shape": "general"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "inventory-reservation-handoff",
+        "cell_id": "inventory-reservation-handoff::v8-no-spark",
+        "effort": "xhigh",
+        "index": 10,
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "support-export-formula-safety",
+        "cell_id": "support-export-formula-safety::v9-selected-local",
+        "effort": "max",
+        "index": 11,
+        "model": "gpt-5.6-luna",
+        "task_shape": "general"
+      },
+      {
+        "arm": "v9-local-counterfactual",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v9-local-counterfactual",
+        "effort": "medium",
+        "index": 12,
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v8-no-spark",
+        "effort": "medium",
+        "index": 13,
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      }
+    ],
+    "jobs": 4,
+    "matrix": [
+      {
+        "arm": "v6-no-spark",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v6-no-spark",
+        "effort": "medium",
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v8-no-spark",
+        "effort": "medium",
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v9-selected-spark",
+        "effort": "medium",
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-local-counterfactual",
+        "case_id": "multi-provider-webhook-canonicalizer",
+        "cell_id": "multi-provider-webhook-canonicalizer::v9-local-counterfactual",
+        "effort": "medium",
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v6-no-spark",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v6-no-spark",
+        "effort": "high",
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v8-no-spark",
+        "effort": "high",
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v9-selected-spark",
+        "effort": "high",
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-local-counterfactual",
+        "case_id": "service-policy-schema-v3",
+        "cell_id": "service-policy-schema-v3::v9-local-counterfactual",
+        "effort": "high",
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v6-no-spark",
+        "case_id": "inventory-reservation-handoff",
+        "cell_id": "inventory-reservation-handoff::v6-no-spark",
+        "effort": "xhigh",
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "inventory-reservation-handoff",
+        "cell_id": "inventory-reservation-handoff::v8-no-spark",
+        "effort": "xhigh",
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "inventory-reservation-handoff",
+        "cell_id": "inventory-reservation-handoff::v9-selected-local",
+        "effort": "xhigh",
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v6-no-spark",
+        "case_id": "support-export-formula-safety",
+        "cell_id": "support-export-formula-safety::v6-no-spark",
+        "effort": "max",
+        "model": "gpt-5.6-luna",
+        "task_shape": "general"
+      },
+      {
+        "arm": "v8-no-spark",
+        "case_id": "support-export-formula-safety",
+        "cell_id": "support-export-formula-safety::v8-no-spark",
+        "effort": "max",
+        "model": "gpt-5.6-luna",
+        "task_shape": "general"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "support-export-formula-safety",
+        "cell_id": "support-export-formula-safety::v9-selected-local",
+        "effort": "max",
+        "model": "gpt-5.6-luna",
+        "task_shape": "general"
+      }
+    ],
+    "physical_cells": 14,
+    "release_cell_allocation": {
+      "v6-no-spark": 4,
+      "v8-no-spark": 4,
+      "v9-local-counterfactual": 2,
+      "v9-selected-local": 2,
+      "v9-selected-spark": 2
+    },
+    "repetitions_per_cell": 1,
+    "seed": 20260715,
+    "wall_time_policy": "diagnostic_only_contended_parallel_run"
+  },
+  "schema_version": 1,
+  "status": "release_gate_inputs_frozen_before_inference",
+  "treatment": {
+    "availability_prompt_injected": false,
+    "fixed_worker_cap": null,
+    "local_counterfactual_shapes": [
+      "implementation",
+      "migration"
+    ],
+    "local_shapes": [
+      "general",
+      "handoff"
+    ],
+    "selected_local_multi_agent_config": false,
+    "selected_spark_multi_agent_config": true,
+    "spark_shapes": [
+      "implementation",
+      "migration"
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-15T08:34:37Z",
+  "candidate": "v9",
+  "status": "release_gate_inputs_frozen_before_inference",
+  "primary_objective": "parent_total_tokens",
+  "secondary_objective": "wall_time_when_parent_tokens_do_not_improve_per_case",
+  "tertiary_objective": "parent_tokens_saved_per_spawned_worker_without_a_worker_cap",
+  "freeze_reason": "Freeze four fresh real-world held-out tasks, exact randomized acceptance, the 15 unique one-pass physical cells, three v9 production profiles, the base collector, the v9 runner, and the release verifier before any v9 release inference.",
+  "treatment": {
+    "v9_auto_availability_prompt_injected": false,
+    "v9_auto_multi_agent_config": true,
+    "forced_spark_included": false,
+    "fixed_worker_cap": null,
+    "smart_compact_skill_enabled_during_benchmark_development": false
+  },
+  "runtime": {
+    "spark_model": "gpt-5.3-codex-spark",
+    "parent_settings": [
+      {"model": "gpt-5.6-sol", "effort": "medium"},
+      {"model": "gpt-5.6-sol", "effort": "high"},
+      {"model": "gpt-5.6-luna", "effort": "xhigh"},
+      {"model": "gpt-5.6-luna", "effort": "max"}
+    ]
+  },
+  "release_plan": {
+    "seed": 20260715,
+    "repetitions_per_cell": 1,
+    "jobs": 4,
+    "physical_cells": 15,
+    "logical_product_cells": 16,
+    "case_universe": 4,
+    "release_cell_allocation": {
+      "v6-no-spark": 4,
+      "v8-no-spark": 4,
+      "v9-spark-auto": 4,
+      "v9-natural-no-spark": 3
+    },
+    "task_cell_allocation": {
+      "polyglot-record-normalizer": 3,
+      "workspace-permission-migration": 4,
+      "incident-window-correlation": 4,
+      "ordered-entitlement-ledger": 4
+    },
+    "wall_time_policy": "diagnostic_only_contended_parallel_run",
+    "implementation_reuse_binding": {
+      "case_id": "polyglot-record-normalizer",
+      "source_arm": "v6-no-spark",
+      "bound_arm": "v9-selected-implementation",
+      "source_profile": "benchmarks/profiles/v6.config.toml",
+      "bound_profile": "profiles/smart-compact-v9-implementation.config.toml",
+      "equivalence": "byte_identical_profile",
+      "additional_inference_cells": 0
+    },
+    "matrix": [
+      {"case_id": "polyglot-record-normalizer", "task_shape": "implementation", "arm": "v6-no-spark", "model": "gpt-5.6-sol", "effort": "medium", "cell_id": "polyglot-record-normalizer::v6-no-spark"},
+      {"case_id": "polyglot-record-normalizer", "task_shape": "implementation", "arm": "v8-no-spark", "model": "gpt-5.6-sol", "effort": "medium", "cell_id": "polyglot-record-normalizer::v8-no-spark"},
+      {"case_id": "polyglot-record-normalizer", "task_shape": "implementation", "arm": "v9-spark-auto", "model": "gpt-5.6-sol", "effort": "medium", "cell_id": "polyglot-record-normalizer::v9-spark-auto"},
+      {"case_id": "workspace-permission-migration", "task_shape": "migration", "arm": "v6-no-spark", "model": "gpt-5.6-sol", "effort": "high", "cell_id": "workspace-permission-migration::v6-no-spark"},
+      {"case_id": "workspace-permission-migration", "task_shape": "migration", "arm": "v8-no-spark", "model": "gpt-5.6-sol", "effort": "high", "cell_id": "workspace-permission-migration::v8-no-spark"},
+      {"case_id": "workspace-permission-migration", "task_shape": "migration", "arm": "v9-spark-auto", "model": "gpt-5.6-sol", "effort": "high", "cell_id": "workspace-permission-migration::v9-spark-auto"},
+      {"case_id": "workspace-permission-migration", "task_shape": "migration", "arm": "v9-natural-no-spark", "model": "gpt-5.6-sol", "effort": "high", "cell_id": "workspace-permission-migration::v9-natural-no-spark"},
+      {"case_id": "incident-window-correlation", "task_shape": "handoff", "arm": "v6-no-spark", "model": "gpt-5.6-luna", "effort": "xhigh", "cell_id": "incident-window-correlation::v6-no-spark"},
+      {"case_id": "incident-window-correlation", "task_shape": "handoff", "arm": "v8-no-spark", "model": "gpt-5.6-luna", "effort": "xhigh", "cell_id": "incident-window-correlation::v8-no-spark"},
+      {"case_id": "incident-window-correlation", "task_shape": "handoff", "arm": "v9-spark-auto", "model": "gpt-5.6-luna", "effort": "xhigh", "cell_id": "incident-window-correlation::v9-spark-auto"},
+      {"case_id": "incident-window-correlation", "task_shape": "handoff", "arm": "v9-natural-no-spark", "model": "gpt-5.6-luna", "effort": "xhigh", "cell_id": "incident-window-correlation::v9-natural-no-spark"},
+      {"case_id": "ordered-entitlement-ledger", "task_shape": "general", "arm": "v6-no-spark", "model": "gpt-5.6-luna", "effort": "max", "cell_id": "ordered-entitlement-ledger::v6-no-spark"},
+      {"case_id": "ordered-entitlement-ledger", "task_shape": "general", "arm": "v8-no-spark", "model": "gpt-5.6-luna", "effort": "max", "cell_id": "ordered-entitlement-ledger::v8-no-spark"},
+      {"case_id": "ordered-entitlement-ledger", "task_shape": "general", "arm": "v9-spark-auto", "model": "gpt-5.6-luna", "effort": "max", "cell_id": "ordered-entitlement-ledger::v9-spark-auto"},
+      {"case_id": "ordered-entitlement-ledger", "task_shape": "general", "arm": "v9-natural-no-spark", "model": "gpt-5.6-luna", "effort": "max", "cell_id": "ordered-entitlement-ledger::v9-natural-no-spark"}
+    ],
+    "hard_gates": [
+      "all 15 physical cells pass task correctness, exact randomized hidden checks, exact acceptance observation, scope, complete usage, RTK, and child drain",
+      "all no-Spark cells have zero workers and zero child tokens",
+      "the first three v9 auto cases spawn at least one native spark_worker and every spawned worker is useful and drained",
+      "the general v9 auto case stays local",
+      "v9 implementation is a cryptographically exact reuse of the v6 profile and adds no inference cell",
+      "selected v9 aggregate and production v9 auto aggregate each strictly beat both v6 and v8 aggregates in parent tokens",
+      "no v9 auto case is worse than the best control in both parent tokens and wall time",
+      "worker count is measured without a fixed cap"
+    ]
+  },
+  "artifacts": {
+    "heldout_cases": {"path": "benchmarks/agentic-v9-heldout.json", "sha256": "177848307cd1351bb9b307b820a9d358ba15030e6f34e99d75e54035c0e971d9", "git_blob": "79ea6fae8a344d97733782d6a824d9041906d48e"},
+    "v6_profile": {"path": "benchmarks/profiles/v6.config.toml", "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7", "git_blob": "4d3e8166f6ea746ad191543ebeb9e9b66142c7ba"},
+    "v6_policy": {"path": "benchmarks/policies/v6/SKILL.md", "sha256": "263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f", "git_blob": "47f91b8340685e87825aca2552d4ada2b61890e2"},
+    "v8_profile": {"path": "benchmarks/retired/package/profiles/smart-compact-v8.config.toml", "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c", "git_blob": "3a876307533cd9c11def10602c794e23bf3556ac"},
+    "v8_policy": {"path": "benchmarks/policies/v8/SKILL.md", "sha256": "44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327", "git_blob": "85444acd58d4e5e18efcd34f17cec7b098b73c49"},
+    "v9_profile": {"path": "profiles/smart-compact-v9.config.toml", "sha256": "9f9a376f7616b13c9cc77e8d5520c4a1930667a502dab29b2a797768f77396eb", "git_blob": "d3d8011222935392baa5cde3809d22b041c9f85b"},
+    "v9_implementation_profile": {"path": "profiles/smart-compact-v9-implementation.config.toml", "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7", "git_blob": "4d3e8166f6ea746ad191543ebeb9e9b66142c7ba"},
+    "v9_natural_profile": {"path": "profiles/smart-compact-v9-natural.config.toml", "sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717", "git_blob": "f1c2da6cb8022ebf7be38d6b69dab884149a0d32"},
+    "v9_skill": {"path": "versions/v9/SKILL.md", "sha256": "20a7949ab8a2e0b695d829757d8c3e0c035622f5a52784e49b4e047e621a520e", "git_blob": "41087436290ab4b6cb3a313298449ee59be37060"},
+    "optimizer_selection": {"path": "optimizer/selection.json", "sha256": "6954f1c5978e5c7ed5eeaec899b656422e843229a5c68e76407f2405e39a1bdd", "git_blob": "adc39cac07e0da5e99cc89f0dcff14a827a4aef6"},
+    "spark_agent": {"path": ".codex/agents/spark-worker.toml", "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68", "git_blob": "6da8e0cc959c56820275234aecac942d0426d719"},
+    "runner": {"path": "scripts/benchmark_v9.py", "sha256": "5326e96b21085fea223b61ea20e79de897fa468d063bf79eb558afe026fae865", "git_blob": "73a85949c704d7fe1e28a034006bda3d7ed5406f"},
+    "base_runner": {"path": "scripts/benchmark_v8.py", "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea", "git_blob": "bbbea9b98229eafe958a6b271d0c353c540a3536"},
+    "release_verifier": {"path": "scripts/verify_v9_release.py", "sha256": "97190bd9e355bad61b3661ac7b60d83e5e3677edf86c5373ff3439679efc683c", "git_blob": "1f2d83757ea67491c79c34662e4c2041c8362fbe"},
+    "dependency_lock": {"path": "requirements-benchmark.txt", "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0", "git_blob": "77778b95ac65bf4c7fdd65c86b85fb921fde7ce6"}
+  },
+  "release_evidence": {
+    "status": "outputs_excluded_from_input_freeze",
+    "raw_artifacts": [],
+    "verified_cells": 0
+  }
+}

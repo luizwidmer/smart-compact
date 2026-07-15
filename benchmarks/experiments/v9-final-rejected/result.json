@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "status": "rejected_frozen_release_selection",
+  "freeze_path": "benchmarks/v9-final-freeze.json",
+  "freeze_sha256": "ea520438a5019c6d6190d25d791ed8a72ec489d84368a72aa2a5c4bba34d03d7",
+  "raw_path": "benchmarks/results/raw/v9-final-release.json",
+  "raw_sha256": "72729e6f2fc2ca9154a6691fc71cadc35905a56218f509c2cd548ada88d1b431",
+  "verifier_error": "multi-provider-webhook-canonicalizer::v9-selected-spark: child still active",
+  "task_correct_cells": 14,
+  "task_gate_passes": 12,
+  "implementation_pair": {
+    "spark_parent_tokens": 119689,
+    "local_parent_tokens": 136189,
+    "parent_tokens_saved": 16500,
+    "parent_token_reduction_pct": 12.116,
+    "spawned_workers": 1
+  },
+  "migration_pair": {
+    "spark_parent_tokens": 139074,
+    "local_parent_tokens": 107047,
+    "parent_token_regression": 32027,
+    "parent_token_regression_pct": 29.918,
+    "spawned_workers": 1
+  },
+  "telemetry_note": "Both Spark cells completed correct parent tasks, but ephemeral child thread/read rejected includeTurns, so worker completion and handoff evidence were not proven before app-server closure.",
+  "decision": "Retain Spark only for implementation; route migration, handoff, and general locally. This matrix is selection evidence, not a blinded release confirmation."
+}

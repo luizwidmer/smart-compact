@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "status": "rejected_uniform_v9_state_routing",
+  "reason": "The minimal-local plus implementation-Spark policy passed all 12 official tasks but used more parent tokens than every deployable historical whole-version control.",
+  "task_correct_cells": 12,
+  "current_v9_parent_tokens": 3817102,
+  "standard_parent_tokens": 3138482,
+  "v6_parent_tokens": 3361104,
+  "v8_parent_tokens": 3004930,
+  "current_v9_regression_vs_standard_tokens": 678620,
+  "current_v9_regression_vs_v6_tokens": 455998,
+  "current_v9_regression_vs_v8_tokens": 812172,
+  "protocol_only_rtk_miss": "legacy-calculator::gpt-5.6-luna::xhigh::v9-selected-spark",
+  "runner_incident": {
+    "original_real_inference_cells": 3,
+    "workspace_collision_non_attempts": 9,
+    "recovery_real_inference_cells": 9,
+    "repeated_real_inference_cells": 0
+  },
+  "frozen_preselection_snapshot": {
+    "path": "benchmarks/experiments/v9-official-state-routed-rejected/artifacts/optimizer/selection.json",
+    "sha256": "afcc9e03b616f2c884c2c04c6b2cb05ac9dbedeb2f4de7194f01d582df7df787"
+  },
+  "sources": {
+    "original_raw": {
+      "path": "benchmarks/results/raw/v9-official-release.json",
+      "sha256": "690bbb1ac05220068e87fb92501a3f76d2f2d03c33d473bcdd4ed728ee6ca8d3"
+    },
+    "recovery_raw": {
+      "path": "benchmarks/results/raw/v9-official-recovery.json",
+      "sha256": "338a974e4f8327fb428cc4ad4d542122d4345240b994b4769a72cdb3e094d7aa"
+    },
+    "original_freeze": {
+      "path": "benchmarks/v9-official-freeze.json",
+      "sha256": "6e8a776660a4cf6b5dbd29c2ce0ff0595263712d050c0c3107951a14c78338e6"
+    },
+    "recovery_freeze": {
+      "path": "benchmarks/v9-official-recovery-freeze.json",
+      "sha256": "1229b66d3f2219e8eec67b0068e8a60a484fca600de5f8d5a3952a1131c0d376"
+    }
+  },
+  "replacement": "benchmarks/results/v9-definitive-summary.json"
+}

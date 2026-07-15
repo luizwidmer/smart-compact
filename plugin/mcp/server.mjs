@@ -14,29 +14,38 @@ const DEFAULT_PROFILE_ID = "__codex_default__";
 const DEFAULT_PROFILE_LABEL = "Codex default (shared config)";
 const SMART_COMPACT_ID = "smart-compact";
 const SMART_COMPACT_LABEL = "Smart Compact (recommended)";
+const RETIRED_PROFILE_IDS = new Set([
+  "smart-compact-v6",
+  "smart-compact-v7",
+  "smart-compact-v8",
+  "smart-compact-v8-natural",
+  "smart-compact-v9-implementation",
+  "smart-compact-v9-natural",
+]);
 const BUNDLED_PROFILES = [
   {
     id: SMART_COMPACT_ID,
     label: SMART_COMPACT_LABEL,
     url: new URL("../profiles/smart-compact.config.json", import.meta.url),
+    listed: true,
   },
   {
-    id: "smart-compact-v6",
-    label: "Smart Compact v6 (compatibility)",
-    url: new URL("../profiles/smart-compact-v6.config.json", import.meta.url),
+    id: "smart-compact-v9",
+    label: "Smart Compact v9",
+    url: new URL("../profiles/smart-compact-v9.config.json", import.meta.url),
+    listed: true,
   },
   {
-    id: "smart-compact-v8",
-    label: "Smart Compact v8 (terse auto)",
-    url: new URL("../profiles/smart-compact-v8.config.json", import.meta.url),
+    id: "smart-compact-v9-spark",
+    label: "Smart Compact v9 Spark route",
+    url: new URL("../profiles/smart-compact-v9-spark.config.json", import.meta.url),
+    listed: false,
   },
   {
-    id: "smart-compact-v8-natural",
-    label: "Smart Compact v8 Natural (no-Spark)",
-    url: new URL(
-      "../profiles/smart-compact-v8-natural.config.json",
-      import.meta.url,
-    ),
+    id: "smart-compact-v9-v8",
+    label: "Smart Compact v9 frozen-v8 lane",
+    url: new URL("../profiles/smart-compact-v9-v8.config.json", import.meta.url),
+    listed: false,
   },
 ];
 const OPTIMIZER_TABLE = JSON.parse(
@@ -102,19 +111,21 @@ async function installedProfileNames() {
   return entries
     .filter((entry) => entry.isFile() && entry.name.endsWith(PROFILE_SUFFIX))
     .map((entry) => entry.name.slice(0, -PROFILE_SUFFIX.length))
-    .filter((name) => PROFILE_PATTERN.test(name))
+    .filter((name) => PROFILE_PATTERN.test(name) && !RETIRED_PROFILE_IDS.has(name))
     .sort((left, right) => left.localeCompare(right));
 }
 
 async function availableProfiles() {
   const installed = await installedProfileNames();
   const bundledIds = new Set(BUNDLED_PROFILES.map(({ id }) => id));
-  const profiles = BUNDLED_PROFILES.map(({ id, label }) => ({
-    id,
-    label,
-    source:
-      id === SMART_COMPACT_ID && installed.includes(id) ? "named" : "bundled",
-  }));
+  const profiles = BUNDLED_PROFILES.filter(({ listed }) => listed).map(
+    ({ id, label }) => ({
+      id,
+      label,
+      source:
+        id === SMART_COMPACT_ID && installed.includes(id) ? "named" : "bundled",
+    }),
+  );
   for (const id of installed) {
     if (!bundledIds.has(id)) {
       profiles.push({ id, label: id, source: "named" });
@@ -336,9 +347,18 @@ function mergeConfig(base, overlay) {
   return merged;
 }
 
-async function createTask(profile, workspacePath, taskName, threadConfig = {}) {
+async function createTask(
+  profile,
+  workspacePath,
+  taskName,
+  threadConfig = {},
+  startupArgs = [],
+) {
   const codex = await resolveCodex();
-  const args = [];
+  if (!Array.isArray(startupArgs) || !startupArgs.every((value) => typeof value === "string")) {
+    throw new Error("Optimizer startup arguments must be strings.");
+  }
+  const args = [...startupArgs];
   if (profile.source === "named") {
     args.push("--profile", profile.id);
   }
@@ -412,6 +432,13 @@ function optimizerRecommendation(argumentsValue) {
       "task_shape",
       undefined,
     ),
+    model_family: optimizerInput(
+      argumentsValue,
+      "modelFamily",
+      "model_family",
+      "other",
+    ),
+    effort: optimizerInput(argumentsValue, "effort", "effort", "other"),
   };
   const rule = OPTIMIZER_TABLE.rules.find(({ when }) =>
     Object.entries(when).every(([key, value]) => inputs[key] === value),
@@ -419,10 +446,14 @@ function optimizerRecommendation(argumentsValue) {
   if (rule === undefined) throw new Error("Optimizer table has no matching rule.");
   const lane = OPTIMIZER_TABLE.profiles[rule.lane];
   const evidence = OPTIMIZER_TABLE.evidence[rule.reason_code];
-  const treatment = OPTIMIZER_TABLE.routing_treatments[inputs.routing_mode];
-  const profileSource = OPTIMIZER_TABLE.sources.find(
-    ({ path: sourcePath }) => sourcePath === `profiles/${lane?.profile}.config.toml`,
-  );
+  const treatmentName = rule.routing_treatment ?? inputs.routing_mode;
+  const treatment = OPTIMIZER_TABLE.routing_treatments[treatmentName];
+  const native = lane?.profile === null && lane?.skill === null;
+  const profileSource = native
+    ? null
+    : OPTIMIZER_TABLE.sources.find(
+        ({ path: sourcePath }) => sourcePath === `profiles/${lane?.profile}.config.toml`,
+      );
   if (
     lane === undefined ||
     typeof evidence !== "string" ||
@@ -431,7 +462,8 @@ function optimizerRecommendation(argumentsValue) {
     !Array.isArray(treatment.cli_args) ||
     typeof treatment.thread_config !== "object" ||
     treatment.thread_config === null ||
-    typeof profileSource?.sha256 !== "string"
+    (!native && typeof profileSource?.sha256 !== "string") ||
+    (native && (lane?.profile !== null || lane?.skill !== null))
   ) {
     throw new Error("Optimizer table references incomplete lane evidence.");
   }
@@ -443,12 +475,16 @@ function optimizerRecommendation(argumentsValue) {
     lane: rule.lane,
     profile: lane.profile,
     skill: lane.skill,
+    usesNativeDefault: native,
     reasonCode: rule.reason_code,
     evidenceTier: rule.evidence_tier,
     evidence,
+    routingTreatmentName: treatmentName,
     routingTreatment: treatment,
-    profileSha256: profileSource.sha256,
-    cliArgs: ["codex", "--profile", lane.profile, ...treatment.cli_args],
+    profileSha256: native ? null : profileSource.sha256,
+    cliArgs: native
+      ? ["codex", ...treatment.cli_args]
+      : ["codex", "--profile", lane.profile, ...treatment.cli_args],
   };
 }
 
@@ -511,20 +547,19 @@ async function handleListProfiles(id) {
 async function handleRecommendProfile(id, params) {
   const argumentsValue = requireArguments(params?.arguments ?? {});
   const recommendation = optimizerRecommendation(argumentsValue);
-  const profile = BUNDLED_PROFILES.find(
-    ({ id: profileId }) => profileId === recommendation.profile,
-  );
+  const profile = recommendation.usesNativeDefault
+    ? { id: DEFAULT_PROFILE_ID, label: DEFAULT_PROFILE_LABEL }
+    : BUNDLED_PROFILES.find(({ id: profileId }) => profileId === recommendation.profile);
   if (profile === undefined) {
     throw new Error(`Recommended profile is unavailable: ${recommendation.profile}`);
   }
   sendResult(
     id,
     toolResult(
-      `Use ${recommendation.profile}: ${recommendation.evidence}`,
+      `Use ${recommendation.profile ?? DEFAULT_PROFILE_LABEL}: ${recommendation.evidence}`,
       {
         ...recommendation,
-        profileSource: "bundled",
-        compatibilityProfile: "smart-compact-v6",
+        profileSource: recommendation.usesNativeDefault ? "default" : "bundled",
       },
     ),
   );
@@ -534,19 +569,22 @@ async function handleStartOptimizedTask(id, params) {
   const argumentsValue = requireArguments(params?.arguments ?? {});
   const workspacePath = await workspaceFrom(argumentsValue);
   const recommendation = optimizerRecommendation(argumentsValue);
-  const bundled = BUNDLED_PROFILES.find(
-    ({ id: profileId }) => profileId === recommendation.profile,
-  );
-  if (bundled === undefined) {
+  const bundled = recommendation.usesNativeDefault
+    ? null
+    : BUNDLED_PROFILES.find(({ id: profileId }) => profileId === recommendation.profile);
+  if (!recommendation.usesNativeDefault && bundled === undefined) {
     throw new Error(`Recommended profile is unavailable: ${recommendation.profile}`);
   }
-  const profile = { id: bundled.id, label: bundled.label, source: "bundled" };
+  const profile = recommendation.usesNativeDefault
+    ? { id: DEFAULT_PROFILE_ID, label: DEFAULT_PROFILE_LABEL, source: "default" }
+    : { id: bundled.id, label: bundled.label, source: "bundled" };
   const taskName = requestedTaskName(argumentsValue, workspacePath, profile);
   const threadId = await createTask(
     profile,
     workspacePath,
     taskName,
     recommendation.routingTreatment.thread_config,
+    recommendation.routingTreatment.cli_args,
   );
   const url = `codex://threads/${threadId}`;
   sendResult(
@@ -556,8 +594,8 @@ async function handleStartOptimizedTask(id, params) {
       {
         status: "created",
         ...recommendation,
-        profileSource: "bundled",
-        routingEnforced: true,
+        profileSource: recommendation.usesNativeDefault ? "default" : "bundled",
+        routingConfigured: true,
         taskName,
         threadId,
         url,
@@ -685,7 +723,7 @@ const tools = [
     name: "smart_compact_recommend_profile",
     title: "Recommend a Smart Compact Profile",
     description:
-      "Select the evidence-backed v6, terse-v8, or natural-v8 lane before task creation. This is read-only and does not change the current task.",
+      "Select an evidence-backed internal v9 lane before task creation. V9 is the only current Smart Compact product version. This is read-only and does not change the current task.",
     inputSchema: {
       type: "object",
       properties: {
@@ -699,8 +737,18 @@ const tools = [
           enum: optimizerDimension("task_shape"),
           description: "Closest measured task shape; use general when uncertain.",
         },
+        modelFamily: {
+          type: "string",
+          enum: optimizerDimension("model_family"),
+          description: "Parent model family used for the new task.",
+        },
+        effort: {
+          type: "string",
+          enum: optimizerDimension("effort"),
+          description: "Parent reasoning effort used for the new task.",
+        },
       },
-      required: ["routingMode", "taskShape"],
+      required: ["routingMode", "taskShape", "modelFamily", "effort"],
       additionalProperties: false,
     },
     annotations: {
@@ -739,8 +787,18 @@ const tools = [
           enum: optimizerDimension("task_shape"),
           description: "Closest measured task shape; use general when uncertain.",
         },
+        modelFamily: {
+          type: "string",
+          enum: optimizerDimension("model_family"),
+          description: "Parent model family used for the new task.",
+        },
+        effort: {
+          type: "string",
+          enum: optimizerDimension("effort"),
+          description: "Parent reasoning effort used for the new task.",
+        },
       },
-      required: ["workspacePath", "routingMode", "taskShape"],
+      required: ["workspacePath", "routingMode", "taskShape", "modelFamily", "effort"],
       additionalProperties: false,
     },
     annotations: {

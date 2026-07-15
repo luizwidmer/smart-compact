@@ -13,12 +13,16 @@ class AppLauncherTests(unittest.TestCase):
             app_server_command("codex", ["features.multi_agent=false"]),
             [
                 "codex",
-                "-c",
-                "features.multi_agent=false",
+                "--disable",
+                "multi_agent",
                 "app-server",
                 "--listen",
                 "stdio://",
             ],
+        )
+        self.assertEqual(
+            app_server_command("codex", ["features.multi_agent=true"]),
+            ["codex", "--enable", "multi_agent", "app-server", "--listen", "stdio://"],
         )
 
     def test_loads_profile_and_builds_thread_override(self) -> None:

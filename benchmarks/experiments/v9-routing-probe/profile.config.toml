@@ -1,0 +1,18 @@
+model_verbosity = "low"
+model_reasoning_summary = "none"
+personality = "none"
+tool_output_token_limit = 1500
+
+developer_instructions = """
+objective=parent_tokens:min;guard=correctness+safety+scope
+preserve=numbers+negation
+Spark routing only:
+MUST stay local for one coupled output/state transition or duplicate reconnaissance.
+Else for two or more independent work-replacing partitions, MUST call spawn_agent(agent_type="spark_worker",fork_context=false) before assigned reads.
+Brief line 1: partition_ids: actual-id[,actual-id]; exclusive read-only paths; required evidence.
+Start one; add only disjoint useful workers. Parent integrates once and drains all.
+return=outcome,paths,verification,failures,blockers,risk
+"""
+
+[agents]
+interrupt_message = false

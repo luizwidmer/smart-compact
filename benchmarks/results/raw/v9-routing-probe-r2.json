@@ -1,0 +1,364 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "v9-routing-probe": {
+        "grade_passes": 1,
+        "median_child_tokens": 178024,
+        "median_combined_tokens": 421125,
+        "median_parent_tokens": 243101,
+        "median_peak_concurrency": 1,
+        "median_spawned_worker_count": 1,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 1,
+        "routing_passes": 0,
+        "runs": 1,
+        "successes": 0,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v9-routing-probe",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 243101,
+        "median_spawned_worker_count": 1,
+        "median_worker_count": 1,
+        "rank": 1,
+        "successes": 0
+      }
+    ]
+  },
+  "arm_metadata": {
+    "v9-routing-probe": {
+      "multi_agent": true,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/benchmarks/experiments/v9-routing-probe-r2/profile.config.toml",
+      "profile_sha256": "9626a68136f66cd3e3326f6c63928c5da5c9a9916ba392e2b519ab6bc4f5e477",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "v9-routing-probe"
+  ],
+  "cases_path": "/private/tmp/smart-compact-v9-work/benchmarks/agentic-v9-heldout.json",
+  "cases_sha256": "177848307cd1351bb9b307b820a9d358ba15030e6f34e99d75e54035c0e971d9",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {},
+  "comparisons": [],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "xhigh",
+  "execution_order": [
+    {
+      "arm": "v9-routing-probe",
+      "case_id": "incident-window-correlation",
+      "index": 0,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "incident-window-correlation",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T09:24:20Z",
+  "jobs": 1,
+  "model": "gpt-5.6-luna",
+  "publication_status": {
+    "candidate_all_pass": false,
+    "exploratory_metrics_publishable": false,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": false,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 1,
+      "all_spawned_workers_useful": false,
+      "arm": "v9-routing-probe",
+      "case_id": "incident-window-correlation",
+      "category": "handoff",
+      "changed_paths": [
+        "correlate.py",
+        "handoff.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": false
+      },
+      "child_evidence_markers": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": []
+      },
+      "child_final_messages": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": "Outcome:  \n- Read-only inspection completed for `events.json` only.  \n- No file edits were made.\n\nPaths:  \n- `[/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-t2lacuf9/incident-window-correlation-trial-1-v9-routing-probe/incident-window-correlation/events.json](/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-t2lacuf9/incident-window-correlation-trial-1-v9-routing-probe/incident-window-correlation/events.json)`\n\nExact JSON schema (from file content):  \n- Top-level type: JSON array of event objects.\n- Array size: `6`.\n- Event object fields (all required, observed on every record):  \n  - `ts`: number (integer-valued)  \n  - `service`: string  \n  - `severity`: string  \n  - `trace`: string  \n  - `message`: string  \n\nSchema in structured form:  \n```json\n[\n  {\n    \"ts\": number,\n    \"service\": string,\n    \"severity\": string,\n    \"trace\": string,\n    \"message\": string\n  }\n]\n```\n\nObserved event objects (exact):  \n1) `{\"ts\":100,\"service\":\"api\",\"severity\":\"warning\",\"trace\":\"trace-a\",\"message\":\"latency\"}`  \n2) `{\"ts\":180,\"service\":\"db\",\"severity\":\"error\",\"trace\":\"trace-a\",\"message\":\"pool exhausted\"}`  \n3) `{\"ts\":520,\"service\":\"api\",\"severity\":\"info\",\"trace\":\"trace-a\",\"message\":\"recovered\"}`  \n4) `{\"ts\":120,\"service\":\"auth\",\"severity\":\"critical\",\"trace\":\"trace-b\",\"message\":\"tokens rejected\"}`  \n5) `{\"ts\":200,\"service\":\"api\",\"severity\":\"error\",\"trace\":\"trace-b\",\"message\":\"login failures\"}`  \n6) `{\"ts\":900,\"service\":\"worker\",\"severity\":\"info\",\"trace\":\"trace-c\",\"message\":\"queue drained\"}`\n\nTimestamp representation (`ts`):  \n- JSON number, integer values only (no decimals/fractions in this file).  \n- Range observed: min `100`, max `900`.  \n- Ordering is **not** strictly ascending in input order (`ts` sequence is `100,180,520,120,200,900`), so input order is not reliable time order.\n\nEvent field examples:  \n- `service`: `api`, `db`, `auth`, `worker`  \n- `message`: `latency`, `pool exhausted`, `recovered`, `tokens rejected`, `login failures`, `queue drained`  \n- `severity`: `warning`, `error`, `info`, `critical`  \n- `trace`: `trace-a`, `trace-b`, `trace-c`  \n\nEdge cases relevant to implementation:  \n1) Event order is not time-sorted; consumers should sort by `ts` if temporal ordering matters.  \n2) `trace` values repeat and are not contiguous (e.g., `trace-a` appears at indices 0,1,2; `trace-b` at 3,4).  \n3) No missing fields in this file, but robust parsers should validate all required keys due schema assumptions.  \n4) `ts` is numeric but semantically may represent relative timeline units (not clearly epoch); no timezone/datetime metadata is present.  \n5) `severity` appears to be an open string in schema but currently limited to four known values.\n\nVerification:  \n- `rtk ls -l events.json` -> file exists (`644`, `542B`).  \n- `rtk cat events.json` -> confirmed exact array payload and fields.  \n- `rtk jq` aggregations -> confirmed key set, type set, unique field values, counts, and non-sorted timestamp property.\n\nFailures:  \n- One failed intermediate command due to typo in `workdir`; retried with correct path.  \n- No wrapper failure (`rtk` unavailable) occurred.\n\nBlockers:  \n- None.\n\nRisk:  \n- Implementations that assume chronological input order, unique traces, or a fixed severity enum beyond observed values will be brittle."
+      },
+      "child_io_ok": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": true
+      },
+      "child_missing_evidence_markers": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": []
+      },
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": "spark_worker"
+      },
+      "child_thread_ids": [
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd"
+      ],
+      "child_total_tokens": 178024,
+      "child_turn_errors": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": null
+      },
+      "child_turn_statuses": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": "completed"
+      },
+      "child_usage": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": {
+          "cachedInputTokens": 160256,
+          "inputTokens": 173083,
+          "outputTokens": 4941,
+          "reasoningOutputTokens": 2439,
+          "totalTokens": 178024
+        }
+      },
+      "collection_duration_seconds": 104.046,
+      "combined_total_tokens": 421125,
+      "commands_by_thread": {
+        "019f6515-cfb9-79d2-be40-07edd0c981c3": [
+          "/bin/zsh -lc \"rtk rg --files -g 'correlate.py' -g 'handoff.json' -g 'README*' -g 'pyproject.toml' -g 'requirements*.txt' -g '*.md'\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' correlate.py\"",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' runbook.md\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk proxy python3 correlate.py'",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc \"rtk sed -n '1,240p' handoff.json\"",
+          "/bin/zsh -lc 'rtk git status --short'",
+          "/bin/zsh -lc 'rtk git diff --check'"
+        ],
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": [
+          "/bin/zsh -lc 'rtk ls -l events.json'",
+          "/bin/zsh -lc 'rtk cat events.json'",
+          "/bin/zsh -lc \"rtk jq '{count: length, fields: (map(keys) | add | unique | sort), ts_type: (map(.ts|type)|unique), service_type: (map(.service|type)|unique), severity_type: (map(.severity|type)|unique), trace_type: (map(.trace|type)|unique), message_type: (map(.message|type)|unique), severity_values: (map(.severity)|unique|sort), service_values: (map(.service)|unique|sort), trace_values: (map(.trace)|unique|sort)}' events.json\"",
+          "/bin/zsh -lc \"rtk jq '{ts_min: (map(.ts)|min), ts_max: (map(.ts)|max), ts_sorted_asc: (if map(.ts)==(map(.ts)|sort) then true else false end), trace_counts: (group_by(.trace) | map({trace: .[0].trace, count: length}) ) }' events.json\"",
+          "/bin/zsh -lc \"rtk jq 'map(keys|sort)' events.json\"",
+          "/bin/zsh -lc \"rtk jq 'to_entries|map({index:.key|tonumber, ts:.value.ts, service:.value.service, severity:.value.severity, trace:.value.trace, message:.value.message})' events.json\"",
+          "/bin/zsh -lc \"rtk jq '.[5]' events.json\"",
+          "/bin/zsh -lc \"rtk jq '[.[] | select((.ts | type) \"'!= \"number\" or (.ts != (.ts | floor)))]'\"' events.json\""
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.323,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "event-stream",
+            "markers": [
+              "events.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "handoff-contract",
+            "markers": [
+              "runbook.md"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 103.723,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6515-cfb9-79d2-be40-07edd0c981c3": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-t2lacuf9/incident-window-correlation-trial-1-v9-routing-probe/incident-window-correlation/correlate.py"
+        ]
+      },
+      "final_message": "Implemented:\n\n- [correlate.py](.../correlate.py)\n- [handoff.json](.../handoff.json)\n\nAcceptance passed:\n\n`incident correlation: public handoff and 40 unseen event streams valid`\n\nSummary: 6 events, 4 windows, 2 customer-impact windows.",
+      "first_spawn_seconds": 13.876,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.041,
+            "ok": true,
+            "output": "incident correlation: public handoff and 40 unseen event streams valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "customer_impact_windows": 2,
+              "events": 6,
+              "windows": 4
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "handoff.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6515-cfb9-79d2-be40-07edd0c981c3": {
+          "agentMessage": 5,
+          "collabAgentToolCall": 2,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 14,
+          "userMessage": 1
+        },
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": {
+          "agentMessage": 7,
+          "commandExecution": 8,
+          "reasoning": 13,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 26,
+        "configWarning": 1,
+        "item/agentMessage/delta": 240,
+        "item/completed": 61,
+        "item/started": 61,
+        "mcpServer/startupStatus/updated": 4,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 6,
+        "thread/tokenUsage/updated": 26,
+        "turn/completed": 2,
+        "turn/diff/updated": 7,
+        "turn/plan/updated": 3,
+        "turn/started": 2
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6515-cfb9-79d2-be40-07edd0c981c3",
+      "parent_total_tokens": 243101,
+      "parent_usage": {
+        "cachedInputTokens": 202240,
+        "inputTokens": 238063,
+        "outputTokens": 5038,
+        "reasoningOutputTokens": 2205,
+        "totalTokens": 243101
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": false,
+      "partition_assignments": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": []
+      },
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": false,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 1,
+      "peak_concurrency_range_ok": true,
+      "protocol_pass": false,
+      "role_binding_ok": false,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": false,
+      "rtk_command_count": 17,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": 13.378,
+      "spawn_origin_ok": false,
+      "spawn_records": {
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": {
+          "model": "gpt-5.3-codex-spark",
+          "native_agent_role": true,
+          "origin": "parent_agent",
+          "prompt": "You are a read-only evidence worker. Inspect only events.json in the current working directory; do not inspect validate.py or any other file, and do not modify files. Report exact JSON schema, event fields, timestamp representation, service/message/severity/trace examples, and any edge cases relevant to implementation. Complete shell constraint: every shell command must start with literal rtk; use rtk proxy when raw output is required and retain rtk in acceptance commands. The task already starts in its exact target working directory: never run cd or chdir in a shell command, and pass any directory through the tool workdir field. If the shell cannot launch rtk itself, stop and report that wrapper failure. If a wrapped command fails, diagnose or retry only with another rtk-prefixed command; never use raw shell or an absolute binary path. Return outcome, paths, verification, failures, blockers, risk. You are not alone in the codebase; do not revert others' edits."
+        }
+      },
+      "spawned_worker_range_ok": true,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6515-cfb9-79d2-be40-07edd0c981c3": 12,
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": 8
+      },
+      "tool_output_chars_by_thread": {
+        "019f6515-cfb9-79d2-be40-07edd0c981c3": 1631,
+        "019f6516-05d8-77f1-97b4-641dd2b6d5fd": 2641
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-v9-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": false
+}

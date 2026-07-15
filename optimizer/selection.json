@@ -1,21 +1,24 @@
 {
-  "schema_version": 2,
+  "schema_version": 4,
+  "product": "smart-compact-v9",
   "objective": "minimize_parent_model_tokens",
-  "selection_stage": "before_task_creation",
+  "selection_stage": "before_task_creation_with_model_effort_and_task_shape",
   "dimensions": {
     "routing_mode": ["no_spark", "auto_spark"],
-    "task_shape": ["implementation", "migration", "handoff", "general"]
+    "task_shape": ["implementation", "migration", "handoff", "general"],
+    "model_family": ["sol", "luna", "other"],
+    "effort": ["medium", "high", "xhigh", "max", "other"]
   },
   "task_shape_help": {
-    "implementation": "Path-disjoint implementations of the same contract.",
-    "migration": "Repetitive path-disjoint edits under one shared migration contract.",
-    "handoff": "Tightly coupled parent work with at most one externally supplied handoff.",
+    "implementation": "Path-disjoint implementation work under one acceptance contract.",
+    "migration": "Repetitive edits under a shared migration contract.",
+    "handoff": "Tightly coupled work where local execution usually avoids duplicate parent effort.",
     "general": "Any task not known to match a measured shape."
   },
-  "replay_case_shapes": {
-    "legacy-calculator": "implementation",
-    "monorepo-sdk-migration": "migration",
-    "legacy-relay-bench": "handoff"
+  "model_family_help": {
+    "sol": "Any gpt-5.6-sol setting.",
+    "luna": "Any gpt-5.6-luna setting.",
+    "other": "Unmeasured model family; use the conservative minimal local route."
   },
   "routing_treatments": {
     "no_spark": {
@@ -30,80 +33,176 @@
     }
   },
   "profiles": {
-    "v6": {
-      "profile": "smart-compact-v6",
-      "skill": "smart-compact-v6",
-      "role": "frozen_local_implementation"
+    "native": {
+      "profile": null,
+      "skill": null,
+      "visibility": "internal",
+      "role": "zero_added_instruction_state"
     },
-    "v8-terse": {
-      "profile": "smart-compact-v8",
-      "skill": "smart-compact-v8",
-      "role": "terse_auto_routing"
+    "v9": {
+      "profile": "smart-compact-v9",
+      "skill": "smart-compact-v9",
+      "visibility": "public",
+      "role": "minimal_local_contract"
     },
-    "v8-natural": {
-      "profile": "smart-compact-v8-natural",
-      "skill": "smart-compact-v8-natural",
-      "role": "natural_local_fallback"
+    "v9-v8": {
+      "profile": "smart-compact-v9-v8",
+      "skill": "smart-compact-v9",
+      "visibility": "internal",
+      "role": "frozen_v8_profile_treatment_under_v9"
+    },
+    "v9-spark": {
+      "profile": "smart-compact-v9-spark",
+      "skill": "smart-compact-v9",
+      "visibility": "internal",
+      "role": "measured_implementation_spark_route"
     }
   },
   "rules": [
     {
-      "when": {"routing_mode": "auto_spark"},
-      "lane": "v8-terse",
-      "reason_code": "auto_aggregate_terse",
-      "evidence_tier": "directional_harness"
+      "when": {"routing_mode": "auto_spark", "task_shape": "implementation", "model_family": "luna", "effort": "max"},
+      "lane": "v9-spark",
+      "reason_code": "spark_only_measured_win",
+      "evidence_tier": "single_pass_official_selection"
     },
     {
-      "when": {"routing_mode": "no_spark", "task_shape": "implementation"},
-      "lane": "v6",
-      "reason_code": "local_implementation_v6",
-      "evidence_tier": "task_shape_aggregate"
+      "when": {"routing_mode": "no_spark", "task_shape": "implementation", "model_family": "luna", "effort": "max"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_no_spark_implementation",
+      "evidence_tier": "single_pass_official_control"
     },
     {
-      "when": {"routing_mode": "no_spark"},
-      "lane": "v8-natural",
-      "reason_code": "local_other_natural",
-      "evidence_tier": "task_shape_aggregate"
+      "when": {"task_shape": "implementation", "model_family": "sol", "effort": "medium"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_cross_suite_implementation",
+      "evidence_tier": "additive_two_suite_selection"
+    },
+    {
+      "when": {"task_shape": "implementation", "model_family": "sol", "effort": "high"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_no_spark_implementation",
+      "evidence_tier": "single_pass_official_control"
+    },
+    {
+      "when": {"task_shape": "implementation", "model_family": "luna", "effort": "xhigh"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_no_spark_implementation",
+      "evidence_tier": "single_pass_official_control"
+    },
+    {
+      "when": {"task_shape": "migration", "model_family": "sol", "effort": "medium"},
+      "lane": "native",
+      "routing_treatment": "no_spark",
+      "reason_code": "native_avoids_state_cost",
+      "evidence_tier": "single_pass_official_control"
+    },
+    {
+      "when": {"task_shape": "migration", "model_family": "sol", "effort": "high"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_cross_suite_migration",
+      "evidence_tier": "additive_two_suite_selection"
+    },
+    {
+      "when": {"task_shape": "migration", "model_family": "luna", "effort": "xhigh"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_no_spark_migration",
+      "evidence_tier": "single_pass_official_control"
+    },
+    {
+      "when": {"task_shape": "migration", "model_family": "luna", "effort": "max"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_no_spark_migration",
+      "evidence_tier": "single_pass_official_control"
+    },
+    {
+      "when": {"task_shape": "handoff", "model_family": "luna", "effort": "max"},
+      "lane": "v9-v8",
+      "routing_treatment": "no_spark",
+      "reason_code": "v8_no_spark_handoff_max",
+      "evidence_tier": "single_pass_official_control"
+    },
+    {
+      "when": {"task_shape": "handoff"},
+      "lane": "v9",
+      "routing_treatment": "no_spark",
+      "reason_code": "minimal_local_handoff",
+      "evidence_tier": "additive_two_suite_selection"
+    },
+    {
+      "when": {"task_shape": "general"},
+      "lane": "v9",
+      "routing_treatment": "no_spark",
+      "reason_code": "minimal_local_general",
+      "evidence_tier": "single_pass_fresh_selection"
+    },
+    {
+      "when": {"task_shape": "implementation"},
+      "lane": "v9",
+      "routing_treatment": "no_spark",
+      "reason_code": "unmeasured_local_fallback",
+      "evidence_tier": "conservative_fallback"
+    },
+    {
+      "when": {"task_shape": "migration"},
+      "lane": "v9",
+      "routing_treatment": "no_spark",
+      "reason_code": "unmeasured_local_fallback",
+      "evidence_tier": "conservative_fallback"
     }
   ],
   "evidence": {
-    "auto_aggregate_terse": "Natural auto used 90,588 more parent tokens than terse across 9 cells.",
-    "local_implementation_v6": "Frozen v6 used 31,359 fewer parent tokens than terse across the 4-setting implementation aggregate.",
-    "local_other_natural": "Natural no-Spark used 1,048,078 fewer parent tokens than terse across the remaining 17 cells."
+    "spark_only_measured_win": "Implementation Spark is retained only for Luna/max, where it used one worker and 463,836 parent tokens versus v8 no-Spark at 548,078; all other official implementation Spark settings regressed.",
+    "v8_no_spark_implementation": "The frozen v8 profile is reused under a v9-only internal ID where current v9 Spark added state and duplicate parent work.",
+    "v8_cross_suite_implementation": "At Sol/medium, v8 no-Spark totals 240,023 parent tokens across the official and fresh implementation cases, versus 422,342 for current v9 Spark.",
+    "native_avoids_state_cost": "For official Sol/medium migration, zero added profile state used 114,900 parent tokens versus v8 at 132,155 and current v9 at 117,249.",
+    "v8_cross_suite_migration": "At Sol/high migration, v8 totals 242,989 parent tokens across official and fresh cases, versus 279,211 for current v9 local.",
+    "v8_no_spark_migration": "The frozen v8 no-Spark treatment remains the measured deployable winner for Luna migration settings among profile-only lanes.",
+    "v8_no_spark_handoff_max": "Relay Luna/max used 140,026 parent tokens with v8 no-Spark versus 391,416 with current v9 local.",
+    "minimal_local_handoff": "The 259-byte local contract wins the combined handoff evidence outside Luna/max and keeps worker count at zero.",
+    "minimal_local_general": "The fresh Luna/max general case used 107,583 parent tokens with the minimal local route versus 144,199 with v8.",
+    "unmeasured_local_fallback": "Unmeasured settings use the smallest safety-complete local contract with multi-agent disabled instead of assuming Spark or a larger historical state."
   },
-  "counterfactual_replay": {
-    "kind": "selector_replay_over_single_pass_observations_not_fresh_inference",
-    "scope": "no_spark_only",
-    "excluded_treatment": "auto_spark_used_a_harness_availability_prompt_and_forced_spark_used_a_harness_handoff",
-    "cells": 21,
-    "all_terse_parent_tokens": 4509801,
-    "selected_parent_tokens": 3430364,
-    "parent_tokens_saved_vs_all_terse": 1079437,
-    "parent_token_reduction_pct_vs_all_terse": 23.935,
-    "by_routing_mode": {
-      "no_spark": {"cells": 21, "all_terse_parent_tokens": 4509801, "selected_parent_tokens": 3430364}
-    }
+  "replay_case_shapes": {
+    "legacy-calculator": "implementation",
+    "legacy-relay-bench": "handoff",
+    "monorepo-sdk-migration": "migration"
   },
+  "retired_profiles": [
+    "smart-compact-v6",
+    "smart-compact-v7",
+    "smart-compact-v8",
+    "smart-compact-v8-natural",
+    "smart-compact-v9-implementation",
+    "smart-compact-v9-natural"
+  ],
   "sources": [
-    {
-      "path": "benchmarks/results/v8-release-summary.json",
-      "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"
-    },
-    {
-      "path": "benchmarks/results/v8-verbose-comparison.json",
-      "sha256": "c8ff91cb7afca507d35d2d8783973fbc55bcfe42c91f6e02da0110421f250c86"
-    },
-    {
-      "path": "profiles/smart-compact-v6.config.toml",
-      "sha256": "2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7"
-    },
-    {
-      "path": "profiles/smart-compact-v8.config.toml",
-      "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"
-    },
-    {
-      "path": "profiles/smart-compact-v8-natural.config.toml",
-      "sha256": "478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717"
-    }
-  ]
+    {"path": "benchmarks/results/v9-definitive-summary.json", "sha256": "139e86569c968d88ab340456a19c9413c6cb606c38c2b6e29686a5945f24c9e3"},
+    {"path": "benchmarks/results/v8-release-summary.json", "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"},
+    {"path": "benchmarks/results/raw/v9-official-release.json", "sha256": "690bbb1ac05220068e87fb92501a3f76d2f2d03c33d473bcdd4ed728ee6ca8d3"},
+    {"path": "benchmarks/results/raw/v9-official-recovery.json", "sha256": "338a974e4f8327fb428cc4ad4d542122d4345240b994b4769a72cdb3e094d7aa"},
+    {"path": "benchmarks/results/raw/v9-final-release.json", "sha256": "72729e6f2fc2ca9154a6691fc71cadc35905a56218f509c2cd548ada88d1b431"},
+    {"path": "profiles/smart-compact-v9.config.toml", "sha256": "ecba3973761bbdd2b603f3a2d2da96515cea8e78470722dc5b52c6e702589402"},
+    {"path": "profiles/smart-compact-v9-v8.config.toml", "sha256": "b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c"},
+    {"path": "profiles/smart-compact-v9-spark.config.toml", "sha256": "b771c80ca01aa61b62ef1aa1730102e972099bbd36854ecbd855fc5d5b19992f"},
+    {"path": "versions/v9/SKILL.md", "sha256": "a69afa7ea829d6bb697d54295307213836becd95c620c4c5bf4cfdd87953fcf3"}
+  ],
+  "selection_evidence": {
+    "status": "post_matrix_deployable_hybrid_selection_not_blinded_confirmation",
+    "official_parent_tokens": 2607766,
+    "official_saved_vs_standard": 530716,
+    "official_saved_vs_v6": 753338,
+    "official_saved_vs_v8": 397164,
+    "official_spawned_workers": 1,
+    "fresh_parent_tokens": 462901,
+    "fresh_saved_vs_v8": 5680,
+    "combined_parent_tokens": 3070667,
+    "combined_saved_vs_v8": 402844
+  }
 }

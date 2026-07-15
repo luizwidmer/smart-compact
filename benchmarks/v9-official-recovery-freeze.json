@@ -1,0 +1,289 @@
+{
+  "artifacts": {
+    "base_runner": {
+      "git_blob": "bbbea9b98229eafe958a6b271d0c353c540a3536",
+      "path": "scripts/benchmark_v8.py",
+      "sha256": "1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea"
+    },
+    "calculator_cases": {
+      "git_blob": "dd8cb92a2a2afafa4ef9f4c0731bea968bc8f70d",
+      "path": "benchmarks/agentic-v8-legacy-calculator.json",
+      "sha256": "4ed252fb96a745b7ffca39a66667af470b1d0a003a651f65d0c13a22cd017218"
+    },
+    "confirmation_cases": {
+      "git_blob": "1377a23ecfed3eaa807235c5c28114f29c3d34d0",
+      "path": "benchmarks/agentic-v8-confirmation.json",
+      "sha256": "968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534"
+    },
+    "dependency_lock": {
+      "git_blob": "77778b95ac65bf4c7fdd65c86b85fb921fde7ce6",
+      "path": "requirements-benchmark.txt",
+      "sha256": "bb4e9a84677512c9085bf632fb963f8cd2cd6cdd42b45f4ddf29463cf38f04b0"
+    },
+    "final_runner": {
+      "git_blob": "db5ed32d1d97dd6f3e50f8114d89e77764f65cf9",
+      "path": "scripts/benchmark_v9_final.py",
+      "sha256": "b2683c4d3c3020b4bceb56f932fdf8b66c24835ed800cd29413d12b2d3eb5eb2"
+    },
+    "grader": {
+      "git_blob": "62783a4551a23ce1d10b9ecb15a932798d5186c6",
+      "path": "scripts/benchmark_agentic.py",
+      "sha256": "0c4234b095cf86cfe602ea878d76f57ea62f80bca43d8abadc41d2980973843e"
+    },
+    "optimizer_selection": {
+      "git_blob": "8557b89c47e37f4b044c682db5e497a90ff9c56d",
+      "path": "optimizer/selection.json",
+      "sha256": "afcc9e03b616f2c884c2c04c6b2cb05ac9dbedeb2f4de7194f01d582df7df787"
+    },
+    "original_failed_raw": {
+      "git_blob": "065fc45a570654f8a48bcec40dd62128c1933e64",
+      "path": "benchmarks/results/raw/v9-official-release.json",
+      "sha256": "690bbb1ac05220068e87fb92501a3f76d2f2d03c33d473bcdd4ed728ee6ca8d3"
+    },
+    "original_freeze": {
+      "git_blob": "024610bd0edf6ef3bea772cbd6153183acf3f1fc",
+      "path": "benchmarks/v9-official-freeze.json",
+      "sha256": "6e8a776660a4cf6b5dbd29c2ce0ff0595263712d050c0c3107951a14c78338e6"
+    },
+    "original_runner": {
+      "git_blob": "aacb26c1c925bfa6478a8e90206cdf3651b94508",
+      "path": "scripts/benchmark_v9_official.py",
+      "sha256": "d2b82de0367c80e5f19596988321fcf6f0d722a3a541efd916217b5a7dcc6d9d"
+    },
+    "original_verifier": {
+      "git_blob": "aef3a50450aa4ab10c6822b30a0891c626c47adf",
+      "path": "scripts/verify_v9_official.py",
+      "sha256": "819bc69096599c91de05353e128ac01d9dba0bea7ae080eff874aa538d70dd14"
+    },
+    "recovery_runner": {
+      "git_blob": "5704d46197cb3c1c9a1cdecd1117e65ea81f419d",
+      "path": "scripts/benchmark_v9_official_recovery.py",
+      "sha256": "8071e2fade69cde0706a086cb7499de68f751c269391c8d2d85dd0398e0fea7b"
+    },
+    "recovery_verifier": {
+      "git_blob": "36087579c7e3af09412e0f77d45e60cfc5626a59",
+      "path": "scripts/verify_v9_official_recovery.py",
+      "sha256": "5b7d3f80333630b12e58dd697c0ee54228f8c028a87ce7fffcdb4fc3c8702db2"
+    },
+    "relay_cases": {
+      "git_blob": "025a4abfea1443e216e5de857684b6a4aeafb030",
+      "path": "benchmarks/agentic-v8-legacy-relay-bench.json",
+      "sha256": "082608b014ee12dbb771ef12d82842b1b3511068c9c51bd684a6e02fdc49e30a"
+    },
+    "spark_agent": {
+      "git_blob": "6da8e0cc959c56820275234aecac942d0426d719",
+      "path": ".codex/agents/spark-worker.toml",
+      "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+    },
+    "task_client": {
+      "git_blob": "f30245ae1b8be47b464f07348de4423034c4a55e",
+      "path": "scripts/open_app_task.py",
+      "sha256": "4f981277c7221cd437cc2fc534d54539cbcc35bd6a9b19af2cc749265f9e49fb"
+    },
+    "v8_control_summary": {
+      "git_blob": "0de4edab657dccda76d55046e7a295427a0676ab",
+      "path": "benchmarks/results/v8-release-summary.json",
+      "sha256": "f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430"
+    },
+    "v9_local_profile": {
+      "git_blob": "d0cd86a9fec4e26488164382f567830d1c8e6d6d",
+      "path": "profiles/smart-compact-v9.config.toml",
+      "sha256": "ecba3973761bbdd2b603f3a2d2da96515cea8e78470722dc5b52c6e702589402"
+    },
+    "v9_spark_profile": {
+      "git_blob": "19d4b681a067c5d269d49be353b39a3663a7e2d7",
+      "path": "profiles/smart-compact-v9-spark.config.toml",
+      "sha256": "b771c80ca01aa61b62ef1aa1730102e972099bbd36854ecbd855fc5d5b19992f"
+    }
+  },
+  "candidate": "v9-official-collision-recovery",
+  "primary_objective": "parent_total_tokens",
+  "release_evidence": {
+    "raw_artifacts": [],
+    "status": "outputs_excluded_from_input_freeze",
+    "verified_cells": 0
+  },
+  "release_plan": {
+    "case_universe": 3,
+    "excluded_valid_cell_ids": [
+      "legacy-calculator::gpt-5.6-sol::medium::v9-selected-spark",
+      "legacy-relay-bench::gpt-5.6-sol::high::v9-selected-local",
+      "monorepo-sdk-migration::gpt-5.6-luna::xhigh::v9-selected-local"
+    ],
+    "execution_order": [
+      {
+        "arm": "v9-selected-local",
+        "case_id": "legacy-relay-bench",
+        "cell_id": "legacy-relay-bench::gpt-5.6-luna::max::v9-selected-local",
+        "effort": "max",
+        "index": 0,
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "legacy-relay-bench",
+        "cell_id": "legacy-relay-bench::gpt-5.6-luna::xhigh::v9-selected-local",
+        "effort": "xhigh",
+        "index": 1,
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "legacy-calculator",
+        "cell_id": "legacy-calculator::gpt-5.6-luna::max::v9-selected-spark",
+        "effort": "max",
+        "index": 2,
+        "model": "gpt-5.6-luna",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "monorepo-sdk-migration",
+        "cell_id": "monorepo-sdk-migration::gpt-5.6-sol::high::v9-selected-local",
+        "effort": "high",
+        "index": 3,
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "monorepo-sdk-migration",
+        "cell_id": "monorepo-sdk-migration::gpt-5.6-sol::medium::v9-selected-local",
+        "effort": "medium",
+        "index": 4,
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "monorepo-sdk-migration",
+        "cell_id": "monorepo-sdk-migration::gpt-5.6-luna::max::v9-selected-local",
+        "effort": "max",
+        "index": 5,
+        "model": "gpt-5.6-luna",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "legacy-calculator",
+        "cell_id": "legacy-calculator::gpt-5.6-sol::high::v9-selected-spark",
+        "effort": "high",
+        "index": 6,
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "legacy-calculator",
+        "cell_id": "legacy-calculator::gpt-5.6-luna::xhigh::v9-selected-spark",
+        "effort": "xhigh",
+        "index": 7,
+        "model": "gpt-5.6-luna",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "legacy-relay-bench",
+        "cell_id": "legacy-relay-bench::gpt-5.6-sol::medium::v9-selected-local",
+        "effort": "medium",
+        "index": 8,
+        "model": "gpt-5.6-sol",
+        "task_shape": "handoff"
+      }
+    ],
+    "jobs": 4,
+    "matrix": [
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "legacy-calculator",
+        "cell_id": "legacy-calculator::gpt-5.6-sol::high::v9-selected-spark",
+        "effort": "high",
+        "model": "gpt-5.6-sol",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "legacy-calculator",
+        "cell_id": "legacy-calculator::gpt-5.6-luna::xhigh::v9-selected-spark",
+        "effort": "xhigh",
+        "model": "gpt-5.6-luna",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-spark",
+        "case_id": "legacy-calculator",
+        "cell_id": "legacy-calculator::gpt-5.6-luna::max::v9-selected-spark",
+        "effort": "max",
+        "model": "gpt-5.6-luna",
+        "task_shape": "implementation"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "legacy-relay-bench",
+        "cell_id": "legacy-relay-bench::gpt-5.6-sol::medium::v9-selected-local",
+        "effort": "medium",
+        "model": "gpt-5.6-sol",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "legacy-relay-bench",
+        "cell_id": "legacy-relay-bench::gpt-5.6-luna::xhigh::v9-selected-local",
+        "effort": "xhigh",
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "legacy-relay-bench",
+        "cell_id": "legacy-relay-bench::gpt-5.6-luna::max::v9-selected-local",
+        "effort": "max",
+        "model": "gpt-5.6-luna",
+        "task_shape": "handoff"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "monorepo-sdk-migration",
+        "cell_id": "monorepo-sdk-migration::gpt-5.6-sol::medium::v9-selected-local",
+        "effort": "medium",
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "monorepo-sdk-migration",
+        "cell_id": "monorepo-sdk-migration::gpt-5.6-sol::high::v9-selected-local",
+        "effort": "high",
+        "model": "gpt-5.6-sol",
+        "task_shape": "migration"
+      },
+      {
+        "arm": "v9-selected-local",
+        "case_id": "monorepo-sdk-migration",
+        "cell_id": "monorepo-sdk-migration::gpt-5.6-luna::max::v9-selected-local",
+        "effort": "max",
+        "model": "gpt-5.6-luna",
+        "task_shape": "migration"
+      }
+    ],
+    "physical_cells": 9,
+    "recovery_cell_ids": [
+      "legacy-calculator::gpt-5.6-luna::max::v9-selected-spark",
+      "legacy-calculator::gpt-5.6-luna::xhigh::v9-selected-spark",
+      "legacy-calculator::gpt-5.6-sol::high::v9-selected-spark",
+      "legacy-relay-bench::gpt-5.6-luna::max::v9-selected-local",
+      "legacy-relay-bench::gpt-5.6-luna::xhigh::v9-selected-local",
+      "legacy-relay-bench::gpt-5.6-sol::medium::v9-selected-local",
+      "monorepo-sdk-migration::gpt-5.6-luna::max::v9-selected-local",
+      "monorepo-sdk-migration::gpt-5.6-sol::high::v9-selected-local",
+      "monorepo-sdk-migration::gpt-5.6-sol::medium::v9-selected-local"
+    ],
+    "repetitions_per_cell": 1,
+    "seed": 20260716,
+    "wall_time_policy": "diagnostic_only_contended_parallel_run"
+  },
+  "schema_version": 1,
+  "status": "recovery_inputs_frozen_before_inference"
+}

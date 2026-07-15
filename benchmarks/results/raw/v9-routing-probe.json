@@ -1,0 +1,309 @@
+{
+  "arm_aggregate": {
+    "by_arm": {
+      "v9-routing-probe": {
+        "grade_passes": 1,
+        "median_child_tokens": 0,
+        "median_combined_tokens": 139765,
+        "median_parent_tokens": 139765,
+        "median_peak_concurrency": 0,
+        "median_spawned_worker_count": 0,
+        "median_useful_worker_count": 0,
+        "median_useful_worker_rate": 0.0,
+        "median_worker_count": 0,
+        "routing_passes": 0,
+        "runs": 1,
+        "successes": 0,
+        "usage_complete": 1
+      }
+    },
+    "selection_ranking": [
+      {
+        "arm": "v9-routing-probe",
+        "mean_quality_score": 100.0,
+        "median_parent_tokens": 139765,
+        "median_spawned_worker_count": 0,
+        "median_worker_count": 0,
+        "rank": 1,
+        "successes": 0
+      }
+    ]
+  },
+  "arm_metadata": {
+    "v9-routing-probe": {
+      "multi_agent": true,
+      "policy_path": null,
+      "policy_sha256": null,
+      "profile_path": "/private/tmp/smart-compact-v9-work/benchmarks/experiments/v9-routing-probe/profile.config.toml",
+      "profile_sha256": "32a6d7ee93083816caf439d9e75fd4a03e3d8cde8f3d75d9dec2b4e33cc7719f",
+      "routing_mode": "none",
+      "skill_input": false,
+      "spark_enabled": true
+    }
+  },
+  "arms": [
+    "v9-routing-probe"
+  ],
+  "cases_path": "/private/tmp/smart-compact-v9-work/benchmarks/agentic-v9-heldout.json",
+  "cases_sha256": "177848307cd1351bb9b307b820a9d358ba15030e6f34e99d75e54035c0e971d9",
+  "codex": "/opt/homebrew/Caskroom/codex/0.144.1/bin/codex",
+  "codex_version": "codex-cli 0.144.1",
+  "comparison_aggregate": {},
+  "comparisons": [],
+  "complete": true,
+  "disabled_skill_path": "/Users/luiz/.agents/skills/smart-compact/SKILL.md",
+  "effort": "xhigh",
+  "execution_order": [
+    {
+      "arm": "v9-routing-probe",
+      "case_id": "incident-window-correlation",
+      "index": 0,
+      "trial": 1
+    }
+  ],
+  "exploratory": true,
+  "fixture_validation": {
+    "cases": [
+      {
+        "case_id": "incident-window-correlation",
+        "gold_acceptance_ok": true,
+        "gold_acceptance_returncode": 0,
+        "gold_after_acceptance_score_pct": 100.0,
+        "gold_scope_ok": true,
+        "gold_score_pct": 100.0,
+        "ok": true,
+        "reset_reproducible": true,
+        "seed_score_pct": 0.0
+      }
+    ],
+    "ok": true
+  },
+  "generated_at": "2026-07-15T09:20:43Z",
+  "jobs": 1,
+  "model": "gpt-5.6-luna",
+  "publication_status": {
+    "candidate_all_pass": false,
+    "exploratory_metrics_publishable": false,
+    "latency_publishable": false,
+    "matrix_complete": true,
+    "protocol_publishable": false,
+    "quality_publishable": false,
+    "repeat_confirmed": false,
+    "task_publishable": true,
+    "token_publishable": false
+  },
+  "repetitions": 1,
+  "results": [
+    {
+      "acceptance_observed": true,
+      "active_child_ids": [],
+      "actual_spawned_workers": 0,
+      "all_spawned_workers_useful": true,
+      "arm": "v9-routing-probe",
+      "case_id": "incident-window-correlation",
+      "category": "handoff",
+      "changed_paths": [
+        "correlate.py",
+        "handoff.json"
+      ],
+      "child_completion_ok": true,
+      "child_evidence_coverage_ok": {},
+      "child_evidence_markers": {},
+      "child_final_messages": {},
+      "child_io_ok": {},
+      "child_missing_evidence_markers": {},
+      "child_read_errors": {},
+      "child_role_sources": {},
+      "child_roles": {},
+      "child_thread_ids": [],
+      "child_total_tokens": 0,
+      "child_turn_errors": {},
+      "child_turn_statuses": {},
+      "child_usage": {},
+      "collection_duration_seconds": 89.608,
+      "combined_total_tokens": 139765,
+      "commands_by_thread": {
+        "019f6512-b944-74a2-94b4-45ac4ebe1beb": [
+          "/bin/zsh -lc \"rtk proxy rg --files -g '\"'!validate.py'\"' -g '\"'!*__pycache__*'\"'\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' events.json\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' correlate.py\"",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' runbook.md\"",
+          "/bin/zsh -lc 'rtk proxy python3 correlate.py'",
+          "/bin/zsh -lc \"rtk proxy sed -n '1,240p' handoff.json\"",
+          "/bin/zsh -lc 'rtk proxy python3 validate.py'",
+          "/bin/zsh -lc 'rtk proxy git status --short'",
+          "/bin/zsh -lc 'rtk proxy git diff --check'"
+        ]
+      },
+      "delegation_brief_ok": true,
+      "drain_duration_seconds": 0.322,
+      "duplicate_work_ratio": 0.0,
+      "duplicate_work_ratio_ok": true,
+      "effective_expectation": {
+        "expected_partitions": [
+          {
+            "allowed_replication": 1,
+            "id": "event-stream",
+            "markers": [
+              "events.json"
+            ],
+            "weight": 2
+          },
+          {
+            "allowed_replication": 1,
+            "id": "handoff-contract",
+            "markers": [
+              "runbook.md"
+            ],
+            "weight": 1
+          }
+        ],
+        "peak_concurrency": {
+          "max": null,
+          "min": 1
+        },
+        "spawned_workers": {
+          "max": null,
+          "min": 1
+        },
+        "useful_workers": {
+          "max": null,
+          "min": 1
+        }
+      },
+      "execution_duration_seconds": 89.286,
+      "execution_order_index": 0,
+      "file_changes_by_thread": {
+        "019f6512-b944-74a2-94b4-45ac4ebe1beb": [
+          "/var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-tq2s1iy6/incident-window-correlation-trial-1-v9-routing-probe/incident-window-correlation/correlate.py"
+        ]
+      },
+      "final_message": "Implemented correlation logic and generated [handoff.json](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-tq2s1iy6/incident-window-correlation-trial-1-v9-routing-probe/incident-window-correlation/handoff.json>).\n\nUpdated [correlate.py](</var/folders/k6/3htwbb5s7097sftlylvncy2w0000gn/T/smart-compact-v8-tq2s1iy6/incident-window-correlation-trial-1-v9-routing-probe/incident-window-correlation/correlate.py>).\n\nVerification passed:\n\n`rtk proxy python3 validate.py`\n\nNo failures, blockers, or known risks.",
+      "first_spawn_seconds": null,
+      "forced_execution_strategy": null,
+      "forced_handoff_consumed": null,
+      "forced_handoff_ok": true,
+      "forced_handoff_written": null,
+      "grade": {
+        "checks": [
+          {
+            "duration_seconds": 0.041,
+            "ok": true,
+            "output": "incident correlation: public handoff and 40 unseen event streams valid\n",
+            "returncode": 0,
+            "type": "command"
+          },
+          {
+            "actual": {
+              "customer_impact_windows": 2,
+              "events": 6,
+              "windows": 4
+            },
+            "key": "summary",
+            "ok": true,
+            "path": "handoff.json",
+            "type": "json_equals"
+          }
+        ],
+        "ok": true,
+        "passed": 2,
+        "score_pct": 100.0,
+        "total": 2
+      },
+      "item_counts_by_thread": {
+        "019f6512-b944-74a2-94b4-45ac4ebe1beb": {
+          "agentMessage": 4,
+          "commandExecution": 9,
+          "fileChange": 1,
+          "reasoning": 10,
+          "userMessage": 1
+        }
+      },
+      "no_active_children": true,
+      "notification_counts": {
+        "account/rateLimits/updated": 10,
+        "configWarning": 1,
+        "item/agentMessage/delta": 338,
+        "item/completed": 25,
+        "item/started": 25,
+        "mcpServer/startupStatus/updated": 2,
+        "remoteControl/status/changed": 1,
+        "thread/started": 1,
+        "thread/status/changed": 2,
+        "thread/tokenUsage/updated": 10,
+        "turn/completed": 1,
+        "turn/diff/updated": 7,
+        "turn/started": 1
+      },
+      "parent_reserved_prompt_ok": true,
+      "parent_thread_id": "019f6512-b944-74a2-94b4-45ac4ebe1beb",
+      "parent_total_tokens": 139765,
+      "parent_usage": {
+        "cachedInputTokens": 114176,
+        "inputTokens": 136251,
+        "outputTokens": 3514,
+        "reasoningOutputTokens": 1314,
+        "totalTokens": 139765
+      },
+      "parent_work_replaced_ok": false,
+      "parent_worker_overlap_ok": true,
+      "parent_worker_overlap_paths": [],
+      "parent_worker_read_overlap_ok": true,
+      "parent_worker_read_overlap_paths": [],
+      "partition_assignment_syntax_ok": true,
+      "partition_assignments": {},
+      "partition_claim_coverage_ok": false,
+      "partition_coverage_ok": false,
+      "partition_markers_ok": true,
+      "partition_prompt_marker_gate_ok": true,
+      "partition_replication": {},
+      "partition_replication_ok": true,
+      "peak_concurrency": 0,
+      "peak_concurrency_range_ok": false,
+      "protocol_pass": false,
+      "role_binding_ok": true,
+      "role_ok": true,
+      "routing_mode": "none",
+      "routing_ok": false,
+      "rtk_command_count": 9,
+      "rtk_ok": true,
+      "rtk_violations": [],
+      "scope_ok": true,
+      "spark_model_ok": true,
+      "spawn_delay_pct": null,
+      "spawn_origin_ok": true,
+      "spawn_records": {},
+      "spawned_worker_range_ok": false,
+      "split": "held-out",
+      "success": false,
+      "task_pass": true,
+      "tool_calls_by_thread": {
+        "019f6512-b944-74a2-94b4-45ac4ebe1beb": 10
+      },
+      "tool_output_chars_by_thread": {
+        "019f6512-b944-74a2-94b4-45ac4ebe1beb": 2185
+      },
+      "trial": 1,
+      "turn_status": "completed",
+      "usage_complete": true,
+      "useful_worker_count": 0,
+      "useful_worker_ids": [],
+      "useful_worker_range_ok": false,
+      "useful_worker_rate": 0.0,
+      "worker_evidence_coverage_ok": false,
+      "worker_io_ok": true,
+      "workspace": null
+    }
+  ],
+  "rtk_version": "rtk 0.43.0",
+  "schema_version": 3,
+  "seed": 20260721,
+  "spark_agent": {
+    "effort": "medium",
+    "instructions_sha256": "fa6d1fed0e7adc7c98d9581514dcfc657b98268dc6bf80cea092111539f95065",
+    "model": "gpt-5.3-codex-spark",
+    "path": "/private/tmp/smart-compact-v9-work/.codex/agents/spark-worker.toml",
+    "sha256": "ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68"
+  },
+  "wall_time_contended": false
+}

@@ -2,212 +2,131 @@
 
 Research snapshot: 2026-07-15.
 
-## Scope
+## Scope and claim boundary
 
-Smart Compact is evaluated on local, hermetic, resettable tasks with deterministic graders. The suite borrows evaluation patterns from established agent benchmarks, but it does not reproduce their datasets or claim comparable leaderboard scores. Every task remains solvable by the parent without Spark.
+Smart Compact V9 is the sole current product generation. V6, V7, and V8 remain immutable benchmark history; the new real-world cases add to the official legacy benchmarks rather than replacing them.
 
-The primary objective is parent-model token reduction. Task correctness, treatment integrity, safety, and allowed scope are gates. Spark child tokens and combined tokens are disclosed, but Spark runs on a separate allowance and is not the optimized budget. When parent savings are similar, lower wall time and fewer spawned workers are preferred.
+The primary objective is parent-model token reduction. Task correctness, safety, allowed scope, and routing treatment are gates. Spark child tokens are telemetry, not the optimized allowance. Wall time is diagnostic because runs were parallel and contended.
 
-## Research influences
+The suite uses local, hermetic, resettable workspaces with deterministic graders. It borrows evaluation patterns from [SWE-bench](https://github.com/SWE-bench/SWE-bench), [Terminal-Bench](https://www.tbench.ai/benchmarks/terminal-bench-2), [WorkArena](https://github.com/ServiceNow/WorkArena), [TheAgentCompany](https://github.com/TheAgentCompany/TheAgentCompany), [tau-bench](https://arxiv.org/abs/2406.12045), and [OSWorld](https://arxiv.org/abs/2404.07972). It does not reproduce those datasets or claim comparable leaderboard scores.
 
-| Source | Pattern borrowed | Boundary |
-| --- | --- | --- |
-| [SWE-bench](https://github.com/SWE-bench/SWE-bench) and [SWE-bench Verified](https://openai.com/index/introducing-swe-bench-verified/) | Repository changes graded by hidden regression tests | Local synthetic repositories are not SWE-bench instances. |
-| [SWE-Lancer](https://openai.com/index/swe-lancer/) | End-to-end bug-fix and feature acceptance | No economic-value equivalence is claimed. |
-| [Terminal-Bench 2.0](https://www.tbench.ai/benchmarks/terminal-bench-2) | Realistic terminal work in isolated environments | Task shapes, not tasks or scores, are borrowed. |
-| [WorkArena](https://github.com/ServiceNow/WorkArena) | Compositional retrieval and knowledge work | The suite does not reproduce ServiceNow or browser interaction. |
-| [TheAgentCompany](https://github.com/TheAgentCompany/TheAgentCompany) | Initialized workplaces, state, evaluators, and partial checks | The suite omits its multi-service company simulation. |
-| [tau-bench](https://arxiv.org/abs/2406.12045) | Policy-bound stateful workflows and final-state grading | Reference actions are not treated as the only valid implementation path. |
-| [OSWorld](https://arxiv.org/abs/2404.07972) | Long workflows, artifact checks, and safety auditing | No OSWorld score equivalence is claimed. |
-| [METR Time Horizons](https://metr.org/time-horizons/) | Success and runtime as separate evidence | This single-pass suite cannot support a time-horizon claim. |
+## State is an optimization cost
 
-## Additive benchmark universe
+The official V9 candidate first enforced the same minimal-local state everywhere except implementation, where it attempted Spark. All 12 tasks were correct, but that uniform policy used 3,817,102 parent tokens:
 
-The corrected v8 release restores both official legacy live benchmarks and adds the ten newer agentic cases. The older tasks are additions to the current suite, not historical totals pooled with new runs.
+| Policy | Parent tokens | Effect versus definitive V9 |
+| --- | ---: | ---: |
+| Uniform enforced V9 state | 3,817,102 | 1,209,336 more |
+| Definitive state-aware V9 | 2,607,766 | 1,209,336 saved (31.682%) |
 
-| Case | Split | Task shape | Native auto-routing expectation |
+The uniform candidate also used more parent tokens than Standard (3,138,482), V6 (3,361,104), and V8 (3,004,930). A short instruction state is therefore not automatically free: its behavior can add parent work or displace a better native or historical treatment. The result does not isolate prompt bytes as the sole causal mechanism, but it is sufficient to reject universal state enforcement for this package.
+
+The definitive V9 optimizer treats the state as part of the intervention and selects it before inference.
+
+## Definitive V9 package
+
+| Lane | State | Multi-agent | Role |
 | --- | --- | --- | --- |
-| `legacy-calculator` | Official legacy | Six-language calculator implementation | Forced anchor only |
-| `legacy-relay-bench` | Official legacy | Relay Bench website implementation | Forced anchor only |
-| `release-readiness` | Development | Repository release reconciliation | Stay local |
-| `incident-triage` | Development | Independent incident evidence shards | Delegate |
-| `monorepo-sdk-migration` | Development | Path-disjoint multi-package migration | Forced anchor only |
-| `offline-advisory-triage` | Development | Offline dependency-security workflow | Delegate |
-| `ci-matrix-root-cause` | Held-out | Multi-platform CI diagnosis | Delegate |
-| `tenant-config-drift` | Held-out | Configuration reconciliation | Delegate |
-| `support-credit-adjudication` | Held-out | Evidence-based back-office workflow | Delegate |
-| `permission-scope-regression` | Held-out | Sequential permission-boundary repair | Stay local |
-| `multi-service-contract-rollout` | Held-out | Multi-service API migration | Delegate |
-| `policy-bound-batch-update` | Held-out | Stateful policy workflow | Stay local |
+| `native` | No profile instructions | Disabled | Zero added instruction state |
+| `v9-v8` | Byte-identical frozen v8-compatible profile under a V9-only ID | Disabled | Preserve measured v8 strengths without restoring V8 as a product |
+| `v9` | 259-byte minimal local contract | Disabled | Current local workflow and conservative fallback |
+| `v9-spark` | 769-byte explicit offload contract | Enabled | Measured Luna/max implementation win |
 
-Each fixture has a clean seed, deterministic reset, user specification, hidden outcome checks, an oracle used only to validate the fixture, allowed-path constraints, and no required external network service.
+V6's useful workflow constraints are folded into the minimal V9 contract. Direct V6 benchmark rows remain controls because their treatment included a separate skill input and cannot be reproduced exactly as a profile-only lane. The v8-compatible lane is exact and deployable, so it can be selected without relabeling a new approximation as V8 evidence.
 
-## Frozen treatments and matrix
+Selection uses four dimensions: routing mode, task shape, model family, and effort. Unknown settings take the minimal local fallback rather than assuming a measured win.
 
-V6 is the exact preserved harness profile and policy, not a reconstruction. V7 is retained as diagnostic history but was not rerun; the fresh comparison is Standard versus v6 versus v8.
+### Official routing
 
-The four parent settings are `gpt-5.6-sol` medium/high and `gpt-5.6-luna` xhigh/max. Spark is `gpt-5.3-codex-spark` at medium effort. Seed `20260721` and one observation per cell are fixed.
+| Benchmark / task shape | Sol / medium | Sol / high | Luna / xhigh | Luna / max |
+| --- | --- | --- | --- | --- |
+| Calculator / implementation | `v9-v8` | `v9-v8` | `v9-v8` | `v9-spark` under `auto_spark`; otherwise `v9-v8` |
+| Relay / handoff | `v9` | `v9` | `v9` | `v9-v8` |
+| SDK Migration / migration | `native` | `v9-v8` | `v9-v8` | `v9-v8` |
 
-| Arm | Cells | Coverage |
-| --- | ---: | --- |
-| `standard-no-spark` | 12 | Three anchors at four settings |
-| `v6-no-spark` | 12 | Same anchors and settings |
-| `v8-no-spark` | 21 | Three anchors at four settings plus nine non-anchor cases |
-| `v8-spark-forced` | 12 | Three anchors at four settings |
-| `v8-spark-auto` | 9 | Nine non-anchor cases at Luna/xhigh |
-| **Fresh release** | **66** | **24 controls and 42 v8 candidates** |
+### Fresh-addition routing
 
-Six pre-release tuning cells are kept outside the release verifier, making 72 total evidence cells. The seven-case offline compact-guard suite is separate and non-inference.
+| Case shape | Model / effort | Selected lane |
+| --- | --- | --- |
+| Implementation | Sol / medium | `v9-v8` |
+| Migration | Sol / high | `v9-v8` |
+| Handoff | Luna / xhigh | `v9` |
+| General | Luna / max | `v9` |
 
-Important frozen hashes:
+## Official legacy benchmark results
 
-| Artifact | SHA-256 |
-| --- | --- |
-| [`profiles/smart-compact-v8.config.toml`](profiles/smart-compact-v8.config.toml) | `b3e4658e957811c69640351cb2302b759ff0a1811bc83fab5b08dbbf63a4e48c` |
-| [`benchmarks/policies/v8/SKILL.md`](benchmarks/policies/v8/SKILL.md) | `44fbe5838731fa6d25af293a780557bf1e32a93dd5eb5de0e45b6b1a1dcaf327` |
-| [`.codex/agents/spark-worker.toml`](.codex/agents/spark-worker.toml) | `ac0aaa80e9a8a5ee4c7a7d83cc048af69d44ac6856103734b2c3ff3505af0c68` |
-| [`benchmarks/profiles/v6.config.toml`](benchmarks/profiles/v6.config.toml) | `2efbedb6ff202b724bea6245d97136e6db9d044524eaf0b8ea0c3495df4d3ff7` |
-| [`benchmarks/policies/v6/SKILL.md`](benchmarks/policies/v6/SKILL.md) | `263c3d72c00897509bf04ffe5a98d1333c8a087a03b6091d55b2267df18e416f` |
-| [`benchmarks/agentic-v8-confirmation.json`](benchmarks/agentic-v8-confirmation.json) | `968c222cf82c41b77ce1bbc37b0cc426ae4cd5a4139c83690abc81d0b434d534` |
-| [`benchmarks/agentic-v8-legacy-calculator.json`](benchmarks/agentic-v8-legacy-calculator.json) | `4ed252fb96a745b7ffca39a66667af470b1d0a003a651f65d0c13a22cd017218` |
-| [`benchmarks/agentic-v8-legacy-relay-bench.json`](benchmarks/agentic-v8-legacy-relay-bench.json) | `082608b014ee12dbb771ef12d82842b1b3511068c9c51bd684a6e02fdc49e30a` |
-| [`scripts/benchmark_v8.py`](scripts/benchmark_v8.py) | `1467b98202d74782659d68de2ba1d26cd970ce11858875f52f5e4ab52ac3b5ea` |
-| [`scripts/verify_v8_release.py`](scripts/verify_v8_release.py) | `53f6c9079f5e9ce110a5bf9603c82b0ea6b7ade79a60f6f7bfb72f04fa884866` |
+| Benchmark | Model / effort | Standard | V6 | V8 | V9 parent | Lane |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| Calculator | Sol / medium | 448,551 | 147,287 | 114,812 | 114,812 | `v9-v8` |
+| Calculator | Sol / high | 293,003 | 173,915 | 271,642 | 271,642 | `v9-v8` |
+| Calculator | Luna / xhigh | 420,095 | 336,471 | 409,852 | 409,852 | `v9-v8` |
+| Calculator | Luna / max | 559,838 | 655,352 | 548,078 | 463,836 | `v9-spark` |
+| Relay | Sol / medium | 156,702 | 163,259 | 168,563 | 138,871 | `v9` |
+| Relay | Sol / high | 140,322 | 138,970 | 179,239 | 115,276 | `v9` |
+| Relay | Luna / xhigh | 251,921 | 499,673 | 483,667 | 281,655 | `v9` |
+| Relay | Luna / max | 156,912 | 163,112 | 140,026 | 140,026 | `v9-v8` |
+| SDK Migration | Sol / medium | 114,900 | 101,684 | 132,155 | 114,900 | `native` |
+| SDK Migration | Sol / high | 116,482 | 229,494 | 136,167 | 136,167 | `v9-v8` |
+| SDK Migration | Luna / xhigh | 248,170 | 561,434 | 203,151 | 203,151 | `v9-v8` |
+| SDK Migration | Luna / max | 231,586 | 190,453 | 217,578 | 217,578 | `v9-v8` |
+| **Total** | **2 models / 4 efforts** | **3,138,482** | **3,361,104** | **3,004,930** | **2,607,766** | **Hybrid V9** |
 
-The exact freeze is [`benchmarks/v8-freeze.json`](benchmarks/v8-freeze.json). Relay validation was refrozen before its accepted rerun to remove implementation-specific spellings while preserving behavioral, accessibility, visual, and safety requirements. Earlier Relay attempts are preserved but excluded. After inference, the verifier was corrected to apply the already-declared task-correctness gate and to represent missing child usage as incomplete rather than zero; no task, treatment, raw token value, or model setting changed.
+V9 saved 530,716 parent tokens (16.910%) versus Standard, 753,338 (22.413%) versus V6, and 397,164 (13.217%) versus V8. All 12 selected official cells were task-correct.
 
-## Release acceptance
+Only the Luna/max Calculator selection used Spark. It spawned one worker, used 463,836 parent tokens versus the v8 lane's 548,078, and reported 273,944 child tokens. The worker count and child usage are telemetry; the optimized budget and release comparison remain parent tokens. The 397,164 aggregate official saving versus V8 per one selected worker is a package-level ratio, not a causal Spark-only saving.
 
-All 66 cells passed graded task correctness and treatment integrity. Secondary diagnostics were 58/66 protocol-compliant, 66/66 RTK-compliant, 65/66 scope-compliant, and 65/66 usage-complete. The scope miss and protocol-only misses did not change task output. One `offline-advisory-triage` auto child lacked final usage telemetry; the parent usage is valid, child totals are nullable, and the event is not misreported as zero.
+## Fresh real-world additions
 
-### Standard to v6 to v8, no Spark
+The four additions cover multi-provider webhook implementation, service-policy migration, inventory handoff, and formula-safe export work.
 
-All 36 cells in this comparison passed task correctness. Negative savings mean the newer arm used more parent tokens.
+| Setting | Shape / lane | V6 parent | V8 parent | V9 parent |
+| --- | --- | ---: | ---: | ---: |
+| Sol / medium | Implementation / `v9-v8` | 213,796 | 125,211 | 125,211 |
+| Sol / high | Migration / `v9-v8` | 297,185 | 106,822 | 106,822 |
+| Luna / xhigh | Handoff / `v9` | 122,235 | 92,349 | 123,285 |
+| Luna / max | General / `v9` | 396,708 | 144,199 | 107,583 |
+| **Total** | **Four additions** | **1,029,924** | **468,581** | **462,901** |
 
-| Benchmark | Parent / effort | Standard | V6 | V6 saved vs Standard | V8 no-Spark | V8 saved vs Standard | V8 saved vs v6 |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Calculator | SOL / medium | 448,551 | 147,287 | 301,264 (67.2%) | 114,812 | 333,739 (74.4%) | 32,475 (22.0%) |
-| Calculator | SOL / high | 293,003 | 173,915 | 119,088 (40.6%) | 271,642 | 21,361 (7.3%) | -97,727 (-56.2%) |
-| Calculator | Luna / xhigh | 420,095 | 336,471 | 83,624 (19.9%) | 409,852 | 10,243 (2.4%) | -73,381 (-21.8%) |
-| Calculator | Luna / max | 559,838 | 655,352 | -95,514 (-17.1%) | 548,078 | 11,760 (2.1%) | 107,274 (16.4%) |
-| Relay Bench | SOL / medium | 156,702 | 163,259 | -6,557 (-4.2%) | 168,563 | -11,861 (-7.6%) | -5,304 (-3.2%) |
-| Relay Bench | SOL / high | 140,322 | 138,970 | 1,352 (1.0%) | 179,239 | -38,917 (-27.7%) | -40,269 (-29.0%) |
-| Relay Bench | Luna / xhigh | 251,921 | 499,673 | -247,752 (-98.3%) | 483,667 | -231,746 (-92.0%) | 16,006 (3.2%) |
-| Relay Bench | Luna / max | 156,912 | 163,112 | -6,200 (-4.0%) | 140,026 | 16,886 (10.8%) | 23,086 (14.2%) |
-| Migration | SOL / medium | 114,900 | 101,684 | 13,216 (11.5%) | 132,155 | -17,255 (-15.0%) | -30,471 (-30.0%) |
-| Migration | SOL / high | 116,482 | 229,494 | -113,012 (-97.0%) | 136,167 | -19,685 (-16.9%) | 93,327 (40.7%) |
-| Migration | Luna / xhigh | 248,170 | 561,434 | -313,264 (-126.2%) | 203,151 | 45,019 (18.1%) | 358,283 (63.8%) |
-| Migration | Luna / max | 231,586 | 190,453 | 41,133 (17.8%) | 217,578 | 14,008 (6.0%) | -27,125 (-14.2%) |
-| **Token-weighted aggregate** | **All rows** | **3,138,482** | **3,361,104** | **-222,622 (-7.1%)** | **3,004,930** | **133,552 (4.3%)** | **356,174 (10.6%)** |
+V9 saved 5,680 parent tokens (1.212%) versus V8 on the additions. Across all 16 official and added cases, V9 used 3,070,667 parent tokens versus V8's 3,473,511 and V6's 4,391,028: savings of 402,844 (11.598%) and 1,320,361 (30.070%), respectively. All 16 selected source cells were task-correct.
 
-V8 no-Spark used 4.255% fewer parent tokens than Standard and 10.597% fewer than frozen v6 across the three anchors. Variation by task and model is large; this aggregate is not a universal per-task claim.
+## Execution integrity and evidence status
 
-### Forced Spark efficacy
+The original official V9 runner keyed parallel workspaces too coarsely. Three cells reached real inference; nine collided before inference and recorded `FileExistsError` non-attempts. A separately frozen recovery selected exactly those nine cells and used unique per-cell roots. The combined official evidence is therefore 3 original real cells plus 9 recovery real cells, with zero repeated inference cells.
 
-Each cell used one exact Spark/medium worker. This was an observed outcome, not a configured one-worker cap. All 12 workers were useful and all 24 paired cells passed correctness.
+One recovery Calculator Luna/xhigh cell used raw shell commands without the required RTK wrapper. Its task still scored 240/240 with correct scope, acceptance, and usage. It is disclosed as a nonblocking protocol-only miss rather than treated as a correctness failure.
 
-| Benchmark | Parent / effort | No-Spark parent | Forced parent | Parent saved | Child | Combined |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Calculator | SOL / medium | 114,812 | 207,799 | -92,987 (-81.0%) | 301,148 | 508,947 |
-| Calculator | SOL / high | 271,642 | 134,041 | 137,601 (50.7%) | 342,456 | 476,497 |
-| Calculator | Luna / xhigh | 409,852 | 228,488 | 181,364 (44.3%) | 2,178,491 | 2,406,979 |
-| Calculator | Luna / max | 548,078 | 609,675 | -61,597 (-11.2%) | 318,306 | 927,981 |
-| Relay Bench | SOL / medium | 168,563 | 54,636 | 113,927 (67.6%) | 121,504 | 176,140 |
-| Relay Bench | SOL / high | 179,239 | 55,078 | 124,161 (69.3%) | 280,393 | 335,471 |
-| Relay Bench | Luna / xhigh | 483,667 | 117,607 | 366,060 (75.7%) | 485,145 | 602,752 |
-| Relay Bench | Luna / max | 140,026 | 60,000 | 80,026 (57.2%) | 153,154 | 213,154 |
-| Migration | SOL / medium | 132,155 | 109,036 | 23,119 (17.5%) | 314,420 | 423,456 |
-| Migration | SOL / high | 136,167 | 107,924 | 28,243 (20.7%) | 350,591 | 458,515 |
-| Migration | Luna / xhigh | 203,151 | 110,377 | 92,774 (45.7%) | 520,296 | 630,673 |
-| Migration | Luna / max | 217,578 | 94,221 | 123,357 (56.7%) | 126,906 | 221,127 |
-| **Aggregate** | **12 pairs** | **3,004,930** | **1,888,882** | **1,116,048 (37.1%)** | **5,492,810** | **7,381,692** |
+The four source Spark cells also recorded ephemeral child-read completion telemetry misses. Per-cell app-server cleanup still ran, every task remained correct, and only the Luna/max cell is selected by the definitive router.
 
-The aggregate saved 93,004 parent tokens per spawned worker. Calculator SOL/medium and Luna/max regressed, so forced Spark is not universally beneficial. Combined tokens increased because worker tokens are separate capacity telemetry.
+The definitive route was chosen after observing deployable native, V8-compatible, minimal-V9, and Spark treatments. Its evidence label is:
 
-### Native auto-routing
+```text
+post_matrix_deployable_hybrid_selection_not_blinded_confirmation
+```
 
-The nine non-anchor Luna/xhigh pairs reduced parent tokens from 1,504,871 to 1,348,648: 156,223 saved (10.381%). Six workers spawned, five were useful, yielding 26,037 parent tokens saved per spawn. All six delegation-required cases spawned, all three forbidden cases stayed local, and all children drained. Observed child tokens were 420,953, but exact child and combined totals are null because one child usage record was incomplete.
+This is verified package-selection evidence, not a new blinded confirmation run. The uniform V9 candidate is retained as a rejected state-cost result rather than hidden.
 
-Wall time is not published: the release used parallel, separately contended processes. It is retained only as diagnostic evidence.
+## Provenance
 
-## Post-release verbose v8 sensitivity
+| Artifact | Role | SHA-256 |
+| --- | --- | --- |
+| [`benchmarks/results/v9-definitive-summary.json`](benchmarks/results/v9-definitive-summary.json) | Verified 16-cell selection and published metrics | `139e86569c968d88ab340456a19c9413c6cb606c38c2b6e29686a5945f24c9e3` |
+| [`benchmarks/v9-official-freeze.json`](benchmarks/v9-official-freeze.json) | Original 12-cell V9 freeze | `6e8a776660a4cf6b5dbd29c2ce0ff0595263712d050c0c3107951a14c78338e6` |
+| [`benchmarks/results/raw/v9-official-release.json`](benchmarks/results/raw/v9-official-release.json) | Three real cells plus nine collision non-attempts | `690bbb1ac05220068e87fb92501a3f76d2f2d03c33d473bcdd4ed728ee6ca8d3` |
+| [`benchmarks/v9-official-recovery-freeze.json`](benchmarks/v9-official-recovery-freeze.json) | Exact nine-cell recovery freeze | `1229b66d3f2219e8eec67b0068e8a60a484fca600de5f8d5a3952a1131c0d376` |
+| [`benchmarks/results/raw/v9-official-recovery.json`](benchmarks/results/raw/v9-official-recovery.json) | Nine recovered real cells | `338a974e4f8327fb428cc4ad4d542122d4345240b994b4769a72cdb3e094d7aa` |
+| [`benchmarks/results/raw/v9-final-release.json`](benchmarks/results/raw/v9-final-release.json) | Fresh one-pass 14-cell source matrix | `72729e6f2fc2ca9154a6691fc71cadc35905a56218f509c2cd548ada88d1b431` |
+| [`benchmarks/experiments/v9-official-state-routed-rejected/artifacts/optimizer/selection.json`](benchmarks/experiments/v9-official-state-routed-rejected/artifacts/optimizer/selection.json) | Exact pre-run selector snapshot superseded by the definitive router | `afcc9e03b616f2c884c2c04c6b2cb05ac9dbedeb2f4de7194f01d582df7df787` |
+| [`benchmarks/results/v8-release-summary.json`](benchmarks/results/v8-release-summary.json) | Frozen Standard, V6, and V8 controls | `f22d5279bca68749e2794935467db4340e1735c7247d98bf992e8d2c29986430` |
+| [`optimizer/selection.json`](optimizer/selection.json) | Executable rules and bound source/profile hashes | Verified by `scripts/verify_optimizer_package.py` |
 
-After the release matrix, v8 was rerun for the same 42 candidate arms with natural-language parent instructions in place of the terse machine contract. Standard and v6 were intentionally not repeated. The profile, compact prompt, automatic-compaction default, 1,500-token tool history, routing modes, Spark worker, tasks, models, efforts, seed, and single-pass design stayed fixed. `skill_input=false`; the frozen verbose `SKILL.md` is an auditable semantic mirror of the actual `developer_instructions` treatment.
-
-| Same v8 arm | Cells | Mechy parent | Verbose parent | Parent saved by verbose | Verbose workers | Verbose child | Verbose combined |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| No-Spark | 21 | 4,509,801 | 3,887,845 | 621,956 (13.791%) | 0 / 0 useful | 0 | 3,887,845 |
-| Forced Spark | 12 | 1,888,882 | 1,390,994 | 497,888 (26.359%) | 12 / 12 useful | 3,964,937 | 5,355,931 |
-| Auto Spark | 9 | 1,348,648 | 1,439,236 | -90,588 (-6.717%) | 6 / 6 useful | 473,256 | 1,912,492 |
-| **All v8 arms** | **42** | **7,747,331** | **6,718,075** | **1,029,256 (13.285%)** | **18 / 18 useful** | **4,438,193** | **11,156,268** |
-
-All 42 accepted verbose cells passed task correctness and treatment integrity. Scope passed 42/42, usage was complete 42/42, and protocol passed 36/42; the six misses were forced-Spark protocol details that did not change graded task output.
-
-Within the verbose treatment, forced Spark reduced the matching anchor no-Spark parent total from 2,681,527 to 1,390,994: 1,290,533 saved (48.127%), or 107,544 per spawn. In contrast, verbose auto-routing increased its matching nine-case no-Spark total from 1,206,318 to 1,439,236: 232,918 more parent tokens (19.308%), or -38,820 per spawn. The sensitivity result therefore supports the natural-language forced-offload contract, but not its auto-routing behavior.
-
-The verbose run produced 45 cell observations for 42 accepted cells. A calculator Luna/max forced attempt failed task correctness and was replaced by one targeted retry. A migration SOL/medium forced attempt failed in an interrupted artifact and was replaced by one targeted retry. A Relay Luna/max pass was preserved in an incomplete checkpoint and rerun once solely to obtain complete top-level provenance. All attempts remain in `benchmarks/results/raw/v8-verbose/`; none is averaged. The verifier binds 16 complete source artifacts and explicitly excludes the complete failed calculator attempt.
-
-This experiment is exploratory. It has no fresh Standard/v6 controls, one observation per cell, possible provider drift, and contention-affected wall time. It is not pooled into the release. Its exact treatment is packaged as an optional optimizer lane; terse v8 remains the alias default.
-
-## Post-release optimization package
-
-Two frozen static hybrids were first tested on the worst verbose-auto cell, `multi-service-contract-rollout` at Luna/xhigh. Both completed the task correctly but failed promotion:
-
-| Candidate | Paired no-Spark parent | Auto parent | Parent saved | Workers | Promotion result |
-| --- | ---: | ---: | ---: | ---: | --- |
-| Hybrid R1 | 185,029 | 175,377 | 9,652 (5.216%) | 1 useful | Rejected: 1,887 tokens above the prior terse-auto result |
-| Hybrid R2 | 198,562 | 193,974 | 4,588 (2.311%) | 1 useful | Rejected: still spawned and regressed further |
-
-The misses were protocol diagnostics, not task-correctness failures. R1 used 39,426 Spark child tokens; R2 used 27,598. Their frozen inputs and raw outputs remain under [`benchmarks/experiments/`](benchmarks/experiments) and [`benchmarks/results/raw/`](benchmarks/results/raw), but neither became an installed profile.
-
-| Target artifact | SHA-256 |
-| --- | --- |
-| [`v9-candidate-target-multi-service-luna-xhigh.json`](benchmarks/results/raw/v9-candidate-target-multi-service-luna-xhigh.json) | `19638988a0afa69c3ac3c4023dc5aa926de90bbc9676b8a5d479ff3d5b357115` |
-| [`v9-candidate-r2-target-multi-service-luna-xhigh.json`](benchmarks/results/raw/v9-candidate-r2-target-multi-service-luna-xhigh.json) | `008cb936ead2743bd24bc52dc88c849bfa22fc9df21847c5adabab62eec816a5` |
-
-The resulting experimental package uses executable conditional lane selection instead of another static blend:
-
-- terse v8 for automatic routing, where natural v8 used 90,588 more parent tokens across nine cells;
-- frozen v6 for the four-setting no-Spark implementation aggregate, where it used 31,359 fewer parent tokens than terse v8;
-- natural v8 for the remaining 17 no-Spark cells, where it used 1,048,078 fewer parent tokens than terse v8.
-
-No-Spark and production auto-Spark use a pre-inference `multi_agent` configuration toggle, which adds no prompt tokens. The historical auto arm also injected a Spark-availability instruction, so it informs the terse-lane direction but is excluded from the package replay. Forced Spark stays benchmark-only because its harness-supplied handoff cannot be reproduced by a profile without adding instructions or changing the treatment.
-
-The machine-readable rules live in [`optimizer/selection.json`](optimizer/selection.json). A counterfactual replay over the existing 21 no-Spark cells selects 3,430,364 parent tokens versus 4,509,801 for all-terse v8, a difference of 1,079,437 (23.935%). This replay is explicitly not fresh inference or a release claim; it is a development estimate used to choose the next held-out validation matrix.
-
-Frozen verbose treatment hashes:
-
-| Artifact | SHA-256 |
-| --- | --- |
-| [`benchmarks/experiments/v8-verbose/profile.config.toml`](benchmarks/experiments/v8-verbose/profile.config.toml) | `478e54b0969bfdef2bd87a9e7ff7bca70d41144813043e17b5af4decec584717` |
-| [`benchmarks/experiments/v8-verbose/SKILL.md`](benchmarks/experiments/v8-verbose/SKILL.md) | `ccf2cf696a3c6f8da2b26d66281d240212752c0b072a8f81ae2a6f3f8dde3880` |
-| [`scripts/benchmark_v8_verbose.py`](scripts/benchmark_v8_verbose.py) | `a158ab20c3dfad95b9b41bb0c8755e5b78c47b46a8a0350c478886081bfffdac` |
-
-The complete verbose freeze is [`benchmarks/experiments/v8-verbose/freeze.json`](benchmarks/experiments/v8-verbose/freeze.json), and the verified comparison is [`benchmarks/results/v8-verbose-comparison.json`](benchmarks/results/v8-verbose-comparison.json).
-
-## Raw provenance
-
-The corrected release verifier binds 13 fresh artifacts: four calculator files under `v8-full-r3-calculator-*`, four migration files under `v8-full-r3-migration-*`, the 18-cell `v8-full-r4-primary-luna-xhigh.json`, and four accepted Relay files under `v8-full-r6-relay-*`. Exact paths, selected cells, manifest hashes, and artifact SHA-256 values are embedded in [`benchmarks/results/v8-release-summary.json`](benchmarks/results/v8-release-summary.json). Earlier `r3` through `r5` Relay artifacts and interrupted primary artifacts are preserved for audit but excluded.
-
-The verbose verifier binds 16 complete artifacts recorded in `provenance.verbose_sources` in the comparison JSON. Incomplete checkpoints are preserved alongside them but cannot satisfy binding metadata and are not silently treated as accepted sources.
-
-Both published JSON summaries were independently regenerated from their explicit source lists and byte-compared with the committed files.
-
-## Offline and implementation verification
-
-- Seven-case compact guard: 487 source tokens to 376 candidate tokens, 111 saved (22.8%), zero failures.
-- Fixture validators: official calculator, official Relay Bench, and all ten agentic cases passed seed/oracle/reset/scope checks.
-- Policy safety signals: frozen v6, terse v8, and verbose v8 each score 6/6.
-- Python suite: 179 tests pass.
-- Release verifier: 66/66 cells, `verified: true`.
-- Verbose verifier: 42/42 accepted cells, `verified: true`.
+The definitive summary independently recomputes the official, fresh, combined, correctness, worker, and state-cost fields from frozen source artifacts.
 
 ## Limitations
 
-- One observation per cell provides no variance or confidence interval.
-- Selection and contract tuning make this engineering evidence, not an untouched holdout study.
-- Synthetic local tasks omit organizational context, live users, browser drift, and mutable external services.
-- Model behavior, caching, provider errors, and tool selection remain stochastic.
-- Parallel contention makes wall-time comparisons nonpublishable here.
-- Harness-forced Spark and native parent-routed Spark measure different mechanisms.
-- Parent-token savings do not establish provider billing or total-cost savings when combined tokens rise.
+- One observation per inference cell provides no variance or confidence interval.
+- The route was selected after observing the matrices; it is not blinded confirmation.
+- Synthetic repositories omit organizational context, live users, browser drift, and mutable services.
+- Model behavior, caching, tool choice, and provider conditions remain stochastic.
+- Parallel execution makes wall-time comparisons diagnostic only.
+- Parent-token savings are not total-compute savings when Spark child tokens increase combined usage.
+- The `native` lane adds no V9 profile but inherits user-owned global Codex configuration; exact Standard-control parity assumes no globally promoted Smart Compact state.

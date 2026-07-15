@@ -64,7 +64,7 @@ class SmartCompactProfileTests(unittest.TestCase):
     def test_profile_uses_benchmarked_native_controls(self) -> None:
         self.assertEqual(
             (ROOT / "profiles" / "smart-compact.config.toml").read_bytes(),
-            (ROOT / "profiles" / "smart-compact-v8.config.toml").read_bytes(),
+            (ROOT / "profiles" / "smart-compact-v9.config.toml").read_bytes(),
         )
         config = tomllib.loads(
             (ROOT / "profiles" / "smart-compact.config.toml").read_text(encoding="utf-8")
@@ -76,12 +76,26 @@ class SmartCompactProfileTests(unittest.TestCase):
         self.assertNotIn("model_auto_compact_token_limit_scope", config)
         self.assertEqual(config["tool_output_token_limit"], 1500)
         self.assertFalse(config["agents"]["interrupt_message"])
-        self.assertIn("format=lossless_key_value", config["compact_prompt"])
-        self.assertIn("shell.wrapper=literal_every_command_and_retry", config["developer_instructions"])
-        self.assertIn("workers=smallest_useful;cap:none", config["developer_instructions"])
-        self.assertIn("multi_partition:true", config["developer_instructions"])
-        self.assertIn("owns_decisions+integration+final_acceptance", config["developer_instructions"])
-        self.assertIn("spark_unavailable=local,no_substitution", config["developer_instructions"])
+        self.assertNotIn("compact_prompt", config)
+        instructions = config["developer_instructions"]
+        self.assertLessEqual(len(instructions.encode("utf-8")), 300)
+        self.assertNotIn("shell.wrapper", instructions)
+        self.assertNotIn("bounded=", instructions)
+        self.assertIn("routing=local;delegation=forbidden", instructions)
+        self.assertIn("execute=inspect_needed,batch_reads,coherent_patch", instructions)
+
+    def test_explicit_spark_profile_is_bounded_and_drains_workers(self) -> None:
+        config = tomllib.loads(
+            (ROOT / "profiles" / "smart-compact-v9-spark.config.toml").read_text(
+                encoding="utf-8"
+            )
+        )
+        instructions = config["developer_instructions"]
+        self.assertLessEqual(len(instructions.encode("utf-8")), 800)
+        self.assertIn("spawn_agent", instructions)
+        self.assertIn("Start one; add only disjoint useful workers", instructions)
+        self.assertIn("wait_agent", instructions)
+        self.assertTrue(config["agents"]["interrupt_message"])
 
     def test_profile_installer_preserves_conflicting_file(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

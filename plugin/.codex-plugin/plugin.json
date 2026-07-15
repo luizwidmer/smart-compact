@@ -1,7 +1,7 @@
 {
   "name": "smart-compact",
-  "version": "0.1.0+codex.20260715080408",
-  "description": "Recommend a token-saving Codex profile and create a new task with it.",
+  "version": "0.1.0+codex.20260715152107",
+  "description": "Run Smart Compact v9 and create a task with its selected token-saving lane.",
   "author": {
     "name": "Luiz Widmer",
     "url": "https://github.com/luizwidmer"
@@ -19,8 +19,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Smart Compact",
-    "shortDescription": "Optimize the profile before a new Codex task starts.",
-    "longDescription": "Recommend an experimental Smart Compact lane from no-Spark or auto-Spark mode and task shape, enforce routing through zero-prompt-token task configuration, or use the manual profile picker.",
+    "shortDescription": "Apply the v9 parent-token optimizer before a task starts.",
+    "longDescription": "Smart Compact v9 is the sole current product generation. Select its internal treatment from routing mode, task shape, model family, and effort; apply routing before inference; or start the public v9 profile manually.",
     "developerName": "Luiz Widmer",
     "category": "Productivity",
     "capabilities": [
@@ -29,9 +29,9 @@
     ],
     "websiteURL": "https://github.com/luizwidmer/smart-compact",
     "defaultPrompt": [
-      "Recommend a Smart Compact profile for my next task",
+      "Recommend the Smart Compact v9 treatment for my next task",
       "Show my available Codex profiles",
-      "Start an optimized Smart Compact task here"
+      "Start a Smart Compact v9 task here"
     ],
     "brandColor": "#6757E8",
     "composerIcon": "./assets/icon.svg",

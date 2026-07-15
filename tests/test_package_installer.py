@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import tempfile
 import tomllib
@@ -11,9 +12,13 @@ from pathlib import Path
 from scripts.install_smart_compact import (
     activate_plugin,
     build_parser,
+    compatibility_skill_from_contents,
     compatibility_skill_contents,
+    git_blob_id,
     install_marketplace,
     install_package,
+    install_tree,
+    retired_skill_contents,
 )
 
 
@@ -36,15 +41,15 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual(
                 [result.status for result in results],
-                ["installed"] * 10 + ["skipped"],
+                ["installed"] * 8 + ["skipped"],
             )
-            for version in ("v6", "v8", "v8-natural"):
-                self.assertEqual(
-                    (skill_root / f"smart-compact-{version}" / "SKILL.md").read_text(
-                        encoding="utf-8"
-                    ),
-                    (ROOT / "versions" / version / "SKILL.md").read_text(encoding="utf-8"),
-                )
+            self.assertEqual(
+                (skill_root / "smart-compact-v9" / "SKILL.md").read_text(
+                    encoding="utf-8"
+                ),
+                (ROOT / "versions" / "v9" / "SKILL.md").read_text(encoding="utf-8"),
+            )
+            for version in ("v9", "v9-spark", "v9-v8"):
                 self.assertEqual(
                     (codex_home / f"smart-compact-{version}.config.toml").read_text(
                         encoding="utf-8"
@@ -53,14 +58,14 @@ class PackageInstallerTests(unittest.TestCase):
                         encoding="utf-8"
                     ),
                 )
-            alias = compatibility_skill_contents(ROOT, "v8")
+            alias = compatibility_skill_contents(ROOT, "v9")
             self.assertEqual(
                 (skill_root / "smart-compact" / "SKILL.md").read_text(encoding="utf-8"),
                 alias[Path("SKILL.md")],
             )
             self.assertEqual(
                 (codex_home / "smart-compact.config.toml").read_text(encoding="utf-8"),
-                (ROOT / "profiles" / "smart-compact-v8.config.toml").read_text(
+                (ROOT / "profiles" / "smart-compact-v9.config.toml").read_text(
                     encoding="utf-8"
                 ),
             )
@@ -82,7 +87,7 @@ class PackageInstallerTests(unittest.TestCase):
                     )
                 ),
                 tomllib.loads(
-                    (ROOT / "profiles" / "smart-compact-v8.config.toml").read_text(
+                    (ROOT / "profiles" / "smart-compact-v9.config.toml").read_text(
                         encoding="utf-8"
                     )
                 ),
@@ -141,8 +146,31 @@ class PackageInstallerTests(unittest.TestCase):
             self.assertEqual(alias_result.status, "updated")
             self.assertEqual(
                 (target / "SKILL.md").read_text(encoding="utf-8"),
-                compatibility_skill_contents(ROOT, "v8")[Path("SKILL.md")],
+                compatibility_skill_contents(ROOT, "v9")[Path("SKILL.md")],
             )
+
+    def test_known_prior_plugin_blob_upgrades_without_force(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source"
+            target = root / "target"
+            source.mkdir()
+            target.mkdir()
+            (source / "server.mjs").write_text("current\n", encoding="utf-8")
+            prior = b"prior managed release\n"
+            (target / "server.mjs").write_bytes(prior)
+
+            result = install_tree(
+                "plugin-source",
+                source,
+                target,
+                force=False,
+                dry_run=False,
+                managed_blob_ids={Path("server.mjs"): (git_blob_id(prior),)},
+            )
+
+            self.assertEqual(result.status, "updated")
+            self.assertEqual((target / "server.mjs").read_text(), "current\n")
 
     def test_dry_run_changes_nothing(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -156,7 +184,7 @@ class PackageInstallerTests(unittest.TestCase):
             )
             self.assertEqual(
                 [result.status for result in results],
-                ["would-install"] * 10 + ["skipped"],
+                ["would-install"] * 8 + ["skipped"],
             )
             self.assertFalse(skill_root.exists())
             self.assertFalse(codex_home.exists())
@@ -168,96 +196,199 @@ class PackageInstallerTests(unittest.TestCase):
             results = install_package(ROOT, skill_root, codex_home, include_spark=False)
             self.assertEqual(
                 [result.status for result in results],
-                ["already-installed"] * 10 + ["skipped"],
+                ["already-installed"] * 8 + ["skipped"],
             )
 
-    def test_v6_profile_is_the_frozen_benchmark_profile(self) -> None:
+    def test_rejected_v9_implementation_lane_is_archived(self) -> None:
         self.assertEqual(
-            (ROOT / "profiles" / "smart-compact-v6.config.toml").read_bytes(),
-            (ROOT / "benchmarks" / "profiles" / "v6.config.toml").read_bytes(),
+            (ROOT / "profiles" / "smart-compact-v9-implementation.config.toml").read_bytes(),
+            (
+                ROOT
+                / "benchmarks"
+                / "retired"
+                / "package"
+                / "profiles"
+                / "smart-compact-v9-implementation.config.toml"
+            ).read_bytes(),
         )
 
-    def test_default_version_is_v8(self) -> None:
-        self.assertEqual(build_parser().parse_args([]).version, "v8")
+    def test_v9_is_the_only_supported_version(self) -> None:
+        self.assertEqual(build_parser().parse_args([]).version, "v9")
         version_action = next(
             action for action in build_parser()._actions if action.dest == "version"
         )
-        self.assertEqual(version_action.choices, ("v6", "v8"))
+        self.assertEqual(version_action.choices, ("v9",))
 
-    def test_selected_alias_switches_between_managed_versions(self) -> None:
+    def test_managed_v8_alias_upgrades_to_v9_and_retires_exact_legacy_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             skill_root, codex_home = self.targets(directory)
-            install_package(
+            retired = ROOT / "benchmarks" / "retired" / "package"
+            skill_root.mkdir(parents=True)
+            codex_home.mkdir(parents=True)
+            shutil.copytree(retired / "versions" / "v8", skill_root / "smart-compact-v8")
+            shutil.copytree(retired / "versions" / "v8", skill_root / "smart-compact")
+            alias_skill = compatibility_skill_from_contents(
+                retired_skill_contents(ROOT, "v8"), "v8"
+            )
+            for relative, content in alias_skill.items():
+                (skill_root / "smart-compact" / relative).write_text(content, encoding="utf-8")
+            shutil.copy2(
+                retired / "profiles" / "smart-compact-v8.config.toml",
+                codex_home / "smart-compact-v8.config.toml",
+            )
+            shutil.copy2(
+                retired / "profiles" / "smart-compact-v8.config.toml",
+                codex_home / "smart-compact.config.toml",
+            )
+            results = install_package(
                 ROOT,
                 skill_root,
                 codex_home,
-                version="v6",
                 include_plugin=False,
                 include_spark=False,
             )
             self.assertEqual(
-                (skill_root / "smart-compact" / "SKILL.md").read_text(encoding="utf-8"),
-                compatibility_skill_contents(ROOT, "v6")[Path("SKILL.md")],
+                next(result.status for result in results if result.component == "skill-alias"),
+                "updated",
             )
             self.assertEqual(
+                next(result.status for result in results if result.component == "profile-alias"),
+                "updated",
+            )
+            self.assertFalse((skill_root / "smart-compact-v8").exists())
+            self.assertFalse((codex_home / "smart-compact-v8.config.toml").exists())
+            self.assertEqual(
                 (codex_home / "smart-compact.config.toml").read_text(encoding="utf-8"),
-                (ROOT / "profiles" / "smart-compact-v6.config.toml").read_text(
+                (ROOT / "profiles" / "smart-compact-v9.config.toml").read_text(
                     encoding="utf-8"
                 ),
             )
+
+    def test_divergent_legacy_installations_are_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            skill_root, codex_home = self.targets(directory)
+            legacy_skill = skill_root / "smart-compact-v8"
+            legacy_skill.mkdir(parents=True)
+            (legacy_skill / "SKILL.md").write_text("user-owned\n", encoding="utf-8")
+            codex_home.mkdir(parents=True)
+            legacy_profile = codex_home / "smart-compact-v8.config.toml"
+            legacy_profile.write_text("user_owned = true\n", encoding="utf-8")
 
             results = install_package(
                 ROOT,
                 skill_root,
                 codex_home,
-                version="v8",
                 include_plugin=False,
                 include_spark=False,
             )
 
             self.assertEqual(
                 next(
-                    result.status for result in results if result.component == "skill-alias"
+                    result.status
+                    for result in results
+                    if result.component == "retired-skill-v8"
                 ),
-                "updated",
+                "preserved",
             )
             self.assertEqual(
                 next(
-                    result.status for result in results if result.component == "profile-alias"
+                    result.status
+                    for result in results
+                    if result.component == "retired-profile-v8"
                 ),
-                "updated",
+                "preserved",
             )
-            self.assertEqual(
-                (codex_home / "smart-compact.config.toml").read_text(encoding="utf-8"),
-                (ROOT / "profiles" / "smart-compact-v8.config.toml").read_text(
-                    encoding="utf-8"
-                ),
+            self.assertTrue(legacy_skill.exists())
+            self.assertEqual(legacy_profile.read_text(encoding="utf-8"), "user_owned = true\n")
+
+    def test_legacy_tree_with_user_empty_directory_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            skill_root, codex_home = self.targets(directory)
+            retired = ROOT / "benchmarks" / "retired" / "package"
+            legacy_skill = skill_root / "smart-compact-v8"
+            shutil.copytree(retired / "versions" / "v8", legacy_skill)
+            (legacy_skill / "user-empty-directory").mkdir()
+
+            results = install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                include_profile=False,
+                include_plugin=False,
+                include_spark=False,
             )
 
-    def test_plugin_bundles_all_versioned_skills_and_profiles(self) -> None:
-        for version in ("v6", "v8", "v8-natural"):
+            self.assertEqual(
+                next(
+                    result.status
+                    for result in results
+                    if result.component == "retired-skill-v8"
+                ),
+                "preserved",
+            )
+            self.assertTrue((legacy_skill / "user-empty-directory").is_dir())
+
+    def test_plugin_upgrade_dry_runs_then_retires_exact_legacy_assets(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            skill_root, codex_home = self.targets(directory)
+            personal_root = Path(directory)
+            retired = ROOT / "benchmarks" / "retired" / "package"
+            installed = personal_root / "plugins" / "smart-compact"
+            legacy_skill = installed / "skills" / "smart-compact-v8"
+            legacy_profile = installed / "profiles" / "smart-compact-v8.config.json"
+            shutil.copytree(retired / "versions" / "v8", legacy_skill)
+            legacy_profile.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(
+                retired / "plugin" / "profiles" / "smart-compact-v8.config.json",
+                legacy_profile,
+            )
+
+            dry_results = install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                personal_root=personal_root,
+                dry_run=True,
+                include_profile=False,
+                include_spark=False,
+            )
+            self.assertEqual(
+                next(
+                    result.status
+                    for result in dry_results
+                    if result.component == "retired-plugin-skill-v8"
+                ),
+                "would-retire",
+            )
+            self.assertTrue(legacy_skill.exists())
+            self.assertTrue(legacy_profile.exists())
+
+            results = install_package(
+                ROOT,
+                skill_root,
+                codex_home,
+                personal_root=personal_root,
+                include_profile=False,
+                include_spark=False,
+            )
+            self.assertEqual(
+                next(
+                    result.status
+                    for result in results
+                    if result.component == "retired-plugin-profile-v8"
+                ),
+                "retired",
+            )
+            self.assertFalse(legacy_skill.exists())
+            self.assertFalse(legacy_profile.exists())
+
+    def test_plugin_bundles_only_v9_product_assets(self) -> None:
+        self.assertEqual(
+            (ROOT / "plugin" / "skills" / "smart-compact-v9" / "SKILL.md").read_bytes(),
+            (ROOT / "versions" / "v9" / "SKILL.md").read_bytes(),
+        )
+        for version in ("v9", "v9-spark"):
             with self.subTest(version=version):
-                self.assertEqual(
-                    (
-                        ROOT
-                        / "plugin"
-                        / "skills"
-                        / f"smart-compact-{version}"
-                        / "SKILL.md"
-                    ).read_bytes(),
-                    (ROOT / "versions" / version / "SKILL.md").read_bytes(),
-                )
-                self.assertEqual(
-                    (
-                        ROOT
-                        / "plugin"
-                        / "skills"
-                        / f"smart-compact-{version}"
-                        / "agents"
-                        / "openai.yaml"
-                    ).read_bytes(),
-                    (ROOT / "versions" / version / "agents" / "openai.yaml").read_bytes(),
-                )
                 native = tomllib.loads(
                     (
                         ROOT / "profiles" / f"smart-compact-{version}.config.toml"
@@ -272,15 +403,40 @@ class PackageInstallerTests(unittest.TestCase):
                     ).read_text(encoding="utf-8")
                 )
                 self.assertEqual(bundled, native)
+        for retired in ("v6", "v8", "v8-natural"):
+            self.assertFalse((ROOT / "plugin" / "skills" / f"smart-compact-{retired}").exists())
+            self.assertFalse(
+                (ROOT / "plugin" / "profiles" / f"smart-compact-{retired}.config.json").exists()
+            )
 
-    def test_installed_plugin_alias_follows_v6_selection(self) -> None:
+    def test_active_distribution_has_no_retired_product_ids(self) -> None:
+        self.assertEqual(
+            sorted(path.name for path in (ROOT / "versions").iterdir() if path.is_dir()),
+            ["v9"],
+        )
+        active_paths = [
+            ROOT / "SKILL.md",
+            ROOT / "agents" / "openai.yaml",
+            *sorted((ROOT / "versions").rglob("*")),
+            *sorted((ROOT / "profiles").glob("*")),
+            *sorted((ROOT / "plugin" / "skills").rglob("*")),
+            *sorted((ROOT / "plugin" / "profiles").glob("*")),
+        ]
+        retired_ids = ("smart-compact-v6", "smart-compact-v7", "smart-compact-v8")
+        for path in active_paths:
+            if not path.is_file():
+                continue
+            text = path.read_text(encoding="utf-8")
+            for retired_id in retired_ids:
+                self.assertNotIn(retired_id, text, path)
+
+    def test_installed_plugin_alias_is_v9(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             skill_root, codex_home = self.targets(directory)
             install_package(
                 ROOT,
                 skill_root,
                 codex_home,
-                version="v6",
                 include_profile=False,
                 include_spark=False,
             )
@@ -289,7 +445,7 @@ class PackageInstallerTests(unittest.TestCase):
                 (installed / "skills" / "smart-compact" / "SKILL.md").read_text(
                     encoding="utf-8"
                 ),
-                compatibility_skill_contents(ROOT, "v6")[Path("SKILL.md")],
+                compatibility_skill_contents(ROOT, "v9")[Path("SKILL.md")],
             )
             self.assertEqual(
                 json.loads(
@@ -298,7 +454,7 @@ class PackageInstallerTests(unittest.TestCase):
                     )
                 ),
                 tomllib.loads(
-                    (ROOT / "profiles" / "smart-compact-v6.config.toml").read_text(
+                    (ROOT / "profiles" / "smart-compact-v9.config.toml").read_text(
                         encoding="utf-8"
                     )
                 ),
@@ -388,14 +544,13 @@ class PackageInstallerTests(unittest.TestCase):
             self.assertIn('[plugins."example"]\nenabled = true\n', rendered)
             self.assertIn('model_verbosity = "low"\n', rendered)
 
-    def test_make_default_uses_selected_v6_profile(self) -> None:
+    def test_make_default_uses_v9_profile(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             skill_root, codex_home = self.targets(directory)
             results = install_package(
                 ROOT,
                 skill_root,
                 codex_home,
-                version="v6",
                 make_default=True,
                 include_plugin=False,
                 include_spark=False,
@@ -409,13 +564,12 @@ class PackageInstallerTests(unittest.TestCase):
                 (codex_home / "config.toml").read_text(encoding="utf-8")
             )
             selected = tomllib.loads(
-                (ROOT / "profiles" / "smart-compact-v6.config.toml").read_text(
+                (ROOT / "profiles" / "smart-compact-v9.config.toml").read_text(
                     encoding="utf-8"
                 )
             )
             for key, value in selected.items():
                 self.assertEqual(promoted[key], value)
-            self.assertNotIn("personality", promoted)
             self.assertNotIn("model_auto_compact_token_limit", promoted)
 
     def test_shell_entrypoint_installs_and_reinstalls(self) -> None:

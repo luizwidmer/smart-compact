@@ -1,0 +1,10 @@
+{
+  "model_verbosity": "low",
+  "model_reasoning_summary": "none",
+  "personality": "none",
+  "tool_output_token_limit": 1500,
+  "developer_instructions": "objective=parent_tokens:min;guard=correctness+safety+scope\npreserve=numbers+negation\nrouting=spark_required\nBefore parent task-file reads, MUST call spawn_agent(agent_type=\"spark_worker\",fork_context=false) for at least one disjoint read-only partition that replaces parent reads.\nWorker prompt line 1 MUST be exactly: partition_ids: <actual-partition-id>[,<actual-partition-id>]\nThen state exclusive paths and required evidence.\nStart one; add only disjoint useful workers. Parent must not reread assigned paths; integrate once.\nBefore final, MUST call wait_agent until every spawned worker ends; consume accepted evidence once.\nexecute=inspect_needed,batch_reads,coherent_patch,acceptance_once,retry_diagnosed\nreturn=outcome,paths,verification,failures,blockers,risk\n",
+  "agents": {
+    "interrupt_message": true
+  }
+}

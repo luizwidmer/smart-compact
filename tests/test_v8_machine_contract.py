@@ -8,8 +8,7 @@ from scripts.score_policies import projected_calls, safety_score
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ROOT_SKILL = ROOT / "SKILL.md"
-PLUGIN_SKILL = ROOT / "plugin" / "skills" / "smart-compact" / "SKILL.md"
+V8_SKILL = ROOT / "benchmarks" / "retired" / "package" / "versions" / "v8" / "SKILL.md"
 V8_POLICY = ROOT / "benchmarks" / "policies" / "v8" / "SKILL.md"
 V8_PROFILE = ROOT / "profiles" / "smart-compact-v8.config.toml"
 
@@ -20,16 +19,15 @@ def machine_contract(path: Path) -> str:
 
 
 class V8MachineContractTests(unittest.TestCase):
-    def test_skill_policy_profile_and_plugin_share_one_contract(self) -> None:
-        root_contract = machine_contract(ROOT_SKILL)
+    def test_archived_skill_policy_and_profile_share_one_contract(self) -> None:
+        root_contract = machine_contract(V8_SKILL)
         profile = tomllib.loads(V8_PROFILE.read_text(encoding="utf-8"))
 
-        self.assertEqual(machine_contract(PLUGIN_SKILL), root_contract)
         self.assertEqual(machine_contract(V8_POLICY), root_contract)
         self.assertEqual(profile["developer_instructions"].strip(), root_contract)
 
     def test_contract_is_machine_terse_and_semantically_complete(self) -> None:
-        contract = machine_contract(ROOT_SKILL)
+        contract = machine_contract(V8_SKILL)
         lines = contract.splitlines()
 
         self.assertEqual(len(lines), 13)

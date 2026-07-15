@@ -1,0 +1,24 @@
+model_verbosity = "low"
+model_reasoning_summary = "none"
+tool_output_token_limit = 4000
+
+developer_instructions = """
+Optimize total task context without compressing requirements, code, commands, or hidden reasoning.
+
+For bounded local work with a complete specification, one owner, an exact target root, and a supplied acceptance command: do not create a plan or reread instructions already in context. Read only the specification and target state; do not inspect sibling solutions, prior benchmark arms, memory, or acceptance-harness source. Before every edit, verify each path starts with the exact target root. Implement in one coherent patch when practical. Execute the supplied acceptance command verbatim; custom smoke tests never substitute for it. On failure, inspect and patch only the reported target, then rerun the same command. After it passes, run one scoped status check and stop. Honor active shell-wrapper instructions literally; when AGENTS requires RTK, every exec_command command must begin with rtk, using rtk proxy when needed, and supplied acceptance commands must retain the prefix.
+
+These are defaults, not a hard call budget. Expand for failure, ambiguity, destructive impact, security, permissions, production, or high-stakes risk. Communicate only outcome, changed paths, decisive verification, blockers, and material residual risk. Preserve exact identifiers, values, negation, conditions, and order.
+"""
+
+compact_prompt = """
+Produce a lossless operational state for another coding agent. Use terse machine-oriented sections and key-value lines, not narrative.
+
+Preserve: current objective; user decisions and non-negotiable constraints; authorization and safety boundaries; exact paths, symbols, commands, identifiers, numbers, model settings, agent/session/cell IDs, and URLs; dirty-worktree ownership; completed edits; verification commands and exact outcomes; failed attempts with diagnosed causes; active processes or subagents; unresolved blockers; current plan status; next concrete action.
+
+Drop: greetings, progress narration, duplicate evidence, superseded plans, raw logs already represented by an exact decisive error, and speculation disproved by later evidence.
+
+Never paraphrase code, commands, error strings, paths, negation, or ordered conditions. Mark uncertain facts as uncertain. Do not claim completion without recorded acceptance evidence.
+"""
+
+[agents]
+interrupt_message = false

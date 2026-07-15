@@ -1,0 +1,4 @@
+interface:
+  display_name: "Smart Compact v9"
+  short_description: "Reduce parent-model token use without weakening correctness."
+  default_prompt: "Use $smart-compact-v9 to minimize parent tokens with local execution and decisive verification."

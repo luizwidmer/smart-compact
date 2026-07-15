@@ -18,9 +18,9 @@ from scripts.select_optimizer_profile import load_table, recommend
 ROOT = Path(__file__).parents[1]
 SERVER = ROOT / "plugin" / "mcp" / "server.mjs"
 PLUGIN_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact.config.json"
-NATURAL_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v8-natural.config.json"
-V6_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v6.config.json"
-V8_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v8.config.json"
+V9_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v9.config.json"
+V9_SPARK_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v9-spark.config.json"
+V9_V8_PROFILE = ROOT / "plugin" / "profiles" / "smart-compact-v9-v8.config.json"
 NATIVE_PROFILE = ROOT / "profiles" / "smart-compact.config.toml"
 SMART_COMPACT_LABEL = "Smart Compact (recommended)"
 
@@ -154,6 +154,19 @@ class PluginServerTests(unittest.TestCase):
         native = tomllib.loads(NATIVE_PROFILE.read_text(encoding="utf-8"))
         bundled = json.loads(PLUGIN_PROFILE.read_text(encoding="utf-8"))
         self.assertEqual(bundled, native)
+        self.assertEqual(
+            json.loads(V9_V8_PROFILE.read_text(encoding="utf-8")),
+            tomllib.loads(
+                (
+                    ROOT
+                    / "benchmarks"
+                    / "retired"
+                    / "package"
+                    / "profiles"
+                    / "smart-compact-v8.config.toml"
+                ).read_text(encoding="utf-8")
+            ),
+        )
 
     def test_plugin_skill_matches_package_skill(self) -> None:
         self.assertEqual(
@@ -179,6 +192,7 @@ class PluginServerTests(unittest.TestCase):
             codex_home = Path(directory) / ".codex"
             codex_home.mkdir()
             (codex_home / "zeta.config.toml").write_text("model = 'test'\n")
+            (codex_home / "smart-compact-v8.config.toml").write_text("retired = true\n")
             with McpProcess(environment(codex_home)) as client:
                 client.send(
                     {
@@ -197,59 +211,25 @@ class PluginServerTests(unittest.TestCase):
                 [profile["id"] for profile in profiles],
                 [
                     "smart-compact",
-                    "smart-compact-v6",
-                    "smart-compact-v8",
-                    "smart-compact-v8-natural",
+                    "smart-compact-v9",
                     "zeta",
                     "__codex_default__",
                 ],
             )
             self.assertEqual(profiles[0]["source"], "bundled")
 
-    def test_optimizer_recommends_terse_for_auto_and_natural_for_local_general(self) -> None:
+    def test_optimizer_selects_state_aware_representative_lanes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             codex_home = Path(directory) / ".codex"
             codex_home.mkdir()
             with McpProcess(environment(codex_home)) as client:
                 responses = []
-                for request_id, routing_mode in ((2, "auto_spark"), (3, "no_spark")):
-                    client.send(
-                        {
-                            "jsonrpc": "2.0",
-                            "id": request_id,
-                            "method": "tools/call",
-                            "params": {
-                                "name": "smart_compact_recommend_profile",
-                                "arguments": {
-                                    "routingMode": routing_mode,
-                                    "taskShape": "general",
-                                },
-                            },
-                        }
-                    )
-                    responses.append(client.receive())
-            self.assertEqual(
-                responses[0]["result"]["structuredContent"]["profile"],
-                "smart-compact-v8",
-            )
-            self.assertEqual(
-                responses[1]["result"]["structuredContent"]["profile"],
-                "smart-compact-v8-natural",
-            )
-
-    def test_optimizer_plugin_matches_all_8_package_decisions(self) -> None:
-        table = load_table()
-        dimensions = table["dimensions"]
-        combinations = itertools.product(
-            dimensions["routing_mode"],
-            dimensions["task_shape"],
-        )
-        with tempfile.TemporaryDirectory() as directory:
-            codex_home = Path(directory) / ".codex"
-            codex_home.mkdir()
-            with McpProcess(environment(codex_home)) as client:
-                for request_id, values in enumerate(combinations, start=2):
-                    routing_mode, task_shape = values
+                for request_id, routing_mode, task_shape, model_family, effort in (
+                    (2, "auto_spark", "general", "luna", "max"),
+                    (3, "no_spark", "implementation", "luna", "max"),
+                    (4, "auto_spark", "implementation", "luna", "max"),
+                    (5, "auto_spark", "migration", "sol", "medium"),
+                ):
                     client.send(
                         {
                             "jsonrpc": "2.0",
@@ -260,6 +240,60 @@ class PluginServerTests(unittest.TestCase):
                                 "arguments": {
                                     "routingMode": routing_mode,
                                     "taskShape": task_shape,
+                                    "modelFamily": model_family,
+                                    "effort": effort,
+                                },
+                            },
+                        }
+                    )
+                    responses.append(client.receive())
+            self.assertEqual(
+                responses[0]["result"]["structuredContent"]["profile"],
+                "smart-compact-v9",
+            )
+            self.assertEqual(
+                responses[1]["result"]["structuredContent"]["profile"],
+                "smart-compact-v9-v8",
+            )
+            self.assertEqual(
+                responses[2]["result"]["structuredContent"]["profile"],
+                "smart-compact-v9-spark",
+            )
+            self.assertEqual(
+                responses[3]["result"]["structuredContent"]["profile"],
+                None,
+            )
+            self.assertTrue(
+                responses[3]["result"]["structuredContent"]["usesNativeDefault"]
+            )
+
+    def test_optimizer_plugin_matches_all_120_package_decisions(self) -> None:
+        table = load_table()
+        dimensions = table["dimensions"]
+        combinations = itertools.product(
+            dimensions["routing_mode"],
+            dimensions["task_shape"],
+            dimensions["model_family"],
+            dimensions["effort"],
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            codex_home = Path(directory) / ".codex"
+            codex_home.mkdir()
+            with McpProcess(environment(codex_home)) as client:
+                for request_id, values in enumerate(combinations, start=2):
+                    routing_mode, task_shape, model_family, effort = values
+                    client.send(
+                        {
+                            "jsonrpc": "2.0",
+                            "id": request_id,
+                            "method": "tools/call",
+                            "params": {
+                                "name": "smart_compact_recommend_profile",
+                                "arguments": {
+                                    "routingMode": routing_mode,
+                                    "taskShape": task_shape,
+                                    "modelFamily": model_family,
+                                    "effort": effort,
                                 },
                             },
                         }
@@ -271,14 +305,14 @@ class PluginServerTests(unittest.TestCase):
                         values,
                     )
 
-    def test_optimized_local_task_uses_frozen_profile_and_zero_token_toggle(self) -> None:
+    def test_optimized_local_task_uses_canonical_profile_and_zero_token_toggle(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             codex_home = root / ".codex"
             workspace = root / "workspace"
             codex_home.mkdir()
             workspace.mkdir()
-            (codex_home / "smart-compact-v6.config.toml").write_text(
+            (codex_home / "smart-compact-v9-implementation.config.toml").write_text(
                 "developer_instructions = 'custom drift'\n",
                 encoding="utf-8",
             )
@@ -295,6 +329,8 @@ class PluginServerTests(unittest.TestCase):
                                 "workspacePath": str(workspace),
                                 "routingMode": "no_spark",
                                 "taskShape": "implementation",
+                                "modelFamily": "other",
+                                "effort": "other",
                             },
                         },
                     }
@@ -302,24 +338,24 @@ class PluginServerTests(unittest.TestCase):
                 response = client.receive()
             result = response["result"]["structuredContent"]
             self.assertEqual(result["status"], "created")
-            self.assertEqual(result["profile"], "smart-compact-v6")
-            self.assertTrue(result["routingEnforced"])
+            self.assertEqual(result["profile"], "smart-compact-v9")
+            self.assertTrue(result["routingConfigured"])
             self.assertEqual(
                 json.loads(args_path.read_text()),
-                ["app-server", "--listen", "stdio://"],
+                ["--disable", "multi_agent", "app-server", "--listen", "stdio://"],
             )
-            expected = json.loads(V6_PROFILE.read_text())
+            expected = json.loads(V9_PROFILE.read_text())
             expected["features"] = {"multi_agent": False}
             self.assertEqual(json.loads(thread_path.read_text())["config"], expected)
 
-    def test_optimized_auto_task_enables_multi_agent_before_inference(self) -> None:
+    def test_optimized_auto_general_disables_multi_agent_before_inference(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             codex_home = root / ".codex"
             workspace = root / "workspace"
             codex_home.mkdir()
             workspace.mkdir()
-            executable, _, thread_path, _ = fake_codex(root)
+            executable, args_path, thread_path, _ = fake_codex(root)
             with McpProcess(environment(codex_home, executable), form=False) as client:
                 client.send(
                     {
@@ -332,14 +368,99 @@ class PluginServerTests(unittest.TestCase):
                                 "workspacePath": str(workspace),
                                 "routingMode": "auto_spark",
                                 "taskShape": "general",
+                                "modelFamily": "luna",
+                                "effort": "max",
                             },
                         },
                     }
                 )
                 response = client.receive()
             result = response["result"]["structuredContent"]
-            self.assertEqual(result["profile"], "smart-compact-v8")
-            expected = json.loads(V8_PROFILE.read_text())
+            self.assertEqual(result["profile"], "smart-compact-v9")
+            self.assertEqual(result["routingTreatmentName"], "no_spark")
+            self.assertEqual(
+                json.loads(args_path.read_text()),
+                ["--disable", "multi_agent", "app-server", "--listen", "stdio://"],
+            )
+            expected = json.loads(V9_PROFILE.read_text())
+            expected["features"] = {"multi_agent": False}
+            self.assertEqual(json.loads(thread_path.read_text())["config"], expected)
+
+    def test_optimized_native_task_omits_profile_instructions(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codex_home = root / ".codex"
+            workspace = root / "workspace"
+            codex_home.mkdir()
+            workspace.mkdir()
+            executable, args_path, thread_path, _ = fake_codex(root)
+            with McpProcess(environment(codex_home, executable), form=False) as client:
+                client.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 2,
+                        "method": "tools/call",
+                        "params": {
+                            "name": "smart_compact_start_optimized_task",
+                            "arguments": {
+                                "workspacePath": str(workspace),
+                                "routingMode": "auto_spark",
+                                "taskShape": "migration",
+                                "modelFamily": "sol",
+                                "effort": "medium",
+                            },
+                        },
+                    }
+                )
+                response = client.receive()
+            result = response["result"]["structuredContent"]
+            self.assertIsNone(result["profile"])
+            self.assertTrue(result["usesNativeDefault"])
+            self.assertEqual(result["profileSource"], "default")
+            self.assertEqual(
+                json.loads(args_path.read_text()),
+                ["--disable", "multi_agent", "app-server", "--listen", "stdio://"],
+            )
+            self.assertEqual(
+                json.loads(thread_path.read_text())["config"],
+                {"features": {"multi_agent": False}},
+            )
+
+    def test_optimized_auto_implementation_enables_spark_before_inference(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            codex_home = root / ".codex"
+            workspace = root / "workspace"
+            codex_home.mkdir()
+            workspace.mkdir()
+            executable, args_path, thread_path, _ = fake_codex(root)
+            with McpProcess(environment(codex_home, executable), form=False) as client:
+                client.send(
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 2,
+                        "method": "tools/call",
+                        "params": {
+                            "name": "smart_compact_start_optimized_task",
+                            "arguments": {
+                                "workspacePath": str(workspace),
+                                "routingMode": "auto_spark",
+                                "taskShape": "implementation",
+                                "modelFamily": "luna",
+                                "effort": "max",
+                            },
+                        },
+                    }
+                )
+                response = client.receive()
+            result = response["result"]["structuredContent"]
+            self.assertEqual(result["profile"], "smart-compact-v9-spark")
+            self.assertEqual(result["routingTreatmentName"], "auto_spark")
+            self.assertEqual(
+                json.loads(args_path.read_text()),
+                ["--enable", "multi_agent", "app-server", "--listen", "stdio://"],
+            )
+            expected = json.loads(V9_SPARK_PROFILE.read_text())
             expected["features"] = {"multi_agent": True}
             self.assertEqual(json.loads(thread_path.read_text())["config"], expected)
 
@@ -361,7 +482,7 @@ class PluginServerTests(unittest.TestCase):
                             "name": "smart_compact_start_task",
                             "arguments": {
                                 "workspacePath": str(workspace),
-                                "profileId": "smart-compact-v8-natural",
+                                "profileId": "smart-compact-v9",
                             },
                         },
                     }
@@ -370,7 +491,7 @@ class PluginServerTests(unittest.TestCase):
             self.assertEqual(response["result"]["structuredContent"]["status"], "created")
             self.assertEqual(
                 response["result"]["structuredContent"]["profile"],
-                "smart-compact-v8-natural",
+                "smart-compact-v9",
             )
             self.assertEqual(
                 json.loads(args_path.read_text()),
@@ -378,7 +499,7 @@ class PluginServerTests(unittest.TestCase):
             )
             self.assertEqual(
                 json.loads(thread_path.read_text())["config"],
-                json.loads(NATURAL_PROFILE.read_text()),
+                json.loads(V9_PROFILE.read_text()),
             )
 
     def test_invalid_explicit_profile_does_not_spawn_codex(self) -> None:
